@@ -30,7 +30,6 @@ public class MysqlConnection {
     }
     
     public static ResultSet executeIUD(String query) throws Exception {
-        
         createConnection();
 
         PreparedStatement pstmt = null;
