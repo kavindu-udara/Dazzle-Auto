@@ -21,4 +21,5 @@ public class EmployeeController {
                 + "VALUES ('" + employeeModel.getLoginId() + "', '" + employeeModel.getNic() + "', '" + employeeModel.getFirstName() + "', '" + employeeModel.getLastName() + "', "
                 + "'" + employeeModel.getEmail() + "', '" + employeeModel.getMobile() + "', '" + employeeModel.getRegisteredDate() + "', '" + employeeModel.getStatusId() + "') ");
     }
+    
 }
