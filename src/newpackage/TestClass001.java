@@ -8,7 +8,7 @@ package newpackage;
  *
  * @author E
  */
-public class NewClass1 {
+public class TestClass001 {
     public static void main(String[] args) {
         
     }
