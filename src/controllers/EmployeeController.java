@@ -6,7 +6,7 @@ import services.MysqlConnection;
 
 public class EmployeeController {
 
-    private final String tableName = "";
+    private final String tableName = "employee";
 
     public ResultSet show() throws Exception {
         return MysqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
@@ -18,7 +18,7 @@ public class EmployeeController {
 
     public ResultSet store(EmployeeModel employeeModel) throws Exception {
         return MysqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`login_id`, `nic`, `first_name`, `last_name`, `email`, `mobile`, `registered_date`, `status_id`) "
-                + "VALUES ('" + employeeModel.getLoginId() + "', '"+employeeModel.getNic()+"', '"+employeeModel.getFirstName()+"', '"+employeeModel.getLastName()+"', "
-                        + "'"+employeeModel.getEmail()+"', '"+employeeModel.getMobile()+"', '"+employeeModel.getRegisteredDate()+"', '"+employeeModel.getStatusId()+"') ");
+                + "VALUES ('" + employeeModel.getLoginId() + "', '" + employeeModel.getNic() + "', '" + employeeModel.getFirstName() + "', '" + employeeModel.getLastName() + "', "
+                + "'" + employeeModel.getEmail() + "', '" + employeeModel.getMobile() + "', '" + employeeModel.getRegisteredDate() + "', '" + employeeModel.getStatusId() + "') ");
     }
 }
