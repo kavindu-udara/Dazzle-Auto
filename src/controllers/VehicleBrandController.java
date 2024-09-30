@@ -14,5 +14,5 @@ public class VehicleBrandController {
     public ResultSet show(int id) throws Exception {
         return MysqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
-
+    
 }
