@@ -23,12 +23,12 @@ public class MysqlConnection {
             connection = DriverManager.getConnection("jdbc:mysql://" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME + "", DB_USER, DB_PASSWORD);
         }
     }
-    
+
     public static ResultSet executeSearch(String query) throws Exception {
         createConnection();
         return connection.createStatement().executeQuery(query);
     }
-    
+
     public static ResultSet executeIUD(String query) throws Exception {
         createConnection();
 
@@ -38,14 +38,14 @@ public class MysqlConnection {
 
         // Prepare the statement with RETURN_GENERATED_KEYS
         pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            
+
         // Execute the update (for INSERT/UPDATE/DELETE)
         int affectedRows = pstmt.executeUpdate();
 
         if (affectedRows > 0) {
             rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
-                generatedId = rs.getInt(1); 
+                generatedId = rs.getInt(1);
             }
         }
         return pstmt.getGeneratedKeys();
