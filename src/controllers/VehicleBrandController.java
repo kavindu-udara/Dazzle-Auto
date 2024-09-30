@@ -1,7 +1,6 @@
 package controllers;
 
 import java.sql.ResultSet;
-import models.VehicleBrandModel;
 import services.MysqlConnection;
 
 public class VehicleBrandController {
@@ -16,7 +15,4 @@ public class VehicleBrandController {
         return MysqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
 
-    public ResultSet store(VehicleBrandModel vehicleBrandModel) throws Exception {
-        return MysqlConnection.executeIUD("INSERT INTO (`brand_name`) VALUES ('" + vehicleBrandModel.getName() + "') ");
-    }
 }
