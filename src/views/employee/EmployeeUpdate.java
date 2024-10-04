@@ -53,7 +53,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
         });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel1.setText("UPDATE EMPLOYEE");
+        jLabel1.setText("EMPLOYEE DETAILS");
 
         employee_image.setBackground(new java.awt.Color(255, 255, 51));
         employee_image.setIcon(new javax.swing.ImageIcon("C:\\Users\\USER\\Downloads\\Bimsara.jpg")); // NOI18N
