@@ -51,7 +51,7 @@ public class SupplierUpdate extends java.awt.Dialog {
         });
 
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jLabel1.setText("UPDATE SUPPLIER");
+        jLabel1.setText("SUPPLIER DETAILS");
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel3.setText("First Name");
