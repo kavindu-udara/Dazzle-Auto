@@ -10,9 +10,7 @@ package views;
  */
 public class SplashWindow extends javax.swing.JFrame {
 
-    /**
-     * Creates new form SplashWindow
-     */
+   
     public SplashWindow() {
         initComponents();
         lodingAnimation();
