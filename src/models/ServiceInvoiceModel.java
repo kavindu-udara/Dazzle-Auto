@@ -17,6 +17,7 @@ public class ServiceInvoiceModel {
     private String vehicleNumber;
     private double total;
     private double paidAmount;
+    private double balance;
     private String date;
 
     /**
@@ -129,6 +130,20 @@ public class ServiceInvoiceModel {
      */
     public void setDate(String date) {
         this.date = date;
+    }
+
+    /**
+     * @return the balance
+     */
+    public double getBalance() {
+        return balance;
+    }
+
+    /**
+     * @param balance the balance to set
+     */
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
 }
