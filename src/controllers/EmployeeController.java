@@ -13,7 +13,7 @@ public class EmployeeController {
     }
 
     public ResultSet show(int id) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `emp_id`='" + id + "'");
     }
 
     public ResultSet store(EmployeeModel employeeModel) throws Exception {
