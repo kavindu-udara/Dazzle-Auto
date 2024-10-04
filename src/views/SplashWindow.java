@@ -102,7 +102,7 @@ public class SplashWindow extends javax.swing.JFrame {
     public static void main(String args[]) {
         
         IntelliJTheme.setup(SplashWindow.class.getResourceAsStream(
-                    "/themes/arc-theme.theme.json"));
+                    "/resources/themes/arc-theme.theme.json"));
 
         
         java.awt.EventQueue.invokeLater(new Runnable() {
