@@ -8,6 +8,7 @@ import com.formdev.flatlaf.IntelliJTheme;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import javax.swing.SwingUtilities;
+import views.payments.PaymentsPanel;
 
 /**
  *
@@ -16,10 +17,9 @@ import javax.swing.SwingUtilities;
 public class Dashboard extends javax.swing.JFrame {
 
     public Dashboard() {
-        initComponents();     
+        initComponents();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -27,16 +27,16 @@ public class Dashboard extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         menuButtonsPanel = new javax.swing.JPanel();
-        jDashboardButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jDashboardButton1 = new javax.swing.JButton();
+        jPaymentButton = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         dashboardMainPanel = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jDashboardPanel = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        jPaymentsPanel = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -58,61 +58,67 @@ public class Dashboard extends javax.swing.JFrame {
         menuButtonsPanel.setBackground(new java.awt.Color(255, 255, 255));
         menuButtonsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jDashboardButton.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jDashboardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/dashboard-3.png"))); // NOI18N
-        jDashboardButton.setText("  Dashboard");
-        jDashboardButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jDashboardButton.setFocusable(false);
-        jDashboardButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jDashboardButtonActionPerformed(evt);
-            }
-        });
-        menuButtonsPanel.add(jDashboardButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 62));
-
-        jButton2.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jButton2.setText("jButton2");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jButton2.setFocusable(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        menuButtonsPanel.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 200, 62));
-
-        jButton3.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jButton3.setText("jButton3");
-        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jButton3.setFocusable(false);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        menuButtonsPanel.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 200, 62));
-
-        jButton4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jButton4.setText("jButton4");
-        jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jButton4.setFocusable(false);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        menuButtonsPanel.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 200, 62));
-
-        jButton5.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jButton5.setText("jButton5");
-        jButton5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jButton5.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jButton5.setText("5");
+        jButton5.setBorderPainted(false);
         jButton5.setFocusable(false);
+        jButton5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
-        menuButtonsPanel.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 200, 62));
+        menuButtonsPanel.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 200, 60));
+
+        jDashboardButton1.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jDashboardButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/dashboard-3.png"))); // NOI18N
+        jDashboardButton1.setText("  Dashboard");
+        jDashboardButton1.setBorderPainted(false);
+        jDashboardButton1.setFocusable(false);
+        jDashboardButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jDashboardButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jDashboardButton1ActionPerformed(evt);
+            }
+        });
+        menuButtonsPanel.add(jDashboardButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 60));
+
+        jPaymentButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jPaymentButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/payment-3.png"))); // NOI18N
+        jPaymentButton.setText("  Payments");
+        jPaymentButton.setBorderPainted(false);
+        jPaymentButton.setFocusable(false);
+        jPaymentButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jPaymentButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPaymentButtonActionPerformed(evt);
+            }
+        });
+        menuButtonsPanel.add(jPaymentButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 200, 60));
+
+        jButton3.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jButton3.setText("3");
+        jButton3.setBorderPainted(false);
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        menuButtonsPanel.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 200, 60));
+
+        jButton4.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jButton4.setText("4");
+        jButton4.setBorderPainted(false);
+        jButton4.setFocusable(false);
+        jButton4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        menuButtonsPanel.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 200, 60));
 
         jPanel1.add(menuButtonsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 200, 610));
 
@@ -126,20 +132,9 @@ public class Dashboard extends javax.swing.JFrame {
         jDashboardPanel.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("tab1", jDashboardPanel);
 
-        jPanel3.setBackground(new java.awt.Color(255, 153, 153));
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1102, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("tab2", jPanel3);
+        jPaymentsPanel.setBackground(new java.awt.Color(255, 153, 153));
+        jPaymentsPanel.setLayout(new java.awt.BorderLayout());
+        jTabbedPane1.addTab("tab2", jPaymentsPanel);
 
         jPanel4.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -193,6 +188,7 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel1.add(dashboardMainPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 70, 1100, 610));
 
         HeaderPanel.setBackground(new java.awt.Color(255, 255, 255));
+        HeaderPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/Dashboard-img.png"))); // NOI18N
@@ -218,7 +214,7 @@ public class Dashboard extends javax.swing.JFrame {
             HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HeaderPanelLayout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 888, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 886, Short.MAX_VALUE)
                 .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -234,7 +230,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
             .addGroup(HeaderPanelLayout.createSequentialGroup()
                 .addComponent(empImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -256,18 +252,26 @@ public class Dashboard extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    //Dashboard Button on Dashboard
-    private void jDashboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDashboardButtonActionPerformed
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        jTabbedPane1.setSelectedIndex(4);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jDashboardButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDashboardButton1ActionPerformed
         jTabbedPane1.setSelectedIndex(0);
-        
+
         DashboardPanel dashboardPanel = new DashboardPanel();
         jDashboardPanel.add(dashboardPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
-    }//GEN-LAST:event_jDashboardButtonActionPerformed
+    }//GEN-LAST:event_jDashboardButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jPaymentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPaymentButtonActionPerformed
         jTabbedPane1.setSelectedIndex(1);
-    }//GEN-LAST:event_jButton2ActionPerformed
+
+        PaymentsPanel paymentPanel = new PaymentsPanel();
+        jPaymentsPanel.add(paymentPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
+
+    }//GEN-LAST:event_jPaymentButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         jTabbedPane1.setSelectedIndex(2);
@@ -277,17 +281,13 @@ public class Dashboard extends javax.swing.JFrame {
         jTabbedPane1.setSelectedIndex(3);
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        jTabbedPane1.setSelectedIndex(4);
-    }//GEN-LAST:event_jButton5ActionPerformed
- 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-                IntelliJTheme.setup(Dashboard.class.getResourceAsStream(
-                    "/resources/themes/arc-theme.theme.json"));
+        IntelliJTheme.setup(Dashboard.class.getResourceAsStream(
+                "/resources/themes/arc-theme.theme.json"));
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -301,11 +301,10 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel HeaderPanel;
     private javax.swing.JPanel dashboardMainPanel;
     private javax.swing.JLabel empImageLabel;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jDashboardButton;
+    private javax.swing.JButton jDashboardButton1;
     private javax.swing.JPanel jDashboardPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -314,11 +313,12 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JButton jPaymentButton;
+    private javax.swing.JPanel jPaymentsPanel;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel menuButtonsPanel;
     // End of variables declaration//GEN-END:variables
