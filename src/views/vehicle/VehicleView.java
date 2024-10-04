@@ -4,9 +4,8 @@
  */
 package views.vehicle;
 
-import views.customer.*;
+import views.employee.*;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import views.employee.EmployeeRegistration;
 
 /**
  *
@@ -15,7 +14,7 @@ import views.employee.EmployeeRegistration;
 public class VehicleView extends javax.swing.JFrame {
 
     /**
-     * Creates new form CustomerView
+     * Creates new form Employee_View
      */
     public VehicleView() {
         initComponents();
@@ -37,6 +36,8 @@ public class VehicleView extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         vehicle_view_tbl = new javax.swing.JTable();
         vehicle_register_new_employee_btn = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,7 +58,7 @@ public class VehicleView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "vehicle number", "customer Id", "vehicle brand", "model", "type"
+                "vehicle number", "customer Id", "vehicle brand", "vehicle model", "vehicle type"
             }
         ));
         vehicle_view_tbl.getTableHeader().setReorderingAllowed(false);
@@ -68,6 +69,17 @@ public class VehicleView extends javax.swing.JFrame {
         vehicle_register_new_employee_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 vehicle_register_new_employee_btnActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
+        jLabel6.setText("Vehicle Sort By :");
+
+        jComboBox1.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Brand", "Type", "Model" }));
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
             }
         });
 
@@ -86,7 +98,11 @@ public class VehicleView extends javax.swing.JFrame {
                         .addComponent(vehicle_search_bar, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(vehicle_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 568, Short.MAX_VALUE)
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 354, Short.MAX_VALUE)
                         .addComponent(vehicle_register_new_employee_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(20, 20, 20))
         );
@@ -99,10 +115,13 @@ public class VehicleView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(vehicle_search_bar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(vehicle_search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(vehicle_register_new_employee_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(vehicle_register_new_employee_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -118,14 +137,21 @@ public class VehicleView extends javax.swing.JFrame {
     private void vehicle_register_new_employee_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehicle_register_new_employee_btnActionPerformed
 
         new VehicleRegistration(null,true).show();
+
     }//GEN-LAST:event_vehicle_register_new_employee_btnActionPerformed
+
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+
+     
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-     
+       
         FlatMacDarkLaf.setup();
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new VehicleView().setVisible(true);
@@ -134,7 +160,9 @@ public class VehicleView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton vehicle_register_new_employee_btn;
