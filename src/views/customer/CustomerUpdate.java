@@ -47,7 +47,7 @@ public class CustomerUpdate extends java.awt.Dialog {
         });
 
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jLabel1.setText("UPDATE CUSTOMER ");
+        jLabel1.setText("CUSTOMER DETAILS");
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel3.setText("First Name");

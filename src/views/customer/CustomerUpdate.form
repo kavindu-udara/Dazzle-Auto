@@ -110,7 +110,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Roboto" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="UPDATE CUSTOMER "/>
+            <Property name="text" type="java.lang.String" value="CUSTOMER DETAILS"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
