@@ -59,7 +59,7 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="vehicle_register_btn" min="-2" pref="167" max="-2" attributes="0"/>
-                          <EmptySpace pref="24" max="32767" attributes="0"/>
+                          <EmptySpace pref="36" max="32767" attributes="0"/>
                           <Component id="vehicle_reset_btn" min="-2" pref="159" max="-2" attributes="0"/>
                       </Group>
                   </Group>
