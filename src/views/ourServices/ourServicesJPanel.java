@@ -6,7 +6,7 @@ package views.ourServices;
 
 /**
  *
- * @author E
+ * @author Dinuka
  */
 public class ourServicesJPanel extends javax.swing.JPanel {
 

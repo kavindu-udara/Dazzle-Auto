@@ -6,7 +6,7 @@ package views.employee;
 
 /**
  *
- * @author E
+ * @author Dinuka
  */
 public class StaffJPanel extends javax.swing.JPanel {
 

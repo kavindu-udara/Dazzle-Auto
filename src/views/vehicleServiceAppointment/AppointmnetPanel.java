@@ -6,7 +6,7 @@ package views.vehicleServiceAppointment;
 
 /**
  *
- * @author E
+ * @author Dinuka
  */
 public class AppointmnetPanel extends javax.swing.JPanel {
 

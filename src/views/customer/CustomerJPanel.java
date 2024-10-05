@@ -6,7 +6,7 @@ package views.customer;
 
 /**
  *
- * @author E
+ * @author Dinuka
  */
 public class CustomerJPanel extends javax.swing.JPanel {
 

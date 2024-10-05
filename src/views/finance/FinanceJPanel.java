@@ -6,7 +6,7 @@ package views.finance;
 
 /**
  *
- * @author E
+ * @author Dinuka
  */
 public class FinanceJPanel extends javax.swing.JPanel {
 

@@ -6,7 +6,7 @@ package views.vehicle;
 
 /**
  *
- * @author E
+ * @author Dinuka
  */
 public class VehiclesJPanel extends javax.swing.JPanel {
 
