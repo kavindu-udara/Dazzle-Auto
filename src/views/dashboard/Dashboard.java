@@ -27,19 +27,27 @@ public class Dashboard extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         menuButtonsPanel = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
+        jStaffButton = new javax.swing.JButton();
         jDashboardButton1 = new javax.swing.JButton();
         jPaymentButton = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jAppointmentsButton = new javax.swing.JButton();
+        jCustomerButton = new javax.swing.JButton();
+        jOurServicesButton = new javax.swing.JButton();
+        jFinanceButton = new javax.swing.JButton();
+        jReportsButton = new javax.swing.JButton();
+        jVehiclesButton = new javax.swing.JButton();
         dashboardMainPanel = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jDashboardPanel = new javax.swing.JPanel();
         jPaymentsPanel = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
+        jAppointmentPanel = new javax.swing.JPanel();
+        jVehiclesPanel = new javax.swing.JPanel();
+        jCustomerPanel = new javax.swing.JPanel();
+        jOurServicesPanel = new javax.swing.JPanel();
+        jFinancePanel = new javax.swing.JPanel();
+        jReportPanel = new javax.swing.JPanel();
+        jStaffPanel = new javax.swing.JPanel();
         HeaderPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -58,17 +66,18 @@ public class Dashboard extends javax.swing.JFrame {
         menuButtonsPanel.setBackground(new java.awt.Color(255, 255, 255));
         menuButtonsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton5.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
-        jButton5.setText("5");
-        jButton5.setBorderPainted(false);
-        jButton5.setFocusable(false);
-        jButton5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        jStaffButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jStaffButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/employee-3.png"))); // NOI18N
+        jStaffButton.setText(" Staff");
+        jStaffButton.setBorderPainted(false);
+        jStaffButton.setFocusable(false);
+        jStaffButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jStaffButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                jStaffButtonActionPerformed(evt);
             }
         });
-        menuButtonsPanel.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 200, 60));
+        menuButtonsPanel.add(jStaffButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 200, 60));
 
         jDashboardButton1.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
         jDashboardButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/dashboard-3.png"))); // NOI18N
@@ -96,29 +105,83 @@ public class Dashboard extends javax.swing.JFrame {
         });
         menuButtonsPanel.add(jPaymentButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 200, 60));
 
-        jButton3.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
-        jButton3.setText("3");
-        jButton3.setBorderPainted(false);
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jAppointmentsButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jAppointmentsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/appointment-30.png"))); // NOI18N
+        jAppointmentsButton.setText("  Appointment");
+        jAppointmentsButton.setBorderPainted(false);
+        jAppointmentsButton.setFocusable(false);
+        jAppointmentsButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jAppointmentsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jAppointmentsButtonActionPerformed(evt);
             }
         });
-        menuButtonsPanel.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 200, 60));
+        menuButtonsPanel.add(jAppointmentsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 200, 60));
 
-        jButton4.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
-        jButton4.setText("4");
-        jButton4.setBorderPainted(false);
-        jButton4.setFocusable(false);
-        jButton4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jCustomerButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jCustomerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/customers-30.png"))); // NOI18N
+        jCustomerButton.setText("  Customers");
+        jCustomerButton.setBorderPainted(false);
+        jCustomerButton.setFocusable(false);
+        jCustomerButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jCustomerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jCustomerButtonActionPerformed(evt);
             }
         });
-        menuButtonsPanel.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 200, 60));
+        menuButtonsPanel.add(jCustomerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 200, 60));
+
+        jOurServicesButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jOurServicesButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/services-30.png"))); // NOI18N
+        jOurServicesButton.setText("  Our Services ");
+        jOurServicesButton.setBorderPainted(false);
+        jOurServicesButton.setFocusable(false);
+        jOurServicesButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jOurServicesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jOurServicesButtonActionPerformed(evt);
+            }
+        });
+        menuButtonsPanel.add(jOurServicesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 200, 60));
+
+        jFinanceButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jFinanceButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/investment-30.png"))); // NOI18N
+        jFinanceButton.setText("  Finance");
+        jFinanceButton.setBorderPainted(false);
+        jFinanceButton.setFocusable(false);
+        jFinanceButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jFinanceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFinanceButtonActionPerformed(evt);
+            }
+        });
+        menuButtonsPanel.add(jFinanceButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 200, 60));
+
+        jReportsButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jReportsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/report-3.png"))); // NOI18N
+        jReportsButton.setText("  Reports");
+        jReportsButton.setBorderPainted(false);
+        jReportsButton.setFocusable(false);
+        jReportsButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jReportsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jReportsButtonActionPerformed(evt);
+            }
+        });
+        menuButtonsPanel.add(jReportsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 200, 60));
+
+        jVehiclesButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jVehiclesButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/car-30.png"))); // NOI18N
+        jVehiclesButton.setText("  Vehicles");
+        jVehiclesButton.setBorderPainted(false);
+        jVehiclesButton.setFocusable(false);
+        jVehiclesButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jVehiclesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jVehiclesButtonActionPerformed(evt);
+            }
+        });
+        menuButtonsPanel.add(jVehiclesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 200, 60));
 
         jPanel1.add(menuButtonsPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 200, 610));
 
@@ -136,50 +199,110 @@ public class Dashboard extends javax.swing.JFrame {
         jPaymentsPanel.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("tab2", jPaymentsPanel);
 
-        jPanel4.setBackground(new java.awt.Color(0, 102, 0));
+        jAppointmentPanel.setBackground(new java.awt.Color(0, 102, 0));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jAppointmentPanelLayout = new javax.swing.GroupLayout(jAppointmentPanel);
+        jAppointmentPanel.setLayout(jAppointmentPanelLayout);
+        jAppointmentPanelLayout.setHorizontalGroup(
+            jAppointmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1102, Short.MAX_VALUE)
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jAppointmentPanelLayout.setVerticalGroup(
+            jAppointmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 610, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab3", jPanel4);
+        jTabbedPane1.addTab("tab3", jAppointmentPanel);
 
-        jPanel5.setBackground(new java.awt.Color(255, 204, 102));
+        jVehiclesPanel.setBackground(new java.awt.Color(255, 204, 102));
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jVehiclesPanelLayout = new javax.swing.GroupLayout(jVehiclesPanel);
+        jVehiclesPanel.setLayout(jVehiclesPanelLayout);
+        jVehiclesPanelLayout.setHorizontalGroup(
+            jVehiclesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1102, Short.MAX_VALUE)
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jVehiclesPanelLayout.setVerticalGroup(
+            jVehiclesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 610, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab4", jPanel5);
+        jTabbedPane1.addTab("tab4", jVehiclesPanel);
 
-        jPanel6.setBackground(new java.awt.Color(153, 153, 0));
+        jCustomerPanel.setBackground(new java.awt.Color(153, 153, 0));
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jCustomerPanelLayout = new javax.swing.GroupLayout(jCustomerPanel);
+        jCustomerPanel.setLayout(jCustomerPanelLayout);
+        jCustomerPanelLayout.setHorizontalGroup(
+            jCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1102, Short.MAX_VALUE)
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jCustomerPanelLayout.setVerticalGroup(
+            jCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 610, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab5", jPanel6);
+        jTabbedPane1.addTab("tab5", jCustomerPanel);
+
+        jOurServicesPanel.setBackground(new java.awt.Color(0, 102, 102));
+
+        javax.swing.GroupLayout jOurServicesPanelLayout = new javax.swing.GroupLayout(jOurServicesPanel);
+        jOurServicesPanel.setLayout(jOurServicesPanelLayout);
+        jOurServicesPanelLayout.setHorizontalGroup(
+            jOurServicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1102, Short.MAX_VALUE)
+        );
+        jOurServicesPanelLayout.setVerticalGroup(
+            jOurServicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 610, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("tab6", jOurServicesPanel);
+
+        jFinancePanel.setBackground(new java.awt.Color(102, 0, 102));
+
+        javax.swing.GroupLayout jFinancePanelLayout = new javax.swing.GroupLayout(jFinancePanel);
+        jFinancePanel.setLayout(jFinancePanelLayout);
+        jFinancePanelLayout.setHorizontalGroup(
+            jFinancePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1102, Short.MAX_VALUE)
+        );
+        jFinancePanelLayout.setVerticalGroup(
+            jFinancePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 610, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("tab7", jFinancePanel);
+
+        jReportPanel.setBackground(new java.awt.Color(102, 102, 0));
+
+        javax.swing.GroupLayout jReportPanelLayout = new javax.swing.GroupLayout(jReportPanel);
+        jReportPanel.setLayout(jReportPanelLayout);
+        jReportPanelLayout.setHorizontalGroup(
+            jReportPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1102, Short.MAX_VALUE)
+        );
+        jReportPanelLayout.setVerticalGroup(
+            jReportPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 610, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("tab8", jReportPanel);
+
+        jStaffPanel.setBackground(new java.awt.Color(102, 0, 204));
+
+        javax.swing.GroupLayout jStaffPanelLayout = new javax.swing.GroupLayout(jStaffPanel);
+        jStaffPanel.setLayout(jStaffPanelLayout);
+        jStaffPanelLayout.setHorizontalGroup(
+            jStaffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1102, Short.MAX_VALUE)
+        );
+        jStaffPanelLayout.setVerticalGroup(
+            jStaffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 610, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("tab9", jStaffPanel);
 
         jPanel7.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, 0, 1150, 610));
 
@@ -252,9 +375,9 @@ public class Dashboard extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        jTabbedPane1.setSelectedIndex(4);
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void jStaffButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jStaffButtonActionPerformed
+        jTabbedPane1.setSelectedIndex(8);
+    }//GEN-LAST:event_jStaffButtonActionPerformed
 
     private void jDashboardButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDashboardButton1ActionPerformed
         jTabbedPane1.setSelectedIndex(0);
@@ -273,13 +396,29 @@ public class Dashboard extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jPaymentButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jAppointmentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAppointmentsButtonActionPerformed
         jTabbedPane1.setSelectedIndex(2);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jAppointmentsButtonActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCustomerButtonActionPerformed
+        jTabbedPane1.setSelectedIndex(4);
+    }//GEN-LAST:event_jCustomerButtonActionPerformed
+
+    private void jOurServicesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOurServicesButtonActionPerformed
+        jTabbedPane1.setSelectedIndex(5);
+    }//GEN-LAST:event_jOurServicesButtonActionPerformed
+
+    private void jFinanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFinanceButtonActionPerformed
+        jTabbedPane1.setSelectedIndex(6);
+    }//GEN-LAST:event_jFinanceButtonActionPerformed
+
+    private void jReportsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jReportsButtonActionPerformed
+        jTabbedPane1.setSelectedIndex(7);
+    }//GEN-LAST:event_jReportsButtonActionPerformed
+
+    private void jVehiclesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehiclesButtonActionPerformed
         jTabbedPane1.setSelectedIndex(3);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_jVehiclesButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -301,25 +440,33 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel HeaderPanel;
     private javax.swing.JPanel dashboardMainPanel;
     private javax.swing.JLabel empImageLabel;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JPanel jAppointmentPanel;
+    private javax.swing.JButton jAppointmentsButton;
+    private javax.swing.JButton jCustomerButton;
+    private javax.swing.JPanel jCustomerPanel;
     private javax.swing.JButton jDashboardButton1;
     private javax.swing.JPanel jDashboardPanel;
+    private javax.swing.JButton jFinanceButton;
+    private javax.swing.JPanel jFinancePanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JButton jOurServicesButton;
+    private javax.swing.JPanel jOurServicesPanel;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JButton jPaymentButton;
     private javax.swing.JPanel jPaymentsPanel;
+    private javax.swing.JPanel jReportPanel;
+    private javax.swing.JButton jReportsButton;
+    private javax.swing.JButton jStaffButton;
+    private javax.swing.JPanel jStaffPanel;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JButton jVehiclesButton;
+    private javax.swing.JPanel jVehiclesPanel;
     private javax.swing.JPanel menuButtonsPanel;
     // End of variables declaration//GEN-END:variables
 }
