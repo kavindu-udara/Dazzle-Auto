@@ -8,7 +8,14 @@ import com.formdev.flatlaf.IntelliJTheme;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import javax.swing.SwingUtilities;
+import views.customer.CustomerJPanel;
+import views.employee.StaffJPanel;
+import views.finance.FinanceJPanel;
+import views.ourServices.ourServicesJPanel;
 import views.payment.PaymentsPanel;
+import views.reports.ReportsJPanel;
+import views.vehicle.VehiclesJPanel;
+import views.vehicleServiceAppointment.AppointmnetPanel;
 
 /**
  *
@@ -200,108 +207,31 @@ public class Dashboard extends javax.swing.JFrame {
         jTabbedPane1.addTab("tab2", jPaymentsPanel);
 
         jAppointmentPanel.setBackground(new java.awt.Color(0, 102, 0));
-
-        javax.swing.GroupLayout jAppointmentPanelLayout = new javax.swing.GroupLayout(jAppointmentPanel);
-        jAppointmentPanel.setLayout(jAppointmentPanelLayout);
-        jAppointmentPanelLayout.setHorizontalGroup(
-            jAppointmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1102, Short.MAX_VALUE)
-        );
-        jAppointmentPanelLayout.setVerticalGroup(
-            jAppointmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
-        );
-
+        jAppointmentPanel.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("tab3", jAppointmentPanel);
 
         jVehiclesPanel.setBackground(new java.awt.Color(255, 204, 102));
-
-        javax.swing.GroupLayout jVehiclesPanelLayout = new javax.swing.GroupLayout(jVehiclesPanel);
-        jVehiclesPanel.setLayout(jVehiclesPanelLayout);
-        jVehiclesPanelLayout.setHorizontalGroup(
-            jVehiclesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1102, Short.MAX_VALUE)
-        );
-        jVehiclesPanelLayout.setVerticalGroup(
-            jVehiclesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
-        );
-
+        jVehiclesPanel.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("tab4", jVehiclesPanel);
 
         jCustomerPanel.setBackground(new java.awt.Color(153, 153, 0));
-
-        javax.swing.GroupLayout jCustomerPanelLayout = new javax.swing.GroupLayout(jCustomerPanel);
-        jCustomerPanel.setLayout(jCustomerPanelLayout);
-        jCustomerPanelLayout.setHorizontalGroup(
-            jCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1102, Short.MAX_VALUE)
-        );
-        jCustomerPanelLayout.setVerticalGroup(
-            jCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
-        );
-
+        jCustomerPanel.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("tab5", jCustomerPanel);
 
         jOurServicesPanel.setBackground(new java.awt.Color(0, 102, 102));
-
-        javax.swing.GroupLayout jOurServicesPanelLayout = new javax.swing.GroupLayout(jOurServicesPanel);
-        jOurServicesPanel.setLayout(jOurServicesPanelLayout);
-        jOurServicesPanelLayout.setHorizontalGroup(
-            jOurServicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1102, Short.MAX_VALUE)
-        );
-        jOurServicesPanelLayout.setVerticalGroup(
-            jOurServicesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
-        );
-
+        jOurServicesPanel.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("tab6", jOurServicesPanel);
 
         jFinancePanel.setBackground(new java.awt.Color(102, 0, 102));
-
-        javax.swing.GroupLayout jFinancePanelLayout = new javax.swing.GroupLayout(jFinancePanel);
-        jFinancePanel.setLayout(jFinancePanelLayout);
-        jFinancePanelLayout.setHorizontalGroup(
-            jFinancePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1102, Short.MAX_VALUE)
-        );
-        jFinancePanelLayout.setVerticalGroup(
-            jFinancePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
-        );
-
+        jFinancePanel.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("tab7", jFinancePanel);
 
         jReportPanel.setBackground(new java.awt.Color(102, 102, 0));
-
-        javax.swing.GroupLayout jReportPanelLayout = new javax.swing.GroupLayout(jReportPanel);
-        jReportPanel.setLayout(jReportPanelLayout);
-        jReportPanelLayout.setHorizontalGroup(
-            jReportPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1102, Short.MAX_VALUE)
-        );
-        jReportPanelLayout.setVerticalGroup(
-            jReportPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
-        );
-
+        jReportPanel.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("tab8", jReportPanel);
 
         jStaffPanel.setBackground(new java.awt.Color(102, 0, 204));
-
-        javax.swing.GroupLayout jStaffPanelLayout = new javax.swing.GroupLayout(jStaffPanel);
-        jStaffPanel.setLayout(jStaffPanelLayout);
-        jStaffPanelLayout.setHorizontalGroup(
-            jStaffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1102, Short.MAX_VALUE)
-        );
-        jStaffPanelLayout.setVerticalGroup(
-            jStaffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
-        );
-
+        jStaffPanel.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("tab9", jStaffPanel);
 
         jPanel7.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-50, 0, 1150, 610));
@@ -377,6 +307,10 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jStaffButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jStaffButtonActionPerformed
         jTabbedPane1.setSelectedIndex(8);
+        
+        StaffJPanel staffJPanel = new StaffJPanel();
+        jStaffPanel.add(staffJPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jStaffButtonActionPerformed
 
     private void jDashboardButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDashboardButton1ActionPerformed
@@ -398,26 +332,50 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jAppointmentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAppointmentsButtonActionPerformed
         jTabbedPane1.setSelectedIndex(2);
+        
+        AppointmnetPanel appointmnetPanel = new AppointmnetPanel();
+        jAppointmentPanel.add(appointmnetPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jAppointmentsButtonActionPerformed
 
     private void jCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCustomerButtonActionPerformed
         jTabbedPane1.setSelectedIndex(4);
+        
+        CustomerJPanel customerJPanel = new CustomerJPanel();
+        jCustomerPanel.add(customerJPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jCustomerButtonActionPerformed
 
     private void jOurServicesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOurServicesButtonActionPerformed
         jTabbedPane1.setSelectedIndex(5);
+        
+        ourServicesJPanel ourServices = new ourServicesJPanel();
+        jOurServicesPanel.add(ourServices, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jOurServicesButtonActionPerformed
 
     private void jFinanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFinanceButtonActionPerformed
         jTabbedPane1.setSelectedIndex(6);
+        
+        FinanceJPanel financeJPanel = new FinanceJPanel();
+        jFinancePanel.add(financeJPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jFinanceButtonActionPerformed
 
     private void jReportsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jReportsButtonActionPerformed
         jTabbedPane1.setSelectedIndex(7);
+        
+        ReportsJPanel reportsJPanel = new ReportsJPanel();
+        jReportPanel.add(reportsJPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jReportsButtonActionPerformed
 
     private void jVehiclesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehiclesButtonActionPerformed
         jTabbedPane1.setSelectedIndex(3);
+        
+        VehiclesJPanel vehiclesJPanel = new VehiclesJPanel();
+        jVehiclesPanel.add(vehiclesJPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jVehiclesButtonActionPerformed
 
     /**
