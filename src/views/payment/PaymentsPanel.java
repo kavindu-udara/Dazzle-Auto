@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package views.payments;
+package views.payment;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.Color;
@@ -20,12 +20,12 @@ import javax.swing.table.JTableHeader;
  *
  * @author Dinuka
  */
-public class paymentsPanel extends javax.swing.JPanel {
+public class PaymentsPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form paymentsPanel
      */
-    public paymentsPanel() {
+    public PaymentsPanel() {
         initComponents();
         
         jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter INVOICE ID");
