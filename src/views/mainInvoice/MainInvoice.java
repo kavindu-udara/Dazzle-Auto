@@ -123,7 +123,7 @@ public class MainInvoice extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("INVOICE");
         setMinimumSize(new java.awt.Dimension(1300, 703));
 
