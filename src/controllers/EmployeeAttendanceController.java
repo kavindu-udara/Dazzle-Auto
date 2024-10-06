@@ -14,18 +14,19 @@ import includes.MySqlConnection;
  */
 public class EmployeeAttendanceController {
 
-    private final String tableName = "customer";
+    private final String tableName = "emp_attendance";
 
     public ResultSet show() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
 
     public ResultSet show(int id) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `idaddress`='" + id + "'");
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
     public ResultSet store(EmployeeAttendance employeeAttendanceModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`employee_emp_id`, `date`, `on_time`, `off_time`) VALUES "
-                + "('" + employeeAttendanceModel.getEmployeeId() + "', '" + employeeAttendanceModel.getDate() + "', '" + employeeAttendanceModel.getOnTime() + "', '" + employeeAttendanceModel.getOffTime() + "') ");
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`employee_id`, `date`, `on_time`, `off_time`) VALUES "
+                + "('" + employeeAttendanceModel.getEmployeeId() + "', '" + employeeAttendanceModel.getDate() + "', "
+                + "'" + employeeAttendanceModel.getOnTime() + "', '" + employeeAttendanceModel.getOffTime() + "') ");
     }
 }

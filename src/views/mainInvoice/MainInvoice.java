@@ -30,11 +30,11 @@ public class MainInvoice extends javax.swing.JFrame {
      */
     public MainInvoice() {
         initComponents();
-
+        
         invoiceTableRender();
         jInvoiceIDTextField.setText("INV-" + generateInvoiceId());
     }
-
+    
     public String generateInvoiceId() {
         // Get the current time in milliseconds
         long currentTimeMillis = System.currentTimeMillis();
@@ -44,17 +44,17 @@ public class MainInvoice extends javax.swing.JFrame {
         if (code.length() > 8) {
             code = code.substring(code.length() - 8); // Take the last 8 digits
         }
-
+        
         return code;
     }
-
+    
     public void invoiceTableRender() {
-
+        
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
+        
         JTableHeader tableHeader = jTable1.getTableHeader();
-
+        
         tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -69,22 +69,22 @@ public class MainInvoice extends javax.swing.JFrame {
                 return label;
             }
         });
-
+        
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
-
+        
         for (int i = 0; i < 4; i++) {
             jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-
+    
     private void calculate() {
-
+        
     }
-
+    
     private void reset() {
         jInvoiceIDTextField.setText("INV-" + generateInvoiceId());
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -551,9 +551,9 @@ public class MainInvoice extends javax.swing.JFrame {
                 reset();
             } catch (Exception e) {
                 e.printStackTrace();
-
+                
             }
-
+            
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

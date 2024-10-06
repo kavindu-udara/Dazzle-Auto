@@ -25,7 +25,7 @@ public class ServiceInvoiceItemsController {
     }
 
     public ResultSet store(ServiceInvoiceItemsModel serviceInvoiceItemsModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`services_id`, `description`) VALUES "
-                + "('" + serviceInvoiceItemsModel.getServiceId() + "', '" + serviceInvoiceItemsModel.getDescription() + "') ");
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`service_invoice_id`, `services_id`, `description`) VALUES "
+                + "('" + serviceInvoiceItemsModel.getServiceInvoiceId() + "', '" + serviceInvoiceItemsModel.getServiceId() + "', '" + serviceInvoiceItemsModel.getDescription() + "') ");
     }
 }

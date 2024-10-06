@@ -14,14 +14,14 @@ import includes.MySqlConnection;
  */
 public class VehicleController {
 
-    private final String tableName = "status";
+    private final String tableName = "vehicle";
 
     public ResultSet show() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
 
-    public ResultSet show(int id) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `vehicle_number`='" + id + "'");
+    public ResultSet show(String number) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `vehicle_number`='" + number + "'");
     }
 
     public ResultSet store(VehicleModel vehicleModel) throws Exception {

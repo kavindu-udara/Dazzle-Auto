@@ -21,11 +21,11 @@ public class AddressController {
     }
 
     public ResultSet show(int id) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `idaddress`='" + id + "'");
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
     public ResultSet store(AddressModel addressModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`employee_emp_id`, `supplier_sup_id`, `lane1`, `lane2`, `city`, `Postalcode`) VALUES "
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`employee_id`, `supplier_id`, `lane1`, `lane2`, `city`, `postalcode`) VALUES "
                 + "('" + addressModel.getEmployeeId() + "', '" + addressModel.getSupplierId() + "', '" + addressModel.getLane1() + "', '" + addressModel.getLane2() + "', "
                 + "'" + addressModel.getCity() + "', '" + addressModel.getPostalCode() + "') ");
     }

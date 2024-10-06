@@ -25,7 +25,8 @@ public class LoginController {
     }
 
     public ResultSet store(LoginModel loginModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`password`, `access_role_id`) VALUES ('" + loginModel.getPassword() + "', '" + loginModel.getAccessRoleId() + "') ");
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`password`, `access_role_id`) VALUES "
+                + "('" + loginModel.getPassword() + "', '" + loginModel.getAccessRoleId() + "') ");
     }
 
 }
