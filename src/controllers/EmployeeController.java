@@ -2,7 +2,7 @@ package controllers;
 
 import java.sql.ResultSet;
 import models.EmployeeModel;
-import services.MySqlConnection;
+import includes.MySqlConnection;
 
 public class EmployeeController {
 

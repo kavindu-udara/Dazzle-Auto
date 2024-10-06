@@ -6,7 +6,7 @@ package controllers;
 
 import java.sql.ResultSet;
 import models.SupplierModel;
-import services.MySqlConnection;
+import includes.MySqlConnection;
 
 /**
  *
