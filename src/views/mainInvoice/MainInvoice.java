@@ -5,6 +5,7 @@
 package views.mainInvoice;
 
 import com.formdev.flatlaf.IntelliJTheme;
+import includes.RegexValidator;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -16,7 +17,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
-import services.RegexValidator;
+
 
 /**
  *
