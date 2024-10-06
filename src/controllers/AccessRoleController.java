@@ -25,7 +25,7 @@ public class AccessRoleController {
     }
 
     public ResultSet store(AccessRoleModel accessRoleModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`type_name`) VALUES "
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`role`) VALUES "
                 + "('" + accessRoleModel.getRole() + "') ");
     }
 }

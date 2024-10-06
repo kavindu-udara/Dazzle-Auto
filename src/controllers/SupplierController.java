@@ -14,7 +14,7 @@ import includes.MySqlConnection;
  */
 public class SupplierController {
 
-    private final String tableName = "status";
+    private final String tableName = "supplier";
 
     public ResultSet show() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
@@ -26,7 +26,8 @@ public class SupplierController {
 
     public ResultSet store(SupplierModel supplierModel) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`first_name`, `last_name`, `email`, `mobile`, `status_id`) VALUES "
-                + "('" + supplierModel.getFirstName() + "', '" + supplierModel.getLastName() + "', '" + supplierModel.getEmail() + "', '" + supplierModel.getMobile() + "', '" + supplierModel.getStatusId() + "') ");
+                + "('" + supplierModel.getFirstName() + "', '" + supplierModel.getLastName() + "', '" + supplierModel.getEmail() + "', "
+                + "'" + supplierModel.getMobile() + "', '" + supplierModel.getStatusId() + "') ");
     }
 
 }
