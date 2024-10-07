@@ -63,13 +63,15 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="vehicle_search_bar" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                      <Component id="vehicle_search_btn" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
-                      <Component id="vehicle_register_new_employee_btn" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
-                      <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jComboBox1" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="vehicle_search_bar" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                          <Component id="vehicle_search_btn" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+                          <Component id="vehicle_register_new_employee_btn" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
