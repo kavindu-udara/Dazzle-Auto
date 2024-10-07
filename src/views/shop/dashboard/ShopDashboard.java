@@ -20,9 +20,10 @@ import views.shop.stock.Shop_StockJPanel;
  */
 public class ShopDashboard extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ShopDashboard
-     */
+    private Color btnDefaultColor = new Color(246, 249, 255);
+    private Color btnHoverColor = new Color(255, 248, 237);
+    private Color btnSelectedColor = new Color(250, 238, 220);
+
     public ShopDashboard() {
         initComponents();
 
@@ -405,7 +406,7 @@ public class ShopDashboard extends javax.swing.JFrame {
 
     private void jDashboardbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDashboardbtnMouseClicked
         jTabbedPane1.setSelectedIndex(0);
-        
+
         jDashboardbtn.setBackground(new Color(250, 238, 220));
         jPaymentsbtn.setBackground(new Color(246, 249, 255));
         jItemsbtn.setBackground(new Color(246, 249, 255));
@@ -419,7 +420,7 @@ public class ShopDashboard extends javax.swing.JFrame {
 
     private void jPaymentsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPaymentsbtnMouseClicked
         jTabbedPane1.setSelectedIndex(1);
-        
+
         jDashboardbtn.setBackground(new Color(246, 249, 255));
         jPaymentsbtn.setBackground(new Color(250, 238, 220));
         jItemsbtn.setBackground(new Color(246, 249, 255));
@@ -433,7 +434,7 @@ public class ShopDashboard extends javax.swing.JFrame {
 
     private void jItemsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jItemsbtnMouseClicked
         jTabbedPane1.setSelectedIndex(2);
-        
+
         jDashboardbtn.setBackground(new Color(246, 249, 255));
         jPaymentsbtn.setBackground(new Color(246, 249, 255));
         jItemsbtn.setBackground(new Color(250, 238, 220));
@@ -473,44 +474,87 @@ public class ShopDashboard extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jGRNbtnMouseClicked
 
+    //Set Button Hover Color 
     private void jDashboardbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDashboardbtnMouseEntered
-
+        if (jDashboardbtn.getBackground().equals(btnSelectedColor)) {
+            jDashboardbtn.setBackground(btnSelectedColor);
+        } else {
+            jDashboardbtn.setBackground(btnHoverColor);
+        }
     }//GEN-LAST:event_jDashboardbtnMouseEntered
 
     private void jPaymentsbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPaymentsbtnMouseEntered
-
+        if (jPaymentsbtn.getBackground().equals(btnSelectedColor)) {
+            jPaymentsbtn.setBackground(btnSelectedColor);
+        } else {
+            jPaymentsbtn.setBackground(btnHoverColor);
+        }
     }//GEN-LAST:event_jPaymentsbtnMouseEntered
 
     private void jItemsbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jItemsbtnMouseEntered
-
+        if (jItemsbtn.getBackground().equals(btnSelectedColor)) {
+            jItemsbtn.setBackground(btnSelectedColor);
+        } else {
+            jItemsbtn.setBackground(btnHoverColor);
+        }
     }//GEN-LAST:event_jItemsbtnMouseEntered
 
     private void jStockbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jStockbtnMouseEntered
-
+        if (jStockbtn.getBackground().equals(btnSelectedColor)) {
+            jStockbtn.setBackground(btnSelectedColor);
+        } else {
+            jStockbtn.setBackground(btnHoverColor);
+        }
     }//GEN-LAST:event_jStockbtnMouseEntered
 
     private void jGRNbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGRNbtnMouseEntered
-
+        if (jGRNbtn.getBackground().equals(btnSelectedColor)) {
+            jGRNbtn.setBackground(btnSelectedColor);
+        } else {
+            jGRNbtn.setBackground(btnHoverColor);
+        }
     }//GEN-LAST:event_jGRNbtnMouseEntered
 
+    //Set Button Default Color 
     private void jDashboardbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDashboardbtnMouseExited
+        if (jDashboardbtn.getBackground().equals(btnHoverColor)) {
+            jDashboardbtn.setBackground(btnDefaultColor);
+        } else {
+            jDashboardbtn.setBackground(btnSelectedColor);
+        }
 
     }//GEN-LAST:event_jDashboardbtnMouseExited
 
     private void jPaymentsbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPaymentsbtnMouseExited
-
+        if (jPaymentsbtn.getBackground().equals(btnHoverColor)) {
+            jPaymentsbtn.setBackground(btnDefaultColor);
+        } else {
+            jPaymentsbtn.setBackground(btnSelectedColor);
+        }
     }//GEN-LAST:event_jPaymentsbtnMouseExited
 
     private void jItemsbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jItemsbtnMouseExited
-
+        if (jItemsbtn.getBackground().equals(btnHoverColor)) {
+            jItemsbtn.setBackground(btnDefaultColor);
+        } else {
+            jItemsbtn.setBackground(btnSelectedColor);
+        }
     }//GEN-LAST:event_jItemsbtnMouseExited
 
     private void jStockbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jStockbtnMouseExited
-
+        if (jStockbtn.getBackground().equals(btnHoverColor)) {
+            jStockbtn.setBackground(btnDefaultColor);
+        } else {
+            jStockbtn.setBackground(btnSelectedColor);
+        }
     }//GEN-LAST:event_jStockbtnMouseExited
 
     private void jGRNbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGRNbtnMouseExited
-
+        if (jGRNbtn.getBackground().equals(btnHoverColor)) {
+            jGRNbtn.setBackground(btnDefaultColor);
+        } else {
+            jGRNbtn.setBackground(btnSelectedColor);
+        }
     }//GEN-LAST:event_jGRNbtnMouseExited
 
     /**
