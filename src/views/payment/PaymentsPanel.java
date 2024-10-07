@@ -29,7 +29,7 @@ public class PaymentsPanel extends javax.swing.JPanel {
     public PaymentsPanel() {
         initComponents();
         
-        jTextField2.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter INVOICE ID");
+        jInvoiceSearchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter INVOICE ID");
         
         PaidInvoiceTableRender();
     }
@@ -58,7 +58,7 @@ public class PaymentsPanel extends javax.swing.JPanel {
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 8; i++) {
             jPaidInvoiceTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
@@ -76,7 +76,7 @@ public class PaymentsPanel extends javax.swing.JPanel {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jInvoiceSearchField = new javax.swing.JTextField();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
         setPreferredSize(new java.awt.Dimension(1100, 610));
@@ -105,10 +105,7 @@ public class PaymentsPanel extends javax.swing.JPanel {
 
         jPaidInvoiceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "INVOICE ID", "Vehicle No.", "Date", "Total", "Paid Amount", "Balance", "Payment Method", "Issued By"
@@ -134,7 +131,7 @@ public class PaymentsPanel extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel5.setText("Search INVOICE :");
 
-        jTextField2.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        jInvoiceSearchField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -153,7 +150,7 @@ public class PaymentsPanel extends javax.swing.JPanel {
                                 .addGap(583, 583, 583)
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jInvoiceSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(20, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -173,7 +170,7 @@ public class PaymentsPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jInvoiceSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
@@ -201,6 +198,7 @@ public class PaymentsPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton invoiceAddButton;
+    private javax.swing.JTextField jInvoiceSearchField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -209,6 +207,5 @@ public class PaymentsPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
