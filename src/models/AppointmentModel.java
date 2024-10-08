@@ -15,6 +15,7 @@ public class AppointmentModel {
     private String vehicleNumber;
     private String date;
     private String note;
+    private int appointmentStatusId;
 
     /**
      * @return the id
@@ -84,6 +85,20 @@ public class AppointmentModel {
      */
     public void setNote(String note) {
         this.note = note;
+    }
+
+    /**
+     * @return the appointmentStatusId
+     */
+    public int getAppointmentStatusId() {
+        return appointmentStatusId;
+    }
+
+    /**
+     * @param appointmentStatusId the appointmentStatusId to set
+     */
+    public void setAppointmentStatusId(int appointmentStatusId) {
+        this.appointmentStatusId = appointmentStatusId;
     }
 
 }

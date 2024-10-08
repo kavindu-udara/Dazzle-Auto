@@ -25,7 +25,28 @@ public class ServicesController {
     }
 
     public ResultSet store(ServicesModel servicesModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`service_name`, `vehicle_type_id`, `charge`) VALUES "
-                + "('" + servicesModel.getServiceName() + "', '" + servicesModel.getVehicleTypeId() + "', '" + servicesModel.getCharge() + "') ");
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`name`, `vehicle_type_id`, `charge`) VALUES "
+                + "('" + servicesModel.getName() + "', "
+                + "'" + servicesModel.getVehicleTypeId() + "', "
+                + "'" + servicesModel.getCharge() + "') ");
+    }
+
+    public ResultSet update(ServicesModel servicesModel) throws Exception {
+        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
+                + "`name`='" + servicesModel.getName() + "', "
+                + "`vehicle_type_id`='" + servicesModel.getVehicleTypeId() + "', "
+                + "`charge`='" + servicesModel.getCharge() + "', "
+                + "WHERE `id`='" + servicesModel.getId() + "' ");
+    }
+
+    public ResultSet search(String searchText) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
+                + "`name` LIKE '%" + searchText + "%' OR "
+                + "`vehicle_type_id` LIKE '%" + searchText + "%' OR "
+                + "`charge` LIKE '%" + searchText + "%' OR ");
+    }
+
+    public ResultSet delete(int id) throws Exception {
+        return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
 }

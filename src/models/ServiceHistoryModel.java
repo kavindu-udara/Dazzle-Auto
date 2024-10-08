@@ -8,10 +8,9 @@ package models;
  *
  * @author kavindu
  */
-public class VehicleTypeModel {
-
+public class ServiceHistoryModel {
     private int id;
-    private String name;
+    private String serviceInvoiceId;
 
     /**
      * @return the id
@@ -28,17 +27,17 @@ public class VehicleTypeModel {
     }
 
     /**
-     * @return the name
+     * @return the serviceInvoiceId
      */
-    public String getName() {
-        return name;
+    public String getServiceInvoiceId() {
+        return serviceInvoiceId;
     }
 
     /**
-     * @param name the name to set
+     * @param serviceInvoiceId the serviceInvoiceId to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setServiceInvoiceId(String serviceInvoiceId) {
+        this.serviceInvoiceId = serviceInvoiceId;
     }
-
+    
 }

@@ -25,11 +25,42 @@ public class ServiceInvoiceController {
     }
 
     public ResultSet store(ServiceInvoiceModel serviceInvoiceModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`customer_id`, `vehicle_number`, `date`, `total`, "
-                + "`paid_amount`, `balance`, `payment_method_id`, `employee_id`) VALUES ('" + serviceInvoiceModel.getCustomerId() + "', "
-                + "'" + serviceInvoiceModel.getVehicleNumber() + "', '" + serviceInvoiceModel.getDate() + "', '" + serviceInvoiceModel.getTotal() + "', "
-                + "'" + serviceInvoiceModel.getPaidAmount() + "', '" + serviceInvoiceModel.getBalance() + "', '" + serviceInvoiceModel.getPaymentMethodId() + "', "
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`vehicle_number`, `date`, `total`, "
+                + "`paid_amount`, `balance`, `payment_method_id`, `employee_id`) VALUES ("
+                + "'" + serviceInvoiceModel.getVehicleNumber() + "', "
+                + "'" + serviceInvoiceModel.getDate() + "', "
+                + "'" + serviceInvoiceModel.getTotal() + "', "
+                + "'" + serviceInvoiceModel.getPaidAmount() + "', "
+                + "'" + serviceInvoiceModel.getBalance() + "', "
+                + "'" + serviceInvoiceModel.getPaymentMethodId() + "', "
                 + "'" + serviceInvoiceModel.getEmployeeId() + "') ");
+    }
+
+    public ResultSet update(ServiceInvoiceModel serviceInvoiceModel) throws Exception {
+        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
+                + "`vehicle_number`='" + serviceInvoiceModel.getVehicleNumber() + "', "
+                + "`date`='" + serviceInvoiceModel.getDate() + "', "
+                + "`total`='" + serviceInvoiceModel.getTotal() + "', "
+                + "`paid_amount`='" + serviceInvoiceModel.getPaidAmount() + "', "
+                + "`balance`='" + serviceInvoiceModel.getBalance() + "', "
+                + "`payment_method_id`='" + serviceInvoiceModel.getPaymentMethodId() + "', "
+                + "`employee_id`='" + serviceInvoiceModel.getEmployeeId() + "', "
+                + "WHERE `id`='" + serviceInvoiceModel.getId() + "' ");
+    }
+
+    public ResultSet search(String searchText) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
+                + "`vehicle_number` LIKE '%" + searchText + "%' OR "
+                + "`date` LIKE '%" + searchText + "%' OR "
+                + "`total` LIKE '%" + searchText + "%' OR "
+                + "`paid_amount` LIKE '%" + searchText + "%' OR "
+                + "`balance` LIKE '%" + searchText + "%' OR "
+                + "`payment_method_id` LIKE '%" + searchText + "%' OR "
+                + "`employee_id` LIKE '%" + searchText + "%' OR ");
+    }
+
+    public ResultSet delete(int id) throws Exception {
+        return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
 
 }

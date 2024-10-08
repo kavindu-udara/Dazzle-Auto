@@ -28,4 +28,17 @@ public class AccessRoleController {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`role`) VALUES "
                 + "('" + accessRoleModel.getRole() + "') ");
     }
+
+    public ResultSet update(AccessRoleModel accessRoleModel) throws Exception {
+        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET `role`='" + accessRoleModel.getRole() + "' WHERE `id`='" + accessRoleModel.getId() + "' ");
+    }
+
+    public ResultSet search(String searchText) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `role` LIKE '%" + searchText + "%'");
+    }
+
+    public ResultSet delete(int id) throws Exception {
+        return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
+    }
+
 }

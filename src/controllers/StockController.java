@@ -4,17 +4,17 @@
  */
 package controllers;
 
-import java.sql.ResultSet;
-import models.PaymentMethodModel;
 import includes.MySqlConnection;
+import java.sql.ResultSet;
+import models.StockModel;
 
 /**
  *
  * @author kavindu
  */
-public class PaymentMethodController {
+public class StockController {
 
-    private final String tableName = "payment_method";
+    private final String tableName = "stock";
 
     public ResultSet show() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
@@ -24,19 +24,26 @@ public class PaymentMethodController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
-    public ResultSet store(PaymentMethodModel paymentMethodModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`method`) VALUES ('" + paymentMethodModel.getMethod() + "') ");
+    public ResultSet store(StockModel stockModel) throws Exception {
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`price`, `qty`, `product_id`) VALUES "
+                + "('" + stockModel.getPrice() + "', "
+                + "'" + stockModel.getQty() + "', "
+                + "'" + stockModel.getProductId() + "') ");
     }
 
-    public ResultSet update(PaymentMethodModel paymentMethodModel) throws Exception {
+    public ResultSet update(StockModel stockModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
-                + "`method`='" + paymentMethodModel.getMethod() + "', "
-                + "WHERE `id`='" + paymentMethodModel.getId() + "' ");
+                + "`price`='" + stockModel.getPrice() + "', "
+                + "`qty`='" + stockModel.getQty() + "', "
+                + "`product_id`='" + stockModel.getProductId() + "', "
+                + "WHERE `id`='" + stockModel.getId() + "' ");
     }
 
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
-                + "`method` LIKE '%" + searchText + "%' ");
+                + "`price` LIKE '%" + searchText + "%' OR "
+                + "`qty` LIKE '%" + searchText + "%' OR "
+                + "`product_id` LIKE '%" + searchText + "%'");
     }
 
     public ResultSet delete(int id) throws Exception {

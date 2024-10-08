@@ -25,8 +25,23 @@ public class VehicleTypeController {
     }
 
     public ResultSet store(VehicleTypeModel vehicleTypeModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`type_name`) VALUES "
-                + "('" + vehicleTypeModel.getTypeName() + "') ");
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`name`) VALUES "
+                + "('" + vehicleTypeModel.getName() + "') ");
+    }
+
+    public ResultSet update(VehicleTypeModel vehicleTypeModel) throws Exception {
+        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
+                + "`name`='" + vehicleTypeModel.getName() + "', "
+                + "WHERE `id`='" + vehicleTypeModel.getId() + "' ");
+    }
+
+    public ResultSet search(String searchText) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
+                + "`name` LIKE '%" + searchText + "%'");
+    }
+
+    public ResultSet delete(int id) throws Exception {
+        return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
 
 }

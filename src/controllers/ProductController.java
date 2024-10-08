@@ -4,17 +4,17 @@
  */
 package controllers;
 
-import java.sql.ResultSet;
-import models.PaymentMethodModel;
 import includes.MySqlConnection;
+import java.sql.ResultSet;
+import models.ProductModel;
 
 /**
  *
  * @author kavindu
  */
-public class PaymentMethodController {
+public class ProductController {
 
-    private final String tableName = "payment_method";
+    private final String tableName = "product";
 
     public ResultSet show() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
@@ -24,19 +24,22 @@ public class PaymentMethodController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
-    public ResultSet store(PaymentMethodModel paymentMethodModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`method`) VALUES ('" + paymentMethodModel.getMethod() + "') ");
+    public ResultSet store(ProductModel productModel) throws Exception {
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`name`, `brand_id`) VALUES ("
+                + "'" + productModel.getName() + "', "
+                + "'" + productModel.getBrandId() + "') ");
     }
 
-    public ResultSet update(PaymentMethodModel paymentMethodModel) throws Exception {
+    public ResultSet update(ProductModel productModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
-                + "`method`='" + paymentMethodModel.getMethod() + "', "
-                + "WHERE `id`='" + paymentMethodModel.getId() + "' ");
+                + "`name`='" + productModel.getName() + "', "
+                + "`brand_id`='" + productModel.getBrandId() + "', "
+                + "WHERE `id`='" + productModel.getId() + "' ");
     }
 
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
-                + "`method` LIKE '%" + searchText + "%' ");
+                + "`name` LIKE '%" + searchText + "%' OR `brand_id` LIKE '%" + searchText + "%' ");
     }
 
     public ResultSet delete(int id) throws Exception {
