@@ -4,6 +4,8 @@
  */
 package views.employee;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author USER
@@ -72,11 +74,21 @@ public class EmployeeRegistration extends java.awt.Dialog {
         employee_register_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         employee_register_btn.setForeground(new java.awt.Color(255, 255, 255));
         employee_register_btn.setText("REGISTER");
+        employee_register_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                employee_register_btnActionPerformed(evt);
+            }
+        });
 
         employee_reset_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         employee_reset_btn.setForeground(new java.awt.Color(255, 0, 0));
         employee_reset_btn.setText("RESET");
         employee_reset_btn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        employee_reset_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                employee_reset_btnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -170,6 +182,48 @@ public class EmployeeRegistration extends java.awt.Dialog {
         dispose();
     }//GEN-LAST:event_closeDialog
 
+    private void employee_register_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_register_btnActionPerformed
+
+        try {
+
+            String firstName = employee_firstname.getText();
+            String lastName = employee_lastname.getText();
+            String nic = employee_nic.getText();
+            String mobile = employee_mobile.getText();
+            String email = employee_email.getText();
+
+            if (firstName.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (lastName.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter your last name", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (email.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter your email", "Warning", JOptionPane.WARNING_MESSAGE);
+
+            } else if (!email.matches("^(?=.{1,64}@)[A-Za-z0-9\\+_-]+(\\.[A-Za-z0-9\\+_-]+)*@[^-][A-Za-z0-9\\+-]+"
+                    + "(\\.[A-Za-z0-9\\+-]+)*(\\.[A-Za-z]{2,})$")) {
+
+                JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
+
+            } else if (mobile.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (!mobile.matches("^07[01245678]{1}[0-9]{7}$")) {
+                JOptionPane.showMessageDialog(this, "Please enter valid mobile", "Warning", JOptionPane.WARNING_MESSAGE);
+
+            } else if (nic.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter your nic", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_employee_register_btnActionPerformed
+
+    private void employee_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_reset_btnActionPerformed
+
+        reset();
+
+    }//GEN-LAST:event_employee_reset_btnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -187,6 +241,15 @@ public class EmployeeRegistration extends java.awt.Dialog {
         });
     }
 
+    private void reset() {
+
+        employee_firstname.setText("");
+        employee_lastname.setText("");
+        employee_mobile.setText("");
+        employee_nic.setText("");
+        employee_email.setText("");
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField employee_email;

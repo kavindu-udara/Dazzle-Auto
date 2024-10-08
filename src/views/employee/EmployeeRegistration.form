@@ -201,6 +201,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="REGISTER"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="employee_register_btnActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="employee_reset_btn">
           <Properties>
@@ -219,6 +222,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="employee_reset_btnActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
