@@ -5,10 +5,15 @@
 package views.employee;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
+import includes.OnlyNumbersDocumentFilter;
+import includes.RegexValidator;
 
 /**
  *
- * @author USER
+ * @author USER nimsara
  */
 public class EmployeeUpdate extends java.awt.Dialog {
 
@@ -18,6 +23,13 @@ public class EmployeeUpdate extends java.awt.Dialog {
     public EmployeeUpdate(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setDocumentFilters();
+
+    }
+
+    private void setDocumentFilters() {
+        ((AbstractDocument) employee_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+
     }
 
     /**
@@ -70,36 +82,56 @@ public class EmployeeUpdate extends java.awt.Dialog {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setText("Mobile");
 
+        employee_mobile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                employee_mobileActionPerformed(evt);
+            }
+        });
+
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Nic");
 
         employee_update_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         employee_update_btn.setText("UPDATE");
+        employee_update_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                employee_update_btnActionPerformed(evt);
+            }
+        });
 
         employee_reset_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         employee_reset_btn.setText("RESET");
+        employee_reset_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                employee_reset_btnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel1)
-                .addContainerGap(321, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(76, 76, 76)
+                        .addComponent(employee_mobile, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGap(27, 27, 27)
+                            .addComponent(jLabel1))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGap(83, 83, 83)
+                            .addComponent(jLabel6)
+                            .addGap(96, 96, 96)
+                            .addComponent(employee_nic, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(84, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(83, 83, 83)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(96, 96, 96)
-                                .addComponent(employee_nic, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(76, 76, 76)
-                                .addComponent(employee_mobile, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addGap(85, 85, 85)
@@ -126,7 +158,15 @@ public class EmployeeUpdate extends java.awt.Dialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addContainerGap(621, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 386, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(employee_nic, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(employee_mobile, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(151, 151, 151))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(65, 65, 65)
@@ -143,15 +183,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(employee_email, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5))
-                    .addGap(25, 25, 25)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(employee_mobile, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel7))
-                    .addGap(25, 25, 25)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(employee_nic, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel6))
-                    .addGap(45, 45, 45)
+                    .addGap(163, 163, 163)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(employee_update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(employee_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -203,6 +235,50 @@ public class EmployeeUpdate extends java.awt.Dialog {
         dispose();
     }//GEN-LAST:event_closeDialog
 
+    private void employee_mobileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_mobileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_employee_mobileActionPerformed
+
+    private void employee_update_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_update_btnActionPerformed
+
+        String firstName = employee_firstname.getText();
+        String lastName = employee_lastname.getText();
+        String nic = employee_nic.getText();
+        String email = employee_email.getText();
+        String mobile = employee_mobile.getText();
+
+        if (firstName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (lastName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your last name", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (email.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your email", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        } else if (!RegexValidator.isValidEmail(email)) {
+
+            JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        } else if (nic.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your nic", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        } else if (!RegexValidator.isValidSlNewNic(nic)) {
+            JOptionPane.showMessageDialog(this, "Invalid NIC Number", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        } else if (mobile.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (!RegexValidator.isValidSlPhone(mobile)) {
+            JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        }
+
+    }//GEN-LAST:event_employee_update_btnActionPerformed
+
+    private void employee_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_reset_btnActionPerformed
+
+        reset();
+
+    }//GEN-LAST:event_employee_reset_btnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -221,6 +297,15 @@ public class EmployeeUpdate extends java.awt.Dialog {
         });
     }
 
+    private void reset() {
+
+        employee_firstname.setText("");
+        employee_lastname.setText("");
+        employee_mobile.setText("");
+        employee_nic.setText("");
+        employee_email.setText("");
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField employee_email;

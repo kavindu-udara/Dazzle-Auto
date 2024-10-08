@@ -69,25 +69,32 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="321" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
+                                  <Component id="employee_mobile" min="-2" pref="196" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
+                                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
+                                      <Component id="employee_nic" min="-2" pref="196" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <EmptySpace pref="84" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="96" max="-2" attributes="0"/>
-                                          <Component id="employee_nic" min="-2" pref="196" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
-                                          <Component id="employee_mobile" min="-2" pref="196" max="-2" attributes="0"/>
-                                      </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
@@ -124,7 +131,17 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="621" max="32767" attributes="0"/>
+                          <EmptySpace pref="386" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="employee_nic" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="employee_mobile" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="151" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
@@ -145,17 +162,7 @@
                                   <Component id="employee_email" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="employee_mobile" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
-                                  <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="employee_nic" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
-                                  <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="163" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="employee_update_btn" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                                   <Component id="employee_reset_btn" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
@@ -224,6 +231,9 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="employee_mobile">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="employee_mobileActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel6">
                   <Properties>
@@ -242,6 +252,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="UPDATE"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="employee_update_btnActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="employee_reset_btn">
                   <Properties>
@@ -250,6 +263,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="RESET"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="employee_reset_btnActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
