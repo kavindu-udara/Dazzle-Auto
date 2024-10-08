@@ -4,17 +4,17 @@
  */
 package controllers;
 
-import java.sql.ResultSet;
-import models.PaymentMethodModel;
 import includes.MySqlConnection;
+import java.sql.ResultSet;
+import models.AppointmentStatusModel;
 
 /**
  *
  * @author kavindu
  */
-public class PaymentMethodController {
+public class AppointmentStatusController {
 
-    private final String tableName = "payment_method";
+    private final String tableName = "appointment_status";
 
     public ResultSet show() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
@@ -24,23 +24,23 @@ public class PaymentMethodController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
-    public ResultSet store(PaymentMethodModel paymentMethodModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`method`) VALUES ('" + paymentMethodModel.getMethod() + "') ");
+    public ResultSet store(AppointmentStatusModel appointmentStatusModel) throws Exception {
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`status`) VALUES "
+                + "('" + appointmentStatusModel.getStatus() + "') ");
     }
 
-    public ResultSet update(PaymentMethodModel paymentMethodModel) throws Exception {
+    public ResultSet update(AppointmentStatusModel appointmentStatusModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
-                + "`method`='" + paymentMethodModel.getMethod() + "', "
-                + "WHERE `id`='" + paymentMethodModel.getId() + "' ");
+                + "`status`='" + appointmentStatusModel.getStatus() + "', "
+                + "WHERE `id`='" + appointmentStatusModel.getId() + "' ");
     }
 
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
-                + "`method` LIKE '%" + searchText + "%' ");
+                + "`status` LIKE '%" + searchText + "%' ");
     }
 
     public ResultSet delete(int id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
-
 }

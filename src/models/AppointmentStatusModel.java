@@ -8,10 +8,10 @@ package models;
  *
  * @author kavindu
  */
-public class VehicleTypeModel {
+public class AppointmentStatusModel {
 
     private int id;
-    private String name;
+    private String status;
 
     /**
      * @return the id
@@ -28,17 +28,17 @@ public class VehicleTypeModel {
     }
 
     /**
-     * @return the name
+     * @return the status
      */
-    public String getName() {
-        return name;
+    public String getStatus() {
+        return status;
     }
 
     /**
-     * @param name the name to set
+     * @param status the status to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }

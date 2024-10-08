@@ -29,4 +29,18 @@ public class StatusController {
                 + "('" + statusModel.getStatus() + "') ");
     }
 
+    public ResultSet update(StatusModel statusModel) throws Exception {
+        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
+                + "`status`='" + statusModel.getStatus() + "', "
+                + "WHERE `id`='" + statusModel.getId() + "' ");
+    }
+
+    public ResultSet search(String searchText) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
+                + "`status` LIKE '%" + searchText + "%' ");
+    }
+
+    public ResultSet delete(int id) throws Exception {
+        return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
+    }
 }

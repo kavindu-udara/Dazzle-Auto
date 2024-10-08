@@ -3,7 +3,6 @@ package models;
 public class EmployeeModel {
 
     private int id;
-    private int loginId;
     private int statusId;
     private String nic;
     private String firstName;
@@ -24,20 +23,6 @@ public class EmployeeModel {
      */
     public void setId(int id) {
         this.id = id;
-    }
-
-    /**
-     * @return the loginId
-     */
-    public int getLoginId() {
-        return loginId;
-    }
-
-    /**
-     * @param loginId the loginId to set
-     */
-    public void setLoginId(int loginId) {
-        this.loginId = loginId;
     }
 
     /**

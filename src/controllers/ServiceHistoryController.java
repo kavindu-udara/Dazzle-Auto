@@ -4,17 +4,17 @@
  */
 package controllers;
 
-import java.sql.ResultSet;
-import models.PaymentMethodModel;
 import includes.MySqlConnection;
+import java.sql.ResultSet;
+import models.ServiceHistoryModel;
 
 /**
  *
  * @author kavindu
  */
-public class PaymentMethodController {
+public class ServiceHistoryController {
 
-    private final String tableName = "payment_method";
+    private final String tableName = "service_history";
 
     public ResultSet show() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
@@ -24,23 +24,22 @@ public class PaymentMethodController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
-    public ResultSet store(PaymentMethodModel paymentMethodModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`method`) VALUES ('" + paymentMethodModel.getMethod() + "') ");
+    public ResultSet store(ServiceHistoryModel serviceHistoryModel) throws Exception {
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`service_invoice_id`) VALUES ('" + serviceHistoryModel.getServiceInvoiceId() + "') ");
     }
 
-    public ResultSet update(PaymentMethodModel paymentMethodModel) throws Exception {
+    public ResultSet update(ServiceHistoryModel serviceHistoryModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
-                + "`method`='" + paymentMethodModel.getMethod() + "', "
-                + "WHERE `id`='" + paymentMethodModel.getId() + "' ");
+                + "`service_invoice_id`='" + serviceHistoryModel.getServiceInvoiceId() + "', "
+                + "WHERE `id`='" + serviceHistoryModel.getId() + "' ");
     }
 
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
-                + "`method` LIKE '%" + searchText + "%' ");
+                + "`service_invoice_id` LIKE '%" + searchText + "%' ");
     }
 
     public ResultSet delete(int id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
-
 }

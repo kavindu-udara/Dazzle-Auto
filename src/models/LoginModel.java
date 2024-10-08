@@ -12,6 +12,7 @@ public class LoginModel {
 
     private int id;
     private int accessRoleId;
+    private int employeeId;
     private String password;
 
     /**
@@ -54,6 +55,20 @@ public class LoginModel {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the employeeId
+     */
+    public int getEmployeeId() {
+        return employeeId;
+    }
+
+    /**
+     * @param employeeId the employeeId to set
+     */
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
 }

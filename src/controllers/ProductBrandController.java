@@ -4,17 +4,17 @@
  */
 package controllers;
 
-import java.sql.ResultSet;
-import models.PaymentMethodModel;
 import includes.MySqlConnection;
+import java.sql.ResultSet;
+import models.ProductBrandModel;
 
 /**
  *
  * @author kavindu
  */
-public class PaymentMethodController {
+public class ProductBrandController {
 
-    private final String tableName = "payment_method";
+    private final String tableName = "product_brand";
 
     public ResultSet show() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
@@ -24,23 +24,23 @@ public class PaymentMethodController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
-    public ResultSet store(PaymentMethodModel paymentMethodModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`method`) VALUES ('" + paymentMethodModel.getMethod() + "') ");
+    public ResultSet store(ProductBrandModel productBrandModel) throws Exception {
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`name`) VALUES "
+                + "('" + productBrandModel.getName() + "') ");
     }
 
-    public ResultSet update(PaymentMethodModel paymentMethodModel) throws Exception {
+    public ResultSet update(ProductBrandModel productBrandModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
-                + "`method`='" + paymentMethodModel.getMethod() + "', "
-                + "WHERE `id`='" + paymentMethodModel.getId() + "' ");
+                + "`name`='" + productBrandModel.getName() + "', "
+                + "WHERE `id`='" + productBrandModel.getId() + "' ");
     }
 
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
-                + "`method` LIKE '%" + searchText + "%' ");
+                + "`name` LIKE '%" + searchText + "%' ");
     }
 
     public ResultSet delete(int id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
-
 }

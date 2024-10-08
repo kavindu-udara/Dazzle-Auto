@@ -14,6 +14,7 @@ public class CustomerModel {
     private String firstName;
     private String lastName;
     private String mobile;
+    private String registeredDate;
 
     /**
      * @return the id
@@ -69,6 +70,20 @@ public class CustomerModel {
      */
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    /**
+     * @return the registeredDate
+     */
+    public String getRegisteredDate() {
+        return registeredDate;
+    }
+
+    /**
+     * @param registeredDate the registeredDate to set
+     */
+    public void setRegisteredDate(String registeredDate) {
+        this.registeredDate = registeredDate;
     }
 
 }

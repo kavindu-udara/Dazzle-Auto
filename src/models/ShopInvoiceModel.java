@@ -8,16 +8,15 @@ package models;
  *
  * @author kavindu
  */
-public class ServiceInvoiceModel {
+public class ShopInvoiceModel {
 
     private int id;
     private int paymentMethodId;
-    private int employeeId;
-    private String vehicleNumber;
-    private double total;
-    private double paidAmount;
-    private double balance;
     private String date;
+    private String employeeId;
+    private Double total;
+    private Double paidAmount;
+    private Double balance;
 
     /**
      * @return the id
@@ -48,62 +47,6 @@ public class ServiceInvoiceModel {
     }
 
     /**
-     * @return the employeeId
-     */
-    public int getEmployeeId() {
-        return employeeId;
-    }
-
-    /**
-     * @param employeeId the employeeId to set
-     */
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    /**
-     * @return the vehicleNumber
-     */
-    public String getVehicleNumber() {
-        return vehicleNumber;
-    }
-
-    /**
-     * @param vehicleNumber the vehicleNumber to set
-     */
-    public void setVehicleNumber(String vehicleNumber) {
-        this.vehicleNumber = vehicleNumber;
-    }
-
-    /**
-     * @return the total
-     */
-    public double getTotal() {
-        return total;
-    }
-
-    /**
-     * @param total the total to set
-     */
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    /**
-     * @return the paidAmount
-     */
-    public double getPaidAmount() {
-        return paidAmount;
-    }
-
-    /**
-     * @param paidAmount the paidAmount to set
-     */
-    public void setPaidAmount(double paidAmount) {
-        this.paidAmount = paidAmount;
-    }
-
-    /**
      * @return the date
      */
     public String getDate() {
@@ -118,17 +61,58 @@ public class ServiceInvoiceModel {
     }
 
     /**
+     * @return the employeeId
+     */
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    /**
+     * @param employeeId the employeeId to set
+     */
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    /**
+     * @return the total
+     */
+    public Double getTotal() {
+        return total;
+    }
+
+    /**
+     * @param total the total to set
+     */
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    /**
+     * @return the paidAmount
+     */
+    public Double getPaidAmount() {
+        return paidAmount;
+    }
+
+    /**
+     * @param paidAmount the paidAmount to set
+     */
+    public void setPaidAmount(Double paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    /**
      * @return the balance
      */
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
     /**
      * @param balance the balance to set
      */
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
-
 }

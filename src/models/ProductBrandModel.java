@@ -8,11 +8,9 @@ package models;
  *
  * @author kavindu
  */
-public class ServicesModel {
+public class ProductBrandModel {
 
     private int id;
-    private int vehicleTypeId;
-    private double charge;
     private String name;
 
     /**
@@ -27,34 +25,6 @@ public class ServicesModel {
      */
     public void setId(int id) {
         this.id = id;
-    }
-
-    /**
-     * @return the vehicleTypeId
-     */
-    public int getVehicleTypeId() {
-        return vehicleTypeId;
-    }
-
-    /**
-     * @param vehicleTypeId the vehicleTypeId to set
-     */
-    public void setVehicleTypeId(int vehicleTypeId) {
-        this.vehicleTypeId = vehicleTypeId;
-    }
-
-    /**
-     * @return the charge
-     */
-    public double getCharge() {
-        return charge;
-    }
-
-    /**
-     * @param charge the charge to set
-     */
-    public void setCharge(double charge) {
-        this.charge = charge;
     }
 
     /**
