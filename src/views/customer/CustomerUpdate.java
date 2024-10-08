@@ -6,6 +6,11 @@ package views.customer;
 
 import views.supplier.*;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
+import includes.OnlyNumbersDocumentFilter;
+import includes.RegexValidator;
 
 /**
  *
@@ -19,6 +24,13 @@ public class CustomerUpdate extends java.awt.Dialog {
     public CustomerUpdate(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setDocumentFilters();
+
+    }
+
+    private void setDocumentFilters() {
+        ((AbstractDocument) customer_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+
     }
 
     /**
@@ -78,6 +90,11 @@ public class CustomerUpdate extends java.awt.Dialog {
         customer_reset_btn.setForeground(new java.awt.Color(255, 0, 0));
         customer_reset_btn.setText("RESET");
         customer_reset_btn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        customer_reset_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customer_reset_btnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -156,18 +173,40 @@ public class CustomerUpdate extends java.awt.Dialog {
     }//GEN-LAST:event_closeDialog
 
     private void customer_register_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customer_register_btnActionPerformed
-        // TODO add your handling code here:
+
+        String firstName = customer_firstname.getText();
+        String lastName = customer_lastname.getText();
+        String mobile = customer_mobile.getText();
+
+        if (firstName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (lastName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your last name", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        } else if (mobile.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (!RegexValidator.isValidSlPhone(mobile)) {
+            JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        }
+
+
     }//GEN-LAST:event_customer_register_btnActionPerformed
 
     private void customer_mobileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customer_mobileActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_customer_mobileActionPerformed
 
+    private void customer_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customer_reset_btnActionPerformed
+
+        reset();
+    }//GEN-LAST:event_customer_reset_btnActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         FlatMacDarkLaf.setup();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -182,6 +221,13 @@ public class CustomerUpdate extends java.awt.Dialog {
         });
     }
 
+    private void reset() {
+
+        customer_firstname.setText("");
+        customer_lastname.setText("");
+        customer_mobile.setText("");
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField customer_firstname;
