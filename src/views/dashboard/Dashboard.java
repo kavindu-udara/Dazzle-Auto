@@ -77,6 +77,7 @@ public class Dashboard extends javax.swing.JFrame {
         jStaffButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/employee-3.png"))); // NOI18N
         jStaffButton.setText(" Staff");
         jStaffButton.setBorderPainted(false);
+        jStaffButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jStaffButton.setFocusable(false);
         jStaffButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jStaffButton.addActionListener(new java.awt.event.ActionListener() {
@@ -90,6 +91,7 @@ public class Dashboard extends javax.swing.JFrame {
         jDashboardButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/dashboard-3.png"))); // NOI18N
         jDashboardButton1.setText("  Dashboard");
         jDashboardButton1.setBorderPainted(false);
+        jDashboardButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jDashboardButton1.setFocusable(false);
         jDashboardButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jDashboardButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -103,6 +105,7 @@ public class Dashboard extends javax.swing.JFrame {
         jPaymentButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/payment-3.png"))); // NOI18N
         jPaymentButton.setText("  Payments");
         jPaymentButton.setBorderPainted(false);
+        jPaymentButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPaymentButton.setFocusable(false);
         jPaymentButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jPaymentButton.addActionListener(new java.awt.event.ActionListener() {
@@ -116,6 +119,7 @@ public class Dashboard extends javax.swing.JFrame {
         jAppointmentsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/appointment-30.png"))); // NOI18N
         jAppointmentsButton.setText("  Appointment");
         jAppointmentsButton.setBorderPainted(false);
+        jAppointmentsButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jAppointmentsButton.setFocusable(false);
         jAppointmentsButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jAppointmentsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -129,6 +133,7 @@ public class Dashboard extends javax.swing.JFrame {
         jCustomerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/customers-30.png"))); // NOI18N
         jCustomerButton.setText("  Customers");
         jCustomerButton.setBorderPainted(false);
+        jCustomerButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jCustomerButton.setFocusable(false);
         jCustomerButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jCustomerButton.addActionListener(new java.awt.event.ActionListener() {
@@ -142,6 +147,7 @@ public class Dashboard extends javax.swing.JFrame {
         jOurServicesButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/services-30.png"))); // NOI18N
         jOurServicesButton.setText("  Our Services ");
         jOurServicesButton.setBorderPainted(false);
+        jOurServicesButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jOurServicesButton.setFocusable(false);
         jOurServicesButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jOurServicesButton.addActionListener(new java.awt.event.ActionListener() {
@@ -152,9 +158,10 @@ public class Dashboard extends javax.swing.JFrame {
         menuButtonsPanel.add(jOurServicesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 200, 60));
 
         jFinanceButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
-        jFinanceButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/investment-30.png"))); // NOI18N
-        jFinanceButton.setText("  Finance");
+        jFinanceButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/resume-30.png"))); // NOI18N
+        jFinanceButton.setText("  Finance & HR");
         jFinanceButton.setBorderPainted(false);
+        jFinanceButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jFinanceButton.setFocusable(false);
         jFinanceButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jFinanceButton.addActionListener(new java.awt.event.ActionListener() {
@@ -168,6 +175,7 @@ public class Dashboard extends javax.swing.JFrame {
         jReportsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/report-3.png"))); // NOI18N
         jReportsButton.setText("  Reports");
         jReportsButton.setBorderPainted(false);
+        jReportsButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jReportsButton.setFocusable(false);
         jReportsButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jReportsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -181,6 +189,7 @@ public class Dashboard extends javax.swing.JFrame {
         jVehiclesButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/car-30.png"))); // NOI18N
         jVehiclesButton.setText("  Vehicles");
         jVehiclesButton.setBorderPainted(false);
+        jVehiclesButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jVehiclesButton.setFocusable(false);
         jVehiclesButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jVehiclesButton.addActionListener(new java.awt.event.ActionListener() {

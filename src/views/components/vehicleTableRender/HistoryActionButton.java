@@ -1,4 +1,4 @@
-package views.vehicle.vehicleTableRender;
+package views.components.vehicleTableRender;
 
 import java.awt.Color;
 import java.awt.Graphics;

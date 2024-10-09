@@ -15,9 +15,9 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
-import views.vehicle.vehicleTableRender.HistoryActionCellEditor;
-import views.vehicle.vehicleTableRender.HistoryActionEvent;
-import views.vehicle.vehicleTableRender.HistoryCellRender;
+import views.components.vehicleTableRender.HistoryActionCellEditor;
+import views.components.vehicleTableRender.HistoryActionEvent;
+import views.components.vehicleTableRender.HistoryCellRender;
 
 /**
  *
@@ -116,9 +116,14 @@ public class VehiclesJPanel extends javax.swing.JPanel {
                 "Vehicle Number", "Owner", "Brand", "Model ", "Vehicle Type ", ""
             }
         ));
+        vehicleViewTable.setFocusable(false);
         vehicleViewTable.setRowHeight(40);
         vehicleViewTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(vehicleViewTable);
+        if (vehicleViewTable.getColumnModel().getColumnCount() > 0) {
+            vehicleViewTable.getColumnModel().getColumn(5).setPreferredWidth(200);
+            vehicleViewTable.getColumnModel().getColumn(5).setMaxWidth(150);
+        }
 
         jRegNewVehicleBotton.setBackground(new java.awt.Color(199, 232, 199));
         jRegNewVehicleBotton.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
