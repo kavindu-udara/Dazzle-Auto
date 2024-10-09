@@ -7,6 +7,7 @@ package views.vehicle;
 import views.customer.*;
 import views.supplier.*;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -33,7 +34,7 @@ public class VehicleUpdate extends java.awt.Dialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        vehicle_firstname = new javax.swing.JTextField();
+        vehicle_number = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         vehicle_register_btn = new javax.swing.JButton();
         vehicle_reset_btn = new javax.swing.JButton();
@@ -72,15 +73,20 @@ public class VehicleUpdate extends java.awt.Dialog {
         vehicle_reset_btn.setForeground(new java.awt.Color(255, 0, 0));
         vehicle_reset_btn.setText("RESET");
         vehicle_reset_btn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        vehicle_reset_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vehicle_reset_btnActionPerformed(evt);
+            }
+        });
 
-        vehicle_brand.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hero", "Tata", "Honda" }));
+        vehicle_brand.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Tata", "Honda" }));
 
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel5.setText("Vehicle Model");
 
-        vehicle_model.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dash", "ZR", "CT - 100" }));
+        vehicle_model.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "ZR", "CT - 100" }));
 
-        vehicle_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bus", "Bike", "Lorry", "Three - Wheel" }));
+        vehicle_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Bike", "Lorry", "Three - Wheel" }));
 
         jLabel6.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel6.setText("Vehicle Type");
@@ -100,7 +106,7 @@ public class VehicleUpdate extends java.awt.Dialog {
                             .addComponent(jLabel5))
                         .addGap(55, 55, 55)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(vehicle_firstname, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                            .addComponent(vehicle_number, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                             .addComponent(vehicle_brand, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(vehicle_model, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(vehicle_type, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -122,7 +128,7 @@ public class VehicleUpdate extends java.awt.Dialog {
                 .addGap(46, 46, 46)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(vehicle_firstname, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(vehicle_number, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -166,14 +172,37 @@ public class VehicleUpdate extends java.awt.Dialog {
     }//GEN-LAST:event_closeDialog
 
     private void vehicle_register_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehicle_register_btnActionPerformed
-        // TODO add your handling code here:
+
+        String VehicleNumber = vehicle_number.getText();
+        String VehicleType = String.valueOf(vehicle_type.getSelectedItem());
+        String VehicleBrand = String.valueOf(vehicle_brand.getSelectedItem());
+        String VehicleModel = String.valueOf(vehicle_model.getSelectedItem());
+
+        if (VehicleNumber.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your Vehicle Number", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (VehicleType.equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select a Vehicle Type", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (VehicleBrand.equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select a Vehicle Brand", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (VehicleModel.equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select a Vehicle Model", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+
+        }
+
     }//GEN-LAST:event_vehicle_register_btnActionPerformed
+
+    private void vehicle_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehicle_reset_btnActionPerformed
+
+        reset();
+
+    }//GEN-LAST:event_vehicle_reset_btnActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         FlatMacDarkLaf.setup();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -188,6 +217,14 @@ public class VehicleUpdate extends java.awt.Dialog {
         });
     }
 
+    private void reset() {
+
+        vehicle_number.setText("");
+        vehicle_type.setSelectedIndex(0);
+        vehicle_brand.setSelectedIndex(0);
+        vehicle_model.setSelectedIndex(0);
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -197,8 +234,8 @@ public class VehicleUpdate extends java.awt.Dialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JComboBox<String> vehicle_brand;
-    private javax.swing.JTextField vehicle_firstname;
     private javax.swing.JComboBox<String> vehicle_model;
+    private javax.swing.JTextField vehicle_number;
     private javax.swing.JButton vehicle_register_btn;
     private javax.swing.JButton vehicle_reset_btn;
     private javax.swing.JComboBox<String> vehicle_type;
