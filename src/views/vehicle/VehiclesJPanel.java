@@ -15,9 +15,9 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
-import views.vehicle.vehicleTableRender.HistoryActionCellEditor;
-import views.vehicle.vehicleTableRender.HistoryActionEvent;
-import views.vehicle.vehicleTableRender.HistoryCellRender;
+import views.components.vehicleTableRender.HistoryActionCellEditor;
+import views.components.vehicleTableRender.HistoryActionEvent;
+import views.components.vehicleTableRender.HistoryCellRender;
 
 /**
  *
