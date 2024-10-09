@@ -44,7 +44,7 @@
                           <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="employee_register_btn" max="32767" attributes="0"/>
+                                  <Component id="employee_register_btn" pref="185" max="32767" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="employee_reset_btn" min="-2" pref="150" max="-2" attributes="0"/>
                               </Group>
@@ -54,21 +54,23 @@
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
                                               <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="employee_nic" min="-2" pref="196" max="-2" attributes="0"/>
-                                              <Component id="employee_mobile" min="-2" pref="196" max="-2" attributes="0"/>
-                                              <Component id="employee_firstname" min="-2" pref="196" max="-2" attributes="0"/>
-                                              <Component id="employee_email" min="-2" pref="196" max="-2" attributes="0"/>
-                                              <Component id="employee_lastname" min="-2" pref="196" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="employee_nic" pref="196" max="32767" attributes="0"/>
+                                              <Component id="employee_mobile" pref="196" max="32767" attributes="0"/>
+                                              <Component id="employee_firstname" pref="196" max="32767" attributes="0"/>
+                                              <Component id="employee_email" pref="196" max="32767" attributes="0"/>
+                                              <Component id="employee_lastname" pref="196" max="32767" attributes="0"/>
+                                              <Component id="employee_type" alignment="0" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="26" max="32767" attributes="0"/>
+                                  <EmptySpace pref="1" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -81,7 +83,7 @@
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="80" max="32767" attributes="0"/>
+                  <EmptySpace pref="54" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -117,12 +119,22 @@
                       <Component id="employee_mobile" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                       <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                          <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="employee_type" min="-2" pref="35" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="employee_register_btn" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                       <Component id="employee_reset_btn" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="38" max="32767" attributes="0"/>
+                  <EmptySpace pref="25" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -233,6 +245,31 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="employee_reset_btnActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel8">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Roboto" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Employee Type"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="employee_type">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="3">
+                <StringItem index="0" value="Select"/>
+                <StringItem index="1" value="manager"/>
+                <StringItem index="2" value="officer"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="employee_typeActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
