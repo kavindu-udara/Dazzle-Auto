@@ -158,6 +158,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="REGISTER"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="supplier_register_btnActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="supplier_reset_btn">
           <Properties>
@@ -166,6 +169,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="RESET"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="supplier_reset_btnActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

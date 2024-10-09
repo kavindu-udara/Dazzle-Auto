@@ -5,10 +5,15 @@
 package views.supplier;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
+import includes.OnlyNumbersDocumentFilter;
+import includes.RegexValidator;
 
 /**
  *
- * @author USER
+ * @author USER nimsara
  */
 public class SupplierRegistration extends java.awt.Dialog {
 
@@ -18,6 +23,12 @@ public class SupplierRegistration extends java.awt.Dialog {
     public SupplierRegistration(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setDocumentFilters();
+    }
+
+    private void setDocumentFilters() {
+        ((AbstractDocument) supplier_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+
     }
 
     /**
@@ -64,9 +75,19 @@ public class SupplierRegistration extends java.awt.Dialog {
 
         supplier_register_btn.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         supplier_register_btn.setText("REGISTER");
+        supplier_register_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supplier_register_btnActionPerformed(evt);
+            }
+        });
 
         supplier_reset_btn.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         supplier_reset_btn.setText("RESET");
+        supplier_reset_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supplier_reset_btnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -145,11 +166,42 @@ public class SupplierRegistration extends java.awt.Dialog {
         dispose();
     }//GEN-LAST:event_closeDialog
 
+    private void supplier_register_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplier_register_btnActionPerformed
+
+        String firstName = supplier_firstname.getText();
+        String lastName = supplier_lastname.getText();
+        String email = supplier_email.getText();
+        String mobile = supplier_mobile.getText();
+
+        if (firstName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (lastName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your last name", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (email.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your email", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        } else if (!RegexValidator.isValidEmail(email)) {
+
+            JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        } else if (mobile.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (!RegexValidator.isValidSlPhone(mobile)) {
+            JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        }
+
+    }//GEN-LAST:event_supplier_register_btnActionPerformed
+
+    private void supplier_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplier_reset_btnActionPerformed
+        reset();
+    }//GEN-LAST:event_supplier_reset_btnActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         FlatMacDarkLaf.setup();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -164,6 +216,14 @@ public class SupplierRegistration extends java.awt.Dialog {
         });
     }
 
+    private void reset() {
+
+        supplier_firstname.setText("");
+        supplier_lastname.setText("");
+        supplier_mobile.setText("");
+        supplier_email.setText("");
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
