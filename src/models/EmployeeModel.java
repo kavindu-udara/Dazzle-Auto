@@ -2,7 +2,7 @@ package models;
 
 public class EmployeeModel {
 
-    private int id;
+    private String id;
     private int statusId;
     private String nic;
     private String firstName;
@@ -14,14 +14,14 @@ public class EmployeeModel {
     /**
      * @return the id
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
