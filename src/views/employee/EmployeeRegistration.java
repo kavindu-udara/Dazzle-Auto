@@ -4,11 +4,16 @@
  */
 package views.employee;
 
+//import com.mysql.cj.protocol.Resultset;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
+//import includes.TimestampsGenerator;
+//import controllers.EmployeeController;
+//import models.EmployeeModel;
+//import java.sql.ResultSet;
 
 /**
  *
@@ -44,6 +49,8 @@ public class EmployeeRegistration extends java.awt.Dialog {
         employee_nic = new javax.swing.JTextField();
         employee_register_btn = new javax.swing.JButton();
         employee_reset_btn = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        employee_type = new javax.swing.JComboBox<>();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -97,6 +104,16 @@ public class EmployeeRegistration extends java.awt.Dialog {
             }
         });
 
+        jLabel8.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel8.setText("Employee Type");
+
+        employee_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "manager", "officer" }));
+        employee_type.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                employee_typeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -107,7 +124,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
                         .addGap(80, 80, 80)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(employee_register_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(employee_register_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(employee_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -115,25 +132,27 @@ public class EmployeeRegistration extends java.awt.Dialog {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel6)
-                                            .addComponent(jLabel7))
+                                            .addComponent(jLabel7)
+                                            .addComponent(jLabel8))
                                         .addGap(56, 56, 56)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(employee_nic, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(employee_mobile, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(employee_firstname, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(employee_email, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(employee_lastname, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(employee_nic, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                                            .addComponent(employee_mobile, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                                            .addComponent(employee_firstname, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                                            .addComponent(employee_email, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                                            .addComponent(employee_lastname, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                                            .addComponent(employee_type, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(172, 172, 172)
                         .addComponent(employee_image, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(125, 125, 125)
                         .addComponent(jLabel1)))
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,11 +181,18 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(employee_mobile, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addGap(52, 52, 52)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(jLabel8))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(employee_type, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(50, 50, 50)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(employee_register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(employee_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -196,6 +222,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
         String nic = employee_nic.getText();
         String email = employee_email.getText();
         String mobile = employee_mobile.getText();
+        String employeeType = String.valueOf(employee_type.getSelectedItem());
 
         if (firstName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -218,10 +245,38 @@ public class EmployeeRegistration extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!RegexValidator.isValidSlPhone(mobile)) {
             JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
-
-        }
+        } else if (employeeType.equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select a employee type", "Warning", JOptionPane.WARNING_MESSAGE);
+//        } else {
+//
+//            //store
+//            try {
+//
+//                EmployeeModel employeemodel = new EmployeeModel();
+//                employeemodel.setId("ID1234");
+//                employeemodel.setFirstName(firstName);
+//                employeemodel.setLastName(lastName);
+//                employeemodel.setEmail(email);
+//                employeemodel.setNic(nic);
+//                employeemodel.setMobile(mobile);
+//
+//                String registerDateTime = TimestampsGenerator.getFormattedDateTime();
+//
+//                employeemodel.setRegisteredDate(registerDateTime);
+//
+//                ResultSet resultSet = new EmployeeController().store(employeemodel);
+//
+//                int id = resultSet.getInt(1);
+//
+//                JOptionPane.showMessageDialog(this, "Employee Registration Successfully");
+//
+//            } catch (Exception e) {
+//                JOptionPane.showMessageDialog(this, e.getMessage());
+//            }
+//
+//        }
     }//GEN-LAST:event_employee_register_btnActionPerformed
-
+    }
     private void employee_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_reset_btnActionPerformed
 
         reset();
@@ -231,6 +286,10 @@ public class EmployeeRegistration extends java.awt.Dialog {
     private void employee_mobileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_mobileActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_employee_mobileActionPerformed
+
+    private void employee_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_typeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_employee_typeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -256,6 +315,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
         employee_mobile.setText("");
         employee_nic.setText("");
         employee_email.setText("");
+        employee_type.setSelectedIndex(0);
 
     }
 
@@ -268,12 +328,14 @@ public class EmployeeRegistration extends java.awt.Dialog {
     private javax.swing.JTextField employee_nic;
     private javax.swing.JButton employee_register_btn;
     private javax.swing.JButton employee_reset_btn;
+    private javax.swing.JComboBox<String> employee_type;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
