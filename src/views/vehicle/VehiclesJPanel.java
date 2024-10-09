@@ -15,6 +15,9 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import views.vehicle.vehicleTableRender.HistoryActionCellEditor;
+import views.vehicle.vehicleTableRender.HistoryActionEvent;
+import views.vehicle.vehicleTableRender.HistoryCellRender;
 
 /**
  *
@@ -35,6 +38,15 @@ public class VehiclesJPanel extends javax.swing.JPanel {
 
     
     public void vehicleViewTableRender() {
+        
+        HistoryActionEvent event = new HistoryActionEvent() {
+
+            @Override
+            public void onView(int row) {
+
+
+            }
+        };
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -57,6 +69,8 @@ public class VehiclesJPanel extends javax.swing.JPanel {
         });
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
+        vehicleViewTable.getColumnModel().getColumn(5).setCellRenderer(new HistoryCellRender());
+        vehicleViewTable.getColumnModel().getColumn(5).setCellEditor(new HistoryActionCellEditor(event));
 
         for (int i = 0; i < 5; i++) {
             vehicleViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
@@ -96,21 +110,13 @@ public class VehiclesJPanel extends javax.swing.JPanel {
 
         vehicleViewTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {"ede", "ded", "dede", "dede", null, null}
             },
             new String [] {
-                "Vehicle Number", "Owner", "Brand", "Model ", "Vehicle Type "
+                "Vehicle Number", "Owner", "Brand", "Model ", "Vehicle Type ", ""
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, true, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        vehicleViewTable.setRowHeight(30);
+        ));
+        vehicleViewTable.setRowHeight(40);
         vehicleViewTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(vehicleViewTable);
 
