@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[1100, 610]"/>
@@ -160,12 +160,21 @@
                 <Component class="javax.swing.JTable" name="vehicleViewTable">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="5" rowCount="0">
-                        <Column editable="false" title="Vehicle Number" type="java.lang.Object"/>
-                        <Column editable="false" title="Owner" type="java.lang.Object"/>
-                        <Column editable="false" title="Brand" type="java.lang.Object"/>
-                        <Column editable="true" title="Model " type="java.lang.Object"/>
-                        <Column editable="false" title="Vehicle Type " type="java.lang.Object"/>
+                      <Table columnCount="6" rowCount="1">
+                        <Column editable="true" title="Vehicle Number" type="java.lang.Object">
+                          <Data value="ede"/>
+                        </Column>
+                        <Column editable="true" title="Owner" type="java.lang.Object">
+                          <Data value="ded"/>
+                        </Column>
+                        <Column editable="true" title="Brand" type="java.lang.Object">
+                          <Data value="dede"/>
+                        </Column>
+                        <Column editable="true" title="Model " type="java.lang.Object">
+                          <Data value="dede"/>
+                        </Column>
+                        <Column editable="true" title="Vehicle Type " type="java.lang.Object"/>
+                        <Column editable="true" title="" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -195,9 +204,14 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
                       </TableColumnModel>
                     </Property>
-                    <Property name="rowHeight" type="int" value="30"/>
+                    <Property name="rowHeight" type="int" value="40"/>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                       <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                     </Property>
