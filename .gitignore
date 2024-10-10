@@ -2,3 +2,6 @@
 /build/
 /dist/
 .env
+/src/resources/employeeImages/*
+!/src/resources/employeeImages/
+/src/resources/employeeImages/.gitkeep
