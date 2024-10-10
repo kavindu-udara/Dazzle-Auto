@@ -17,7 +17,7 @@ public class EmployeeController {
     }
 
     public ResultSet store(EmployeeModel employeeModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`, `nic`, `first_name`, `last_name`, `email`, `mobile`, `registered_date`, `status_id`) "
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`, `nic`, `first_name`, `last_name`, `email`, `mobile`, `registered_date`, `employee_type_id`, `status_id`) "
                 + "VALUES ('" + employeeModel.getId() + "'"
                 + ",'" + employeeModel.getNic() + "', "
                 + "'" + employeeModel.getFirstName() + "', "
@@ -25,6 +25,7 @@ public class EmployeeController {
                 + "'" + employeeModel.getEmail() + "', "
                 + "'" + employeeModel.getMobile() + "', "
                 + "'" + employeeModel.getRegisteredDate() + "', "
+                + "'" + employeeModel.getEmployeeTypeId()+ "', "
                 + "'" + employeeModel.getStatusId() + "') ");
     }
 

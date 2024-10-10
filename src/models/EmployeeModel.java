@@ -2,8 +2,9 @@ package models;
 
 public class EmployeeModel {
 
-    private String id;
     private int statusId;
+    private int employeeTypeId;
+    private String id;
     private String nic;
     private String firstName;
     private String lastName;
@@ -121,6 +122,20 @@ public class EmployeeModel {
      */
     public void setRegisteredDate(String registeredDate) {
         this.registeredDate = registeredDate;
+    }
+
+    /**
+     * @return the employeeTypeId
+     */
+    public int getEmployeeTypeId() {
+        return employeeTypeId;
+    }
+
+    /**
+     * @param employeeTypeId the employeeTypeId to set
+     */
+    public void setEmployeeTypeId(int employeeTypeId) {
+        this.employeeTypeId = employeeTypeId;
     }
 
 }
