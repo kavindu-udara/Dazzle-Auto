@@ -206,6 +206,8 @@ public class AppointmnetPanel extends javax.swing.JPanel {
 
     private void jAddAppointmentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAddAppointmentButtonActionPerformed
 
+        VehicleServiceAppointment vehicleServiceAppointment = new VehicleServiceAppointment();
+        vehicleServiceAppointment.setVisible(true);
         
     }//GEN-LAST:event_jAddAppointmentButtonActionPerformed
 
