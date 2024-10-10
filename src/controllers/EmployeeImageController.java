@@ -24,12 +24,9 @@ public class EmployeeImageController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
-    public ResultSet store(EmployeeImageModel employeeImageModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`path`, `employee_id`) "
-                + "VALUES ('" + employeeImageModel.getPath() + "'"
-                + ",'" + employeeImageModel.getEmployeeId() + "'");
+   public ResultSet store(EmployeeImageModel employeeImageModel) throws Exception {
+        return MySqlConnection.executeIUD("INSERT INTO `"+tableName+"`(`path`, `employee_id`) VALUES ('"+employeeImageModel.getPath()+"','"+employeeImageModel.getEmployeeId()+"')");
     }
-
     public ResultSet update(EmployeeImageModel employeeImageModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
                 + "`path`='" + employeeImageModel.getPath() + "', "
