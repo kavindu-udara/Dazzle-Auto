@@ -5,15 +5,25 @@
 package views.employee;
 
 //import com.mysql.cj.protocol.Resultset;
+import com.mysql.cj.MysqlConnection;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
-//import includes.TimestampsGenerator;
-//import controllers.EmployeeController;
-//import models.EmployeeModel;
-//import java.sql.ResultSet;
+import java.sql.ResultSet;
+
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import includes.TimestampsGenerator;
+import controllers.EmployeeTypeController;
+import controllers.EmployeeController;
+import includes.IDGenarator;
+import models.EmployeeModel;
+import models.EmployeeTypeModel;
+
+import java.sql.ResultSet;
+import java.util.HashMap;
 
 /**
  *
@@ -25,8 +35,33 @@ public class EmployeeRegistration extends java.awt.Dialog {
         super(parent, modal);
         initComponents();
         setDocumentFilters();
-    }
+        loadTypes();
 
+    }
+    
+    private static HashMap<String, String> employeeTypeMap = new HashMap<>();
+    
+ private void loadTypes() {
+
+        try {
+
+           ResultSet resultSet = new EmployeeTypeController().show();
+           
+           Vector<String> vector = new Vector<>();
+            vector.add("Select");
+
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("type"));
+                employeeTypeMap.put(resultSet.getString("type"), resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
+            employee_type.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void setDocumentFilters() {
         ((AbstractDocument) employee_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
 
@@ -107,7 +142,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
         jLabel8.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel8.setText("Employee Type");
 
-        employee_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "manager", "officer" }));
+        employee_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", " " }));
         employee_type.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 employee_typeActionPerformed(evt);
@@ -124,7 +159,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
                         .addGap(80, 80, 80)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(employee_register_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                                .addComponent(employee_register_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(employee_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -145,14 +180,14 @@ public class EmployeeRegistration extends java.awt.Dialog {
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(172, 172, 172)
                         .addComponent(employee_image, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(125, 125, 125)
                         .addComponent(jLabel1)))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,53 +265,52 @@ public class EmployeeRegistration extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Please enter your last name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your email", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else if (!RegexValidator.isValidEmail(email)) {
-
             JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else if (nic.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your nic", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else if (!RegexValidator.isValidSlNewNic(nic)) {
             JOptionPane.showMessageDialog(this, "Invalid NIC Number", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else if (mobile.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!RegexValidator.isValidSlPhone(mobile)) {
             JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (employeeType.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Please select a employee type", "Warning", JOptionPane.WARNING_MESSAGE);
-//        } else {
-//
-//            //store
-//            try {
-//
-//                EmployeeModel employeemodel = new EmployeeModel();
-//                employeemodel.setId("ID1234");
-//                employeemodel.setFirstName(firstName);
-//                employeemodel.setLastName(lastName);
-//                employeemodel.setEmail(email);
-//                employeemodel.setNic(nic);
-//                employeemodel.setMobile(mobile);
-//
-//                String registerDateTime = TimestampsGenerator.getFormattedDateTime();
-//
-//                employeemodel.setRegisteredDate(registerDateTime);
-//
-//                ResultSet resultSet = new EmployeeController().store(employeemodel);
-//
-//                int id = resultSet.getInt(1);
-//
-//                JOptionPane.showMessageDialog(this, "Employee Registration Successfully");
-//
-//            } catch (Exception e) {
-//                JOptionPane.showMessageDialog(this, e.getMessage());
-//            }
-//
-//        }
+        } else {
+
+            //store
+            try {
+
+                String generatedId = IDGenarator.employeeID();
+                
+                EmployeeModel employeeModel = new EmployeeModel();
+                employeeModel.setId(generatedId);
+                employeeModel.setFirstName(firstName);
+                employeeModel.setLastName(lastName);
+                employeeModel.setEmail(email);
+                employeeModel.setNic(nic);
+                employeeModel.setMobile(mobile);
+                
+                employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
+                employeeModel.setStatusId(1);
+
+                String registerDateTime = TimestampsGenerator.getFormattedDateTime();
+
+                employeeModel.setRegisteredDate(registerDateTime);
+                
+                ResultSet resultSet = new EmployeeController().store(employeeModel);
+
+                JOptionPane.showMessageDialog(this, "Employee Registration Successfully");
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+
+        }
     }//GEN-LAST:event_employee_register_btnActionPerformed
-    }
+
+
     private void employee_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_reset_btnActionPerformed
 
         reset();
