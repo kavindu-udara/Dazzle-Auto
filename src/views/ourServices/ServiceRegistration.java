@@ -8,7 +8,7 @@ package views.ourServices;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
-import includes.OnlyNumbersDocumentFilter;
+import includes.OnlyDoubleDocumentFilter;
 import includes.RegexValidator;
 
 import models.ServicesModel;
@@ -32,10 +32,12 @@ public class ServiceRegistration extends java.awt.Dialog {
     public ServiceRegistration(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setDocumentFilters();
         loadTypes();
     }
     
     private static HashMap<String, String> vehicleTypeMap = new HashMap<>();
+    
     
     private void loadTypes() {
 
@@ -57,6 +59,11 @@ public class ServiceRegistration extends java.awt.Dialog {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    private void setDocumentFilters() {
+        AbstractDocument doc = (AbstractDocument) Price.getDocument();
+        doc.setDocumentFilter(new OnlyDoubleDocumentFilter());
     }
 
     /**
@@ -199,7 +206,8 @@ public class ServiceRegistration extends java.awt.Dialog {
 
         String ServiceName = Service_name.getText();
         String VehicleType = String.valueOf(vehicle_type.getSelectedItem());
-        String ServicePrice= Price.getText();
+        String ServicePrice = Price.getText();
+        double servicePrice = Double.parseDouble(ServicePrice);
         
 
         if (ServiceName.isEmpty()) {
@@ -215,8 +223,10 @@ public class ServiceRegistration extends java.awt.Dialog {
             ServicesModel servicesmodel = new ServicesModel();
             servicesmodel.setName(ServiceName);
             servicesmodel.setVehicleTypeId(Integer.parseInt(vehicleTypeMap.get(vehicle_type.getSelectedItem())));
+            servicesmodel.setCharge(servicePrice);
             
             
+           
             new ServicesController().store(servicesmodel);
             
             JOptionPane.showMessageDialog(this, "Service Registration Successfully");
