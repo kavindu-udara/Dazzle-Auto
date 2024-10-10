@@ -5,11 +5,15 @@
 package views.supplier;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import controllers.SupplierController;
+import includes.IDGenarator;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
+import models.SupplierModel;
+import java.sql.ResultSet;
 
 /**
  *
@@ -189,6 +193,27 @@ public class SupplierRegistration extends java.awt.Dialog {
         } else if (!RegexValidator.isValidSlPhone(mobile)) {
             JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
 
+        } else {
+            try {
+                String generatedId = IDGenarator.supplierID();
+
+                SupplierModel suppliermodel = new SupplierModel();
+                suppliermodel.setId(generatedId);
+                suppliermodel.setFirstName(firstName);
+                suppliermodel.setLastName(lastName);
+                suppliermodel.setEmail(email);
+
+                suppliermodel.setMobile(mobile);
+                suppliermodel.setStatusId(1);
+
+                ResultSet resultSet = new SupplierController().store(suppliermodel);
+
+                JOptionPane.showMessageDialog(this, "Supplier Registration Successfully");
+                reset();
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
 
     }//GEN-LAST:event_supplier_register_btnActionPerformed

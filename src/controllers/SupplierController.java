@@ -25,12 +25,15 @@ public class SupplierController {
     }
 
     public ResultSet store(SupplierModel supplierModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`first_name`, `last_name`, `email`, `mobile`, `status_id`) VALUES "
-                + "('" + supplierModel.getFirstName() + "', "
+
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`,`first_name`, `last_name`, `email`, `mobile`, `status_id`) VALUES "
+                + "('" + supplierModel.getId() + "', "
+                + "'" + supplierModel.getFirstName() + "', "
                 + "'" + supplierModel.getLastName() + "', "
                 + "'" + supplierModel.getEmail() + "', "
                 + "'" + supplierModel.getMobile() + "', "
                 + "'" + supplierModel.getStatusId() + "') ");
+
     }
 
     public ResultSet update(SupplierModel supplierModel) throws Exception {
