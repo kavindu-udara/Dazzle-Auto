@@ -5,6 +5,13 @@
 package views.employee;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import java.sql.ResultSet;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+import controllers.EmployeeController;
+import controllers.EmployeeTypeController;
+import controllers.StatusController;
+import java.util.HashMap;
 
 /**
  *
@@ -17,6 +24,61 @@ public class EmployeeView extends javax.swing.JFrame {
      */
     public EmployeeView() {
         initComponents();
+        loadEmployees();
+    }
+
+    private void loadEmployees() {
+
+        try {
+
+            ResultSet resultSet = new EmployeeController().show();
+            ResultSet resultSet1 = new EmployeeTypeController().show();
+            ResultSet resultSet2 = new StatusController().show();
+
+            HashMap<Integer, String> employeeTypeMap = new HashMap<>();
+            HashMap<Integer, String> statusMap = new HashMap<>();
+
+            while (resultSet1.next()) {
+                int employeeTypeId = resultSet1.getInt("id");
+                String employeeTypeName = resultSet1.getString("type");
+                employeeTypeMap.put(employeeTypeId, employeeTypeName);
+            }
+
+            while (resultSet2.next()) {
+                int statusId = resultSet2.getInt("id");
+                String statusName = resultSet2.getString("status");
+                statusMap.put(statusId, statusName);
+            }
+
+            DefaultTableModel model = (DefaultTableModel) employee_view_tbl.getModel();
+            model.setRowCount(0);
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("first_name"));
+                vector.add(resultSet.getString("last_name"));
+                vector.add(resultSet.getString("email"));
+                vector.add(resultSet.getString("mobile"));
+                vector.add(resultSet.getString("nic"));
+                vector.add(resultSet.getString("registered_date"));
+
+                int employeeTypeId = resultSet.getInt("employee_type_id");
+                int statusId = resultSet.getInt("status_id");
+
+                String employeeTypeName = employeeTypeMap.getOrDefault(employeeTypeId, "Unknown Employee Type");
+                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
+
+                vector.add(employeeTypeName);
+                vector.add(statusName);
+
+                model.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -56,10 +118,15 @@ public class EmployeeView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "employee Id", "login Id", "first name", "last name", "email", "mobile", "nic", "registered date", "status Id"
+                "employee Id", "first name", "last name", "email", "mobile", "nic", "registered date", "employee type", "status"
             }
         ));
         employee_view_tbl.getTableHeader().setReorderingAllowed(false);
+        employee_view_tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                employee_view_tblMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(employee_view_tbl);
 
         employee_register_new_employee_btn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -139,6 +206,47 @@ public class EmployeeView extends javax.swing.JFrame {
     private void employee_imageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_imageMouseClicked
 
     }//GEN-LAST:event_employee_imageMouseClicked
+
+    private void employee_view_tblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_view_tblMouseClicked
+
+// int row = employee_view_tbl.getSelectedRow();
+//
+//        String email = String.valueOf(employee_view_tbl.getValueAt(row, 0));
+//        jTextField2.setText(email);
+//        jTextField2.setEditable(false);
+//
+//        String firstName = String.valueOf(employee_view_tbl.getValueAt(row, 1));
+//        jTextField3.setText(firstName);
+//
+//        String lastName = String.valueOf(employee_view_tbl.getValueAt(row, 2));
+//        jTextField4.setText(lastName);
+//
+//        String nic = String.valueOf(employee_view_tbl.getValueAt(row, 3));
+//        jTextField5.setText(nic);
+//
+//        String mobile = String.valueOf(employee_view_tbl.getValueAt(row, 4));
+//        jTextField6.setText(mobile);
+//
+//        String password = String.valueOf(employee_view_tbl.getValueAt(row, 5));
+//        jPasswordField1.setText(password);
+//
+//        String gender = String.valueOf(employee_view_tbl.getValueAt(row, 6));
+//        jComboBox1.setSelectedItem(gender);
+//
+//        String type = String.valueOf(employee_view_tbl.getValueAt(row, 7));
+//        jComboBox2.setSelectedItem(type);
+//
+//        if (evt.getClickCount() == 2) {
+//
+//            int row1 = jTable1.getSelectedRow();
+//            String email1 = String.valueOf(jTable1.getValueAt(row1, 0));
+//
+//            AddressView addressView = new AddressView(this, true, email1);
+//            addressView.setVisible(true);
+//
+//        }
+
+    }//GEN-LAST:event_employee_view_tblMouseClicked
 
     /**
      * @param args the command line arguments
