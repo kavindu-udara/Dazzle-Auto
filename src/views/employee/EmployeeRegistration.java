@@ -5,25 +5,28 @@
 package views.employee;
 
 //import com.mysql.cj.protocol.Resultset;
-import com.mysql.cj.MysqlConnection;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.DocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
-import java.sql.ResultSet;
 
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import includes.TimestampsGenerator;
 import controllers.EmployeeTypeController;
 import controllers.EmployeeController;
+import includes.BDUtility;
 import includes.IDGenarator;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import models.EmployeeModel;
-import models.EmployeeTypeModel;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -98,6 +101,11 @@ public class EmployeeRegistration extends java.awt.Dialog {
         jLabel1.setText("EMPLOYEE REGISTRATION");
 
         employee_image.setBackground(new java.awt.Color(255, 255, 51));
+        employee_image.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                employee_imageMouseClicked(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel3.setText("First Name");
@@ -165,23 +173,20 @@ public class EmployeeRegistration extends java.awt.Dialog {
                                 .addComponent(employee_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jLabel7)
-                                            .addComponent(jLabel8))
-                                        .addGap(56, 56, 56)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(employee_nic, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                                            .addComponent(employee_mobile, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                                            .addComponent(employee_firstname, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                                            .addComponent(employee_email, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                                            .addComponent(employee_lastname, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                                            .addComponent(employee_type, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8))
+                                .addGap(56, 56, 56)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(employee_nic, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                                    .addComponent(employee_mobile, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                                    .addComponent(employee_firstname, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                                    .addComponent(employee_email, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                                    .addComponent(employee_lastname, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
+                                    .addComponent(employee_type, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(172, 172, 172)
                         .addComponent(employee_image, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -326,6 +331,67 @@ public class EmployeeRegistration extends java.awt.Dialog {
     private void employee_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_typeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_employee_typeActionPerformed
+
+    BufferedImage originalImage = null;
+    File selectedFile = null;
+    private void employee_imageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_imageMouseClicked
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+
+            selectedFile = fileChooser.getSelectedFile();
+            try {
+                originalImage = ImageIO.read(selectedFile);
+
+                int originalWidth = originalImage.getWidth();
+                int originalHeight = originalImage.getHeight();
+
+                int labelWidth = employee_image.getWidth();
+                int labelHeight = employee_image.getHeight();
+
+                double scalex = (double) labelWidth / originalWidth;
+                double scaleY = (double) labelHeight / originalHeight;
+
+                double scale = Math.min(scalex, scaleY);
+
+                int scaleWidth = (int) (originalWidth * scale);
+                int scaleHeight = (int) (originalHeight * scale);
+
+                Image scaledImage = originalImage.getScaledInstance(scaleWidth, scaleHeight, Image.SCALE_SMOOTH);
+
+                ImageIcon icon = new ImageIcon(scaledImage);
+                employee_image.setIcon(icon);
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+
+            }
+        }
+    }//GEN-LAST:event_employee_imageMouseClicked
+
+    private String saveImage(String email) {
+
+        if (originalImage != null && selectedFile != null) {
+            try {
+
+                String savePath = BDUtility.getPath("resources\\employeeImages\\");
+                String extension = BDUtility.getFileExtension(selectedFile.getName());
+                String imageName = email + "." + extension;
+                File saveFile = new File(savePath + imageName);
+                BufferedImage scaledImage = BDUtility.scaleImage(originalImage, ImageIO.read(selectedFile));
+                ImageIO.write(scaledImage, extension, saveFile);
+                return imageName;
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
+
+    }
 
     /**
      * @param args the command line arguments
