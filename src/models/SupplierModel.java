@@ -4,6 +4,9 @@
  */
 package models;
 
+import controllers.SupplierController;
+import java.sql.ResultSet;
+
 /**
  *
  * @author kavindu
@@ -100,5 +103,5 @@ public class SupplierModel {
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
-    
+
 }
