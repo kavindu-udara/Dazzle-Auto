@@ -5,6 +5,14 @@
 package views.supplier;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import controllers.EmployeeController;
+import controllers.EmployeeTypeController;
+import controllers.StatusController;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Vector;
+import controllers.SupplierController;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,6 +25,49 @@ public class SupplierView extends javax.swing.JFrame {
      */
     public SupplierView() {
         initComponents();
+        loadsupplier();
+
+    }
+
+    private void loadsupplier() {
+
+        try {
+
+            ResultSet resultSet = new SupplierController().show();
+            ResultSet resultSet2 = new StatusController().show();
+
+            HashMap<Integer, String> statusMap = new HashMap<>();
+
+            while (resultSet2.next()) {
+                int statusId = resultSet2.getInt("id");
+                String statusName = resultSet2.getString("status");
+                statusMap.put(statusId, statusName);
+            }
+
+            DefaultTableModel model = (DefaultTableModel) supplier_view_tbl.getModel();
+            model.setRowCount(0);
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("first_name"));
+                vector.add(resultSet.getString("last_name"));
+                vector.add(resultSet.getString("email"));
+                vector.add(resultSet.getString("mobile"));
+
+                int statusId = resultSet.getInt("status_id");
+
+                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
+
+                vector.add(statusName);
+
+                model.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -115,7 +166,7 @@ public class SupplierView extends javax.swing.JFrame {
 
     private void supplier_register_new_employee_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplier_register_new_employee_btnActionPerformed
 
-        new SupplierRegistration(null,true).show();
+        new SupplierRegistration(null, true).show();
     }//GEN-LAST:event_supplier_register_new_employee_btnActionPerformed
 
     /**
