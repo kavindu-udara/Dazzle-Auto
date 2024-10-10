@@ -15,6 +15,7 @@ import javax.swing.DefaultComboBoxModel;
 import includes.TimestampsGenerator;
 import controllers.EmployeeTypeController;
 import controllers.EmployeeController;
+import controllers.EmployeeImageController;
 import includes.BDUtility;
 import includes.IDGenarator;
 import java.awt.Image;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import models.EmployeeImageModel;
 
 /**
  *
@@ -101,6 +103,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
         jLabel1.setText("EMPLOYEE REGISTRATION");
 
         employee_image.setBackground(new java.awt.Color(255, 255, 51));
+        employee_image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         employee_image.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 employee_imageMouseClicked(evt);
@@ -307,6 +310,14 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
                 ResultSet resultSet = new EmployeeController().store(employeeModel);
 
+                // image save
+                EmployeeImageModel employeeImageModel = new EmployeeImageModel();
+                employeeImageModel.setPath(nic);
+                employeeImageModel.setEmployeeId(generatedId);
+
+                saveImage(nic);
+                new EmployeeImageController().store(employeeImageModel);
+
                 JOptionPane.showMessageDialog(this, "Employee Registration Successfully");
                 reset();
 
@@ -418,6 +429,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
         employee_nic.setText("");
         employee_email.setText("");
         employee_type.setSelectedIndex(0);
+        employee_image.setIcon(null);
 
     }
 
