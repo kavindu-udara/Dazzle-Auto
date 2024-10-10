@@ -38,16 +38,16 @@ public class EmployeeRegistration extends java.awt.Dialog {
         loadTypes();
 
     }
-    
+
     private static HashMap<String, String> employeeTypeMap = new HashMap<>();
-    
- private void loadTypes() {
+
+    private void loadTypes() {
 
         try {
 
-           ResultSet resultSet = new EmployeeTypeController().show();
-           
-           Vector<String> vector = new Vector<>();
+            ResultSet resultSet = new EmployeeTypeController().show();
+
+            Vector<String> vector = new Vector<>();
             vector.add("Select");
 
             while (resultSet.next()) {
@@ -62,6 +62,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
             e.printStackTrace();
         }
     }
+
     private void setDocumentFilters() {
         ((AbstractDocument) employee_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
 
@@ -283,7 +284,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
             try {
 
                 String generatedId = IDGenarator.employeeID();
-                
+
                 EmployeeModel employeeModel = new EmployeeModel();
                 employeeModel.setId(generatedId);
                 employeeModel.setFirstName(firstName);
@@ -291,17 +292,18 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 employeeModel.setEmail(email);
                 employeeModel.setNic(nic);
                 employeeModel.setMobile(mobile);
-                
+
                 employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
                 employeeModel.setStatusId(1);
 
                 String registerDateTime = TimestampsGenerator.getFormattedDateTime();
 
                 employeeModel.setRegisteredDate(registerDateTime);
-                
+
                 ResultSet resultSet = new EmployeeController().store(employeeModel);
 
                 JOptionPane.showMessageDialog(this, "Employee Registration Successfully");
+                reset();
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
