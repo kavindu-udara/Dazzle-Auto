@@ -7,6 +7,18 @@ package views.ourServices;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
+import includes.OnlyNumbersDocumentFilter;
+import includes.RegexValidator;
+
+import models.ServicesModel;
+import controllers.ServicesController;
+import controllers.VehicleTypeController;
+
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -20,6 +32,31 @@ public class ServiceRegistration extends java.awt.Dialog {
     public ServiceRegistration(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        loadTypes();
+    }
+    
+    private static HashMap<String, String> vehicleTypeMap = new HashMap<>();
+    
+    private void loadTypes() {
+
+        try {
+
+            ResultSet resultSet = new VehicleTypeController().show();
+
+            Vector<String> vector = new Vector<>();
+            vector.add("Select");
+
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("name"));
+                vehicleTypeMap.put(resultSet.getString("name"), resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
+            vehicle_type.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -81,8 +118,6 @@ public class ServiceRegistration extends java.awt.Dialog {
 
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel5.setText("Price");
-
-        vehicle_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Motor Bike", "Car", "Van", "Heavy Duty Vehicles" }));
 
         jLabel6.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel6.setText("Vehicle Type");
@@ -156,18 +191,18 @@ public class ServiceRegistration extends java.awt.Dialog {
      * Closes the dialog
      */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
-        setVisible(false);
+
         dispose();
     }//GEN-LAST:event_closeDialog
 
     private void service_register_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_service_register_btnActionPerformed
 
-        String VehicleNumber = Service_name.getText();
+        String ServiceName = Service_name.getText();
         String VehicleType = String.valueOf(vehicle_type.getSelectedItem());
         String ServicePrice= Price.getText();
         
 
-        if (VehicleNumber.isEmpty()) {
+        if (ServiceName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter Service Name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (VehicleType.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Please select a Vehicle Type", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -175,6 +210,20 @@ public class ServiceRegistration extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Please enter Serice Price", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
 
+        } //store
+        try{
+            ServicesModel servicesmodel = new ServicesModel();
+            servicesmodel.setName(ServiceName);
+            servicesmodel.setVehicleTypeId(Integer.parseInt(vehicleTypeMap.get(vehicle_type.getSelectedItem())));
+            
+            
+            new ServicesController().store(servicesmodel);
+            
+            JOptionPane.showMessageDialog(this, "Service Registration Successfully");
+                reset();
+            
+        }catch (Exception s){
+            JOptionPane.showMessageDialog(this, s.getMessage());
         }
 
     }//GEN-LAST:event_service_register_btnActionPerformed

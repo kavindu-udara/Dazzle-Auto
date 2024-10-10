@@ -169,13 +169,7 @@
         <Component class="javax.swing.JComboBox" name="vehicle_type">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="5">
-                <StringItem index="0" value="Select"/>
-                <StringItem index="1" value="Motor Bike"/>
-                <StringItem index="2" value="Car"/>
-                <StringItem index="3" value="Van"/>
-                <StringItem index="4" value="Heavy Duty Vehicles"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
           <AuxValues>
