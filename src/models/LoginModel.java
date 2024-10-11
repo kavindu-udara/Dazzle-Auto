@@ -10,10 +10,10 @@ package models;
  */
 public class LoginModel {
 
-    private int id;
-    private int accessRoleId;
-    private int employeeId;
-    private String password;
+    private static int id;
+    private static int accessRoleId;
+    private static int employeeId;
+    private static String password;
 
     /**
      * @return the id
