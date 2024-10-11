@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import controllers.EmployeeController;
 import controllers.EmployeeTypeController;
 import controllers.StatusController;
+import controllers.SupplierController;
 import java.util.HashMap;
 
 /**
@@ -81,6 +82,54 @@ public class EmployeeView extends javax.swing.JFrame {
 
     }
 
+    private void fetchUser(String searchText) throws Exception {
+        DefaultTableModel model = (DefaultTableModel) employee_view_tbl.getModel();
+        model.setRowCount(0);
+
+        try {
+            ResultSet resultSet = new EmployeeController().search(searchText);
+            ResultSet resultSet2 = new StatusController().search("");
+            ResultSet resultSet1 = new EmployeeTypeController().search("");
+
+            HashMap<Integer, String> employeeTypeMap = new HashMap<>();
+            HashMap<Integer, String> statusMap = new HashMap<>();
+
+            while (resultSet1.next()) {
+                int employeeTypeId = resultSet1.getInt("id");
+                String employeeTypeName = resultSet1.getString("type");
+                employeeTypeMap.put(employeeTypeId, employeeTypeName);
+            }
+
+            while (resultSet2.next()) {
+                int statusId = resultSet2.getInt("id");
+                String statusName = resultSet2.getString("status");
+                statusMap.put(statusId, statusName);
+            }
+
+            while (resultSet.next()) {
+                String id = resultSet.getString("id");
+                String fname = resultSet.getString("first_name");
+                String lname = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String mobile = resultSet.getString("mobile");
+                String nic = resultSet.getString("nic");
+
+                String registeredDate = resultSet.getString("registered_date");
+                int employeeTypeId = resultSet.getInt("employee_type_id");
+
+                int statusId = resultSet.getInt("status_id");
+
+                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
+                String employeeTypeName = employeeTypeMap.getOrDefault(employeeTypeId, "Unknown Type");
+
+                model.addRow(new Object[]{id, fname, lname, email, mobile, nic, registeredDate, employeeTypeName, statusName});
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -101,6 +150,12 @@ public class EmployeeView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jPanel1ComponentShown(evt);
+            }
+        });
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("EMPLOYEE");
 
@@ -112,6 +167,11 @@ public class EmployeeView extends javax.swing.JFrame {
 
         employee_search_btn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         employee_search_btn.setText("SEARCH");
+        employee_search_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                employee_search_btnMouseClicked(evt);
+            }
+        });
 
         employee_view_tbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -247,6 +307,31 @@ public class EmployeeView extends javax.swing.JFrame {
 //        }
 
     }//GEN-LAST:event_employee_view_tblMouseClicked
+
+    private void jPanel1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1ComponentShown
+
+        try {
+
+            fetchUser(null);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jPanel1ComponentShown
+
+    private void employee_search_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_search_btnMouseClicked
+
+        try {
+
+            fetchUser(employee_search_bar.getText().toString());
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+        }
+
+
+    }//GEN-LAST:event_employee_search_btnMouseClicked
 
     /**
      * @param args the command line arguments
