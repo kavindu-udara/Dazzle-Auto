@@ -316,7 +316,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jStaffButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jStaffButtonActionPerformed
         jTabbedPane1.setSelectedIndex(8);
-        
+
         StaffJPanel staffJPanel = new StaffJPanel();
         jStaffPanel.add(staffJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
@@ -341,7 +341,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jAppointmentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAppointmentsButtonActionPerformed
         jTabbedPane1.setSelectedIndex(2);
-        
+
         AppointmnetPanel appointmnetPanel = new AppointmnetPanel();
         jAppointmentPanel.add(appointmnetPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
@@ -349,7 +349,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCustomerButtonActionPerformed
         jTabbedPane1.setSelectedIndex(4);
-        
+
         CustomerJPanel customerJPanel = new CustomerJPanel();
         jCustomerPanel.add(customerJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
@@ -357,7 +357,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jOurServicesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOurServicesButtonActionPerformed
         jTabbedPane1.setSelectedIndex(5);
-        
+
         ourServicesJPanel ourServices = new ourServicesJPanel();
         jOurServicesPanel.add(ourServices, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
@@ -365,7 +365,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jFinanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFinanceButtonActionPerformed
         jTabbedPane1.setSelectedIndex(6);
-        
+
         FinanceJPanel financeJPanel = new FinanceJPanel();
         jFinancePanel.add(financeJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
@@ -373,7 +373,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jReportsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jReportsButtonActionPerformed
         jTabbedPane1.setSelectedIndex(7);
-        
+
         ReportsJPanel reportsJPanel = new ReportsJPanel();
         jReportPanel.add(reportsJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
@@ -381,7 +381,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jVehiclesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehiclesButtonActionPerformed
         jTabbedPane1.setSelectedIndex(3);
-        
+
         VehiclesJPanel vehiclesJPanel = new VehiclesJPanel();
         jVehiclesPanel.add(vehiclesJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);

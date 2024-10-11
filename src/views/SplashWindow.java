@@ -13,12 +13,14 @@ import java.awt.Toolkit;
  */
 public class SplashWindow extends javax.swing.JFrame {
 
-   
+    private static SplashWindow splashWindow;
+
     public SplashWindow() {
+        splashWindow = this;
         initComponents();
-        lodingAnimation();
         jLabel1.setIcon(new javax.swing.ImageIcon("src/resources/loading-animation2.gif"));
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
+        lodingAnimation();
     }
 
     //Progress Bar Code
@@ -29,11 +31,18 @@ public class SplashWindow extends javax.swing.JFrame {
                 for (int i = 0; i <= 100; i++) {
                     ProgressBar.setValue(i);
                     try {
-                        Thread.sleep(50);
+                        Thread.sleep(10);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+
+                if (splashWindow == null) {
+                    System.out.println("nulll");
+                }
+                
+                splashWindow.dispose();
+                new LoginChooser().setVisible(true);
             }
         });
         thread.start();
@@ -96,22 +105,20 @@ public class SplashWindow extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        
-        IntelliJTheme.setup(SplashWindow.class.getResourceAsStream(
-                    "/resources/themes/arc-theme.theme.json"));
-
-        
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SplashWindow().setVisible(true);
-            }
-        });
-    }
-
+//    public static void main(String args[]) {
+//        
+//        IntelliJTheme.setup(SplashWindow.class.getResourceAsStream(
+//                    "/resources/themes/arc-theme.theme.json"));
+//
+//        
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                splashWindow = new SplashWindow();
+//                splashWindow.setVisible(true);
+//            }
+//        });
+//    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JProgressBar ProgressBar;
     private javax.swing.JLabel jLabel1;
