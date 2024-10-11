@@ -10,11 +10,20 @@ package models;
  */
 public class LoginModel {
 
+    // login table
     private static int id;
     private static int accessRoleId;
-    private static int employeeId;
+    private static String employeeId;
     private static String password;
 
+    // employee table
+    private static String nic;
+    private static String firstName;
+    private static String lastName;
+    
+    // image
+    private static String image;
+    
     /**
      * @return the id
      */
@@ -60,15 +69,71 @@ public class LoginModel {
     /**
      * @return the employeeId
      */
-    public int getEmployeeId() {
+    public String getEmployeeId() {
         return employeeId;
     }
 
     /**
      * @param employeeId the employeeId to set
      */
-    public void setEmployeeId(int employeeId) {
+    public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
+    }
+
+    /**
+     * @return the nic
+     */
+    public static String getNic() {
+        return nic;
+    }
+
+    /**
+     * @param aNic the nic to set
+     */
+    public static void setNic(String aNic) {
+        nic = aNic;
+    }
+
+    /**
+     * @return the firstName
+     */
+    public static String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * @param aFirstName the firstName to set
+     */
+    public static void setFirstName(String aFirstName) {
+        firstName = aFirstName;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public static String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param aLastName the lastName to set
+     */
+    public static void setLastName(String aLastName) {
+        lastName = aLastName;
+    }
+
+    /**
+     * @return the image
+     */
+    public static String getImage() {
+        return image;
+    }
+
+    /**
+     * @param aImage the image to set
+     */
+    public static void setImage(String aImage) {
+        image = aImage;
     }
 
 }
