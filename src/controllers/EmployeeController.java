@@ -25,7 +25,7 @@ public class EmployeeController {
                 + "'" + employeeModel.getEmail() + "', "
                 + "'" + employeeModel.getMobile() + "', "
                 + "'" + employeeModel.getRegisteredDate() + "', "
-                + "'" + employeeModel.getEmployeeTypeId()+ "', "
+                + "'" + employeeModel.getEmployeeTypeId() + "', "
                 + "'" + employeeModel.getStatusId() + "') ");
     }
 
@@ -43,6 +43,7 @@ public class EmployeeController {
 
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
+                + "`id` LIKE '%" + searchText + "%' OR "
                 + "`nic` LIKE '%" + searchText + "%' OR "
                 + "`first_name` LIKE '%" + searchText + "%' OR "
                 + "`last_name` LIKE '%" + searchText + "%' OR "
