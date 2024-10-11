@@ -48,11 +48,12 @@ public class SupplierController {
 
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
+                + "`id` LIKE '%" + searchText + "%' OR "
                 + "`first_name` LIKE '%" + searchText + "%' OR "
                 + "`last_name` LIKE '%" + searchText + "%' OR "
                 + "`email` LIKE '%" + searchText + "%' OR "
                 + "`mobile` LIKE '%" + searchText + "%' OR "
-                + "`status_id` LIKE '%" + searchText + "%' OR ");
+                + "`status_id` LIKE '%" + searchText + "%'");
     }
 
     public ResultSet delete(int id) throws Exception {
