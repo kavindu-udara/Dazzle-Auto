@@ -6,9 +6,12 @@ package views.shop.dashboard;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.IntelliJTheme;
+import controllers.AccessRoleController;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.sql.ResultSet;
 import javax.swing.SwingUtilities;
+import models.LoginModel;
 import views.shop.grn.shop_GRNJPanel;
 import views.shop.items.shop_ItemsJPanel;
 import views.shop.payments.Shop_PaymentJPanel;
@@ -23,12 +26,17 @@ public class ShopDashboard extends javax.swing.JFrame {
     private Color btnDefaultColor = new Color(246, 249, 255);
     private Color btnHoverColor = new Color(255, 248, 237);
     private Color btnSelectedColor = new Color(250, 238, 220);
+    
+    LoginModel loginModel;
 
-    public ShopDashboard() {
+    public ShopDashboard(LoginModel loginModel) {
+        this.loginModel = loginModel;
         initComponents();
 
         roundPanels();
         dateTime();
+        
+        setLoggedUserDetails();
     }
 
     public void roundPanels() {
@@ -66,6 +74,19 @@ public class ShopDashboard extends javax.swing.JFrame {
         java.lang.Thread thread = new java.lang.Thread(runnable);
         thread.start();
     }
+    
+    private void setLoggedUserDetails (){
+        jEmployeeNameLabel.setText(loginModel.getFirstName()+" "+loginModel.getLastName());
+        try {
+            ResultSet rs = new AccessRoleController().show(loginModel.getAccessRoleId());
+            
+            if (rs.next()) {
+                jEmployeeRoleLabel.setText(rs.getString("role"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }        
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -90,9 +111,10 @@ public class ShopDashboard extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        jEmployeeNameLabel = new javax.swing.JLabel();
         empImageLabel = new javax.swing.JLabel();
         jLabel49 = new javax.swing.JLabel();
+        jEmployeeRoleLabel = new javax.swing.JLabel();
         jContentPanel = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jDashboardPanel = new javax.swing.JPanel();
@@ -338,17 +360,17 @@ public class ShopDashboard extends javax.swing.JFrame {
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/Dashboard-img.png"))); // NOI18N
         jHeaderPanel.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 35, 170, -1));
 
-        jLabel12.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(0, 102, 102));
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel12.setText("Employee Name");
-        jHeaderPanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 70, -1, 30));
+        jEmployeeNameLabel.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        jEmployeeNameLabel.setForeground(new java.awt.Color(0, 102, 102));
+        jEmployeeNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jEmployeeNameLabel.setText("Employee Name");
+        jHeaderPanel.add(jEmployeeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 60, 120, 20));
 
         empImageLabel.setBackground(new java.awt.Color(255, 255, 255));
         empImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         empImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/account-60.png"))); // NOI18N
         empImageLabel.setOpaque(true);
-        jHeaderPanel.add(empImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 20, -1, 50));
+        jHeaderPanel.add(empImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 10, -1, 50));
 
         jLabel49.setFont(new java.awt.Font("Courier New", 1, 24)); // NOI18N
         jLabel49.setForeground(new java.awt.Color(0, 0, 153));
@@ -356,6 +378,11 @@ public class ShopDashboard extends javax.swing.JFrame {
         jLabel49.setText(" Date & Time");
         jLabel49.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         jHeaderPanel.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -2, 1300, 30));
+
+        jEmployeeRoleLabel.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jEmployeeRoleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jEmployeeRoleLabel.setText("Role");
+        jHeaderPanel.add(jEmployeeRoleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 80, 120, 20));
 
         jPanel2.add(jHeaderPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 100));
 
@@ -560,24 +587,26 @@ public class ShopDashboard extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        IntelliJTheme.setup(ShopDashboard.class.getResourceAsStream(
-                "/resources/themes/arc-theme.theme.json"));
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ShopDashboard().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        IntelliJTheme.setup(ShopDashboard.class.getResourceAsStream(
+//                "/resources/themes/arc-theme.theme.json"));
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new ShopDashboard().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel empImageLabel;
     private javax.swing.JPanel jContentPanel;
     private javax.swing.JPanel jDashboardPanel;
     private javax.swing.JPanel jDashboardbtn;
+    private javax.swing.JLabel jEmployeeNameLabel;
+    private javax.swing.JLabel jEmployeeRoleLabel;
     private javax.swing.JPanel jGRNPanel;
     private javax.swing.JPanel jGRNbtn;
     private javax.swing.JPanel jHeaderPanel;
@@ -586,7 +615,6 @@ public class ShopDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

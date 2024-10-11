@@ -5,6 +5,7 @@
 package views.signIn;
 
 import javax.swing.JOptionPane;
+import models.LoginModel;
 import views.dashboard.Dashboard;
 import views.shop.dashboard.ShopDashboard;
 
@@ -15,10 +16,10 @@ import views.shop.dashboard.ShopDashboard;
 public class SignIn extends javax.swing.JFrame {
 
     private static String choosedLogin = "";
-    
+
     public SignIn(String choosedLogin) {
         SignIn.choosedLogin = choosedLogin;
-        
+
         initComponents();
         jLabel1.setIcon(new javax.swing.ImageIcon("src/resources/login.png"));
     }
@@ -138,21 +139,26 @@ public class SignIn extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SignInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignInButtonActionPerformed
-        
+
+        LoginModel loginModel = new LoginModel();
+        loginModel.setFirstName("Super");
+        loginModel.setLastName("User");
+        loginModel.setAccessRoleId(1);
+
         if (choosedLogin.equals("Shop")) {
-            
+
             this.dispose();
-            new ShopDashboard().setVisible(true);
-            
-        } else if (choosedLogin.equals("ServiceStation")){
-            
+            new ShopDashboard(loginModel).setVisible(true);
+
+        } else if (choosedLogin.equals("ServiceStation")) {
+
             this.dispose();
-            new Dashboard().setVisible(true);
-            
+            new Dashboard(loginModel).setVisible(true);
+
         } else {
             JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
         }
-        
+
     }//GEN-LAST:event_SignInButtonActionPerformed
 
 //    /**
