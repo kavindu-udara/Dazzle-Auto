@@ -5,9 +5,14 @@
 package views.dashboard;
 
 import com.formdev.flatlaf.IntelliJTheme;
+import controllers.AccessRoleController;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
+import models.LoginModel;
 import views.customer.CustomerJPanel;
 import views.employee.StaffJPanel;
 import views.finance.FinanceJPanel;
@@ -23,9 +28,27 @@ import views.vehicleServiceAppointment.AppointmnetPanel;
  */
 public class Dashboard extends javax.swing.JFrame {
 
-    public Dashboard() {
+    LoginModel loginModel;
+    
+    public Dashboard(LoginModel loginModel) {
+        this.loginModel = loginModel;
         initComponents();
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png"))); 
+        
+        setLoggedUserDetails();
+    }
+    
+    private void setLoggedUserDetails (){
+        jEmployeeNameLabel.setText(loginModel.getFirstName()+" "+loginModel.getLastName());
+        try {
+            ResultSet rs = new AccessRoleController().show(loginModel.getAccessRoleId());
+            
+            if (rs.next()) {
+                jEmployeeRoleLabel.setText(rs.getString("role"));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }        
     }
 
     @SuppressWarnings("unchecked")
@@ -57,8 +80,8 @@ public class Dashboard extends javax.swing.JFrame {
         jStaffPanel = new javax.swing.JPanel();
         HeaderPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jEmployeeNameLabel = new javax.swing.JLabel();
+        jEmployeeRoleLabel = new javax.swing.JLabel();
         empImageLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -255,15 +278,15 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/Dashboard-img.png"))); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 51));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Employee Name");
+        jEmployeeNameLabel.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        jEmployeeNameLabel.setForeground(new java.awt.Color(0, 0, 51));
+        jEmployeeNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jEmployeeNameLabel.setText("Employee Name");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 51));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("Role");
+        jEmployeeRoleLabel.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jEmployeeRoleLabel.setForeground(new java.awt.Color(0, 0, 51));
+        jEmployeeRoleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jEmployeeRoleLabel.setText("Role");
 
         empImageLabel.setBackground(new java.awt.Color(255, 255, 255));
         empImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -278,8 +301,8 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(886, 886, 886)
                 .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jEmployeeNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jEmployeeRoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(empImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -289,9 +312,9 @@ public class Dashboard extends javax.swing.JFrame {
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(HeaderPanelLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(jLabel2)
+                .addComponent(jEmployeeNameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
+                .addComponent(jEmployeeRoleLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(HeaderPanelLayout.createSequentialGroup()
                 .addComponent(empImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -387,21 +410,21 @@ public class Dashboard extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jVehiclesButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        IntelliJTheme.setup(Dashboard.class.getResourceAsStream(
-                "/resources/themes/arc-theme.theme.json"));
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Dashboard().setVisible(true);
-            }
-        });
-    }
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        IntelliJTheme.setup(Dashboard.class.getResourceAsStream(
+//                "/resources/themes/arc-theme.theme.json"));
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new Dashboard().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel HeaderPanel;
@@ -413,11 +436,11 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jCustomerPanel;
     private javax.swing.JButton jDashboardButton1;
     private javax.swing.JPanel jDashboardPanel;
+    private javax.swing.JLabel jEmployeeNameLabel;
+    private javax.swing.JLabel jEmployeeRoleLabel;
     private javax.swing.JButton jFinanceButton;
     private javax.swing.JPanel jFinancePanel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
