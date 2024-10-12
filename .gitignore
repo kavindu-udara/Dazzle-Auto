@@ -4,3 +4,4 @@
 .env
 /src/resources/employeeImages/*
 !/src/resources/employeeImages/.gitkeep
+!/src/resources/employeeImages/default.png
