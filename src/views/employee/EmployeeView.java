@@ -13,6 +13,7 @@ import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
 import controllers.StatusController;
 import java.util.HashMap;
+import models.EmployeeModel;
 
 /**
  *
@@ -193,7 +194,15 @@ public class EmployeeView extends javax.swing.JFrame {
             new String [] {
                 "employee Id", "first name", "last name", "email", "mobile", "nic", "registered date", "employee type", "status", "image name"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         employee_view_tbl.getTableHeader().setReorderingAllowed(false);
         employee_view_tbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -253,7 +262,7 @@ public class EmployeeView extends javax.swing.JFrame {
                             .addComponent(employee_register_new_employee_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(20, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(employee_image, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -286,15 +295,26 @@ public class EmployeeView extends javax.swing.JFrame {
 
         int row = employee_view_tbl.getSelectedRow();
 
-        if (evt.getClickCount() == 1 && row != -1) {
+        if (evt.getClickCount() == 2 && row != -1) {
+
+            String employeeId = String.valueOf(employee_view_tbl.getValueAt(row, 0));
             String firstName = String.valueOf(employee_view_tbl.getValueAt(row, 1));
             String lastName = String.valueOf(employee_view_tbl.getValueAt(row, 2));
             String email = String.valueOf(employee_view_tbl.getValueAt(row, 3));
             String nic = String.valueOf(employee_view_tbl.getValueAt(row, 5));
             String mobile = String.valueOf(employee_view_tbl.getValueAt(row, 4)); // Ensure this is correct
-            String employeeType = String.valueOf(employee_view_tbl.getValueAt(row, 8)); // Ensure this is correct
+            String employeeType = String.valueOf(employee_view_tbl.getValueAt(row, 7)); // Ensure this is correct
 
-            EmployeeUpdate employeeUpdate = new EmployeeUpdate(this, true, firstName, lastName, email, nic, mobile, employeeType);
+            EmployeeModel employeeModel = new EmployeeModel();
+            employeeModel.setId(employeeId);
+            employeeModel.setFirstName(firstName);
+            employeeModel.setLastName(lastName);
+            employeeModel.setEmail(email);
+            employeeModel.setNic(nic);
+            employeeModel.setMobile(mobile);
+            employeeModel.setEmployeeTypeName(employeeType);
+
+            EmployeeUpdate employeeUpdate = new EmployeeUpdate(this, true, employeeModel);
             employeeUpdate.setVisible(true);
 
             loadEmployees();
@@ -305,9 +325,7 @@ public class EmployeeView extends javax.swing.JFrame {
     private void jPanel1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1ComponentShown
 
         try {
-
             fetchUser(null);
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -317,13 +335,10 @@ public class EmployeeView extends javax.swing.JFrame {
     private void employee_search_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_search_btnMouseClicked
 
         try {
-
             fetchUser(employee_search_bar.getText().toString());
         } catch (Exception ex) {
-
             ex.printStackTrace();
         }
-
 
     }//GEN-LAST:event_employee_search_btnMouseClicked
 

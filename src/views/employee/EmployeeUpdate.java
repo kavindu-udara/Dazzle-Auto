@@ -5,6 +5,7 @@
 package views.employee;
 
 import controllers.EmployeeController;
+import controllers.EmployeeTypeController;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import includes.OnlyNumbersDocumentFilter;
@@ -13,6 +14,8 @@ import java.awt.Frame;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import models.EmployeeModel;
 
 /**
@@ -23,26 +26,47 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
     private static HashMap<String, String> employeeTypeMap = new HashMap<>();
 
-    /**
-     * Creates new form Employee_Update
-     */
-    public EmployeeUpdate(Frame parent, boolean modal, String firstName, String lastName, String email, String nic, String mobile, String employeeType) {
+    private EmployeeModel employeeModel;
+
+    public EmployeeUpdate(Frame parent, boolean modal, EmployeeModel employeeModel) {
         super(parent, modal);
         initComponents();
         setDocumentFilters();
+        loadEmployeeTypes();
 
-        employee_firstname.setText(firstName);
-        employee_lastname.setText(lastName);
-        employee_email.setText(email);
-        employee_nic.setText(nic);
-        employee_mobile.setText(mobile);
-        employee_type.setSelectedItem(employeeType);
+        this.employeeModel = employeeModel;
 
+        employee_firstname.setText(employeeModel.getFirstName());
+        employee_lastname.setText(employeeModel.getLastName());
+        employee_email.setText(employeeModel.getEmail());
+        employee_nic.setText(employeeModel.getNic());
+        employee_mobile.setText(employeeModel.getMobile());
+        employee_type.setSelectedItem(employeeModel.getEmployeeTypeName());
+
+    }
+
+    private void loadEmployeeTypes() {
+        try {
+            ResultSet resultSet = new EmployeeTypeController().show();
+
+            Vector<String> vector = new Vector<>();
+            vector.add("Select");
+
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("type"));
+                employeeTypeMap.put(resultSet.getString("type"), resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
+            employee_type.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setDocumentFilters() {
         ((AbstractDocument) employee_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
-
     }
 
     /**
@@ -83,7 +107,6 @@ public class EmployeeUpdate extends java.awt.Dialog {
         jLabel1.setText("EMPLOYEE DETAILS");
 
         employee_image.setBackground(new java.awt.Color(255, 255, 51));
-        employee_image.setIcon(new javax.swing.ImageIcon("C:\\Users\\USER\\Downloads\\Bimsara.jpg")); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("First Name");
@@ -131,7 +154,6 @@ public class EmployeeUpdate extends java.awt.Dialog {
         jLabel8.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel8.setText("Employee Type");
 
-        employee_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "manager", "officer" }));
         employee_type.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 employee_typeActionPerformed(evt);
@@ -312,7 +334,6 @@ public class EmployeeUpdate extends java.awt.Dialog {
         } else {
             try {
 
-                EmployeeModel employeeModel = new EmployeeModel();
                 employeeModel.setFirstName(firstName);
                 employeeModel.setLastName(lastName);
                 employeeModel.setNic(nic);
@@ -321,7 +342,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
                 employeeModel.setStatusId(1);
 
-                ResultSet resultSet = new EmployeeController().update(employeeModel);
+                new EmployeeController().update(employeeModel);
 
                 JOptionPane.showMessageDialog(this, "Employee details updated successfully");
                 reset();
@@ -329,8 +350,6 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-
-
     }//GEN-LAST:event_employee_update_btnActionPerformed
 
     private void employee_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_reset_btnActionPerformed
@@ -397,7 +416,4 @@ public class EmployeeUpdate extends java.awt.Dialog {
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 
-    private void employee_update_btn(int employeeId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

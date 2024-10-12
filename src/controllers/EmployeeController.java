@@ -36,8 +36,7 @@ public class EmployeeController {
                 + "`last_name`='" + employeeModel.getLastName() + "', "
                 + "`email`='" + employeeModel.getEmail() + "', "
                 + "`mobile`='" + employeeModel.getMobile() + "', "
-                + "`registered_date`='" + employeeModel.getRegisteredDate() + "', "
-                + "`status_id`='" + employeeModel.getStatusId() + "', "
+                + "`status_id`='" + employeeModel.getStatusId() + "' "
                 + "WHERE `id`='" + employeeModel.getId() + "' ");
     }
 
