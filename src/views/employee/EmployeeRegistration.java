@@ -21,6 +21,7 @@ import includes.IDGenarator;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import models.EmployeeModel;
 
 import java.sql.ResultSet;
@@ -277,20 +278,19 @@ public class EmployeeRegistration extends java.awt.Dialog {
         } else if (!RegexValidator.isValidEmail(email)) {
             JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (nic.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter your nic", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please enter your NIC", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!RegexValidator.isValidSlNewNic(nic)) {
             JOptionPane.showMessageDialog(this, "Invalid NIC Number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (mobile.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please enter your mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!RegexValidator.isValidSlPhone(mobile)) {
-            JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (employeeType.equals("Select")) {
-            JOptionPane.showMessageDialog(this, "Please select a employee type", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please select an employee type", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
 
-            //store
+            // Store employee information
             try {
-
                 String generatedId = IDGenarator.employeeID();
 
                 EmployeeModel employeeModel = new EmployeeModel();
@@ -305,27 +305,30 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 employeeModel.setStatusId(1);
 
                 String registerDateTime = TimestampsGenerator.getFormattedDateTime();
-
                 employeeModel.setRegisteredDate(registerDateTime);
 
                 ResultSet resultSet = new EmployeeController().store(employeeModel);
 
-                // image save
-                EmployeeImageModel employeeImageModel = new EmployeeImageModel();
-                employeeImageModel.setPath(nic);
-                employeeImageModel.setEmployeeId(generatedId);
+                String imagePath = saveImage(email);
+                if (imagePath != null) {
+                    EmployeeImageModel employeeImageModel = new EmployeeImageModel();
+                    employeeImageModel.setPath(imagePath);
+                    employeeImageModel.setEmployeeId(generatedId);
 
-                saveImage(nic);
-                new EmployeeImageController().store(employeeImageModel);
+                    new EmployeeImageController().store(employeeImageModel);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
+                }
 
-                JOptionPane.showMessageDialog(this, "Employee Registration Successfully");
+                JOptionPane.showMessageDialog(this, "Employee Registration Successful");
                 reset();
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
-
         }
+
+
     }//GEN-LAST:event_employee_register_btnActionPerformed
 
 
@@ -382,26 +385,35 @@ public class EmployeeRegistration extends java.awt.Dialog {
             }
         }
     }//GEN-LAST:event_employee_imageMouseClicked
-
     private String saveImage(String email) {
-
         if (originalImage != null && selectedFile != null) {
             try {
+                String savePath = BDUtility.getPath("images" + File.separator);
 
-                String savePath = BDUtility.getPath("resources\\employeeImages\\");
+                File directory = new File(savePath);
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+
                 String extension = BDUtility.getFileExtension(selectedFile.getName());
+
                 String imageName = email + "." + extension;
+
                 File saveFile = new File(savePath + imageName);
+
                 BufferedImage scaledImage = BDUtility.scaleImage(originalImage, ImageIO.read(selectedFile));
-                ImageIO.write(scaledImage, extension, saveFile);
+
+                ImageIO.write(scaledImage, extension.replace(".", ""), saveFile);
+
                 return imageName;
 
+            } catch (IOException ex) {
+                ex.printStackTrace();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
         return null;
-
     }
 
     /**
