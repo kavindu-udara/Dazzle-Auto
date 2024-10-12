@@ -20,6 +20,9 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import controllers.SupplierController;
 import java.awt.event.KeyEvent;
+import models.EmployeeModel;
+import models.SupplierModel;
+import views.employee.EmployeeUpdate;
 
 /**
  *
@@ -271,17 +274,31 @@ public class SupplierView extends javax.swing.JFrame {
     }//GEN-LAST:event_employee_search_btnMouseClicked
 
     private void supplier_view_tblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_supplier_view_tblMouseClicked
+
         int row = supplier_view_tbl.getSelectedRow();
 
         if (evt.getClickCount() == 2 && row != -1) {
+
+            String supplierId = String.valueOf(supplier_view_tbl.getValueAt(row, 0));
             String firstName = String.valueOf(supplier_view_tbl.getValueAt(row, 1));
             String lastName = String.valueOf(supplier_view_tbl.getValueAt(row, 2));
             String email = String.valueOf(supplier_view_tbl.getValueAt(row, 3));
             String mobile = String.valueOf(supplier_view_tbl.getValueAt(row, 4));
 
-            SupplierUpdate supplierUpdateDialog = new SupplierUpdate(this, true, firstName, lastName, email, mobile);
-            supplierUpdateDialog.setVisible(true);
+            SupplierModel supplierModel = new SupplierModel();
+            supplierModel.setId(supplierId);
+            supplierModel.setFirstName(firstName);
+            supplierModel.setLastName(lastName);
+            supplierModel.setEmail(email);
+            supplierModel.setMobile(mobile);
+
+            SupplierUpdate supplierUpdate = new SupplierUpdate(this, true, supplierModel);
+            supplierUpdate.setVisible(true);
+
+            loadsupplier();
+
         }
+
 
     }//GEN-LAST:event_supplier_view_tblMouseClicked
 
