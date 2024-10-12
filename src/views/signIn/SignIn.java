@@ -144,6 +144,7 @@ public class SignIn extends javax.swing.JFrame {
         loginModel.setFirstName("Super");
         loginModel.setLastName("User");
         loginModel.setAccessRoleId(1);
+        loginModel.setImage("resources/employeeImages/EMP02200276353830NimsaraDayananda.jpg");
 
         if (choosedLogin.equals("Shop")) {
 

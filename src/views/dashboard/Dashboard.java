@@ -5,9 +5,13 @@
 package views.dashboard;
 
 import controllers.AccessRoleController;
+import includes.BDUtility;
 import java.awt.BorderLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
 import java.sql.ResultSet;
+import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import models.LoginModel;
 import views.customer.CustomerJPanel;
@@ -26,26 +30,46 @@ import views.vehicleServiceAppointment.AppointmnetPanel;
 public class Dashboard extends javax.swing.JFrame {
 
     LoginModel loginModel;
-    
+
     public Dashboard(LoginModel loginModel) {
         this.loginModel = loginModel;
         initComponents();
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png"))); 
-        
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
+
         setLoggedUserDetails();
     }
-    
-    private void setLoggedUserDetails (){
-        jEmployeeNameLabel.setText(loginModel.getFirstName()+" "+loginModel.getLastName());
+
+    private void setLoggedUserDetails() {
+        jEmployeeNameLabel.setText(loginModel.getFirstName() + " " + loginModel.getLastName());
         try {
             ResultSet rs = new AccessRoleController().show(loginModel.getAccessRoleId());
-            
+
             if (rs.next()) {
                 jEmployeeRoleLabel.setText(rs.getString("role"));
             }
+
+            // Image setting
+            String imagepath = BDUtility.getPath(loginModel.getImage());
+            File imageFile = new File(imagepath);
+
+            if (imageFile.exists()) {
+                // Initialize ImageIcon with the image path
+                ImageIcon icon = new ImageIcon(imagepath);
+                // Get the image and scale it
+                Image image = icon.getImage().getScaledInstance(56, 56, Image.SCALE_SMOOTH);
+                // Create the resized icon
+                ImageIcon resizedIcon = new ImageIcon(image);
+                // Set it to the label
+                empImageLabel.setIcon(resizedIcon);
+
+            } else {
+
+            }
+            // Image setting
+            
         } catch (Exception ex) {
             ex.printStackTrace();
-        }        
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -288,7 +312,10 @@ public class Dashboard extends javax.swing.JFrame {
         empImageLabel.setBackground(new java.awt.Color(255, 255, 255));
         empImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         empImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/account-60.png"))); // NOI18N
+        empImageLabel.setMaximumSize(new java.awt.Dimension(56, 56));
+        empImageLabel.setMinimumSize(new java.awt.Dimension(56, 56));
         empImageLabel.setOpaque(true);
+        empImageLabel.setPreferredSize(new java.awt.Dimension(56, 56));
 
         javax.swing.GroupLayout HeaderPanelLayout = new javax.swing.GroupLayout(HeaderPanel);
         HeaderPanel.setLayout(HeaderPanelLayout);
@@ -313,7 +340,8 @@ public class Dashboard extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jEmployeeRoleLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(HeaderPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(empImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
