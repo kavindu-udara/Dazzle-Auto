@@ -166,7 +166,15 @@ public class SupplierView extends javax.swing.JFrame {
             new String [] {
                 "supplier Id", "first name", "last name", "email", "mobile", "status Id"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         supplier_view_tbl.getTableHeader().setReorderingAllowed(false);
         supplier_view_tbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -265,7 +273,7 @@ public class SupplierView extends javax.swing.JFrame {
     private void supplier_view_tblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_supplier_view_tblMouseClicked
         int row = supplier_view_tbl.getSelectedRow();
 
-        if (evt.getClickCount() == 1 && row != -1) {
+        if (evt.getClickCount() == 2 && row != -1) {
             String firstName = String.valueOf(supplier_view_tbl.getValueAt(row, 1));
             String lastName = String.valueOf(supplier_view_tbl.getValueAt(row, 2));
             String email = String.valueOf(supplier_view_tbl.getValueAt(row, 3));

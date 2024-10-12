@@ -4,7 +4,6 @@
  */
 package views.employee;
 
-//import com.mysql.cj.protocol.Resultset;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import includes.OnlyNumbersDocumentFilter;
@@ -42,7 +41,6 @@ public class EmployeeRegistration extends java.awt.Dialog {
         initComponents();
         setDocumentFilters();
         loadTypes();
-
     }
 
     private static HashMap<String, String> employeeTypeMap = new HashMap<>();
@@ -50,7 +48,6 @@ public class EmployeeRegistration extends java.awt.Dialog {
     private void loadTypes() {
 
         try {
-
             ResultSet resultSet = new EmployeeTypeController().show();
 
             Vector<String> vector = new Vector<>();
@@ -71,7 +68,6 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
     private void setDocumentFilters() {
         ((AbstractDocument) employee_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
-
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -309,7 +305,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
                 ResultSet resultSet = new EmployeeController().store(employeeModel);
 
-                String imagePath = saveImage(email);
+                String imagePath = saveImage(generatedId + nic + firstName + lastName);
                 if (imagePath != null) {
                     EmployeeImageModel employeeImageModel = new EmployeeImageModel();
                     employeeImageModel.setPath(imagePath);
@@ -327,8 +323,6 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
         }
-
-
     }//GEN-LAST:event_employee_register_btnActionPerformed
 
 
@@ -385,10 +379,12 @@ public class EmployeeRegistration extends java.awt.Dialog {
             }
         }
     }//GEN-LAST:event_employee_imageMouseClicked
+   
+    // Save image in resources package
     private String saveImage(String email) {
         if (originalImage != null && selectedFile != null) {
             try {
-                String savePath = BDUtility.getPath("images" + File.separator);
+                String savePath = BDUtility.getPath("resources/employeeImages/" + File.separator);
 
                 File directory = new File(savePath);
                 if (!directory.exists()) {

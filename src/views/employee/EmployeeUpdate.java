@@ -4,15 +4,12 @@
  */
 package views.employee;
 
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import controllers.EmployeeController;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.DocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
 import java.awt.Frame;
-import models.EmployeeModel;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
