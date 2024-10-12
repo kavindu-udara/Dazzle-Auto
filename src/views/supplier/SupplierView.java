@@ -168,6 +168,11 @@ public class SupplierView extends javax.swing.JFrame {
             }
         ));
         supplier_view_tbl.getTableHeader().setReorderingAllowed(false);
+        supplier_view_tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                supplier_view_tblMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(supplier_view_tbl);
 
         supplier_register_new_employee_btn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -256,6 +261,21 @@ public class SupplierView extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_employee_search_btnMouseClicked
+
+    private void supplier_view_tblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_supplier_view_tblMouseClicked
+        int row = supplier_view_tbl.getSelectedRow();
+
+        if (evt.getClickCount() == 1 && row != -1) {
+            String firstName = String.valueOf(supplier_view_tbl.getValueAt(row, 1));
+            String lastName = String.valueOf(supplier_view_tbl.getValueAt(row, 2));
+            String email = String.valueOf(supplier_view_tbl.getValueAt(row, 3));
+            String mobile = String.valueOf(supplier_view_tbl.getValueAt(row, 4));
+
+            SupplierUpdate supplierUpdateDialog = new SupplierUpdate(this, true, firstName, lastName, email, mobile);
+            supplierUpdateDialog.setVisible(true);
+        }
+
+    }//GEN-LAST:event_supplier_view_tblMouseClicked
 
     /**
      * @param args the command line arguments
