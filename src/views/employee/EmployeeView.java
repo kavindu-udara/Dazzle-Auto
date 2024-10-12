@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import controllers.EmployeeController;
+import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
 import controllers.StatusController;
 import controllers.SupplierController;
@@ -29,50 +30,63 @@ public class EmployeeView extends javax.swing.JFrame {
     }
 
     private void loadEmployees() {
-
         try {
 
-            ResultSet resultSet = new EmployeeController().show();
-            ResultSet resultSet1 = new EmployeeTypeController().show();
-            ResultSet resultSet2 = new StatusController().show();
+            ResultSet employeeResultSet = new EmployeeController().show();
+            ResultSet employeeTypeResultSet = new EmployeeTypeController().show();
+            ResultSet statusResultSet = new StatusController().show();
+            ResultSet employeeImageResultSet = new EmployeeImageController().show();
 
             HashMap<Integer, String> employeeTypeMap = new HashMap<>();
             HashMap<Integer, String> statusMap = new HashMap<>();
+            HashMap<String, String> imagePathMap = new HashMap<>();
 
-            while (resultSet1.next()) {
-                int employeeTypeId = resultSet1.getInt("id");
-                String employeeTypeName = resultSet1.getString("type");
+            while (employeeTypeResultSet.next()) {
+                int employeeTypeId = employeeTypeResultSet.getInt("id");
+                String employeeTypeName = employeeTypeResultSet.getString("type");
                 employeeTypeMap.put(employeeTypeId, employeeTypeName);
             }
 
-            while (resultSet2.next()) {
-                int statusId = resultSet2.getInt("id");
-                String statusName = resultSet2.getString("status");
+            while (statusResultSet.next()) {
+                int statusId = statusResultSet.getInt("id");
+                String statusName = statusResultSet.getString("status");
                 statusMap.put(statusId, statusName);
+            }
+
+            while (employeeImageResultSet.next()) {
+                String employeeId = employeeImageResultSet.getString("employee_id");
+                String imagePath = employeeImageResultSet.getString("path");
+                imagePathMap.put(employeeId, imagePath);
             }
 
             DefaultTableModel model = (DefaultTableModel) employee_view_tbl.getModel();
             model.setRowCount(0);
 
-            while (resultSet.next()) {
+            while (employeeResultSet.next()) {
                 Vector<String> vector = new Vector<>();
-                vector.add(resultSet.getString("id"));
-                vector.add(resultSet.getString("first_name"));
-                vector.add(resultSet.getString("last_name"));
-                vector.add(resultSet.getString("email"));
-                vector.add(resultSet.getString("mobile"));
-                vector.add(resultSet.getString("nic"));
-                vector.add(resultSet.getString("registered_date"));
 
-                int employeeTypeId = resultSet.getInt("employee_type_id");
-                int statusId = resultSet.getInt("status_id");
+                String employeeId = employeeResultSet.getString("id");
+                vector.add(employeeId);
+                vector.add(employeeResultSet.getString("first_name"));
+                vector.add(employeeResultSet.getString("last_name"));
+                vector.add(employeeResultSet.getString("email"));
+                vector.add(employeeResultSet.getString("mobile"));
+                vector.add(employeeResultSet.getString("nic"));
+                vector.add(employeeResultSet.getString("registered_date"));
+
+                int employeeTypeId = employeeResultSet.getInt("employee_type_id");
+                int statusId = employeeResultSet.getInt("status_id");
 
                 String employeeTypeName = employeeTypeMap.getOrDefault(employeeTypeId, "Unknown Employee Type");
                 String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
 
                 vector.add(employeeTypeName);
                 vector.add(statusName);
-
+                String imagePath = imagePathMap.get(employeeId);
+                if (imagePath == null || imagePath.trim().isEmpty()) {
+                    imagePath = "No Image";
+                }
+                vector.add(imagePath);
                 model.addRow(vector);
             }
 
@@ -178,7 +192,7 @@ public class EmployeeView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "employee Id", "first name", "last name", "email", "mobile", "nic", "registered date", "employee type", "status"
+                "employee Id", "first name", "last name", "email", "mobile", "nic", "registered date", "employee type", "status", "image name"
             }
         ));
         employee_view_tbl.getTableHeader().setReorderingAllowed(false);
