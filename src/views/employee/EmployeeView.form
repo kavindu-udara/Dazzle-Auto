@@ -121,7 +121,7 @@
             <Component class="javax.swing.JTable" name="employee_view_tbl">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="9" rowCount="0">
+                  <Table columnCount="10" rowCount="0">
                     <Column editable="true" title="employee Id" type="java.lang.Object"/>
                     <Column editable="true" title="first name" type="java.lang.Object"/>
                     <Column editable="true" title="last name" type="java.lang.Object"/>
@@ -131,10 +131,16 @@
                     <Column editable="true" title="registered date" type="java.lang.Object"/>
                     <Column editable="true" title="employee type" type="java.lang.Object"/>
                     <Column editable="true" title="status" type="java.lang.Object"/>
+                    <Column editable="true" title="image name" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
