@@ -7,9 +7,13 @@ package views.shop.dashboard;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.IntelliJTheme;
 import controllers.AccessRoleController;
+import includes.BDUtility;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
+import java.io.File;
 import java.sql.ResultSet;
+import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import models.LoginModel;
 import views.shop.grn.shop_GRNJPanel;
@@ -83,6 +87,25 @@ public class ShopDashboard extends javax.swing.JFrame {
             if (rs.next()) {
                 jEmployeeRoleLabel.setText(rs.getString("role"));
             }
+            
+                        // Image setting
+            String imagepath = BDUtility.getPath(loginModel.getImage());
+            File imageFile = new File(imagepath);
+
+            if (imageFile.exists()) {
+                // Initialize ImageIcon with the image path
+                ImageIcon icon = new ImageIcon(imagepath);
+                // Get the image and scale it
+                Image image = icon.getImage().getScaledInstance(56, 56, Image.SCALE_SMOOTH);
+                // Create the resized icon
+                ImageIcon resizedIcon = new ImageIcon(image);
+                // Set it to the label
+                empImageLabel.setIcon(resizedIcon);
+
+            } else {
+
+            }
+            // Image setting
         } catch (Exception ex) {
             ex.printStackTrace();
         }        
@@ -362,15 +385,18 @@ public class ShopDashboard extends javax.swing.JFrame {
 
         jEmployeeNameLabel.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jEmployeeNameLabel.setForeground(new java.awt.Color(0, 102, 102));
-        jEmployeeNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jEmployeeNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jEmployeeNameLabel.setText("Employee Name");
-        jHeaderPanel.add(jEmployeeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 60, 120, 20));
+        jHeaderPanel.add(jEmployeeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 40, 120, 30));
 
         empImageLabel.setBackground(new java.awt.Color(255, 255, 255));
         empImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         empImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/account-60.png"))); // NOI18N
+        empImageLabel.setMaximumSize(new java.awt.Dimension(56, 56));
+        empImageLabel.setMinimumSize(new java.awt.Dimension(56, 56));
         empImageLabel.setOpaque(true);
-        jHeaderPanel.add(empImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 10, -1, 50));
+        empImageLabel.setPreferredSize(new java.awt.Dimension(56, 56));
+        jHeaderPanel.add(empImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 40, -1, 50));
 
         jLabel49.setFont(new java.awt.Font("Courier New", 1, 24)); // NOI18N
         jLabel49.setForeground(new java.awt.Color(0, 0, 153));
@@ -380,9 +406,9 @@ public class ShopDashboard extends javax.swing.JFrame {
         jHeaderPanel.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -2, 1300, 30));
 
         jEmployeeRoleLabel.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        jEmployeeRoleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jEmployeeRoleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jEmployeeRoleLabel.setText("Role");
-        jHeaderPanel.add(jEmployeeRoleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1170, 80, 120, 20));
+        jHeaderPanel.add(jEmployeeRoleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 70, 120, 20));
 
         jPanel2.add(jHeaderPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 100));
 
