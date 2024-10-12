@@ -36,10 +36,6 @@ public class SplashWindow extends javax.swing.JFrame {
                         e.printStackTrace();
                     }
                 }
-
-                if (splashWindow == null) {
-                    System.out.println("nulll");
-                }
                 
                 splashWindow.dispose();
                 new LoginChooser().setVisible(true);
