@@ -11,6 +11,9 @@ public class EmployeeModel {
     private String email;
     private String mobile;
     private String registeredDate;
+    
+    //
+    private String employeeTypeName;
 
     /**
      * @return the id
@@ -136,6 +139,20 @@ public class EmployeeModel {
      */
     public void setEmployeeTypeId(int employeeTypeId) {
         this.employeeTypeId = employeeTypeId;
+    }
+
+    /**
+     * @return the employeeTypeName
+     */
+    public String getEmployeeTypeName() {
+        return employeeTypeName;
+    }
+
+    /**
+     * @param employeeTypeName the employeeTypeName to set
+     */
+    public void setEmployeeTypeName(String employeeTypeName) {
+        this.employeeTypeName = employeeTypeName;
     }
 
 }
