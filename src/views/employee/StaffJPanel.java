@@ -15,6 +15,16 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import java.sql.ResultSet;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+import controllers.EmployeeController;
+import controllers.EmployeeImageController;
+import controllers.EmployeeTypeController;
+import controllers.StatusController;
+import java.awt.Frame;
+import java.util.HashMap;
+import models.EmployeeModel;
 
 /**
  *
@@ -27,10 +37,127 @@ public class StaffJPanel extends javax.swing.JPanel {
      */
     public StaffJPanel() {
         initComponents();
-        
+        loadEmployees();
+
         employeeFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/NIC");
-        
+
         employeeViewTableRender();
+    }
+
+    private void loadEmployees() {
+        try {
+
+            ResultSet employeeResultSet = new EmployeeController().show();
+            ResultSet employeeTypeResultSet = new EmployeeTypeController().show();
+            ResultSet statusResultSet = new StatusController().show();
+            ResultSet employeeImageResultSet = new EmployeeImageController().show();
+
+            HashMap<Integer, String> employeeTypeMap = new HashMap<>();
+            HashMap<Integer, String> statusMap = new HashMap<>();
+            HashMap<String, String> imagePathMap = new HashMap<>();
+
+            while (employeeTypeResultSet.next()) {
+                int employeeTypeId = employeeTypeResultSet.getInt("id");
+                String employeeTypeName = employeeTypeResultSet.getString("type");
+                employeeTypeMap.put(employeeTypeId, employeeTypeName);
+            }
+
+            while (statusResultSet.next()) {
+                int statusId = statusResultSet.getInt("id");
+                String statusName = statusResultSet.getString("status");
+                statusMap.put(statusId, statusName);
+            }
+
+            while (employeeImageResultSet.next()) {
+                String employeeId = employeeImageResultSet.getString("employee_id");
+                String imagePath = employeeImageResultSet.getString("path");
+                imagePathMap.put(employeeId, imagePath);
+            }
+
+            DefaultTableModel model = (DefaultTableModel) employeeViewTable.getModel();
+            model.setRowCount(0);
+
+            while (employeeResultSet.next()) {
+                Vector<String> vector = new Vector<>();
+
+                String employeeId = employeeResultSet.getString("id");
+                vector.add(employeeId);
+                vector.add(employeeResultSet.getString("nic"));
+
+                vector.add(employeeResultSet.getString("first_name"));
+                vector.add(employeeResultSet.getString("last_name"));
+                vector.add(employeeResultSet.getString("email"));
+                vector.add(employeeResultSet.getString("mobile"));
+                vector.add(employeeResultSet.getString("registered_date"));
+
+                int employeeTypeId = employeeResultSet.getInt("employee_type_id");
+                int statusId = employeeResultSet.getInt("status_id");
+
+                String employeeTypeName = employeeTypeMap.getOrDefault(employeeTypeId, "Unknown Employee Type");
+                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
+
+                vector.add(employeeTypeName);
+                vector.add(statusName);
+                String imagePath = imagePathMap.get(employeeId);
+                if (imagePath == null || imagePath.trim().isEmpty()) {
+                    imagePath = "No Image";
+                }
+                vector.add(imagePath);
+                model.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void fetchUser(String searchText) throws Exception {
+        DefaultTableModel model = (DefaultTableModel) employeeViewTable.getModel();
+        model.setRowCount(0);
+
+        try {
+            ResultSet resultSet = new EmployeeController().search(searchText);
+            ResultSet resultSet2 = new StatusController().search("");
+            ResultSet resultSet1 = new EmployeeTypeController().search("");
+
+            HashMap<Integer, String> employeeTypeMap = new HashMap<>();
+            HashMap<Integer, String> statusMap = new HashMap<>();
+
+            while (resultSet1.next()) {
+                int employeeTypeId = resultSet1.getInt("id");
+                String employeeTypeName = resultSet1.getString("type");
+                employeeTypeMap.put(employeeTypeId, employeeTypeName);
+            }
+
+            while (resultSet2.next()) {
+                int statusId = resultSet2.getInt("id");
+                String statusName = resultSet2.getString("status");
+                statusMap.put(statusId, statusName);
+            }
+
+            while (resultSet.next()) {
+                String id = resultSet.getString("id");
+                String fname = resultSet.getString("first_name");
+                String lname = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String mobile = resultSet.getString("mobile");
+                String nic = resultSet.getString("nic");
+
+                String registeredDate = resultSet.getString("registered_date");
+                int employeeTypeId = resultSet.getInt("employee_type_id");
+
+                int statusId = resultSet.getInt("status_id");
+
+                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
+                String employeeTypeName = employeeTypeMap.getOrDefault(employeeTypeId, "Unknown Type");
+
+                model.addRow(new Object[]{id, fname, lname, email, mobile, nic, registeredDate, employeeTypeName, statusName});
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void employeeViewTableRender() {
@@ -61,7 +188,7 @@ public class StaffJPanel extends javax.swing.JPanel {
             employeeViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -93,11 +220,11 @@ public class StaffJPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Employee ID ", "NIC", "First Name ", "Last Name ", "Email ", "Mobile", "Registered date ", "Status"
+                "Employee ID ", "NIC", "First Name ", "Last Name ", "Email ", "Mobile", "Registered date ", "Employee Type", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -106,6 +233,11 @@ public class StaffJPanel extends javax.swing.JPanel {
         });
         employeeViewTable.setRowHeight(30);
         employeeViewTable.getTableHeader().setReorderingAllowed(false);
+        employeeViewTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                employeeViewTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(employeeViewTable);
 
         jRegNewEmployeeButton.setBackground(new java.awt.Color(199, 232, 199));
@@ -125,6 +257,11 @@ public class StaffJPanel extends javax.swing.JPanel {
         employeeFindField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 employeeFindFieldActionPerformed(evt);
+            }
+        });
+        employeeFindField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                employeeFindFieldKeyReleased(evt);
             }
         });
 
@@ -175,6 +312,11 @@ public class StaffJPanel extends javax.swing.JPanel {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/employee-3.png"))); // NOI18N
         jLabel4.setText("  Staff");
+        jLabel4.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jLabel4ComponentShown(evt);
+            }
+        });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -216,12 +358,69 @@ public class StaffJPanel extends javax.swing.JPanel {
 
     private void jRegNewEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegNewEmployeeButtonActionPerformed
 
-        new EmployeeRegistration(null,true).setVisible(true);
+        new EmployeeRegistration(null, true).setVisible(true);
     }//GEN-LAST:event_jRegNewEmployeeButtonActionPerformed
 
     private void employeeFindFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeFindFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_employeeFindFieldActionPerformed
+
+    private void employeeViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeViewTableMouseClicked
+
+        int row = employeeViewTable.getSelectedRow();
+
+        if (evt.getClickCount() == 2 && row != -1) {
+
+            String employeeId = String.valueOf(employeeViewTable.getValueAt(row, 0));
+            String firstName = String.valueOf(employeeViewTable.getValueAt(row, 2));
+            String lastName = String.valueOf(employeeViewTable.getValueAt(row, 3));
+            String email = String.valueOf(employeeViewTable.getValueAt(row, 4));
+            String nic = String.valueOf(employeeViewTable.getValueAt(row, 1));
+            String mobile = String.valueOf(employeeViewTable.getValueAt(row, 5));
+            String employeeType = String.valueOf(employeeViewTable.getValueAt(row, 7));
+
+            EmployeeModel employeeModel = new EmployeeModel();
+            employeeModel.setId(employeeId);
+            employeeModel.setFirstName(firstName);
+            employeeModel.setLastName(lastName);
+            employeeModel.setEmail(email);
+            employeeModel.setNic(nic);
+            employeeModel.setMobile(mobile);
+            employeeModel.setEmployeeTypeName(employeeType);
+
+            try {
+                Frame staffJPanel = null;
+                EmployeeUpdate employeeUpdate = new EmployeeUpdate(staffJPanel, true, employeeModel);
+                employeeUpdate.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace(); 
+            }
+
+          
+            loadEmployees();
+        }
+
+    }//GEN-LAST:event_employeeViewTableMouseClicked
+
+    private void jLabel4ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jLabel4ComponentShown
+
+        try {
+            fetchUser(null);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }//GEN-LAST:event_jLabel4ComponentShown
+
+    private void employeeFindFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_employeeFindFieldKeyReleased
+
+        try {
+            fetchUser(employeeFindField.getText().toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }//GEN-LAST:event_employeeFindFieldKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
