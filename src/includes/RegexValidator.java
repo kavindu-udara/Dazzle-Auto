@@ -481,4 +481,8 @@ public class RegexValidator {
     public static boolean isValidDay(String day) {
         return day.matches("^(0[1-9]|[12][0-9]|3[01])$");
     }
+    
+    public static boolean isValidVehicleNumber(String number){
+        return number.matches("^[A-Z0-9]{2,3}-\\d{4}$");
+    }
 }
