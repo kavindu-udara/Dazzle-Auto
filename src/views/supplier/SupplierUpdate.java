@@ -4,14 +4,19 @@
  */
 package views.supplier;
 
+import java.sql.ResultSet;
+
 import views.supplier.*;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import controllers.SupplierController;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
+import java.awt.Frame;
+import models.SupplierModel;
 
 /**
  *
@@ -22,10 +27,15 @@ public class SupplierUpdate extends java.awt.Dialog {
     /**
      * Creates new form Employee_Update
      */
-    public SupplierUpdate(java.awt.Frame parent, boolean modal) {
+    public SupplierUpdate(Frame parent, boolean modal, String firstName, String lastName, String email, String mobile) {
         super(parent, modal);
         initComponents();
         setDocumentFilters();
+
+        supplier_firstname.setText(firstName);
+        supplier_lastname.setText(lastName);
+        supplier_email.setText(email);
+        supplier_mobile.setText(mobile);
 
     }
 
@@ -201,22 +211,35 @@ public class SupplierUpdate extends java.awt.Dialog {
         String email = supplier_email.getText();
         String mobile = supplier_mobile.getText();
 
+
         if (firstName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (lastName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your last name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your email", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else if (!RegexValidator.isValidEmail(email)) {
-
             JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else if (mobile.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please enter your mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!RegexValidator.isValidSlPhone(mobile)) {
-            JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                SupplierModel supplierModel = new SupplierModel();
+                supplierModel.setFirstName(firstName);
+                supplierModel.setLastName(lastName);
+                supplierModel.setEmail(email);
+                supplierModel.setMobile(mobile);
 
+                ResultSet resultSet = new SupplierController().update(supplierModel);
+
+                JOptionPane.showMessageDialog(this, "Supplier details updated successfully");
+
+                reset(); 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }//GEN-LAST:event_supplier_update_btnActionPerformed
@@ -227,22 +250,22 @@ public class SupplierUpdate extends java.awt.Dialog {
     }//GEN-LAST:event_supplier_reset_btnActionPerformed
 
     /**
-     * @param args the command line arguments
+//     * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        FlatMacDarkLaf.setup();
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                SupplierUpdate dialog = new SupplierUpdate(new java.awt.Frame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        FlatMacDarkLaf.setup();
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                SupplierUpdate dialog = new SupplierUpdate(new java.awt.Frame(), true, firstName, lastName, email, mobile, status);
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
+//                dialog.setVisible(true);
+//            }
+//        });
+//    }
 
     private void reset() {
 
