@@ -44,8 +44,8 @@ public class UpdateService extends java.awt.Dialog {
             vector.add("Select");
 
             while (resultSet.next()) {
-                vector.add(resultSet.getString("type"));
-               vehicleTypeMap.put(resultSet.getString("type"), resultSet.getString("id"));
+                vector.add(resultSet.getString("name"));
+               vehicleTypeMap.put(resultSet.getString("name"), resultSet.getString("id"));
             }
 
             DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
