@@ -32,7 +32,6 @@ public class SupplierRegistration extends java.awt.Dialog {
 
     private void setDocumentFilters() {
         ((AbstractDocument) supplier_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
-
     }
 
     /**
@@ -183,11 +182,8 @@ public class SupplierRegistration extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Please enter your last name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your email", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else if (!RegexValidator.isValidEmail(email)) {
-
             JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else if (mobile.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!RegexValidator.isValidSlPhone(mobile)) {

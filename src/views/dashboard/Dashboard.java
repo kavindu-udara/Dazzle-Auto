@@ -4,13 +4,10 @@
  */
 package views.dashboard;
 
-import com.formdev.flatlaf.IntelliJTheme;
 import controllers.AccessRoleController;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import models.LoginModel;
 import views.customer.CustomerJPanel;

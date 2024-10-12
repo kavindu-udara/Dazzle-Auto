@@ -12,9 +12,7 @@ import controllers.EmployeeController;
 import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
 import controllers.StatusController;
-import controllers.SupplierController;
 import java.util.HashMap;
-import views.supplier.SupplierUpdate;
 
 /**
  *
