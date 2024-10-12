@@ -162,8 +162,8 @@ public class AppointmnetPanel extends javax.swing.JPanel {
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                                             .addComponent(vehicleSearchField))
-                                        .addGap(402, 402, 402)
-                                        .addComponent(jAddAppointmentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addGap(389, 389, 389)
+                                        .addComponent(jAddAppointmentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 9, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(

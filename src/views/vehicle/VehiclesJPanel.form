@@ -94,7 +94,7 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jSortComboBox" min="-2" pref="201" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jRegNewVehicleBotton" min="-2" pref="253" max="-2" attributes="0"/>
+                                      <Component id="jRegNewVehicleBotton" min="-2" pref="268" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jSeparator1" alignment="0" min="-2" pref="1065" max="-2" attributes="0"/>

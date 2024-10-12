@@ -122,7 +122,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
         jRegNewCustomerButton.setBackground(new java.awt.Color(199, 232, 199));
         jRegNewCustomerButton.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jRegNewCustomerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/add-user-30.png"))); // NOI18N
-        jRegNewCustomerButton.setText(" REGISTER NEW CUSTOMER");
+        jRegNewCustomerButton.setText(" REGISTER  CUSTOMER");
         jRegNewCustomerButton.setBorderPainted(false);
         jRegNewCustomerButton.setFocusPainted(false);
         jRegNewCustomerButton.setFocusable(false);
@@ -143,9 +143,9 @@ public class CustomerJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(customerFindField, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 535, Short.MAX_VALUE)
-                .addComponent(jRegNewCustomerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jScrollPane2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jRegNewCustomerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1065, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

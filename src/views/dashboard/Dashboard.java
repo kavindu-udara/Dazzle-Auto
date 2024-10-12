@@ -175,7 +175,7 @@ public class Dashboard extends javax.swing.JFrame {
                 jOurServicesButtonActionPerformed(evt);
             }
         });
-        menuButtonsPanel.add(jOurServicesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 200, 60));
+        menuButtonsPanel.add(jOurServicesButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 210, 60));
 
         jFinanceButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
         jFinanceButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/resume-30.png"))); // NOI18N
@@ -189,7 +189,7 @@ public class Dashboard extends javax.swing.JFrame {
                 jFinanceButtonActionPerformed(evt);
             }
         });
-        menuButtonsPanel.add(jFinanceButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 200, 60));
+        menuButtonsPanel.add(jFinanceButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 210, 60));
 
         jReportsButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
         jReportsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/report-3.png"))); // NOI18N

@@ -24,7 +24,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" alignment="0" pref="857" max="32767" attributes="0"/>
+          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -60,15 +60,15 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-                      <Component id="jShopButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="77" max="32767" attributes="0"/>
-                      <Component id="jServiceStationButton" min="-2" pref="346" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel1" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jShopButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="77" max="32767" attributes="0"/>
+                              <Component id="jServiceStationButton" min="-2" pref="346" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                       <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="317" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -107,15 +107,10 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace pref="27" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jLabel3" min="-2" pref="267" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace pref="40" max="32767" attributes="0"/>
-                                  <Component id="jLabel2" min="-2" pref="254" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jLabel3" alignment="1" min="-2" pref="267" max="-2" attributes="0"/>
+                              <Component id="jLabel2" alignment="1" min="-2" pref="254" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="40" max="32767" attributes="0"/>
                       </Group>
@@ -158,6 +153,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Roboto" size="24" style="1"/>
                 </Property>
+                <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="text" type="java.lang.String" value="Choose Login"/>
               </Properties>
             </Component>
