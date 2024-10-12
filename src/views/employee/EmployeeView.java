@@ -14,6 +14,7 @@ import controllers.EmployeeTypeController;
 import controllers.StatusController;
 import controllers.SupplierController;
 import java.util.HashMap;
+import views.supplier.SupplierUpdate;
 
 /**
  *
@@ -279,46 +280,27 @@ public class EmployeeView extends javax.swing.JFrame {
 
     private void employee_imageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_imageMouseClicked
 
+
     }//GEN-LAST:event_employee_imageMouseClicked
+
 
     private void employee_view_tblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_view_tblMouseClicked
 
-// int row = employee_view_tbl.getSelectedRow();
-//
-//        String email = String.valueOf(employee_view_tbl.getValueAt(row, 0));
-//        jTextField2.setText(email);
-//        jTextField2.setEditable(false);
-//
-//        String firstName = String.valueOf(employee_view_tbl.getValueAt(row, 1));
-//        jTextField3.setText(firstName);
-//
-//        String lastName = String.valueOf(employee_view_tbl.getValueAt(row, 2));
-//        jTextField4.setText(lastName);
-//
-//        String nic = String.valueOf(employee_view_tbl.getValueAt(row, 3));
-//        jTextField5.setText(nic);
-//
-//        String mobile = String.valueOf(employee_view_tbl.getValueAt(row, 4));
-//        jTextField6.setText(mobile);
-//
-//        String password = String.valueOf(employee_view_tbl.getValueAt(row, 5));
-//        jPasswordField1.setText(password);
-//
-//        String gender = String.valueOf(employee_view_tbl.getValueAt(row, 6));
-//        jComboBox1.setSelectedItem(gender);
-//
-//        String type = String.valueOf(employee_view_tbl.getValueAt(row, 7));
-//        jComboBox2.setSelectedItem(type);
-//
-//        if (evt.getClickCount() == 2) {
-//
-//            int row1 = jTable1.getSelectedRow();
-//            String email1 = String.valueOf(jTable1.getValueAt(row1, 0));
-//
-//            AddressView addressView = new AddressView(this, true, email1);
-//            addressView.setVisible(true);
-//
-//        }
+        int row = employee_view_tbl.getSelectedRow();
+
+        if (evt.getClickCount() == 1 && row != -1) {
+            String firstName = String.valueOf(employee_view_tbl.getValueAt(row, 1));
+            String lastName = String.valueOf(employee_view_tbl.getValueAt(row, 2));
+            String email = String.valueOf(employee_view_tbl.getValueAt(row, 3));
+            String nic = String.valueOf(employee_view_tbl.getValueAt(row, 5));
+            String mobile = String.valueOf(employee_view_tbl.getValueAt(row, 4)); // Ensure this is correct
+            String employeeType = String.valueOf(employee_view_tbl.getValueAt(row, 8)); // Ensure this is correct
+
+            EmployeeUpdate employeeUpdate = new EmployeeUpdate(this, true, firstName, lastName, email, nic, mobile, employeeType);
+            employeeUpdate.setVisible(true);
+
+            loadEmployees();
+        }
 
     }//GEN-LAST:event_employee_view_tblMouseClicked
 
