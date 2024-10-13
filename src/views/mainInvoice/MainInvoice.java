@@ -5,6 +5,7 @@
 package views.mainInvoice;
 
 import com.formdev.flatlaf.IntelliJTheme;
+import includes.IDGenarator;
 import includes.OnlyDoubleDocumentFilter;
 import includes.RegexValidator;
 import java.awt.Color;
@@ -19,7 +20,9 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
-
+import models.LoginModel;
+import views.ourServices.OurServicesSelecter;
+import views.vehicle.VehicleSelecter;
 
 /**
  *
@@ -32,38 +35,30 @@ public class MainInvoice extends javax.swing.JFrame {
      */
     public MainInvoice() {
         initComponents();
-        
-        setDocumentFilters ();
+
+        setDocumentFilters();
         invoiceTableRender();
-        jInvoiceIDTextField.setText("INV-" + generateInvoiceId());
+        jInvoiceIDTextField.setText(IDGenarator.invoiceID());
+        jEmployeeNameLabel.setText(LoginModel.getFirstName() + " " + LoginModel.getLastName());
+
+        jButton4.setEnabled(false);
+        discountField.setEditable(false);
+        paymentField.setEditable(false);
     }
-    
-    private void setDocumentFilters (){
+
+    private void setDocumentFilters() {
         ((AbstractDocument) jServiceChargeField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
         ((AbstractDocument) discountField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
         ((AbstractDocument) paymentField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
     }
-    
-    public String generateInvoiceId() {
-        // Get the current time in milliseconds
-        long currentTimeMillis = System.currentTimeMillis();
 
-        // Convert to a string and take the last 8 digits
-        String code = Long.toString(currentTimeMillis);
-        if (code.length() > 8) {
-            code = code.substring(code.length() - 8); // Take the last 8 digits
-        }
-        
-        return code;
-    }
-    
-    public void invoiceTableRender() {
-        
+    private void invoiceTableRender() {
+
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        
+
         JTableHeader tableHeader = jTable1.getTableHeader();
-        
+
         tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -78,22 +73,35 @@ public class MainInvoice extends javax.swing.JFrame {
                 return label;
             }
         });
-        
+
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
-        
+
         for (int i = 0; i < 4; i++) {
             jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-    
+
+    public void setVehicleDetails(String vehicleNumber, String owner, String brand, String model, String type) {
+        jVehicleNoLabel.setText(vehicleNumber);
+        jVehicleTypeLabel.setText(type);
+        jBrandModelLabel.setText(brand + " " + model);
+    }
+
+    public void setServiceDetails(String serviceID, String serviceName, String vehicleType, String serviceCharge) {
+        jServiceNameLabel.setText(serviceName);
+        serviceIDLabel.setText(serviceID);
+        jServiceChargeField.setText(serviceCharge);
+        jServiceVehicleType.setText(vehicleType);
+    }
+
     private void calculate() {
-        
+
     }
-    
-    private void reset() {
-        jInvoiceIDTextField.setText("INV-" + generateInvoiceId());
+
+    public void reset() {
+        jInvoiceIDTextField.setText(IDGenarator.invoiceID());
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -103,9 +111,9 @@ public class MainInvoice extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
         jVehicleNoLabel = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        jVehicleSelectButton = new javax.swing.JButton();
+        jServiceSelectorButton = new javax.swing.JButton();
+        jServiceNameLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jDescriptionTextArea = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
@@ -113,11 +121,13 @@ public class MainInvoice extends javax.swing.JFrame {
         jEmployeeNameLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jInvoiceIDTextField = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        jAddInvoiceButton = new javax.swing.JButton();
         jServiceChargeField = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
         serviceIDLabel = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        jVehicleTypeLabel = new javax.swing.JLabel();
+        jBrandModelLabel = new javax.swing.JLabel();
+        jServiceVehicleType = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
@@ -155,33 +165,44 @@ public class MainInvoice extends javax.swing.JFrame {
         jVehicleNoLabel.setText("Vehicle No.");
         jVehicleNoLabel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
 
-        jButton1.setBackground(new java.awt.Color(33, 43, 108));
-        jButton1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Select Vehicle");
-        jButton1.setBorderPainted(false);
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.setFocusPainted(false);
-        jButton1.setFocusable(false);
+        jVehicleSelectButton.setBackground(new java.awt.Color(33, 43, 108));
+        jVehicleSelectButton.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jVehicleSelectButton.setForeground(new java.awt.Color(255, 255, 255));
+        jVehicleSelectButton.setText("Select Vehicle");
+        jVehicleSelectButton.setBorderPainted(false);
+        jVehicleSelectButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jVehicleSelectButton.setFocusPainted(false);
+        jVehicleSelectButton.setFocusable(false);
+        jVehicleSelectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jVehicleSelectButtonActionPerformed(evt);
+            }
+        });
 
-        jButton2.setBackground(new java.awt.Color(206, 121, 0));
-        jButton2.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Select Service");
-        jButton2.setBorderPainted(false);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton2.setFocusPainted(false);
-        jButton2.setFocusable(false);
+        jServiceSelectorButton.setBackground(new java.awt.Color(206, 121, 0));
+        jServiceSelectorButton.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jServiceSelectorButton.setForeground(new java.awt.Color(255, 255, 255));
+        jServiceSelectorButton.setText("Select Service");
+        jServiceSelectorButton.setBorderPainted(false);
+        jServiceSelectorButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jServiceSelectorButton.setFocusPainted(false);
+        jServiceSelectorButton.setFocusable(false);
+        jServiceSelectorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jServiceSelectorButtonActionPerformed(evt);
+            }
+        });
 
-        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Selected Service");
-        jLabel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Service", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Yu Gothic UI Semibold", 1, 14))); // NOI18N
-        jLabel3.setOpaque(true);
+        jServiceNameLabel.setBackground(new java.awt.Color(255, 255, 255));
+        jServiceNameLabel.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 18)); // NOI18N
+        jServiceNameLabel.setText("Selected Service");
+        jServiceNameLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Service", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Yu Gothic UI Semibold", 1, 14))); // NOI18N
+        jServiceNameLabel.setOpaque(true);
 
         jDescriptionTextArea.setColumns(20);
         jDescriptionTextArea.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jDescriptionTextArea.setRows(5);
+        jDescriptionTextArea.setText("-");
         jScrollPane1.setViewportView(jDescriptionTextArea);
 
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
@@ -205,14 +226,19 @@ public class MainInvoice extends javax.swing.JFrame {
         jInvoiceIDTextField.setText("INV-0000000");
         jInvoiceIDTextField.setFocusable(false);
 
-        jButton3.setBackground(new java.awt.Color(187, 235, 203));
-        jButton3.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/add-3.png"))); // NOI18N
-        jButton3.setText("  Add Invoice");
-        jButton3.setBorderPainted(false);
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton3.setFocusPainted(false);
-        jButton3.setFocusable(false);
+        jAddInvoiceButton.setBackground(new java.awt.Color(187, 235, 203));
+        jAddInvoiceButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jAddInvoiceButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/add-3.png"))); // NOI18N
+        jAddInvoiceButton.setText("  Add Invoice");
+        jAddInvoiceButton.setBorderPainted(false);
+        jAddInvoiceButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jAddInvoiceButton.setFocusPainted(false);
+        jAddInvoiceButton.setFocusable(false);
+        jAddInvoiceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jAddInvoiceButtonActionPerformed(evt);
+            }
+        });
 
         jServiceChargeField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         jServiceChargeField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -225,11 +251,16 @@ public class MainInvoice extends javax.swing.JFrame {
         serviceIDLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         serviceIDLabel.setText("0");
 
-        jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 51, 153));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Vehicle Type");
-        jLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jVehicleTypeLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jVehicleTypeLabel.setForeground(new java.awt.Color(0, 51, 153));
+        jVehicleTypeLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jVehicleTypeLabel.setText("Vehicle Type");
+
+        jBrandModelLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jBrandModelLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jBrandModelLabel.setText("Brand");
+
+        jServiceVehicleType.setText("Vehicle Type");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -237,28 +268,36 @@ public class MainInvoice extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jVehicleNoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(37, 37, 37)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jServiceChargeField)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
+                        .addComponent(jVehicleSelectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jVehicleNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jVehicleTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jBrandModelLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(38, 38, 38)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(40, 40, 40)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jServiceChargeField, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jServiceSelectorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jServiceVehicleType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jServiceNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(serviceIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(serviceIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -268,51 +307,56 @@ public class MainInvoice extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jEmployeeNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
                             .addComponent(jInvoiceIDTextField)))
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jAddInvoiceButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(14, 14, 14))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jEmployeeNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(serviceIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jEmployeeNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jInvoiceIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(33, 33, 33)
+                        .addComponent(jAddInvoiceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addComponent(jLabel4)
-                                .addGap(3, 3, 3)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(2, 2, 2)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jServiceNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jServiceSelectorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jVehicleNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jVehicleSelectButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jVehicleNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(17, 17, 17)
+                                .addComponent(serviceIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(2, 2, 2)
+                        .addComponent(jServiceVehicleType)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jServiceChargeField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(1, 1, 1)))
-                .addContainerGap(16, Short.MAX_VALUE))
+                                .addComponent(jServiceChargeField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addGap(3, 3, 3)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jBrandModelLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jVehicleTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(0, 0, Short.MAX_VALUE))))))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -334,6 +378,10 @@ public class MainInvoice extends javax.swing.JFrame {
         jTable1.setRowHeight(30);
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(100);
+        }
 
         jPanel3.setBackground(new java.awt.Color(200, 232, 232));
 
@@ -497,7 +545,7 @@ public class MainInvoice extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE))
@@ -556,11 +604,50 @@ public class MainInvoice extends javax.swing.JFrame {
                 reset();
             } catch (Exception e) {
                 e.printStackTrace();
-                
+
             }
-            
+
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jVehicleSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehicleSelectButtonActionPerformed
+        new VehicleSelecter(this, true).setVisible(true);
+    }//GEN-LAST:event_jVehicleSelectButtonActionPerformed
+
+    private void jServiceSelectorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jServiceSelectorButtonActionPerformed
+        String vehicleNo = jVehicleNoLabel.getText();
+
+        if (vehicleNo.equals("Vehicle No.")) {
+            JOptionPane.showMessageDialog(this, "Please Select Vehicle First !", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            new OurServicesSelecter(this, true).setVisible(true);
+        }
+
+    }//GEN-LAST:event_jServiceSelectorButtonActionPerformed
+
+    private void jAddInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAddInvoiceButtonActionPerformed
+
+        String serviceID = serviceIDLabel.getText();
+        String serviceName = jServiceNameLabel.getText();
+        String serviceDescription = jDescriptionTextArea.getText();
+        String serviceCharge = jServiceChargeField.getText();
+
+        if (jVehicleNoLabel.getText().equals("Vehicle No.")) {
+            JOptionPane.showMessageDialog(this, "Please Select Vehicle !", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (jServiceNameLabel.getText().equals("Selected Service")) {
+            JOptionPane.showMessageDialog(this, "Please Select Service !", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (serviceCharge.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Enter Service Charge !", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (Double.parseDouble(serviceCharge) <= 0) {
+            JOptionPane.showMessageDialog(this, "Please Enter Valid Service Charge !", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+
+        }
+
+        paymentField.grabFocus();
+        discountField.setEditable(true);
+        paymentField.setEditable(true);
+    }//GEN-LAST:event_jAddInvoiceButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -581,9 +668,8 @@ public class MainInvoice extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField balanceField;
     private javax.swing.JFormattedTextField discountField;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jAddInvoiceButton;
+    private javax.swing.JLabel jBrandModelLabel;
     private javax.swing.JButton jButton4;
     private javax.swing.JTextArea jDescriptionTextArea;
     private javax.swing.JLabel jEmployeeNameLabel;
@@ -595,11 +681,9 @@ public class MainInvoice extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -607,8 +691,13 @@ public class MainInvoice extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JFormattedTextField jServiceChargeField;
+    private javax.swing.JLabel jServiceNameLabel;
+    private javax.swing.JButton jServiceSelectorButton;
+    private javax.swing.JLabel jServiceVehicleType;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel jVehicleNoLabel;
+    private javax.swing.JButton jVehicleSelectButton;
+    private javax.swing.JLabel jVehicleTypeLabel;
     private javax.swing.JFormattedTextField paymentField;
     private javax.swing.JComboBox<String> paymentMethodComboBox;
     private javax.swing.JLabel serviceIDLabel;

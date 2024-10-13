@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[1100, 610]"/>
@@ -128,12 +128,27 @@
           <SubComponents>
             <Component class="javax.swing.JTable" name="ourServicesViewTable">
               <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Roboto" size="16" style="1"/>
+                </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="0">
-                    <Column editable="false" title="ID" type="java.lang.Object"/>
-                    <Column editable="false" title="Service Name" type="java.lang.Object"/>
-                    <Column editable="false" title="Vehicle Type " type="java.lang.Object"/>
-                    <Column editable="false" title="Service Charge" type="java.lang.Object"/>
+                  <Table columnCount="4" rowCount="2">
+                    <Column editable="true" title="ID" type="java.lang.Object">
+                      <Data value="001"/>
+                      <Data value="002"/>
+                    </Column>
+                    <Column editable="true" title="Service Name" type="java.lang.Object">
+                      <Data value="Full Service"/>
+                      <Data value="Engine Repair"/>
+                    </Column>
+                    <Column editable="true" title="Vehicle Type " type="java.lang.Object">
+                      <Data value="Motercycle"/>
+                      <Data value="SUV"/>
+                    </Column>
+                    <Column editable="true" title="Service Charge" type="java.lang.Object">
+                      <Data value="3000"/>
+                      <Data value="4000"/>
+                    </Column>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -160,11 +175,17 @@
                     </Column>
                   </TableColumnModel>
                 </Property>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Hand Cursor"/>
+                </Property>
                 <Property name="rowHeight" type="int" value="30"/>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ourServicesViewTableMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -174,9 +195,6 @@
               <Font name="Roboto" size="16" style="1"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="serviceFindFieldActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
