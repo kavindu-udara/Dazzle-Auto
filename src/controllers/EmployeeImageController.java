@@ -20,8 +20,8 @@ public class EmployeeImageController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
 
-    public ResultSet show(int id) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
+    public ResultSet show(String id) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + id + "'");
     }
 
    public ResultSet store(EmployeeImageModel employeeImageModel) throws Exception {
@@ -30,7 +30,7 @@ public class EmployeeImageController {
     public ResultSet update(EmployeeImageModel employeeImageModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
                 + "`path`='" + employeeImageModel.getPath() + "', "
-                + "`employee_id`='" + employeeImageModel.getEmployeeId() + "',"
+                + "`employee_id`='" + employeeImageModel.getEmployeeId() + "'"
                 + "WHERE `id`='" + employeeImageModel.getId() + "' ");
     }
 

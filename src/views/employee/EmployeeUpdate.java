@@ -5,17 +5,27 @@
 package views.employee;
 
 import controllers.EmployeeController;
+import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
+import includes.BDUtility;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
 import java.awt.Frame;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import models.EmployeeImageModel;
 import models.EmployeeModel;
 
 /**
@@ -27,6 +37,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
     private static HashMap<String, String> employeeTypeMap = new HashMap<>();
 
     private EmployeeModel employeeModel;
+    private EmployeeImageModel employeeImageModel = new EmployeeImageModel();
 
     public EmployeeUpdate(Frame parent, boolean modal, EmployeeModel employeeModel) {
         super(parent, modal);
@@ -42,6 +53,10 @@ public class EmployeeUpdate extends java.awt.Dialog {
         employee_nic.setText(employeeModel.getNic());
         employee_mobile.setText(employeeModel.getMobile());
         employee_type.setSelectedItem(employeeModel.getEmployeeTypeName());
+
+        loadAmployeeImage();
+
+        System.out.println(employeeModel.getId());
 
     }
 
@@ -67,6 +82,35 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
     private void setDocumentFilters() {
         ((AbstractDocument) employee_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+    }
+
+    private void loadAmployeeImage() {
+        try {
+            ResultSet resultSet = new EmployeeImageController().show(employeeModel.getId());
+
+            // show image
+            if (resultSet.next()) {
+                employeeImageModel.setPath(resultSet.getString("path"));
+                employeeImageModel.setId(resultSet.getInt("id"));
+                employeeImageModel.setEmployeeId(resultSet.getString("employee_id"));
+                
+                String imagePath = BDUtility.getPath("resources/employeeImages/" + resultSet.getString("path"));
+                File imageFile = new File(imagePath);
+
+                if (imageFile.exists()) {
+                    ImageIcon icon = new ImageIcon(imagePath);
+
+                    Image image = icon.getImage().getScaledInstance(210, 240, Image.SCALE_SMOOTH);
+                    ImageIcon resizedIcon = new ImageIcon(image);
+                    employee_image.setIcon(resizedIcon);
+                } else {
+                    employee_image.setIcon(null);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     /**
@@ -107,6 +151,11 @@ public class EmployeeUpdate extends java.awt.Dialog {
         jLabel1.setText("EMPLOYEE DETAILS");
 
         employee_image.setBackground(new java.awt.Color(255, 255, 51));
+        employee_image.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                employee_imageMouseClicked(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("First Name");
@@ -304,6 +353,9 @@ public class EmployeeUpdate extends java.awt.Dialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_employee_mobileActionPerformed
 
+    
+    BufferedImage originalImage = null;
+    File selectedFile = null;
     private void employee_update_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_update_btnActionPerformed
 
         String firstName = employee_firstname.getText();
@@ -344,6 +396,17 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
                 new EmployeeController().update(employeeModel);
 
+                if (selectedFile != null) {
+                    String imagePath = saveImage(employeeModel.getId() + nic + firstName + lastName);
+                    if (imagePath != null) {
+                        employeeImageModel.setPath(imagePath);
+
+                        new EmployeeImageController().update(employeeImageModel);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+
                 JOptionPane.showMessageDialog(this, "Employee details updated successfully");
                 reset();
             } catch (Exception e) {
@@ -351,6 +414,39 @@ public class EmployeeUpdate extends java.awt.Dialog {
             }
         }
     }//GEN-LAST:event_employee_update_btnActionPerformed
+
+    
+    // Save image in resources package
+    private String saveImage(String email) {
+        if (originalImage != null && selectedFile != null) {
+            try {
+                String savePath = BDUtility.getPath("resources/employeeImages/" + File.separator);
+
+                File directory = new File(savePath);
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+
+                String extension = BDUtility.getFileExtension(selectedFile.getName());
+
+                String imageName = email + "." + extension;
+
+                File saveFile = new File(savePath + imageName);
+
+                BufferedImage scaledImage = BDUtility.scaleImage(originalImage, ImageIO.read(selectedFile));
+
+                ImageIO.write(scaledImage, extension.replace(".", ""), saveFile);
+
+                return imageName;
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
+    }
 
     private void employee_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_reset_btnActionPerformed
 
@@ -365,6 +461,44 @@ public class EmployeeUpdate extends java.awt.Dialog {
     private void employee_emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_emailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_employee_emailActionPerformed
+
+    private void employee_imageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_imageMouseClicked
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+
+            selectedFile = fileChooser.getSelectedFile();
+            try {
+                originalImage = ImageIO.read(selectedFile);
+
+                int originalWidth = originalImage.getWidth();
+                int originalHeight = originalImage.getHeight();
+
+                int labelWidth = employee_image.getWidth();
+                int labelHeight = employee_image.getHeight();
+
+                double scalex = (double) labelWidth / originalWidth;
+                double scaleY = (double) labelHeight / originalHeight;
+
+                double scale = Math.min(scalex, scaleY);
+
+                int scaleWidth = (int) (originalWidth * scale);
+                int scaleHeight = (int) (originalHeight * scale);
+
+                Image scaledImage = originalImage.getScaledInstance(scaleWidth, scaleHeight, Image.SCALE_SMOOTH);
+
+                ImageIcon icon = new ImageIcon(scaledImage);
+                employee_image.setIcon(icon);
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+
+            }
+        }
+    }//GEN-LAST:event_employee_imageMouseClicked
 
     /**
      * @param args the command line arguments
