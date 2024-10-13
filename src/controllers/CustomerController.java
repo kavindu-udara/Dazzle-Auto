@@ -33,14 +33,15 @@ public class CustomerController {
                 + "'" + TimestampsGenerator.getFormattedDateTime() + "') ");
     }
 
-    public ResultSet update(CustomerModel customerModel) throws Exception {
-        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
-                + "`first_name`='" + customerModel.getFirstName() + "', "
-                + "`last_name`='" + customerModel.getLastName() + "',"
-                + "`mobile`='" + customerModel.getMobile() + "', "
-                + "`registered_date`='" + customerModel.getRegisteredDate() + "', "
-                + "WHERE `id`='" + customerModel.getId() + "' ");
-    }
+public ResultSet update(CustomerModel customerModel) throws Exception {
+    return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
+            + "`first_name`='" + customerModel.getFirstName() + "', "
+            + "`last_name`='" + customerModel.getLastName() + "', "
+            + "`mobile`='" + customerModel.getMobile() + "', "
+            + "`registered_date`='" + customerModel.getRegisteredDate() + "' "
+            + "WHERE `id`='" + customerModel.getId() + "' ");
+}
+
 
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
