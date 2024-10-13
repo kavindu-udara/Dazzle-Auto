@@ -4,13 +4,17 @@
  */
 package views.customer;
 
-import views.supplier.*;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
+import java.awt.Frame;
+import models.CustomerModel;
+import controllers.CustomerController;
+import includes.TimestampsGenerator;
+import javax.print.attribute.DateTimeSyntax;
 
 /**
  *
@@ -18,13 +22,21 @@ import includes.RegexValidator;
  */
 public class CustomerUpdate extends java.awt.Dialog {
 
+    private CustomerModel customerModel;
+
     /**
      * Creates new form SupplierRegistration
      */
-    public CustomerUpdate(java.awt.Frame parent, boolean modal) {
+    public CustomerUpdate(Frame parent, boolean modal, CustomerModel customerModel) {
         super(parent, modal);
         initComponents();
         setDocumentFilters();
+
+        this.customerModel = customerModel;
+
+        customer_firstname.setText(customerModel.getFirstName());
+        customer_lastname.setText(customerModel.getLastName());
+        customer_mobile.setText(customerModel.getMobile());
 
     }
 
@@ -188,8 +200,26 @@ public class CustomerUpdate extends java.awt.Dialog {
         } else if (!RegexValidator.isValidSlPhone(mobile)) {
             JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
 
-        }
+        } else {
 
+            try {
+
+                customerModel.setFirstName(firstName);
+                customerModel.setLastName(lastName);
+                customerModel.setMobile(mobile);
+
+                String registerDateTime = TimestampsGenerator.getFormattedDateTime();
+                customerModel.setRegisteredDate(registerDateTime);
+
+                new CustomerController().update(customerModel);
+
+                JOptionPane.showMessageDialog(this, "Customer details updated successfully");
+                reset();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
 
     }//GEN-LAST:event_customer_register_btnActionPerformed
 
@@ -201,25 +231,6 @@ public class CustomerUpdate extends java.awt.Dialog {
 
         reset();
     }//GEN-LAST:event_customer_reset_btnActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-
-        FlatMacDarkLaf.setup();
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                CustomerUpdate dialog = new CustomerUpdate(new java.awt.Frame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     private void reset() {
 
