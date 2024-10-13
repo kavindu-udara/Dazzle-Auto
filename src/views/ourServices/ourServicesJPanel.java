@@ -9,12 +9,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import views.mainInvoice.MainInvoice;
 
 /**
  *
@@ -22,14 +24,31 @@ import javax.swing.table.JTableHeader;
  */
 public class ourServicesJPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ourServicesJPanel
-     */
+    OurServicesSelecter ServiceSelecterFrame = null;
+
+    MainInvoice mainInvoice = null;
+    String From = "";
+
     public ourServicesJPanel() {
         initComponents();
-        
+
         serviceFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Service Name");
-        
+
+        OurServiceTableRender();
+    }
+
+    //Constructer for service selector
+    public ourServicesJPanel(Frame parentFrame, OurServicesSelecter ourServicesSelecter) {
+        this.ServiceSelecterFrame = ourServicesSelecter;
+
+        this.From = "Selecter";
+        this.mainInvoice = (MainInvoice) parentFrame;
+
+        initComponents();
+
+        serviceFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Service Name");
+        jAddNewServiceButton.setEnabled(false);
+
         OurServiceTableRender();
     }
 
@@ -61,7 +80,7 @@ public class ourServicesJPanel extends javax.swing.JPanel {
             ourServicesViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -88,24 +107,24 @@ public class ourServicesJPanel extends javax.swing.JPanel {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/services-30.png"))); // NOI18N
         jLabel2.setText("  Our Services");
 
+        ourServicesViewTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         ourServicesViewTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {"001", "Full Service", "Motercycle", "3000"},
+                {"002", "Engine Repair", "SUV", "4000"}
             },
             new String [] {
                 "ID", "Service Name", "Vehicle Type ", "Service Charge"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
+        ourServicesViewTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         ourServicesViewTable.setRowHeight(30);
         ourServicesViewTable.getTableHeader().setReorderingAllowed(false);
+        ourServicesViewTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ourServicesViewTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(ourServicesViewTable);
         if (ourServicesViewTable.getColumnModel().getColumnCount() > 0) {
             ourServicesViewTable.getColumnModel().getColumn(0).setPreferredWidth(150);
@@ -113,11 +132,6 @@ public class ourServicesJPanel extends javax.swing.JPanel {
         }
 
         serviceFindField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        serviceFindField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                serviceFindFieldActionPerformed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel1.setText("Find Service :");
@@ -194,14 +208,23 @@ public class ourServicesJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void serviceFindFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serviceFindFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_serviceFindFieldActionPerformed
-
     private void jAddNewServiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAddNewServiceButtonActionPerformed
-
-        
+        new ServiceRegistration(null, true).setVisible(true);
     }//GEN-LAST:event_jAddNewServiceButtonActionPerformed
+
+    private void ourServicesViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ourServicesViewTableMouseClicked
+
+        int row = ourServicesViewTable.getSelectedRow();
+        String serviceID = String.valueOf(ourServicesViewTable.getValueAt(row, 0));
+        String serviceName = String.valueOf(ourServicesViewTable.getValueAt(row, 1));
+        String vehicleType = String.valueOf(ourServicesViewTable.getValueAt(row, 2));
+        String serviceCharge = String.valueOf(ourServicesViewTable.getValueAt(row, 3));
+
+        if (From.equals("Selecter")) {
+            mainInvoice.setServiceDetails(serviceID, serviceName, vehicleType, serviceCharge);
+            ServiceSelecterFrame.dispose();
+        }
+    }//GEN-LAST:event_ourServicesViewTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

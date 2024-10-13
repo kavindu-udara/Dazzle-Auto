@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -18,32 +19,47 @@ import javax.swing.table.JTableHeader;
 import views.components.vehicleTableRender.HistoryActionCellEditor;
 import views.components.vehicleTableRender.HistoryActionEvent;
 import views.components.vehicleTableRender.HistoryCellRender;
+import views.mainInvoice.MainInvoice;
 
 /**
  *
  * @author Dinuka
  */
 public class VehiclesJPanel extends javax.swing.JPanel {
+    VehicleSelecter VehicleSelecterFrame = null;
+    
+    
+    MainInvoice mainInvoice = null;
+    String From = "";
 
-    /**
-     * Creates new form VehiclesJPanel
-     */
     public VehiclesJPanel() {
         initComponents();
-        
+
         vehicleFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "CAA-0000");
-        
+
         vehicleViewTableRender();
     }
 
-    
-    public void vehicleViewTableRender() {
+    //Constructer for VehicleSelecter
+    public VehiclesJPanel(Frame parentFrame, VehicleSelecter vehicleSelecter) {
+        this.VehicleSelecterFrame = vehicleSelecter;
         
+        this.From = "Selecter";
+        this.mainInvoice = (MainInvoice) parentFrame;
+        initComponents();
+
+        vehicleFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "CAA-0000");
+        jRegNewVehicleBotton.setEnabled(false);
+
+        vehicleViewTableRender();
+    }
+
+    public void vehicleViewTableRender() {
+
         HistoryActionEvent event = new HistoryActionEvent() {
 
             @Override
             public void onView(int row) {
-
 
             }
         };
@@ -76,7 +92,7 @@ public class VehiclesJPanel extends javax.swing.JPanel {
             vehicleViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -108,17 +124,25 @@ public class VehiclesJPanel extends javax.swing.JPanel {
         vehicleFindField.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
         vehicleFindField.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Find Vehicle By Vehicle No.", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Roboto", 0, 14))); // NOI18N
 
+        vehicleViewTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         vehicleViewTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"ede", "ded", "dede", "dede", null, null}
+                {"CAA-0000", "Saman", "Toyota", "Land Cruser Prado ", "SUV", null},
+                {"BJF-7551", "Rajitha", "Honda", "CB4 Spec3", "Mortercycle", null}
             },
             new String [] {
                 "Vehicle Number", "Owner", "Brand", "Model ", "Vehicle Type ", ""
             }
         ));
+        vehicleViewTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         vehicleViewTable.setFocusable(false);
         vehicleViewTable.setRowHeight(40);
         vehicleViewTable.getTableHeader().setReorderingAllowed(false);
+        vehicleViewTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                vehicleViewTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(vehicleViewTable);
         if (vehicleViewTable.getColumnModel().getColumnCount() > 0) {
             vehicleViewTable.getColumnModel().getColumn(5).setPreferredWidth(200);
@@ -235,8 +259,22 @@ public class VehiclesJPanel extends javax.swing.JPanel {
 
     private void jRegNewVehicleBottonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegNewVehicleBottonActionPerformed
 
-        new VehicleRegistration(null,true).setVisible(true);
+        new VehicleRegistration(null, true).setVisible(true);
     }//GEN-LAST:event_jRegNewVehicleBottonActionPerformed
+
+    private void vehicleViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vehicleViewTableMouseClicked
+        int row = vehicleViewTable.getSelectedRow();
+        String vehicleNumber = String.valueOf(vehicleViewTable.getValueAt(row, 0));
+        String vehicleOwner = String.valueOf(vehicleViewTable.getValueAt(row, 1));
+        String vehicleBrand = String.valueOf(vehicleViewTable.getValueAt(row, 2));
+        String vehicleModel = String.valueOf(vehicleViewTable.getValueAt(row, 3));
+        String vehicleType = String.valueOf(vehicleViewTable.getValueAt(row, 4));
+        
+        if (From.equals("Selecter")) {
+            mainInvoice.setVehicleDetails(vehicleNumber, vehicleOwner, vehicleBrand, vehicleModel, vehicleType);            
+            VehicleSelecterFrame.dispose();
+        }
+    }//GEN-LAST:event_vehicleViewTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

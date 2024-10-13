@@ -184,7 +184,7 @@ public class StaffJPanel extends javax.swing.JPanel {
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 9; i++) {
             employeeViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
@@ -215,6 +215,7 @@ public class StaffJPanel extends javax.swing.JPanel {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
+        employeeViewTable.setFont(new java.awt.Font("Roboto", 1, 15)); // NOI18N
         employeeViewTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -245,6 +246,7 @@ public class StaffJPanel extends javax.swing.JPanel {
         jRegNewEmployeeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/add-user-30.png"))); // NOI18N
         jRegNewEmployeeButton.setText(" REGISTER NEW EMPLOYEE");
         jRegNewEmployeeButton.setBorderPainted(false);
+        jRegNewEmployeeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jRegNewEmployeeButton.setFocusPainted(false);
         jRegNewEmployeeButton.setFocusable(false);
         jRegNewEmployeeButton.addActionListener(new java.awt.event.ActionListener() {
