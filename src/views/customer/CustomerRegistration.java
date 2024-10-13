@@ -4,13 +4,15 @@
  */
 package views.customer;
 
-import views.supplier.*;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.DocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
+import includes.TimestampsGenerator;
+import java.sql.ResultSet;
+import controllers.CustomerController;
+import models.CustomerModel;
 
 /**
  *
@@ -190,6 +192,27 @@ public class CustomerRegistration extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!RegexValidator.isValidSlPhone(mobile)) {
             JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        } else {
+
+            try {
+
+                CustomerModel customerModel = new CustomerModel();
+                customerModel.setFirstName(firstName);
+                customerModel.setLastName(lastName);
+                customerModel.setMobile(mobile);
+
+                String registerDateTime = TimestampsGenerator.getFormattedDateTime();
+                customerModel.setRegisteredDate(registerDateTime);
+
+                ResultSet resultSet = new CustomerController().store(customerModel);
+
+                JOptionPane.showMessageDialog(this, "Customer Registration Successfully");
+                reset();
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
 
         }
 
