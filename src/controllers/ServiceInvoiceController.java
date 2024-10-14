@@ -49,14 +49,10 @@ public class ServiceInvoiceController {
     }
 
     public ResultSet search(String searchText) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
-                + "`vehicle_number` LIKE '%" + searchText + "%' OR "
-                + "`date` LIKE '%" + searchText + "%' OR "
-                + "`total` LIKE '%" + searchText + "%' OR "
-                + "`paid_amount` LIKE '%" + searchText + "%' OR "
-                + "`balance` LIKE '%" + searchText + "%' OR "
-                + "`payment_method_id` LIKE '%" + searchText + "%' OR "
-                + "`employee_id` LIKE '%" + searchText + "%' OR ");
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` "
+                + "INNER JOIN payment_method ON service_invoice.payment_method_id=payment_method.id "
+                + "INNER JOIN employee ON service_invoice.employee_id=employee.id WHERE "
+                + "`vehicle_number` LIKE '%" + searchText + "%' OR `service_invoice`.`id` LIKE '%" + searchText + "%' ");
     }
 
     public ResultSet delete(int id) throws Exception {

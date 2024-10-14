@@ -34,9 +34,11 @@ public class VehicleSelecter extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1100, 610));
-        setPreferredSize(new java.awt.Dimension(1100, 610));
+        setMinimumSize(new java.awt.Dimension(1100, 644));
+        setPreferredSize(new java.awt.Dimension(1100, 644));
 
+        jPanel1.setMinimumSize(new java.awt.Dimension(1100, 644));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1100, 644));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -47,9 +49,7 @@ public class VehicleSelecter extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 621, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();

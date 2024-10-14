@@ -5,15 +5,20 @@
 package views.payment;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import controllers.ServiceInvoiceController;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.sql.ResultSet;
+import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import views.mainInvoice.MainInvoice;
 
@@ -29,12 +34,13 @@ public class PaymentsPanel extends javax.swing.JPanel {
     public PaymentsPanel() {
         initComponents();
         
-        jInvoiceSearchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter INVOICE ID");
+        jInvoiceSearchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "INVOICE ID/Vehicle No.");
         
+        loadInvoices();
         PaidInvoiceTableRender();
     }
     
-    public void PaidInvoiceTableRender() {
+    private void PaidInvoiceTableRender() {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -61,6 +67,36 @@ public class PaymentsPanel extends javax.swing.JPanel {
         for (int i = 0; i < 8; i++) {
             jPaidInvoiceTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
+    }
+    
+    public void loadInvoices(){
+        try {
+            ResultSet resultSet = new ServiceInvoiceController().search(jInvoiceSearchField.getText());
+
+            DefaultTableModel dtm = (DefaultTableModel) jPaidInvoiceTable.getModel();
+            dtm.setRowCount(0);
+
+            int row = 0;
+            while (resultSet.next()) {
+                row++;
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("vehicle_number"));
+                vector.add(resultSet.getString("date"));
+                vector.add(resultSet.getString("total"));
+                vector.add(resultSet.getString("paid_amount"));
+                vector.add(resultSet.getString("balance"));
+                vector.add(resultSet.getString("method"));
+                vector.add(resultSet.getString("first_name")+" "+resultSet.getString("last_name"));
+
+                dtm.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+//            ERROR_LOGGER.log(Level.INFO, "Exception In loadinvoices() On Dashboard", e);
+        }
+        
     }
    
     @SuppressWarnings("unchecked")
@@ -103,6 +139,7 @@ public class PaymentsPanel extends javax.swing.JPanel {
             }
         });
 
+        jPaidInvoiceTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jPaidInvoiceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -191,7 +228,7 @@ public class PaymentsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void invoiceAddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invoiceAddButtonActionPerformed
-        MainInvoice mainInvoice = new MainInvoice();
+        MainInvoice mainInvoice = new MainInvoice(this);
         mainInvoice.setVisible(true);
     }//GEN-LAST:event_invoiceAddButtonActionPerformed
 
