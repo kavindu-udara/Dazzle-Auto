@@ -317,6 +317,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 }
 
                 JOptionPane.showMessageDialog(this, "Employee Registration Successful");
+                loadEmployees();
                 reset();
 
             } catch (Exception e) {
@@ -379,7 +380,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
             }
         }
     }//GEN-LAST:event_employee_imageMouseClicked
-   
+
     // Save image in resources package
     private String saveImage(String email) {
         if (originalImage != null && selectedFile != null) {
@@ -441,6 +442,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField employee_email;
     private javax.swing.JTextField employee_firstname;
@@ -460,4 +462,8 @@ public class EmployeeRegistration extends java.awt.Dialog {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    private void loadEmployees() {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
