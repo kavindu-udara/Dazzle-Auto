@@ -317,7 +317,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
                     new EmployeeImageController().store(employeeImageModel);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
+//                    JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
 
                 JOptionPane.showMessageDialog(this, "Employee Registration Successful");

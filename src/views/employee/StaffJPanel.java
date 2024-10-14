@@ -360,7 +360,8 @@ public class StaffJPanel extends javax.swing.JPanel {
 
     private void jRegNewEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegNewEmployeeButtonActionPerformed
 
-        new EmployeeRegistration(null, true).setVisible(true);
+        // TODO: need to fix this
+//        new EmployeeRegistration(null, true).setVisible(true);
     }//GEN-LAST:event_jRegNewEmployeeButtonActionPerformed
 
     private void employeeFindFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeFindFieldActionPerformed
@@ -395,10 +396,9 @@ public class StaffJPanel extends javax.swing.JPanel {
                 EmployeeUpdate employeeUpdate = new EmployeeUpdate(staffJPanel, true, employeeModel);
                 employeeUpdate.setVisible(true);
             } catch (Exception e) {
-                e.printStackTrace(); 
+                e.printStackTrace();
             }
 
-          
             loadEmployees();
         }
 
