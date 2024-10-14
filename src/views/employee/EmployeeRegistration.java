@@ -36,15 +36,15 @@ import models.EmployeeImageModel;
  */
 public class EmployeeRegistration extends java.awt.Dialog {
 
-    private EmployeeView employeeView;
+    private StaffJPanel staffJPanel;
 
-    public EmployeeRegistration(java.awt.Frame parent, boolean modal, EmployeeView employeeView) {
+    public EmployeeRegistration(java.awt.Frame parent, boolean modal, StaffJPanel staffJPanel) {
         super(parent, modal);
         initComponents();
         setDocumentFilters();
         loadTypes();
 
-        this.employeeView = employeeView;
+        this.staffJPanel = staffJPanel;
     }
 
     private static HashMap<String, String> employeeTypeMap = new HashMap<>();
@@ -323,7 +323,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 JOptionPane.showMessageDialog(this, "Employee Registration Successful");
 
                 // Reload view table
-                employeeView.reloadTable();
+                staffJPanel.reloadTable();
 
                 reset();
 

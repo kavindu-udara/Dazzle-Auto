@@ -35,6 +35,8 @@ public class StaffJPanel extends javax.swing.JPanel {
     /**
      * Creates new form StaffJPanel
      */
+    private StaffJPanel staffJPanel;
+
     public StaffJPanel() {
         initComponents();
         loadEmployees();
@@ -42,6 +44,8 @@ public class StaffJPanel extends javax.swing.JPanel {
         employeeFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/NIC");
 
         employeeViewTableRender();
+
+        this.staffJPanel = this;
     }
 
     private void loadEmployees() {
@@ -187,6 +191,10 @@ public class StaffJPanel extends javax.swing.JPanel {
         for (int i = 0; i < 9; i++) {
             employeeViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
+    }
+
+    public void reloadTable() {
+        loadEmployees();
     }
 
     @SuppressWarnings("unchecked")
@@ -361,7 +369,7 @@ public class StaffJPanel extends javax.swing.JPanel {
     private void jRegNewEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegNewEmployeeButtonActionPerformed
 
         // TODO: need to fix this
-//        new EmployeeRegistration(null, true).setVisible(true);
+        new EmployeeRegistration(null, true, staffJPanel).setVisible(true);
     }//GEN-LAST:event_jRegNewEmployeeButtonActionPerformed
 
     private void employeeFindFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeFindFieldActionPerformed
