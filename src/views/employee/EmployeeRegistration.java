@@ -36,11 +36,15 @@ import models.EmployeeImageModel;
  */
 public class EmployeeRegistration extends java.awt.Dialog {
 
-    public EmployeeRegistration(java.awt.Frame parent, boolean modal) {
+    private EmployeeView employeeView;
+
+    public EmployeeRegistration(java.awt.Frame parent, boolean modal, EmployeeView employeeView) {
         super(parent, modal);
         initComponents();
         setDocumentFilters();
         loadTypes();
+
+        this.employeeView = employeeView;
     }
 
     private static HashMap<String, String> employeeTypeMap = new HashMap<>();
@@ -317,6 +321,10 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 }
 
                 JOptionPane.showMessageDialog(this, "Employee Registration Successful");
+
+                // Reload view table
+                employeeView.reloadTable();
+
                 reset();
 
             } catch (Exception e) {
@@ -379,7 +387,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
             }
         }
     }//GEN-LAST:event_employee_imageMouseClicked
-   
+
     // Save image in resources package
     private String saveImage(String email) {
         if (originalImage != null && selectedFile != null) {
@@ -415,20 +423,19 @@ public class EmployeeRegistration extends java.awt.Dialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                EmployeeRegistration dialog = new EmployeeRegistration(new java.awt.Frame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
-
+//    public static void main(String args[]) {
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                EmployeeRegistration dialog = new EmployeeRegistration(new java.awt.Frame(), true);
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
+//                dialog.setVisible(true);
+//            }
+//        });
+//    }
     private void reset() {
 
         employee_firstname.setText("");
