@@ -11,7 +11,7 @@ package models;
 public class LoginModel {
 
     // login table
-    private static int id;
+    private static String id;
     private static int accessRoleId;
     private static String employeeId;
     private static String password;
@@ -27,14 +27,14 @@ public class LoginModel {
     /**
      * @return the id
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

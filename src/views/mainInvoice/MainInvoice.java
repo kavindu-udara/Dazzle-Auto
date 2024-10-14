@@ -5,6 +5,8 @@
 package views.mainInvoice;
 
 import com.formdev.flatlaf.IntelliJTheme;
+import controllers.AccessRoleController;
+import controllers.PaymentMethodController;
 import includes.IDGenarator;
 import includes.OnlyDoubleDocumentFilter;
 import includes.RegexValidator;
@@ -12,16 +14,30 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.InputStream;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Vector;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
 import models.LoginModel;
+import models.MainInvoiceItemModel;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 import views.ourServices.OurServicesSelecter;
+import views.payment.PaymentsPanel;
 import views.vehicle.VehicleSelecter;
 
 /**
@@ -30,20 +46,28 @@ import views.vehicle.VehicleSelecter;
  */
 public class MainInvoice extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainInvoice
-     */
-    public MainInvoice() {
+    HashMap<String, MainInvoiceItemModel> invoiceItemMap = new HashMap<>();
+    HashMap<String, String> paymentMethodmMap = new HashMap<>();
+    
+    PaymentsPanel paymentsPanel;
+
+    public MainInvoice(PaymentsPanel parent) {
+        this.paymentsPanel = parent;
+        
         initComponents();
 
         setDocumentFilters();
         invoiceTableRender();
+        loadPaymentMethods();
         jInvoiceIDTextField.setText(IDGenarator.invoiceID());
         jEmployeeNameLabel.setText(LoginModel.getFirstName() + " " + LoginModel.getLastName());
 
         jButton4.setEnabled(false);
         discountField.setEditable(false);
         paymentField.setEditable(false);
+        
+        jLabel19.setVisible(false);
+        discountField.setVisible(false);
     }
 
     private void setDocumentFilters() {
@@ -81,6 +105,26 @@ public class MainInvoice extends javax.swing.JFrame {
         }
     }
 
+    private void loadPaymentMethods() {
+        try {
+            ResultSet reseltset = new PaymentMethodController().show();
+
+            Vector<String> vector = new Vector<>();
+
+            while (reseltset.next()) {
+                vector.add(reseltset.getString("method"));
+                paymentMethodmMap.put(reseltset.getString("method"), reseltset.getString("id"));
+            }
+
+            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel<>(vector);
+            paymentMethodComboBox.setModel(comboBoxModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+//            ERROR_LOGGER.log(java.util.logging.Level.INFO, "Exception In loadPaymentMethods() On Invoice1Student", e);
+        }
+    }
+
     public void setVehicleDetails(String vehicleNumber, String owner, String brand, String model, String type) {
         jVehicleNoLabel.setText(vehicleNumber);
         jVehicleTypeLabel.setText(type);
@@ -94,12 +138,116 @@ public class MainInvoice extends javax.swing.JFrame {
         jServiceVehicleType.setText(vehicleType);
     }
 
+    public void loadInvoiceItem() {
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+        dtm.setRowCount(0);
+
+        for (MainInvoiceItemModel invoiceItem : invoiceItemMap.values()) {
+
+            Vector<String> vector = new Vector<>();
+            vector.add(invoiceItem.getServiceID());
+            vector.add(invoiceItem.getServiceName());
+            vector.add(invoiceItem.getServiceDescription());
+            vector.add(invoiceItem.getServiceCharge());
+
+            dtm.addRow(vector);
+
+        }
+
+        calculate();
+    }
+
+    private double total = 0;
+    private double discount = 0;
+    private double payment = 0;
+    private double balance = 0;
+    private String paymentMethod = "Cash";
+
     private void calculate() {
+
+        total = 0;
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            String tablePrice = String.valueOf(jTable1.getValueAt(i, 3));
+
+            double rowPrice = Double.parseDouble(tablePrice);
+
+            total += rowPrice;
+        }
+
+        totalField.setText(String.valueOf(total));
+
+        if (discountField.getText().isEmpty()) {
+            discount = 0;
+        } else {
+            discount = Double.parseDouble(discountField.getText());
+        }
+
+        if (paymentField.getText().isEmpty()) {
+            payment = 0;
+        } else {
+            payment = Double.parseDouble(paymentField.getText());
+        }
+
+        total = Double.parseDouble(totalField.getText());
+
+        paymentMethod = String.valueOf(paymentMethodComboBox.getSelectedItem());
+
+        total -= discount;
+
+        if (total < 0) {
+            JOptionPane.showMessageDialog(this, "Something Wrong in Discount !", "Error", JOptionPane.ERROR_MESSAGE);
+            discountField.setText("0");
+            paymentField.setText("0");
+            balanceField.setText("0");
+        } else {
+            //discount ok
+
+        }
+
+        if (paymentMethod.equals("Cash")) {
+            balance = payment - total;
+            paymentField.setEnabled(true);
+
+            if (balance < 0) {
+                jButton4.setEnabled(false);
+            } else {
+                jButton4.setEnabled(true);
+            }
+
+        } else {
+            //card
+
+            payment = total;
+            balance = 0;
+            paymentField.setText(String.valueOf(payment));
+            paymentField.setEnabled(false);
+            jButton4.setEnabled(true);
+        }
+
+        balanceField.setText(String.valueOf(balance));
 
     }
 
     public void reset() {
         jInvoiceIDTextField.setText(IDGenarator.invoiceID());
+        jVehicleNoLabel.setText("Vehicle No.");
+        jBrandModelLabel.setText("Brand");
+        jVehicleTypeLabel.setText("Vehicle Type");
+        jDescriptionTextArea.setText("-");
+        jServiceNameLabel.setText("Selected Service");
+        jServiceChargeField.setText("0");
+        serviceIDLabel.setText("0");
+        jServiceVehicleType.setText("Vehicle Type");
+
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+        dtm.setRowCount(0);
+        totalField.setText("0.00");
+        discountField.setText("0.00");
+        paymentField.setText("0.00");
+        balanceField.setText("0.00");
+        paymentMethodComboBox.setSelectedIndex(0);
+        invoiceItemMap.clear();
+        jButton4.setEnabled(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -359,6 +507,7 @@ public class MainInvoice extends javax.swing.JFrame {
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
+        jTable1.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -375,8 +524,14 @@ public class MainInvoice extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setFocusable(false);
         jTable1.setRowHeight(30);
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
@@ -420,8 +575,9 @@ public class MainInvoice extends javax.swing.JFrame {
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel20.setText("Blalance");
 
-        paymentMethodComboBox.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
+        paymentMethodComboBox.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 16)); // NOI18N
         paymentMethodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        paymentMethodComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         paymentMethodComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 paymentMethodComboBoxItemStateChanged(evt);
@@ -435,6 +591,7 @@ public class MainInvoice extends javax.swing.JFrame {
         paymentField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         paymentField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         paymentField.setText("0");
+        paymentField.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         paymentField.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
         paymentField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -468,24 +625,30 @@ public class MainInvoice extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(totalField, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(paymentMethodComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(discountField, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(totalField, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(balanceField, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(paymentField)))
+                        .addComponent(paymentField))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(discountField)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -495,11 +658,7 @@ public class MainInvoice extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(totalField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(discountField)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(paymentMethodComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
@@ -513,6 +672,10 @@ public class MainInvoice extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(balanceField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(discountField)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -598,15 +761,54 @@ public class MainInvoice extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error In Fields", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
+                String invoiceID = jInvoiceIDTextField.getText();
+                String vehicleNumber = jVehicleNoLabel.getText();
+                String vehicleName = jBrandModelLabel.getText();
+                String cashierName = jEmployeeNameLabel.getText();
+                String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
+                String dateTimeForDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                String total = totalField.getText();
+                String paymentMethodID = paymentMethodmMap.get(String.valueOf(paymentMethodComboBox.getSelectedItem()));
+                String paymentMethod = String.valueOf(paymentMethodComboBox.getSelectedItem());
+                String paidAmount = paymentField.getText();
+                String balance = balanceField.getText();
 
                 //insert to invoice
+//                MySQL.executeIUD("");
+//                GENERAL_LOGGER.log(java.util.logging.Level.INFO, "Invoice : " + invoiceID + " Added. ");
+//                for (MainInvoiceItemModel invoiceItem : invoiceItemMap.values()) {
+//                    //insert to invoiceItem
+//                    MySQL.executeIUD("INSERT INTO `invoice_item` (`invoice_invoice_id`,`teachers_has_course_id`,`month`) "
+//                            + "VALUES ('" + invoiceID + "','" + invoiceItem.getCourseId() + "','" + invoiceItem.getMonth() + "' ) ");
+//
+//                }
                 //View or print invoice
+                InputStream s = this.getClass().getResourceAsStream("/resources/reports/service_station_invoice.jasper");
+
+                HashMap<String, Object> params = new HashMap<>();
+                params.put("dateParameter", dateTime);
+                params.put("invoiceNoPara", invoiceID);
+                params.put("vehicleName", vehicleName);
+                params.put("vehicleNumber", vehicleNumber);
+                params.put("cashierPara", cashierName);
+
+                params.put("totalPara", total);
+                params.put("paymentPara", paidAmount);
+                params.put("paymentMethodPara", paymentMethod);
+                params.put("BalancePara", balance);
+
+                JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
+
+                JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+                JasperViewer.viewReport(report, false);
+
                 reset();
+                paymentsPanel.loadInvoices();
+
             } catch (Exception e) {
                 e.printStackTrace();
-
+//                ERROR_LOGGER.log(java.util.logging.Level.INFO, "Exception In jButton4ActionPerformed On Invoice1Student", e);
             }
-
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -642,6 +844,27 @@ public class MainInvoice extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Enter Valid Service Charge !", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
 
+            MainInvoiceItemModel mainInvoiceItem = new MainInvoiceItemModel();
+            mainInvoiceItem.setServiceID(serviceID);
+            mainInvoiceItem.setServiceName(serviceName);
+            mainInvoiceItem.setServiceDescription(serviceDescription);
+            mainInvoiceItem.setServiceCharge(serviceCharge);
+
+            if (invoiceItemMap.get(serviceID + "" + serviceName) == null) {
+                invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
+            } else {
+
+                MainInvoiceItemModel foundService = invoiceItemMap.get(serviceID + "" + serviceName);
+
+                if (foundService.getServiceName().equals(serviceName)) {
+                    JOptionPane.showMessageDialog(this, "This Invoice Already In Table", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
+                }
+
+            }
+
+            loadInvoiceItem();
         }
 
         paymentField.grabFocus();
@@ -649,21 +872,40 @@ public class MainInvoice extends javax.swing.JFrame {
         paymentField.setEditable(true);
     }//GEN-LAST:event_jAddInvoiceButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        IntelliJTheme.setup(MainInvoice.class.getResourceAsStream(
-                "/resources/themes/arc-theme.theme.json"));
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainInvoice().setVisible(true);
+        if (evt.getClickCount() == 2) {
+
+            int row = jTable1.getSelectedRow();
+            String serviceId = String.valueOf(jTable1.getValueAt(row, 0));
+            String serviceName = String.valueOf(jTable1.getValueAt(row, 1));
+
+            if (invoiceItemMap.get(serviceId + "" + serviceName) != null) {
+                invoiceItemMap.remove(serviceId + "" + serviceName);
             }
-        });
-    }
+
+            loadInvoiceItem();
+            calculate();
+        }
+
+    }//GEN-LAST:event_jTable1MouseClicked
+
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        IntelliJTheme.setup(MainInvoice.class
+//                .getResourceAsStream(
+//                        "/resources/themes/arc-theme.theme.json"));
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new MainInvoice().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField balanceField;

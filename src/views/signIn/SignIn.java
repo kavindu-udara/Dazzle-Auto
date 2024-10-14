@@ -141,6 +141,7 @@ public class SignIn extends javax.swing.JFrame {
     private void SignInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignInButtonActionPerformed
 
         LoginModel loginModel = new LoginModel();
+        loginModel.setEmployeeId("001");
         loginModel.setFirstName("Super");
         loginModel.setLastName("User");
         loginModel.setAccessRoleId(1);
