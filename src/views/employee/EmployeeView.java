@@ -24,9 +24,14 @@ public class EmployeeView extends javax.swing.JFrame {
     /**
      * Creates new form Employee_View
      */
+    
+    private EmployeeView employeeView;
+    
     public EmployeeView() {
         initComponents();
         loadEmployees();
+        
+        this.employeeView = this;
     }
 
     private void loadEmployees() {
@@ -141,6 +146,10 @@ public class EmployeeView extends javax.swing.JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    
+    public void reloadTable(){
+        loadEmployees();
     }
 
     /**
@@ -262,7 +271,7 @@ public class EmployeeView extends javax.swing.JFrame {
 
     private void employee_register_new_employee_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_register_new_employee_btnActionPerformed
 
-        new EmployeeRegistration(null, true).show();
+        new EmployeeRegistration(null, true, employeeView).show();
 
     }//GEN-LAST:event_employee_register_new_employee_btnActionPerformed
 
