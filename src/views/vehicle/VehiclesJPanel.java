@@ -20,17 +20,20 @@ import views.components.vehicleTableRender.HistoryActionCellEditor;
 import views.components.vehicleTableRender.HistoryActionEvent;
 import views.components.vehicleTableRender.HistoryCellRender;
 import views.mainInvoice.MainInvoice;
+import views.vehicleServiceAppointment.VehicleServiceAppointment;
 
 /**
  *
  * @author Dinuka
  */
 public class VehiclesJPanel extends javax.swing.JPanel {
+
     VehicleSelecter VehicleSelecterFrame = null;
-    
-    
+
     MainInvoice mainInvoice = null;
+    VehicleServiceAppointment vehicleServiceAppointment = null;
     String From = "";
+    String BaseFrame = "";
 
     public VehiclesJPanel() {
         initComponents();
@@ -41,11 +44,17 @@ public class VehiclesJPanel extends javax.swing.JPanel {
     }
 
     //Constructer for VehicleSelecter
-    public VehiclesJPanel(Frame parentFrame, VehicleSelecter vehicleSelecter) {
+    public VehiclesJPanel(Frame parentFrame, VehicleSelecter vehicleSelecter, String BaseFrame) {
         this.VehicleSelecterFrame = vehicleSelecter;
-        
         this.From = "Selecter";
-        this.mainInvoice = (MainInvoice) parentFrame;
+        this.BaseFrame = BaseFrame;
+
+        if (BaseFrame.equals("MainInvoice")) {
+            this.mainInvoice = (MainInvoice) parentFrame;
+        } else if (BaseFrame.equals("VehicleServiceAppointment")){
+            this.vehicleServiceAppointment = (VehicleServiceAppointment) parentFrame;
+        }
+
         initComponents();
 
         vehicleFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "CAA-0000");
@@ -269,9 +278,15 @@ public class VehiclesJPanel extends javax.swing.JPanel {
         String vehicleBrand = String.valueOf(vehicleViewTable.getValueAt(row, 2));
         String vehicleModel = String.valueOf(vehicleViewTable.getValueAt(row, 3));
         String vehicleType = String.valueOf(vehicleViewTable.getValueAt(row, 4));
-        
+
         if (From.equals("Selecter")) {
-            mainInvoice.setVehicleDetails(vehicleNumber, vehicleOwner, vehicleBrand, vehicleModel, vehicleType);            
+            
+            if (BaseFrame.equals("MainInvoice")) {                
+                mainInvoice.setVehicleDetails(vehicleNumber, vehicleOwner, vehicleBrand, vehicleModel, vehicleType);
+            } else if (BaseFrame.equals("VehicleServiceAppointment")){
+                vehicleServiceAppointment.setVehicleDetails(vehicleNumber, vehicleOwner, vehicleBrand, vehicleModel, vehicleType);
+            }
+            
             VehicleSelecterFrame.dispose();
         }
     }//GEN-LAST:event_vehicleViewTableMouseClicked

@@ -2,33 +2,36 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package views.vehicle;
+package views.customer;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.Frame;
 import javax.swing.SwingUtilities;
+import views.vehicle.VehiclesJPanel;
 
 /**
  *
  * @author Dinuka
  */
-public class VehicleSelecter extends javax.swing.JDialog {
+public class CustomerSelector extends javax.swing.JDialog {
 
-    Frame parentFrame = null;
-    String BaseFrame = "";
+    Dialog ParentDialog = null;
+    String BaseDialogName = "";
     
-    public VehicleSelecter(java.awt.Frame parent, boolean modal, String parentFrameName) {
+    public CustomerSelector(java.awt.Frame parent, boolean modal, Dialog parentDialog, String parentDialogName) {
         super(parent, modal);
-        this.parentFrame = parent;
-        this.BaseFrame = parentFrameName;
+        this.ParentDialog = parentDialog;
+        this.BaseDialogName = parentDialogName;
+        
         initComponents();
         
-        VehiclesJPanel vehiclesJPanel = new VehiclesJPanel(parentFrame, this, BaseFrame);
-        jPanel1.add(vehiclesJPanel, BorderLayout.CENTER);
+        CustomerJPanel customerJPanel = new CustomerJPanel(ParentDialog, this,BaseDialogName);
+        jPanel1.add(customerJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
     }
 
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -58,7 +61,7 @@ public class VehicleSelecter extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
+//    /**
 //     * @param args the command line arguments
 //     */
 //    public static void main(String args[]) {
@@ -75,20 +78,20 @@ public class VehicleSelecter extends javax.swing.JDialog {
 //                }
 //            }
 //        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(VehicleSelecter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(CustomerSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(VehicleSelecter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(CustomerSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(VehicleSelecter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(CustomerSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(VehicleSelecter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(CustomerSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        }
 //        //</editor-fold>
 //
 //        /* Create and display the dialog */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                VehicleSelecter dialog = new VehicleSelecter(new javax.swing.JFrame(), true);
+//                CustomerSelector dialog = new CustomerSelector(new javax.swing.JFrame(), true);
 //                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 //                    @Override
 //                    public void windowClosing(java.awt.event.WindowEvent e) {

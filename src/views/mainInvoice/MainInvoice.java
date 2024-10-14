@@ -813,7 +813,7 @@ public class MainInvoice extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jVehicleSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehicleSelectButtonActionPerformed
-        new VehicleSelecter(this, true).setVisible(true);
+        new VehicleSelecter(this, true, "MainInvoice").setVisible(true);
     }//GEN-LAST:event_jVehicleSelectButtonActionPerformed
 
     private void jServiceSelectorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jServiceSelectorButtonActionPerformed

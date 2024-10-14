@@ -8,6 +8,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import controllers.CustomerController;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -21,6 +22,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import models.CustomerModel;
+import views.mainInvoice.MainInvoice;
+import views.vehicle.VehicleRegistration;
+import views.vehicle.VehicleSelecter;
+import views.vehicle.VehicleUpdate;
 
 /**
  *
@@ -28,9 +33,13 @@ import models.CustomerModel;
  */
 public class CustomerJPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form CustomerJPanel
-     */
+    CustomerSelector CustomerSelecterFrame = null;
+
+    VehicleRegistration vehicleRegistration = null;
+    VehicleUpdate VehicleUpdate = null;
+    String From = "";
+    String BaseDialog = "";
+
     public CustomerJPanel() {
         initComponents();
 
@@ -39,6 +48,25 @@ public class CustomerJPanel extends javax.swing.JPanel {
         customerFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/Mobile");
 
         customerViewTableRender();
+    }
+
+    public CustomerJPanel(Dialog parentDialog, CustomerSelector customerSelector, String baseDialog) {
+        this.CustomerSelecterFrame = customerSelector;
+        this.From = "Selecter";
+        this.BaseDialog = baseDialog;
+
+        if (BaseDialog.equals("vehicleRegistration")) {
+            this.vehicleRegistration = (VehicleRegistration) parentDialog;
+        } else if (BaseDialog.equals("vehicleUpdate")) {
+            this.VehicleUpdate = (VehicleUpdate) parentDialog;
+        }
+
+        initComponents();
+
+        loadCustomer();
+        customerFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/Mobile");
+        customerViewTableRender();
+
     }
 
     private void loadCustomer() {
@@ -159,6 +187,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
             }
         });
 
+        customerViewTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         customerViewTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -287,60 +316,65 @@ public class CustomerJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jRegNewCustomerButtonActionPerformed
 
     private void customerViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerViewTableMouseClicked
+        int row = customerViewTable.getSelectedRow();
 
+        int customerId = Integer.parseInt(customerViewTable.getValueAt(row, 0).toString());
+        String firstName = String.valueOf(customerViewTable.getValueAt(row, 1));
+        String lastName = String.valueOf(customerViewTable.getValueAt(row, 2));
+        String mobile = String.valueOf(customerViewTable.getValueAt(row, 3));
 
-          int row = customerViewTable.getSelectedRow();
+        if (From.equals("Selecter")) {
+
+            if (BaseDialog.equals("vehicleRegistration")) {
+                vehicleRegistration.setCustomerDetails(String.valueOf(customerId), firstName, lastName);
+            } else if (BaseDialog.equals("vehicleUpdate")) {
+                VehicleUpdate.setCustomerDetails(String.valueOf(customerId), firstName, lastName);
+            }
+            CustomerSelecterFrame.dispose();
+        }
 
         if (evt.getClickCount() == 2 && row != -1) {
-            
-    int customerId = Integer.parseInt(customerViewTable.getValueAt(row, 0).toString());
-            String firstName = String.valueOf(customerViewTable.getValueAt(row, 1));
-            String lastName = String.valueOf(customerViewTable.getValueAt(row, 2));
-            String mobile = String.valueOf(customerViewTable.getValueAt(row, 3));
 
-             CustomerModel customerModel = new CustomerModel();
+            CustomerModel customerModel = new CustomerModel();
             customerModel.setId(customerId);
             customerModel.setFirstName(firstName);
             customerModel.setLastName(lastName);
-         
+
             customerModel.setMobile(mobile);
 
             try {
                 Frame CustomerJPanel = null;
-               CustomerUpdate customerUpdate = new  CustomerUpdate(CustomerJPanel, true, customerModel);
-               customerUpdate.setVisible(true);
+                CustomerUpdate customerUpdate = new CustomerUpdate(CustomerJPanel, true, customerModel);
+                customerUpdate.setVisible(true);
             } catch (Exception e) {
-                e.printStackTrace(); 
+                e.printStackTrace();
             }
 
-          
             loadCustomer();
         }
 
-        
     }//GEN-LAST:event_customerViewTableMouseClicked
 
     private void jLabel2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jLabel2ComponentShown
 
-
-          try {
+        try {
             fetchUser(null);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        
+
     }//GEN-LAST:event_jLabel2ComponentShown
 
     private void customerFindFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_customerFindFieldKeyReleased
 
- try {
+        try {
             fetchUser(customerFindField.getText().toString());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        
+
     }//GEN-LAST:event_customerFindFieldKeyReleased
 
 
