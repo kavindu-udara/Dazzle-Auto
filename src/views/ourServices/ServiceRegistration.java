@@ -105,7 +105,7 @@ public class ServiceRegistration extends java.awt.Dialog {
 
         service_register_btn.setBackground(new java.awt.Color(33, 43, 108));
         service_register_btn.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        service_register_btn.setForeground(new java.awt.Color(255, 255, 255));
+        service_register_btn.setForeground(new java.awt.Color(0, 0, 0));
         service_register_btn.setText("REGISTER");
         service_register_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

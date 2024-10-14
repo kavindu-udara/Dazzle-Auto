@@ -106,7 +106,7 @@ public class UpdateService extends java.awt.Dialog {
 
         Update_Service_btn.setBackground(new java.awt.Color(33, 43, 108));
         Update_Service_btn.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        Update_Service_btn.setForeground(new java.awt.Color(255, 255, 255));
+        Update_Service_btn.setForeground(new java.awt.Color(0, 0, 0));
         Update_Service_btn.setText("UPDATE");
         Update_Service_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,8 +152,7 @@ public class UpdateService extends java.awt.Dialog {
                                 .addComponent(Vehicle_Type, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(129, 129, 129)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel1)))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
