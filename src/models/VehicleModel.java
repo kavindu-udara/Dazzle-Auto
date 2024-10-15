@@ -10,7 +10,7 @@ package models;
  */
 public class VehicleModel {
 
-    private int customerId;
+    private String customerId;
     private int vehicleBrandId;
     private int vehicleTypeId;
     private String vehicleNumber;
@@ -19,14 +19,14 @@ public class VehicleModel {
     /**
      * @return the customerId
      */
-    public int getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
     /**
      * @param customerId the customerId to set
      */
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
