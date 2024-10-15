@@ -6,8 +6,16 @@ package views.vehicleServiceAppointment;
 
 import com.formdev.flatlaf.IntelliJTheme;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import controllers.ServicesController;
+import controllers.VehicleTypeController;
+import java.util.HashMap;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import views.dashboard.Dashboard;
 import views.vehicle.VehicleSelecter;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import views.vehicle.VehicleRegistration;
 
 /**
  *
@@ -15,10 +23,36 @@ import views.vehicle.VehicleSelecter;
  */
 
 public class VehicleServiceAppointment extends javax.swing.JFrame {
+    
+    private static HashMap<String, String> servicesNameHashMap = new HashMap<>();
 
     
     public VehicleServiceAppointment() {
         initComponents();
+        loadServicesTypes();
+    }
+    
+    
+    private void loadServicesTypes() {
+
+        try {
+            ResultSet resultSet = new ServicesController().show();
+
+            Vector vector = new Vector();
+
+            vector.add("Select");
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("name"));
+                servicesNameHashMap.put(resultSet.getString("name"), resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
+            services_name.setModel(comboBoxModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void setVehicleDetails(String vehicleNumber, String owner, String brand, String model, String type) {
@@ -31,21 +65,21 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        services_name = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        appointment_btn = new javax.swing.JButton();
+        reset = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        additional_issues = new javax.swing.JTextArea();
+        date = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
+        register_vehicle_btn = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        existing_vehicle_btn = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jVehicleNoLabel = new javax.swing.JLabel();
@@ -54,8 +88,8 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        jComboBox1.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular maintenance ", "Specific repair " }));
+        services_name.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        services_name.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular maintenance ", "Specific repair " }));
 
         jLabel8.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel8.setText("Type of Service");
@@ -69,29 +103,44 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
         jLabel1.setText(" Set Up New Appointment");
 
-        jButton1.setBackground(new java.awt.Color(33, 43, 108));
-        jButton1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("MAKE APPOINTMENT");
+        appointment_btn.setBackground(new java.awt.Color(33, 43, 108));
+        appointment_btn.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        appointment_btn.setForeground(new java.awt.Color(255, 255, 255));
+        appointment_btn.setText("MAKE APPOINTMENT");
+        appointment_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                appointment_btnActionPerformed(evt);
+            }
+        });
 
-        jButton2.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 0, 0));
-        jButton2.setText("RESET");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
-        jButton2.setPreferredSize(new java.awt.Dimension(72, 35));
+        reset.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        reset.setForeground(new java.awt.Color(255, 0, 0));
+        reset.setText("RESET");
+        reset.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        reset.setPreferredSize(new java.awt.Dimension(72, 35));
+        reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetActionPerformed(evt);
+            }
+        });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        additional_issues.setColumns(20);
+        additional_issues.setRows(5);
+        jScrollPane1.setViewportView(additional_issues);
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
-        jButton4.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(241, 145, 8));
-        jButton4.setText("REGISTER VEHICLE");
-        jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(241, 145, 8), 2));
-        jButton4.setBorderPainted(false);
-        jButton4.setPreferredSize(new java.awt.Dimension(157, 35));
+        register_vehicle_btn.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        register_vehicle_btn.setForeground(new java.awt.Color(241, 145, 8));
+        register_vehicle_btn.setText("REGISTER VEHICLE");
+        register_vehicle_btn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(241, 145, 8), 2));
+        register_vehicle_btn.setBorderPainted(false);
+        register_vehicle_btn.setPreferredSize(new java.awt.Dimension(157, 35));
+        register_vehicle_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                register_vehicle_btnActionPerformed(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel12.setText("Registered a new Vehicle");
@@ -99,15 +148,15 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel11.setText("Select a Registered Vehicle");
 
-        jButton3.setBackground(new java.awt.Color(241, 145, 8));
-        jButton3.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jButton3.setText("EXISTING VEHICLE");
-        jButton3.setBorderPainted(false);
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton3.setPreferredSize(new java.awt.Dimension(157, 35));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        existing_vehicle_btn.setBackground(new java.awt.Color(241, 145, 8));
+        existing_vehicle_btn.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        existing_vehicle_btn.setText("EXISTING VEHICLE");
+        existing_vehicle_btn.setBorderPainted(false);
+        existing_vehicle_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        existing_vehicle_btn.setPreferredSize(new java.awt.Dimension(157, 35));
+        existing_vehicle_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                existing_vehicle_btnActionPerformed(evt);
             }
         });
 
@@ -118,11 +167,11 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(register_vehicle_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(existing_vehicle_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(21, 21, 21))
         );
@@ -134,11 +183,11 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(existing_vehicle_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(register_vehicle_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(25, 25, 25))
         );
 
@@ -175,8 +224,8 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                                     .addComponent(jBrandModelLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(services_name, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(0, 0, Short.MAX_VALUE)))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -191,9 +240,9 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                                         .addComponent(jLabel10)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                             .addGap(165, 165, 165)
-                                            .addComponent(jButton1)
+                                            .addComponent(appointment_btn)
                                             .addGap(18, 18, 18)
-                                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGap(12, 12, 12))))
                         .addContainerGap(26, Short.MAX_VALUE))))
         );
@@ -215,19 +264,19 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1))
+                    .addComponent(services_name))
                 .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(appointment_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -252,56 +301,63 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void existing_vehicle_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_existing_vehicle_btnActionPerformed
         new VehicleSelecter(this, true, "VehicleServiceAppointment").setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_existing_vehicle_btnActionPerformed
+
+    private void register_vehicle_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_register_vehicle_btnActionPerformed
+        
+        new VehicleRegistration(null,true).show();
+        
+    }//GEN-LAST:event_register_vehicle_btnActionPerformed
+
+    private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
+        
+        reset();
+
+    }//GEN-LAST:event_resetActionPerformed
+
+    private void appointment_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appointment_btnActionPerformed
+        
+        String servicesName = String.valueOf(services_name.getSelectedItem());
+        String additionalIssues = additional_issues.getText();
+        
+        if (servicesName.equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select a service type", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (additionalIssues.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter any additional issues", "Warning", JOptionPane.WARNING_MESSAGE);
+
+    }//GEN-LAST:event_appointment_btnActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    //public static void main(String args[]) {
         FlatMacDarkLaf.setup();
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VehicleServiceAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VehicleServiceAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VehicleServiceAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VehicleServiceAppointment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        IntelliJTheme.setup(Dashboard.class.getResourceAsStream(
-                "/resources/themes/arc-theme.theme.json"));
+        
+    //    IntelliJTheme.setup(Dashboard.class.getResourceAsStream(
+     //           "/resources/themes/arc-theme.theme.json"));
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VehicleServiceAppointment().setVisible(true);
-            }
-        });
+     //   java.awt.EventQueue.invokeLater(new Runnable() {
+      //      public void run() {
+     //           new VehicleServiceAppointment().setVisible(true);
+     //       }
+     //   });
+    }
+
+    private void reset() {
+
+        services_name.setSelectedIndex(0);
+        additional_issues.setText("");
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea additional_issues;
+    private javax.swing.JButton appointment_btn;
+    private javax.swing.JFormattedTextField date;
+    private javax.swing.JButton existing_vehicle_btn;
     private javax.swing.JLabel jBrandModelLabel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -313,7 +369,9 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel jVehicleNoLabel;
+    private javax.swing.JButton register_vehicle_btn;
+    private javax.swing.JButton reset;
+    private javax.swing.JComboBox<String> services_name;
     // End of variables declaration//GEN-END:variables
 }
