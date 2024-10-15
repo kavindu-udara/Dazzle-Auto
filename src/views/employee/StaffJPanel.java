@@ -252,7 +252,7 @@ public class StaffJPanel extends javax.swing.JPanel {
         jRegNewEmployeeButton.setBackground(new java.awt.Color(199, 232, 199));
         jRegNewEmployeeButton.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jRegNewEmployeeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/add-user-30.png"))); // NOI18N
-        jRegNewEmployeeButton.setText(" REGISTER NEW EMPLOYEE");
+        jRegNewEmployeeButton.setText(" REGISTER EMPLOYEE");
         jRegNewEmployeeButton.setBorderPainted(false);
         jRegNewEmployeeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jRegNewEmployeeButton.setFocusPainted(false);
