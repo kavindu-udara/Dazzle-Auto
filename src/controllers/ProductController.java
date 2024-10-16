@@ -15,10 +15,12 @@ import models.ProductModel;
 public class ProductController {
 
     private final String tableName = "product";
+   
 
     public ResultSet show() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
+    
 
     public ResultSet show(int id) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
@@ -29,6 +31,13 @@ public class ProductController {
                 + "'" + productModel.getName() + "', "
                 + "'" + productModel.getBrandId() + "') ");
     }
+    // To Register Products in RegisterItems.java
+    public ResultSet store2(ProductModel productModel) throws Exception {
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`,`name`, `brand_id`) VALUES ("
+                + "'" + productModel.getItemId() + "',"
+                + "'" + productModel.getName() + "', "
+                + "'" + productModel.getBrandId() + "') ");
+    }
 
     public ResultSet update(ProductModel productModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
@@ -36,10 +45,24 @@ public class ProductController {
                 + "`brand_id`='" + productModel.getBrandId() + "', "
                 + "WHERE `id`='" + productModel.getId() + "' ");
     }
+    
+    //Update using ItemId 
+    public ResultSet update2(ProductModel productModel) throws Exception {
+        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
+                + "`name`='" + productModel.getName() + "', "
+                + "`brand_id`='" + productModel.getBrandId() + "' "
+                + "WHERE `id`='" + productModel.getItemId() + "' ");
+    }
 
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
                 + "`name` LIKE '%" + searchText + "%' OR `brand_id` LIKE '%" + searchText + "%' ");
+    }
+    
+    //search from product name or product id
+    public ResultSet searchProductId(String searchText) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
+                + "`name` LIKE '%" + searchText + "%' OR `id` LIKE '%" + searchText + "%' ");
     }
 
     public ResultSet delete(int id) throws Exception {
