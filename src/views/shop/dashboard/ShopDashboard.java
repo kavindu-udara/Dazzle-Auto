@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import models.LoginModel;
 import views.shop.grn.shop_GRNJPanel;
+import views.shop.items.Shop_ItemsView;
 import views.shop.items.shop_ItemsJPanel;
 import views.shop.payments.Shop_PaymentJPanel;
 import views.shop.stock.Shop_StockJPanel;
@@ -494,8 +495,10 @@ public class ShopDashboard extends javax.swing.JFrame {
         jStockbtn.setBackground(new Color(246, 249, 255));
         jGRNbtn.setBackground(new Color(246, 249, 255));
 
-        shop_ItemsJPanel shop_itemjpanel = new shop_ItemsJPanel();
-        jItemsPanel.add(shop_itemjpanel, BorderLayout.CENTER);
+        //shop_ItemsJPanel shop_itemjpanel = new shop_ItemsJPanel();
+        Shop_ItemsView Shop_itemsView = new Shop_ItemsView();
+        //jItemsPanel.add(shop_itemjpanel, BorderLayout.CENTER);
+        jItemsPanel.add(Shop_itemsView, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jItemsbtnMouseClicked
 
