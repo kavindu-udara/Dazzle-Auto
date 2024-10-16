@@ -4,8 +4,6 @@
  */
 package views.mainInvoice;
 
-import com.formdev.flatlaf.IntelliJTheme;
-import controllers.AccessRoleController;
 import controllers.PaymentMethodController;
 import includes.IDGenarator;
 import includes.OnlyDoubleDocumentFilter;
@@ -350,7 +348,6 @@ public class MainInvoice extends javax.swing.JFrame {
         jDescriptionTextArea.setColumns(20);
         jDescriptionTextArea.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jDescriptionTextArea.setRows(5);
-        jDescriptionTextArea.setText("-");
         jScrollPane1.setViewportView(jDescriptionTextArea);
 
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
@@ -450,7 +447,7 @@ public class MainInvoice extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 101, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jEmployeeNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
@@ -504,7 +501,7 @@ public class MainInvoice extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(jVehicleTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(0, 0, Short.MAX_VALUE))))))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTable1.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N

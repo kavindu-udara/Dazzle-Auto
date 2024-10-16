@@ -4,12 +4,7 @@
  */
 package views;
 
-import com.formdev.flatlaf.IntelliJTheme;
 import java.awt.Toolkit;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 /**
  *
@@ -19,37 +14,9 @@ public class SplashWindow extends javax.swing.JFrame {
 
     private static SplashWindow splashWindow;
 
-    public static Logger ERROR_LOGGER = Logger.getLogger("Dazzle_Auto_Error_log");
-    public static Logger GENERAL_LOGGER = Logger.getLogger("Dazzle_Auto_General_log");
-    public static Logger ACTION_LOGGER = Logger.getLogger("Dazzle_Auto_Action_log");
-    public static Logger ATTENDANCE_LOGGER = Logger.getLogger("Dazzle_Auto_Attendance_log");
-
     public SplashWindow() {
         splashWindow = this;
         initComponents();
-
-        try {
-            FileHandler errorfileHandler = new FileHandler("DA_Error_logger.log", true);
-            errorfileHandler.setFormatter(new SimpleFormatter());
-
-            FileHandler generalfileHandler = new FileHandler("DA_General_logger.log", true);
-            generalfileHandler.setFormatter(new SimpleFormatter());
-
-            FileHandler actionfileHandler = new FileHandler("DA_Action_logger.log", true);
-            actionfileHandler.setFormatter(new SimpleFormatter());
-
-            FileHandler attendancefileHandler = new FileHandler("DA_Attendance_logger.log", true);
-            attendancefileHandler.setFormatter(new SimpleFormatter());
-
-            ERROR_LOGGER.addHandler(errorfileHandler);
-            GENERAL_LOGGER.addHandler(generalfileHandler);
-            ACTION_LOGGER.addHandler(actionfileHandler);
-            ATTENDANCE_LOGGER.addHandler(attendancefileHandler);
-        } catch (Exception e) {
-            e.printStackTrace();
-            ERROR_LOGGER.log(Level.SEVERE, "Exception In Logger FileHandler", e);
-        }
-
         jLabel1.setIcon(new javax.swing.ImageIcon("src/resources/loading-animation2.gif"));
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
         lodingAnimation();
