@@ -9,7 +9,6 @@ import controllers.SupplierController;
 import includes.IDGenarator;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.DocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
 import models.SupplierModel;
@@ -188,7 +187,6 @@ public class SupplierRegistration extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!RegexValidator.isValidSlPhone(mobile)) {
             JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else {
             try {
                 String generatedId = IDGenarator.supplierID();
