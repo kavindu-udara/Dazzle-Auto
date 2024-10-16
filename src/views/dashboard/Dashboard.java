@@ -14,10 +14,6 @@ import java.sql.ResultSet;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import models.LoginModel;
-import static views.SplashWindow.ACTION_LOGGER;
-import static views.SplashWindow.ATTENDANCE_LOGGER;
-import static views.SplashWindow.ERROR_LOGGER;
-import static views.SplashWindow.GENERAL_LOGGER;
 import views.customer.CustomerJPanel;
 import views.employee.StaffJPanel;
 import views.finance.FinanceJPanel;
@@ -40,10 +36,6 @@ public class Dashboard extends javax.swing.JFrame {
         initComponents();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
 
-//        ERROR_LOGGER.log(java.util.logging.Level.SEVERE, "Test In Dashboard");
-//        GENERAL_LOGGER.log(java.util.logging.Level.INFO, "Test In Dashboard");
-//        ACTION_LOGGER.log(java.util.logging.Level.INFO, "Test In Dashboard");
-//        ATTENDANCE_LOGGER.log(java.util.logging.Level.INFO, "Test In Dashboard");
         setLoggedUserDetails();
     }
 
@@ -74,7 +66,7 @@ public class Dashboard extends javax.swing.JFrame {
 
             }
             // Image setting
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
