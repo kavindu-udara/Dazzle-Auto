@@ -4,14 +4,10 @@
  */
 package views.vehicleServiceAppointment;
 
-import com.formdev.flatlaf.IntelliJTheme;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import controllers.ServicesController;
-import controllers.VehicleTypeController;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
-import views.dashboard.Dashboard;
 import views.vehicle.VehicleSelecter;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
@@ -21,18 +17,15 @@ import views.vehicle.VehicleRegistration;
  *
  * @author ILMA
  */
-
 public class VehicleServiceAppointment extends javax.swing.JFrame {
-    
+
     private static HashMap<String, String> servicesNameHashMap = new HashMap<>();
 
-    
     public VehicleServiceAppointment() {
         initComponents();
         loadServicesTypes();
     }
-    
-    
+
     private void loadServicesTypes() {
 
         try {
@@ -59,7 +52,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         jVehicleNoLabel.setText(vehicleNumber);
         jBrandModelLabel.setText(brand + " " + model);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -306,50 +299,47 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
     }//GEN-LAST:event_existing_vehicle_btnActionPerformed
 
     private void register_vehicle_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_register_vehicle_btnActionPerformed
-        
-        new VehicleRegistration(null,true).show();
-        
+
+        new VehicleRegistration(null, true).show();
+
     }//GEN-LAST:event_register_vehicle_btnActionPerformed
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
-        
+
         reset();
 
     }//GEN-LAST:event_resetActionPerformed
 
     private void appointment_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appointment_btnActionPerformed
-        
+
         String servicesName = String.valueOf(services_name.getSelectedItem());
         String additionalIssues = additional_issues.getText();
-        
+
         if (servicesName.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Please select a service type", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (additionalIssues.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter any additional issues", "Warning", JOptionPane.WARNING_MESSAGE);
-
+        } else {
+            // TODO : make empoinment store precess
+        }
     }//GEN-LAST:event_appointment_btnActionPerformed
 
     /**
      * @param args the command line arguments
      */
     //public static void main(String args[]) {
-        FlatMacDarkLaf.setup();
-        
+//        FlatMacDarkLaf.setup();
     //    IntelliJTheme.setup(Dashboard.class.getResourceAsStream(
-     //           "/resources/themes/arc-theme.theme.json"));
-
-     //   java.awt.EventQueue.invokeLater(new Runnable() {
-      //      public void run() {
-     //           new VehicleServiceAppointment().setVisible(true);
-     //       }
-     //   });
-    }
-
+    //           "/resources/themes/arc-theme.theme.json"));
+    //   java.awt.EventQueue.invokeLater(new Runnable() {
+    //      public void run() {
+    //           new VehicleServiceAppointment().setVisible(true);
+    //       }
+    //   });
+//    }
     private void reset() {
-
         services_name.setSelectedIndex(0);
         additional_issues.setText("");
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
