@@ -32,6 +32,9 @@ import views.vehicle.VehicleUpdate;
  * @author Dinuka
  */
 public class CustomerJPanel extends javax.swing.JPanel {
+    
+        private CustomerJPanel customerJPanel;
+
 
     CustomerSelector CustomerSelecterFrame = null;
 
@@ -48,6 +51,9 @@ public class CustomerJPanel extends javax.swing.JPanel {
         customerFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/Mobile");
 
         customerViewTableRender();
+        
+                this.customerJPanel = this;
+
     }
 
     public CustomerJPanel(Dialog parentDialog, CustomerSelector customerSelector, String baseDialog) {
@@ -68,7 +74,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
         customerViewTableRender();
 
     }
-
+  
     private void loadCustomer() {
         try {
 
@@ -312,7 +318,8 @@ public class CustomerJPanel extends javax.swing.JPanel {
 
     private void jRegNewCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegNewCustomerButtonActionPerformed
 
-        new CustomerRegistration(null, true).setVisible(true);
+                new CustomerRegistration(null, true, customerJPanel).setVisible(true);
+
     }//GEN-LAST:event_jRegNewCustomerButtonActionPerformed
 
     private void customerViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerViewTableMouseClicked
@@ -354,6 +361,9 @@ public class CustomerJPanel extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_customerViewTableMouseClicked
+  public void reloadTable() {
+        loadCustomer();
+    }
 
     private void jLabel2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jLabel2ComponentShown
 
