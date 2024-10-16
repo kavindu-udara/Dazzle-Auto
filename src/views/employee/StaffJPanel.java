@@ -276,7 +276,7 @@ public class StaffJPanel extends javax.swing.JPanel {
         });
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel3.setText("Find Customer :");
+        jLabel3.setText("Find Employee :");
 
         jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel7.setText("Sort By :");

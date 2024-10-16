@@ -251,7 +251,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Roboto" size="16" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Find Customer :"/>
+                <Property name="text" type="java.lang.String" value="Find Employee :"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel7">
