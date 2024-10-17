@@ -44,6 +44,11 @@ public class ServicesController {
                 + "`name` LIKE '%" + searchText + "%'");
     }
 
+    public ResultSet search(String searchText, String vehicleTypeId) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
+                + "`name` LIKE '%" + searchText + "%' AND `vehicle_type_id`='" + vehicleTypeId + "' ");
+    }
+
     public ResultSet delete(int id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
