@@ -93,7 +93,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employeeImageModel.setPath(resultSet.getString("path"));
                 employeeImageModel.setId(resultSet.getInt("id"));
                 employeeImageModel.setEmployeeId(resultSet.getString("employee_id"));
-                
+
                 String imagePath = BDUtility.getPath("resources/employeeImages/" + resultSet.getString("path"));
                 File imageFile = new File(imagePath);
 
@@ -151,6 +151,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
         jLabel1.setText("EMPLOYEE DETAILS");
 
         employee_image.setBackground(new java.awt.Color(255, 255, 51));
+        employee_image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         employee_image.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 employee_imageMouseClicked(evt);
@@ -353,7 +354,6 @@ public class EmployeeUpdate extends java.awt.Dialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_employee_mobileActionPerformed
 
-    
     BufferedImage originalImage = null;
     File selectedFile = null;
     private void employee_update_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_update_btnActionPerformed
@@ -415,7 +415,6 @@ public class EmployeeUpdate extends java.awt.Dialog {
         }
     }//GEN-LAST:event_employee_update_btnActionPerformed
 
-    
     // Save image in resources package
     private String saveImage(String email) {
         if (originalImage != null && selectedFile != null) {
