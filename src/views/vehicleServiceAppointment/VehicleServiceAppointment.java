@@ -300,7 +300,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
 
     private void register_vehicle_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_register_vehicle_btnActionPerformed
 
-        new VehicleRegistration(null, true).show();
+//        new VehicleRegistration(null, true).show();
 
     }//GEN-LAST:event_register_vehicle_btnActionPerformed
 
