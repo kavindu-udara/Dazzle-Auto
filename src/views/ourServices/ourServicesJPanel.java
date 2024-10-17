@@ -13,8 +13,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
-import java.sql.ResultSet;
-import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -24,7 +22,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import views.mainInvoice.MainInvoice;
 import includes.LoggerConfig;
-import includes.MySqlConnection;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -39,13 +36,12 @@ import models.ServicesModel;
 public class ourServicesJPanel extends javax.swing.JPanel {
 
     OurServicesSelecter ServiceSelecterFrame = null;
-    
+
     private static Logger logger = LoggerConfig.getLogger();
-    
+
     private static HashMap<String, String> vehicleTypesHashMap = new HashMap<>();
 
     private ourServicesJPanel thisPanel = this;
-    private static HashMap<String, String> vehicleTypesHashMap = new HashMap();
 
     MainInvoice mainInvoice = null;
     String From = "";
@@ -53,6 +49,7 @@ public class ourServicesJPanel extends javax.swing.JPanel {
     public ourServicesJPanel() {
         initComponents();
         loadVehicleTypes();
+        loadVehicleTypes2();
         loadServices();
         serviceFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Service Name");
 
@@ -154,8 +151,8 @@ public class ourServicesJPanel extends javax.swing.JPanel {
             ourServicesViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-    
-    private void loadVehicleTypes() {
+
+    private void loadVehicleTypes2() {
 
         try {
             ResultSet resultSet = new VehicleTypeController().show();
@@ -373,7 +370,7 @@ public class ourServicesJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_ourServicesViewTableMouseClicked
 
     private void jVehicleTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehicleTypeComboBoxActionPerformed
-        
+
     }//GEN-LAST:event_jVehicleTypeComboBoxActionPerformed
 
     private void serviceFindFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceFindFieldKeyPressed
