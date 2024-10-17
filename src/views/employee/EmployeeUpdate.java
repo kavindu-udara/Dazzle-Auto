@@ -8,6 +8,7 @@ import controllers.EmployeeController;
 import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
 import includes.BDUtility;
+import includes.LoggerConfig;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import includes.OnlyNumbersDocumentFilter;
@@ -16,7 +17,6 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import models.EmployeeImageModel;
 import models.EmployeeModel;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,6 +36,8 @@ import models.EmployeeModel;
 public class EmployeeUpdate extends java.awt.Dialog {
 
     private static HashMap<String, String> employeeTypeMap = new HashMap<>();
+
+    private static final Logger logger = LoggerConfig.getLogger();
 
     private boolean isEmployerHaveAnImage = false;
 
@@ -79,6 +82,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading employee types : " + e.getMessage());
         }
     }
 
@@ -113,8 +117,9 @@ public class EmployeeUpdate extends java.awt.Dialog {
             } else {
                 isEmployerHaveAnImage = false;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading employee image : " + e.getMessage());
         }
 
     }
@@ -427,6 +432,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 reset();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                logger.severe("Error while updating employee : " + e.getMessage());
             }
         }
     }//GEN-LAST:event_employee_update_btnActionPerformed
@@ -454,10 +460,9 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
                 return imageName;
 
-            } catch (IOException ex) {
-                ex.printStackTrace();
             } catch (Exception ex) {
                 ex.printStackTrace();
+                logger.severe("Error while saving Image : " + ex.getMessage());
             }
         }
         return null;
@@ -510,6 +515,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
             } catch (Exception ex) {
 
                 ex.printStackTrace();
+                logger.severe("Error while reading selected File : " + ex.getMessage());
 
             }
         }
