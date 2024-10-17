@@ -56,6 +56,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
 
     }
 
+    //constructor for selector
     public CustomerJPanel(Dialog parentDialog, CustomerSelector customerSelector, String baseDialog) {
         this.CustomerSelecterFrame = customerSelector;
         this.From = "Selecter";
@@ -68,6 +69,8 @@ public class CustomerJPanel extends javax.swing.JPanel {
         }
 
         initComponents();
+        
+        jRegNewCustomerButton.setEnabled(false);
 
         loadCustomer();
         customerFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/Mobile");

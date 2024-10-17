@@ -117,6 +117,7 @@ public class AppointmnetPanel extends javax.swing.JPanel {
         jAddAppointmentButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/add-user-30.png"))); // NOI18N
         jAddAppointmentButton.setText(" ADD APPOINTMENT");
         jAddAppointmentButton.setBorderPainted(false);
+        jAddAppointmentButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jAddAppointmentButton.setFocusPainted(false);
         jAddAppointmentButton.setFocusable(false);
         jAddAppointmentButton.addActionListener(new java.awt.event.ActionListener() {
