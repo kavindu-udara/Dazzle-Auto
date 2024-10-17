@@ -7,14 +7,25 @@ package views.shop.items;
 import com.formdev.flatlaf.FlatClientProperties;
 import controllers.ProductBrandController;
 import controllers.ProductController;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import models.ProductModel;
-
+import includes.LoggerConfig;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,6 +37,8 @@ public class Shop_ItemsView extends javax.swing.JPanel {
      * Creates new form shop_ItemsJPanel
      */
     private Shop_ItemsView shop_ItemsView;
+    private static Logger logger = LoggerConfig.getLogger();
+
     public Shop_ItemsView() {
         initComponents();
         loadItems();
@@ -34,24 +47,23 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         search_box.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Item Name or Id ");
 
         this.shop_ItemsView = this;
+        ItemsTableRender();
+
     }
 
-     private void loadItems() {
+    private void loadItems() {
         try {
 
             ResultSet ItemResultSet = new ProductController().show();
             ResultSet BrandResultSet = new ProductBrandController().show();
-          
 
             HashMap<Integer, String> BrandMap = new HashMap<>();
-            
 
             while (BrandResultSet.next()) {
                 int BrandId = BrandResultSet.getInt("id");
                 String BrandName = BrandResultSet.getString("name");
                 BrandMap.put(BrandId, BrandName);
             }
-
 
             DefaultTableModel model = (DefaultTableModel) Items_View_Table.getModel();
             model.setRowCount(0);
@@ -64,27 +76,27 @@ public class Shop_ItemsView extends javax.swing.JPanel {
                 vector.add(ItemResultSet.getString("name"));
 
                 vector.add(ItemResultSet.getString("brand_id"));
-                
 
                 int BrandId = ItemResultSet.getInt("brand_id");
-                
 
                 String BrandName = BrandMap.getOrDefault(BrandId, "Unknown Employee Type");
-                
 
                 vector.add(BrandName);
-                
+
                 model.addRow(vector);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loding items to table in Shop Items : " + e.getMessage());
+            
+            
+            
         }
 
     }
 
-
-     private void fetchItems(String searchText) throws Exception {
+    private void fetchItems(String searchText) throws Exception {
         DefaultTableModel model = (DefaultTableModel) Items_View_Table.getModel();
         model.setRowCount(0);
 
@@ -100,30 +112,100 @@ public class Shop_ItemsView extends javax.swing.JPanel {
                 BrandMap.put(BrandId, BrandName);
             }
 
-
             while (resultSet.next()) {
                 String id = resultSet.getString("id");
                 String name = resultSet.getString("name");
                 int BrandId = resultSet.getInt("brand_id");
 
-                 String BrandName = BrandMap.getOrDefault(BrandId, "Unknown Brand");
+                String BrandName = BrandMap.getOrDefault(BrandId, "Unknown Brand");
 
                 model.addRow(new Object[]{id, name, BrandId, BrandName});
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
+             
+            logger.severe("Error while searching Items in Shop Items : " + ex.getMessage());
+            
+            
         }
     }
-     
-     public void reloadTable() {
+
+    private void fetchBrands(String searchText) throws Exception {
+        DefaultTableModel model = (DefaultTableModel) Items_View_Table.getModel();
+        model.setRowCount(0);
+
+        try {
+            ResultSet resultSet = new ProductController().searchBrand(searchText);;
+            ResultSet resultSet1 = new ProductBrandController().search("");
+            
+            
+
+            HashMap<Integer, String> BrandMap = new HashMap<>();
+
+            while (resultSet1.next()) {
+                int BrandId = resultSet1.getInt("id");
+                String BrandName = resultSet1.getString("name");
+                BrandMap.put(BrandId, BrandName);
+            }
+
+            while (resultSet.next()) {
+                String id = resultSet.getString("id");
+                String name = resultSet.getString("name");
+                int BrandId = resultSet.getInt("brand_id");
+
+                String BrandName = BrandMap.getOrDefault(BrandId, "Unknown Brand");
+
+                model.addRow(new Object[]{id, name, BrandId, BrandName});
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+             
+            logger.severe("Error while searching Items in Shop Items : " + ex.getMessage());
+            
+            
+        }
+        
+    }
+    
+    public void ItemsTableRender() {
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        JTableHeader tableHeader = Items_View_Table.getTableHeader();
+
+        tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Font headerFont = new Font("Verdana", Font.BOLD, 14);
+                label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
+                label.setFont(headerFont);
+                label.setBackground(new Color(5, 15, 76)); // Optional: Set header background color
+                label.setForeground(Color.WHITE); // Optional: Set header text color
+                label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+                return label;
+            }
+        });
+
+        tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
+
+        for (int i = 0; i < 4; i++) {
+            Items_View_Table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+
+    public void reloadTable() {
         loadItems();
     }
-     
-     private static HashMap<String, String> BrandMap = new HashMap<>();
-     
+
+    private static HashMap<String, String> BrandMap = new HashMap<>();
+
 //load brands to sort button
-     private void loadBrands() {
+    private void loadBrands() {
 
         try {
             ResultSet resultSet = new ProductBrandController().show();
@@ -141,6 +223,8 @@ public class Shop_ItemsView extends javax.swing.JPanel {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loding brands to sort button in Shop Items : " + e.getMessage());
+            
         }
     }
 
@@ -180,6 +264,9 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel1.setText("Search Items");
 
+        search_box.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        search_box.setFocusCycleRoot(true);
+        search_box.setSelectionColor(new java.awt.Color(214, 132, 13));
         search_box.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 search_boxKeyReleased(evt);
@@ -189,11 +276,22 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel2.setText("Sort By Brand");
 
+        Brand_chooser.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         Brand_chooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Brand_chooser.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                Brand_chooserItemStateChanged(evt);
+            }
+        });
+        Brand_chooser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Brand_chooserActionPerformed(evt);
+            }
+        });
 
         Item_Register_Button.setBackground(new java.awt.Color(199, 232, 199));
         Item_Register_Button.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        Item_Register_Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/items-30.png"))); // NOI18N
+        Item_Register_Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/add-3.png"))); // NOI18N
         Item_Register_Button.setText(" REGISTER ITEM");
         Item_Register_Button.setBorderPainted(false);
         Item_Register_Button.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -218,7 +316,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(Brand_chooser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 576, Short.MAX_VALUE)
                 .addComponent(Item_Register_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
         );
@@ -313,7 +411,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
     private void Item_Register_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Item_Register_ButtonActionPerformed
 
         // TODO: need to fix this
-       new RegisterItems(null, true, shop_ItemsView).setVisible(true);
+        new RegisterItems(null, true, shop_ItemsView).setVisible(true);
     }//GEN-LAST:event_Item_Register_ButtonActionPerformed
 
     private void search_boxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_boxKeyReleased
@@ -322,12 +420,14 @@ public class Shop_ItemsView extends javax.swing.JPanel {
             fetchItems(search_box.getText().toString());
         } catch (Exception ex) {
             ex.printStackTrace();
+            logger.severe("Error while search Items in Shop Items : " + ex.getMessage());
+            
         }
     }//GEN-LAST:event_search_boxKeyReleased
 
     private void Items_View_TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Items_View_TableMouseClicked
         // TODO add your handling code here:
-           int row = Items_View_Table.getSelectedRow();
+        int row = Items_View_Table.getSelectedRow();
 
         if (evt.getClickCount() == 2 && row != -1) {
 
@@ -335,12 +435,12 @@ public class Shop_ItemsView extends javax.swing.JPanel {
             String ItemName = String.valueOf(Items_View_Table.getValueAt(row, 1));
             String BrandName = String.valueOf(Items_View_Table.getValueAt(row, 3));
             
+            
 
             ProductModel ItemModel = new ProductModel();
             ItemModel.setItemId(ItemId);
             ItemModel.setName(ItemName);
             ItemModel.setbrandName(BrandName);
-            
 
             try {
                 Frame shop_ItemsView = null;
@@ -352,8 +452,25 @@ public class Shop_ItemsView extends javax.swing.JPanel {
 
             loadItems();
         }
-        
+
     }//GEN-LAST:event_Items_View_TableMouseClicked
+
+    private void Brand_chooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Brand_chooserActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_Brand_chooserActionPerformed
+
+    private void Brand_chooserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_Brand_chooserItemStateChanged
+        // TODO add your handling code here:
+        try {
+            fetchBrands(Brand_chooser.getSelectedItem().toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.severe("Error while sorting brands in Shop Items : " + ex.getMessage());
+            
+        }
+        
+    }//GEN-LAST:event_Brand_chooserItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

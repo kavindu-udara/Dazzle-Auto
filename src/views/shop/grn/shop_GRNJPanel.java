@@ -18,7 +18,7 @@ import views.shop.items.*;
 
 /**
  *
- * @author Dinuka
+ * @author Dumindu
  */
 public class shop_GRNJPanel extends javax.swing.JPanel {
 

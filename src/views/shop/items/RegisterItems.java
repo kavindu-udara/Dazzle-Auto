@@ -101,6 +101,11 @@ public class RegisterItems extends javax.swing.JDialog {
         Clear_btn.setForeground(new java.awt.Color(255, 0, 0));
         Clear_btn.setText("CLEAR ALL");
         Clear_btn.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 0, 0), 1, true));
+        Clear_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Clear_btnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -198,6 +203,11 @@ public class RegisterItems extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_Register_btnActionPerformed
+
+    private void Clear_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Clear_btnActionPerformed
+        // TODO add your handling code here:
+        reset();
+    }//GEN-LAST:event_Clear_btnActionPerformed
 
     /**
      * @param args the command line arguments
