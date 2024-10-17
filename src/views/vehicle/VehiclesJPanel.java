@@ -5,28 +5,41 @@
 package views.vehicle;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import controllers.VehicleTypeController;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Vector;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import views.components.vehicleTableRender.HistoryActionCellEditor;
 import views.components.vehicleTableRender.HistoryActionEvent;
 import views.components.vehicleTableRender.HistoryCellRender;
 import views.mainInvoice.MainInvoice;
 import views.vehicleServiceAppointment.VehicleServiceAppointment;
+import includes.LoggerConfig;
+import includes.MySqlConnection;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Dinuka
  */
 public class VehiclesJPanel extends javax.swing.JPanel {
+    
+    private static Logger logger = LoggerConfig.getLogger();
+    
+    VehiclesJPanel vehiclesJPanel = this;
 
     VehicleSelecter VehicleSelecterFrame = null;
 
@@ -34,6 +47,8 @@ public class VehiclesJPanel extends javax.swing.JPanel {
     VehicleServiceAppointment vehicleServiceAppointment = null;
     String From = "";
     String BaseFrame = "";
+    
+    private static HashMap<String, String> vehicleTypesHashMap = new HashMap<>();
 
     public VehiclesJPanel() {
         initComponents();
@@ -41,6 +56,8 @@ public class VehiclesJPanel extends javax.swing.JPanel {
         vehicleFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "CAA-0000");
 
         vehicleViewTableRender();
+        loadVehicleTypes();
+        loadVehicles();
     }
 
     //Constructer for VehicleSelecter
@@ -51,7 +68,7 @@ public class VehiclesJPanel extends javax.swing.JPanel {
 
         if (BaseFrame.equals("MainInvoice")) {
             this.mainInvoice = (MainInvoice) parentFrame;
-        } else if (BaseFrame.equals("VehicleServiceAppointment")){
+        } else if (BaseFrame.equals("VehicleServiceAppointment")) {
             this.vehicleServiceAppointment = (VehicleServiceAppointment) parentFrame;
         }
 
@@ -63,7 +80,7 @@ public class VehiclesJPanel extends javax.swing.JPanel {
         vehicleViewTableRender();
     }
 
-    public void vehicleViewTableRender() {
+    private void vehicleViewTableRender() {
 
         HistoryActionEvent event = new HistoryActionEvent() {
 
@@ -102,6 +119,89 @@ public class VehiclesJPanel extends javax.swing.JPanel {
         }
     }
 
+    public void loadVehicles() {
+
+        try {
+
+            String query = "SELECT * FROM vehicle "
+                    + "INNER JOIN customer ON vehicle.customer_id=customer.id "
+                    + "INNER JOIN vehicle_brand ON vehicle.vehicle_brand_id=vehicle_brand.id "
+                    + "INNER JOIN vehicle_type ON vehicle.vehicle_type_id=vehicle_type.id "
+                    + "WHERE vehicle.vehicle_number LIKE '%" + vehicleFindField.getText() + "%' ";
+
+            String vehicleType = String.valueOf(jVehicleTypeComboBox.getSelectedItem());
+            if (vehicleType.equals("  All")) {
+                query += " AND `vehicle_type_id`LIKE'%%'";
+            } else {
+                String typeID = vehicleTypesHashMap.get(vehicleType);
+                
+                query += " AND `vehicle_type_id`LIKE'%"+typeID+"%'";
+            } 
+
+            String sort = String.valueOf(jSortComboBox.getSelectedItem());
+            if (sort.contains("Brand A-Z")) {
+                query += " ORDER BY `vehicle_brand`.`name` ASC";
+                
+            } else if (sort.contains("Brand Z-A")) {
+                query += " ORDER BY `vehicle_brand`.`name` DESC";
+                
+            } else if (sort.contains("Model A-Z")) {
+                query += " ORDER BY `vehicle`.`model` ASC";
+                
+            } else if (sort.contains("Model Z-A")) {
+                query += " ORDER BY `vehicle`.`model` DESC";
+                
+            }
+
+            ResultSet resultSet = MySqlConnection.executeSearch(query);
+
+            DefaultTableModel dtm = (DefaultTableModel) vehicleViewTable.getModel();
+            dtm.setRowCount(0);
+
+            int row = 0;
+            while (resultSet.next()) {
+                row++;
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("vehicle_number"));
+                vector.add(resultSet.getString("first_name")+" "+resultSet.getString("last_name"));
+                vector.add(resultSet.getString("vehicle_brand.name"));
+                vector.add(resultSet.getString("vehicle.model"));
+                vector.add(resultSet.getString("vehicle_type.name"));
+
+                dtm.addRow(vector);
+            }
+
+            vehicleViewTable.setModel(dtm);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warning("Error while loadVehicles : " + e.getMessage());
+        }
+    }
+    
+    private void loadVehicleTypes() {
+
+        try {
+            ResultSet resultSet = new VehicleTypeController().show();
+
+            Vector vector = new Vector();
+
+            vector.add("  All");
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("name"));
+                vehicleTypesHashMap.put(resultSet.getString("name"), resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
+            jVehicleTypeComboBox.setModel(comboBoxModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warning("Error while loadVehicleTypes : " + e.getMessage());
+        }
+
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -132,17 +232,29 @@ public class VehiclesJPanel extends javax.swing.JPanel {
 
         vehicleFindField.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
         vehicleFindField.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Find Vehicle By Vehicle No.", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Roboto", 0, 14))); // NOI18N
+        vehicleFindField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                vehicleFindFieldKeyReleased(evt);
+            }
+        });
 
         vehicleViewTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         vehicleViewTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"CAA-0000", "Saman", "Toyota", "Land Cruser Prado ", "SUV", null},
-                {"BJF-7551", "Rajitha", "Honda", "CB4 Spec3", "Mortercycle", null}
+
             },
             new String [] {
                 "Vehicle Number", "Owner", "Brand", "Model ", "Vehicle Type ", ""
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         vehicleViewTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         vehicleViewTable.setFocusable(false);
         vehicleViewTable.setRowHeight(40);
@@ -177,6 +289,11 @@ public class VehiclesJPanel extends javax.swing.JPanel {
 
         jVehicleTypeComboBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jVehicleTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Car", "Van" }));
+        jVehicleTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jVehicleTypeComboBoxActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -187,7 +304,12 @@ public class VehiclesJPanel extends javax.swing.JPanel {
         jLabel7.setText("Sort By :");
 
         jSortComboBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jSortComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Brand A-Z", "Brand Z-A", "Model A-Z", "Model A-Z" }));
+        jSortComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Brand A-Z", "Brand Z-A", "Model A-Z", "Model Z-A" }));
+        jSortComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSortComboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -268,7 +390,7 @@ public class VehiclesJPanel extends javax.swing.JPanel {
 
     private void jRegNewVehicleBottonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegNewVehicleBottonActionPerformed
 
-        new VehicleRegistration(null, true).setVisible(true);
+        new VehicleRegistration(null, true, vehiclesJPanel).setVisible(true);
     }//GEN-LAST:event_jRegNewVehicleBottonActionPerformed
 
     private void vehicleViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vehicleViewTableMouseClicked
@@ -280,16 +402,28 @@ public class VehiclesJPanel extends javax.swing.JPanel {
         String vehicleType = String.valueOf(vehicleViewTable.getValueAt(row, 4));
 
         if (From.equals("Selecter")) {
-            
-            if (BaseFrame.equals("MainInvoice")) {                
+
+            if (BaseFrame.equals("MainInvoice")) {
                 mainInvoice.setVehicleDetails(vehicleNumber, vehicleOwner, vehicleBrand, vehicleModel, vehicleType);
-            } else if (BaseFrame.equals("VehicleServiceAppointment")){
+            } else if (BaseFrame.equals("VehicleServiceAppointment")) {
                 vehicleServiceAppointment.setVehicleDetails(vehicleNumber, vehicleOwner, vehicleBrand, vehicleModel, vehicleType);
             }
-            
+
             VehicleSelecterFrame.dispose();
         }
     }//GEN-LAST:event_vehicleViewTableMouseClicked
+
+    private void vehicleFindFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_vehicleFindFieldKeyReleased
+        loadVehicles();
+    }//GEN-LAST:event_vehicleFindFieldKeyReleased
+
+    private void jVehicleTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehicleTypeComboBoxActionPerformed
+        loadVehicles();
+    }//GEN-LAST:event_jVehicleTypeComboBoxActionPerformed
+
+    private void jSortComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSortComboBoxActionPerformed
+        loadVehicles();
+    }//GEN-LAST:event_jSortComboBoxActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

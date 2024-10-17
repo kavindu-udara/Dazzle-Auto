@@ -30,8 +30,13 @@ public class VehicleRegistration extends java.awt.Dialog {
 
     Dialog vehicleRegistration = this;
 
-    public VehicleRegistration(java.awt.Frame parent, boolean modal) {
+    private VehiclesJPanel vehicleJPanel;
+
+    public VehicleRegistration(java.awt.Frame parent, boolean modal, VehiclesJPanel vehiclesJPanel) {
         super(parent, modal);
+
+        this.vehicleJPanel = vehiclesJPanel;
+
         initComponents();
         loadVehicleTypes();
         loadVehicleBrand();
@@ -288,6 +293,8 @@ public class VehicleRegistration extends java.awt.Dialog {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            
+            vehicleJPanel.loadVehicles();
 
         }
 
@@ -306,24 +313,6 @@ public class VehicleRegistration extends java.awt.Dialog {
         new CustomerSelector(null, true, vehicleRegistration, "vehicleRegistration").setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-
-        FlatMacDarkLaf.setup();
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                VehicleRegistration dialog = new VehicleRegistration(new java.awt.Frame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     private void reset() {
 
@@ -331,6 +320,8 @@ public class VehicleRegistration extends java.awt.Dialog {
         vehicle_type.setSelectedIndex(0);
         vehicle_brand.setSelectedIndex(0);
         vehicleModelTextField.setText("");
+        jLabel2.setText("Customer Name");
+        jLabel7.setText("Customer ID");
 
     }
 
