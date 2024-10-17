@@ -279,7 +279,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (nic.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your NIC", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else if (!RegexValidator.isValidSlNewNic(nic)) {
+        } else if (!RegexValidator.isValidSlNic(nic) && !RegexValidator.isValidSlNewNic(nic)) {
             JOptionPane.showMessageDialog(this, "Invalid NIC Number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (mobile.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -420,9 +420,9 @@ public class EmployeeRegistration extends java.awt.Dialog {
         return null;
     }
 
-    /**
-     * @param args the command line arguments
-     */
+//    /**
+//     * @param args the command line arguments
+//     */
 //    public static void main(String args[]) {
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
