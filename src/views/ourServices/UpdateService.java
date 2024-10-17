@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import includes.OnlyDoubleDocumentFilter;
 
-
 import models.ServicesModel;
 import controllers.ServicesController;
 import controllers.VehicleTypeController;
@@ -18,24 +17,29 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author USER Nimsara
  */
 public class UpdateService extends java.awt.Dialog {
 
+    private ServicesModel servicesModel;
+
     /**
      * Creates new form SupplierRegistration
      */
-    public UpdateService(java.awt.Frame parent, boolean modal) {
+    public UpdateService(java.awt.Frame parent, boolean modal, ServicesModel servicesModel) {
         super(parent, modal);
+        this.servicesModel = servicesModel;
         initComponents();
         setDocumentFilters();
         loadTypes();
+        setData();
     }
 
-     private static HashMap<String, String> vehicleTypeMap = new HashMap<>();
-     
+    private static HashMap<String, String> vehicleTypeMap = new HashMap<>();
+
     private void loadTypes() {
         try {
             ResultSet resultSet = new VehicleTypeController().show();
@@ -45,7 +49,7 @@ public class UpdateService extends java.awt.Dialog {
 
             while (resultSet.next()) {
                 vector.add(resultSet.getString("name"));
-               vehicleTypeMap.put(resultSet.getString("name"), resultSet.getString("id"));
+                vehicleTypeMap.put(resultSet.getString("name"), resultSet.getString("id"));
             }
 
             DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
@@ -55,9 +59,17 @@ public class UpdateService extends java.awt.Dialog {
             e.printStackTrace();
         }
     }
+
     private void setDocumentFilters() {
         ((AbstractDocument) Service_Price.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
+    }
 
+    private void setData() {
+        Service_Name.setText(servicesModel.getName());
+
+        // TODO : need to fix this
+//        Vehicle_Type.setSelectedItem(servicesModel.getVehicleTypeId());
+        Service_Price.setText(String.valueOf(servicesModel.getCharge()));
     }
 
     /**
@@ -209,7 +221,6 @@ public class UpdateService extends java.awt.Dialog {
         String VehicleType = String.valueOf(Vehicle_Type.getSelectedItem());
         String ServicePrice = Service_Price.getText();
         double servicePrice = Double.parseDouble(ServicePrice);
-        
 
         if (ServiceName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter New Service Name", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -220,20 +231,18 @@ public class UpdateService extends java.awt.Dialog {
         } else {
 
         } //update
-        try{
+        try {
             ServicesModel servicesmodel = new ServicesModel();
             servicesmodel.setName(ServiceName);
             servicesmodel.setVehicleTypeId(Integer.parseInt(vehicleTypeMap.get(Vehicle_Type.getSelectedItem())));
             servicesmodel.setCharge(servicePrice);
-            
-            
-           
+
             new ServicesController().update(servicesmodel);
-            
+
             JOptionPane.showMessageDialog(this, "Service Details Updated Successfully");
-                reset();
-            
-        }catch (Exception s){
+            reset();
+
+        } catch (Exception s) {
             JOptionPane.showMessageDialog(this, s.getMessage());
         }
 
@@ -251,21 +260,21 @@ public class UpdateService extends java.awt.Dialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-
-        FlatMacDarkLaf.setup();
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                UpdateService dialog = new UpdateService(new java.awt.Frame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//
+//        FlatMacDarkLaf.setup();
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                UpdateService dialog = new UpdateService(new java.awt.Frame(), true);
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
+//                dialog.setVisible(true);
+//            }
+//        });
+//    }
 
     private void reset() {
 

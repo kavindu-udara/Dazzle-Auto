@@ -41,9 +41,7 @@ public class ServicesController {
 
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
-                + "`name` LIKE '%" + searchText + "%' OR "
-                + "`vehicle_type_id` LIKE '%" + searchText + "%' OR "
-                + "`charge` LIKE '%" + searchText + "%' OR ");
+                + "`name` LIKE '%" + searchText + "%'");
     }
 
     public ResultSet delete(int id) throws Exception {
