@@ -26,6 +26,7 @@ public class ItemsUpdate extends javax.swing.JDialog {
      */
     private ProductModel productModel;
     
+    
     public ItemsUpdate(java.awt.Frame parent, boolean modal,ProductModel productModel) {
         super(parent, modal);
         initComponents();
@@ -35,6 +36,8 @@ public class ItemsUpdate extends javax.swing.JDialog {
         Items_Name.setText(productModel.getName());
         Brand_Selector.setSelectedItem(productModel.getbrandName());
         Item_id_box.setText(productModel.getItemId());
+        
+       
 
         
     }
@@ -77,6 +80,7 @@ public class ItemsUpdate extends javax.swing.JDialog {
         update_btn = new javax.swing.JButton();
         Clear_btn = new javax.swing.JButton();
         Item_id_box = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -84,7 +88,7 @@ public class ItemsUpdate extends javax.swing.JDialog {
         jLabel1.setText("UPDATE ITEMS");
 
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jLabel3.setText("Items Name");
+        jLabel3.setText("Item Name");
 
         jLabel4.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel4.setText("Brand");
@@ -111,6 +115,11 @@ public class ItemsUpdate extends javax.swing.JDialog {
             }
         });
 
+        Item_id_box.setEnabled(false);
+
+        jLabel5.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        jLabel5.setText("Item ID");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -125,7 +134,8 @@ public class ItemsUpdate extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
                         .addGap(55, 55, 55)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(Items_Name)
@@ -143,7 +153,9 @@ public class ItemsUpdate extends javax.swing.JDialog {
                 .addGap(45, 45, 45)
                 .addComponent(jLabel1)
                 .addGap(38, 38, 38)
-                .addComponent(Item_id_box, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Item_id_box, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -269,6 +281,7 @@ public class ItemsUpdate extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton update_btn;
     // End of variables declaration//GEN-END:variables

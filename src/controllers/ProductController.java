@@ -15,6 +15,7 @@ import models.ProductModel;
 public class ProductController {
 
     private final String tableName = "product";
+    private final String tableName2 = "product_brand";
    
 
     public ResultSet show() throws Exception {
@@ -63,6 +64,11 @@ public class ProductController {
     public ResultSet searchProductId(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
                 + "`name` LIKE '%" + searchText + "%' OR `id` LIKE '%" + searchText + "%' ");
+    }
+    
+    public ResultSet searchBrand(String searchText) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` INNER JOIN `" + tableName2 + "` "
+                + "ON `" + tableName + "`.`brand_id` = `" + tableName2 + "`.`id` WHERE `" + tableName2 + "`.`name` LIKE '%" + searchText + "%' ");
     }
 
     public ResultSet delete(int id) throws Exception {
