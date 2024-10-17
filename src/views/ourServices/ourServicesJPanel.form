@@ -132,23 +132,11 @@
                   <Font name="Roboto" size="16" style="1"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="2">
-                    <Column editable="true" title="ID" type="java.lang.Object">
-                      <Data value="001"/>
-                      <Data value="002"/>
-                    </Column>
-                    <Column editable="true" title="Service Name" type="java.lang.Object">
-                      <Data value="Full Service"/>
-                      <Data value="Engine Repair"/>
-                    </Column>
-                    <Column editable="true" title="Vehicle Type " type="java.lang.Object">
-                      <Data value="Motercycle"/>
-                      <Data value="SUV"/>
-                    </Column>
-                    <Column editable="true" title="Service Charge" type="java.lang.Object">
-                      <Data value="3000"/>
-                      <Data value="4000"/>
-                    </Column>
+                  <Table columnCount="4" rowCount="0">
+                    <Column editable="false" title="ID" type="java.lang.Object"/>
+                    <Column editable="false" title="Service Name" type="java.lang.Object"/>
+                    <Column editable="false" title="Vehicle Type " type="java.lang.Object"/>
+                    <Column editable="false" title="Service Charge" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -195,6 +183,11 @@
               <Font name="Roboto" size="16" style="1"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="serviceFindFieldKeyPressed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="serviceFindFieldKeyReleased"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="serviceFindFieldKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
