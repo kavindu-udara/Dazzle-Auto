@@ -48,24 +48,11 @@ public class ourServicesJPanel extends javax.swing.JPanel {
 
     public ourServicesJPanel() {
         initComponents();
-        loadVehicleTypes();
-        loadVehicleTypes2();
         loadServices();
         serviceFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Service Name");
 
         OurServiceTableRender();
         loadVehicleTypes();
-    }
-
-    private void loadVehicleTypes() {
-        try {
-            ResultSet resultSet = new VehicleTypeController().show();
-            while (resultSet.next()) {
-                vehicleTypesHashMap.put(resultSet.getString("name"), resultSet.getString("id"));
-            }
-        } catch (Exception e) {
-            //
-        }
     }
 
     private void loadServices() {
@@ -152,7 +139,7 @@ public class ourServicesJPanel extends javax.swing.JPanel {
         }
     }
 
-    private void loadVehicleTypes2() {
+    private void loadVehicleTypes() {
 
         try {
             ResultSet resultSet = new VehicleTypeController().show();
@@ -363,14 +350,13 @@ public class ourServicesJPanel extends javax.swing.JPanel {
             mainInvoice.setServiceDetails(serviceID, serviceName, vehicleType, serviceCharge);
             ServiceSelecterFrame.dispose();
         } else if (evt.getClickCount() == 2) {
-
             UpdateService updateService = new UpdateService(null, true, servicesModel);
             updateService.setVisible(true);
         }
     }//GEN-LAST:event_ourServicesViewTableMouseClicked
 
     private void jVehicleTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehicleTypeComboBoxActionPerformed
-
+        searchTable();
     }//GEN-LAST:event_jVehicleTypeComboBoxActionPerformed
 
     private void serviceFindFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceFindFieldKeyPressed
@@ -383,20 +369,32 @@ public class ourServicesJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_serviceFindFieldKeyReleased
 
     private void serviceFindFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceFindFieldKeyTyped
+        searchTable();
+    }//GEN-LAST:event_serviceFindFieldKeyTyped
 
+    private void searchTable() {
         // search process
         String searchText = serviceFindField.getText();
+        String vehicleTypeId = "";
+        if (!jVehicleTypeComboBox.getSelectedItem().equals("  All")) {
+            vehicleTypeId = vehicleTypesHashMap.get(jVehicleTypeComboBox.getSelectedItem());
+        }
 
         if (!searchText.isEmpty()) {
-            loadSearchedTable(searchText);
+            loadSearchedTable(searchText, vehicleTypeId);
         } else {
             reloadTable();
         }
-    }//GEN-LAST:event_serviceFindFieldKeyTyped
+    }
 
-    private void loadSearchedTable(String searchText) {
+    private void loadSearchedTable(String searchText, String vehicleTypeId) {
         try {
-            ResultSet resultSet = new ServicesController().search(searchText);
+            ResultSet resultSet;
+            if (vehicleTypeId.equals("")) {
+                resultSet = new ServicesController().search(searchText);
+            } else {
+                resultSet = new ServicesController().search(searchText, vehicleTypeId);
+            }
 
             DefaultTableModel tableModel = (DefaultTableModel) ourServicesViewTable.getModel();
             tableModel.setRowCount(0);
