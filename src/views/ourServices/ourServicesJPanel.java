@@ -5,6 +5,8 @@
 package views.ourServices;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import controllers.ServicesController;
+import controllers.VehicleTypeController;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -17,6 +19,11 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import views.mainInvoice.MainInvoice;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+import models.ServicesModel;
 
 /**
  *
@@ -26,15 +33,68 @@ public class ourServicesJPanel extends javax.swing.JPanel {
 
     OurServicesSelecter ServiceSelecterFrame = null;
 
+    private ourServicesJPanel thisPanel = this;
+    private static HashMap<String, String> vehicleTypesHashMap = new HashMap();
+
     MainInvoice mainInvoice = null;
     String From = "";
 
     public ourServicesJPanel() {
         initComponents();
-
+        loadVehicleTypes();
+        loadServices();
         serviceFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Service Name");
 
         OurServiceTableRender();
+    }
+
+    private void loadVehicleTypes() {
+        try {
+            ResultSet resultSet = new VehicleTypeController().show();
+            while (resultSet.next()) {
+                vehicleTypesHashMap.put(resultSet.getString("name"), resultSet.getString("id"));
+            }
+        } catch (Exception e) {
+            //
+        }
+    }
+
+    private void loadServices() {
+        try {
+            ResultSet resultSet = new ServicesController().show();
+
+            DefaultTableModel tableModel = (DefaultTableModel) ourServicesViewTable.getModel();
+            tableModel.setRowCount(0);
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("name"));
+
+                try {
+                    ResultSet vehicleTypeResultSet = new VehicleTypeController().show(resultSet.getInt("vehicle_type_id"));
+                    if (vehicleTypeResultSet.next()) {
+                        vector.add(vehicleTypeResultSet.getString("name"));
+                    } else {
+                        vector.add("empty");
+                    }
+                } catch (Exception e) {
+                    //
+                }
+
+                vector.add(resultSet.getString("charge"));
+
+                tableModel.addRow(vector);
+
+            }
+        } catch (Exception e) {
+            //
+        }
+    }
+
+    public void reloadTable() {
+        loadServices();
     }
 
     //Constructer for service selector
@@ -110,13 +170,20 @@ public class ourServicesJPanel extends javax.swing.JPanel {
         ourServicesViewTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         ourServicesViewTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"001", "Full Service", "Motercycle", "3000"},
-                {"002", "Engine Repair", "SUV", "4000"}
+
             },
             new String [] {
                 "ID", "Service Name", "Vehicle Type ", "Service Charge"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         ourServicesViewTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         ourServicesViewTable.setRowHeight(30);
         ourServicesViewTable.getTableHeader().setReorderingAllowed(false);
@@ -132,6 +199,17 @@ public class ourServicesJPanel extends javax.swing.JPanel {
         }
 
         serviceFindField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        serviceFindField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                serviceFindFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                serviceFindFieldKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                serviceFindFieldKeyTyped(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel1.setText("Find Service :");
@@ -209,7 +287,7 @@ public class ourServicesJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jAddNewServiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAddNewServiceButtonActionPerformed
-        new ServiceRegistration(null, true).setVisible(true);
+        new ServiceRegistration(null, true, thisPanel).setVisible(true);
     }//GEN-LAST:event_jAddNewServiceButtonActionPerformed
 
     private void ourServicesViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ourServicesViewTableMouseClicked
@@ -220,12 +298,76 @@ public class ourServicesJPanel extends javax.swing.JPanel {
         String vehicleType = String.valueOf(ourServicesViewTable.getValueAt(row, 2));
         String serviceCharge = String.valueOf(ourServicesViewTable.getValueAt(row, 3));
 
+        ServicesModel servicesModel = new ServicesModel();
+        servicesModel.setId(Integer.parseInt(serviceID));
+        servicesModel.setVehicleTypeId(Integer.parseInt(vehicleTypesHashMap.get(vehicleType)));
+        servicesModel.setCharge(Double.parseDouble(serviceCharge));
+        servicesModel.setName(serviceName);
+
         if (From.equals("Selecter")) {
             mainInvoice.setServiceDetails(serviceID, serviceName, vehicleType, serviceCharge);
             ServiceSelecterFrame.dispose();
+        } else if (evt.getClickCount() == 2) {
+
+            UpdateService updateService = new UpdateService(null, true, servicesModel);
+            updateService.setVisible(true);
         }
     }//GEN-LAST:event_ourServicesViewTableMouseClicked
 
+    private void serviceFindFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceFindFieldKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_serviceFindFieldKeyPressed
+
+    private void serviceFindFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceFindFieldKeyReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_serviceFindFieldKeyReleased
+
+    private void serviceFindFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceFindFieldKeyTyped
+
+        // search process
+        String searchText = serviceFindField.getText();
+
+        if (!searchText.isEmpty()) {
+            loadSearchedTable(searchText);
+        } else {
+            reloadTable();
+        }
+    }//GEN-LAST:event_serviceFindFieldKeyTyped
+
+    private void loadSearchedTable(String searchText) {
+        try {
+            ResultSet resultSet = new ServicesController().search(searchText);
+
+            DefaultTableModel tableModel = (DefaultTableModel) ourServicesViewTable.getModel();
+            tableModel.setRowCount(0);
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("name"));
+
+                try {
+                    ResultSet vehicleTypeResultSet = new VehicleTypeController().show(resultSet.getInt("vehicle_type_id"));
+                    if (vehicleTypeResultSet.next()) {
+                        vector.add(vehicleTypeResultSet.getString("name"));
+                    } else {
+                        vector.add("empty");
+                    }
+                } catch (Exception e) {
+                    //
+                }
+
+                vector.add(resultSet.getString("charge"));
+
+                tableModel.addRow(vector);
+
+            }
+        } catch (Exception e) {
+            //
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jAddNewServiceButton;

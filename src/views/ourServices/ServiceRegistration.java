@@ -29,8 +29,12 @@ public class ServiceRegistration extends java.awt.Dialog {
     /**
      * Creates new form SupplierRegistration
      */
-    public ServiceRegistration(java.awt.Frame parent, boolean modal) {
+    
+    private ourServicesJPanel parentPanel;
+    
+    public ServiceRegistration(java.awt.Frame parent, boolean modal, ourServicesJPanel parentPanel) {
         super(parent, modal);
+        this.parentPanel = parentPanel;
         initComponents();
         setDocumentFilters();
         loadTypes();
@@ -231,6 +235,9 @@ public class ServiceRegistration extends java.awt.Dialog {
             
             JOptionPane.showMessageDialog(this, "Service Registration Successfully");
                 reset();
+                
+                // reload our services jpanel table
+                parentPanel.reloadTable();
             
         }catch (Exception s){
             JOptionPane.showMessageDialog(this, s.getMessage());
@@ -250,21 +257,21 @@ public class ServiceRegistration extends java.awt.Dialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-
-        FlatMacDarkLaf.setup();
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                ServiceRegistration dialog = new ServiceRegistration(new java.awt.Frame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//
+//        FlatMacDarkLaf.setup();
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                ServiceRegistration dialog = new ServiceRegistration(new java.awt.Frame(), true);
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
+//                dialog.setVisible(true);
+//            }
+//        });
+//    }
 
     private void reset() {
 
