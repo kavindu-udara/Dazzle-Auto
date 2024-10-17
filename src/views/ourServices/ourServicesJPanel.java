@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import models.ServicesModel;
+import views.vehicleServiceAppointment.VehicleServiceAppointment;
 
 /**
  *
@@ -35,21 +36,46 @@ import models.ServicesModel;
  */
 public class ourServicesJPanel extends javax.swing.JPanel {
 
-    OurServicesSelecter ServiceSelecterFrame = null;
-
     private static Logger logger = LoggerConfig.getLogger();
 
-    private static HashMap<String, String> vehicleTypesHashMap = new HashMap<>();
+    OurServicesSelecter ServiceSelecterFrame = null;
 
     private ourServicesJPanel thisPanel = this;
 
     MainInvoice mainInvoice = null;
+    VehicleServiceAppointment vehicleServiceAppointment = null;
     String From = "";
+    String BaseFrame = "";
+
+    private static HashMap<String, String> vehicleTypesHashMap = new HashMap<>();
 
     public ourServicesJPanel() {
         initComponents();
         loadServices();
         serviceFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Service Name");
+
+        OurServiceTableRender();
+        loadVehicleTypes();
+    }
+
+    //Constructer for service selector
+    public ourServicesJPanel(Frame parentFrame, OurServicesSelecter ourServicesSelecter, String BaseFrame) {
+        this.ServiceSelecterFrame = ourServicesSelecter;
+        this.From = "Selecter";
+        this.BaseFrame = BaseFrame;
+
+        if (BaseFrame.equals("MainInvoice")) {
+            this.mainInvoice = (MainInvoice) parentFrame;
+        } else if (BaseFrame.equals("VehicleServiceAppointment")) {
+            this.vehicleServiceAppointment = (VehicleServiceAppointment) parentFrame;
+        }
+
+        initComponents();
+        loadServices();
+
+        serviceFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Service Name");
+        jAddNewServiceButton.setEnabled(false);
+//        jVehicleTypeComboBox.setEnabled(false);
 
         OurServiceTableRender();
         loadVehicleTypes();
@@ -91,23 +117,6 @@ public class ourServicesJPanel extends javax.swing.JPanel {
 
     public void reloadTable() {
         loadServices();
-    }
-
-    //Constructer for service selector
-    public ourServicesJPanel(Frame parentFrame, OurServicesSelecter ourServicesSelecter) {
-        this.ServiceSelecterFrame = ourServicesSelecter;
-
-        this.From = "Selecter";
-        this.mainInvoice = (MainInvoice) parentFrame;
-
-        initComponents();
-
-        serviceFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Service Name");
-        jAddNewServiceButton.setEnabled(false);
-//        jVehicleTypeComboBox.setEnabled(false);
-
-        OurServiceTableRender();
-        loadVehicleTypes();
     }
 
     public void OurServiceTableRender() {
@@ -223,14 +232,8 @@ public class ourServicesJPanel extends javax.swing.JPanel {
 
         serviceFindField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         serviceFindField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                serviceFindFieldKeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 serviceFindFieldKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                serviceFindFieldKeyTyped(evt);
             }
         });
 
@@ -347,8 +350,15 @@ public class ourServicesJPanel extends javax.swing.JPanel {
         servicesModel.setName(serviceName);
 
         if (From.equals("Selecter")) {
-            mainInvoice.setServiceDetails(serviceID, serviceName, vehicleType, serviceCharge);
+
+            if (BaseFrame.equals("MainInvoice")) {
+                mainInvoice.setServiceDetails(serviceID, serviceName, vehicleType, serviceCharge);
+            } else if (BaseFrame.equals("VehicleServiceAppointment")) {
+                vehicleServiceAppointment.setServiceDetails(serviceID, serviceName, serviceCharge);
+            }
+
             ServiceSelecterFrame.dispose();
+
         } else if (evt.getClickCount() == 2) {
             UpdateService updateService = new UpdateService(null, true, servicesModel);
             updateService.setVisible(true);
@@ -359,18 +369,9 @@ public class ourServicesJPanel extends javax.swing.JPanel {
         searchTable();
     }//GEN-LAST:event_jVehicleTypeComboBoxActionPerformed
 
-    private void serviceFindFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceFindFieldKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_serviceFindFieldKeyPressed
-
     private void serviceFindFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceFindFieldKeyReleased
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_serviceFindFieldKeyReleased
-
-    private void serviceFindFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceFindFieldKeyTyped
         searchTable();
-    }//GEN-LAST:event_serviceFindFieldKeyTyped
+    }//GEN-LAST:event_serviceFindFieldKeyReleased
 
     private void searchTable() {
         // search process
@@ -380,11 +381,8 @@ public class ourServicesJPanel extends javax.swing.JPanel {
             vehicleTypeId = vehicleTypesHashMap.get(jVehicleTypeComboBox.getSelectedItem());
         }
 
-        if (!searchText.isEmpty()) {
-            loadSearchedTable(searchText, vehicleTypeId);
-        } else {
-            reloadTable();
-        }
+        loadSearchedTable(searchText, vehicleTypeId);
+
     }
 
     private void loadSearchedTable(String searchText, String vehicleTypeId) {

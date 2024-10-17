@@ -819,7 +819,7 @@ public class MainInvoice extends javax.swing.JFrame {
         if (vehicleNo.equals("Vehicle No.")) {
             JOptionPane.showMessageDialog(this, "Please Select Vehicle First !", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            new OurServicesSelecter(this, true).setVisible(true);
+            new OurServicesSelecter(this, true, "MainInvoice").setVisible(true);
         }
 
     }//GEN-LAST:event_jServiceSelectorButtonActionPerformed

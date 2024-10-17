@@ -15,13 +15,15 @@ import javax.swing.SwingUtilities;
 public class OurServicesSelecter extends javax.swing.JDialog {
 
     Frame parentFrame = null;
+    String BaseFrame = "";
     
-    public OurServicesSelecter(java.awt.Frame parent, boolean modal) {
+    public OurServicesSelecter(java.awt.Frame parent, boolean modal, String parentFrameName) {
         super(parent, modal);
         this.parentFrame = parent;
+        this.BaseFrame = parentFrameName;
         initComponents();
         
-        ourServicesJPanel ourServices = new ourServicesJPanel(parentFrame, this);
+        ourServicesJPanel ourServices = new ourServicesJPanel(parentFrame, this, BaseFrame);
         jPanel1.add(ourServices, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
     }
