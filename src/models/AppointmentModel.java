@@ -10,9 +10,12 @@ package models;
  */
 public class AppointmentModel {
 
-    private int id;
+    private String id;
     private int serviceId;
+    private String serviceName;
     private String vehicleNumber;
+    private String vehicleModel;
+    private String vehicleType;
     private String date;
     private String note;
     private int appointmentStatusId;
@@ -20,14 +23,14 @@ public class AppointmentModel {
     /**
      * @return the id
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -46,6 +49,20 @@ public class AppointmentModel {
     }
 
     /**
+     * @return the serviceName
+     */
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    /**
+     * @param serviceName the serviceName to set
+     */
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    /**
      * @return the vehicleNumber
      */
     public String getVehicleNumber() {
@@ -57,6 +74,34 @@ public class AppointmentModel {
      */
     public void setVehicleNumber(String vehicleNumber) {
         this.vehicleNumber = vehicleNumber;
+    }
+
+    /**
+     * @return the vehicleModel
+     */
+    public String getVehicleModel() {
+        return vehicleModel;
+    }
+
+    /**
+     * @param vehicleModel the vehicleModel to set
+     */
+    public void setVehicleModel(String vehicleModel) {
+        this.vehicleModel = vehicleModel;
+    }
+
+    /**
+     * @return the vehicleType
+     */
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    /**
+     * @param vehicleType the vehicleType to set
+     */
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
     }
 
     /**
