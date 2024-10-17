@@ -36,9 +36,9 @@ import java.util.logging.Logger;
  * @author Dinuka
  */
 public class VehiclesJPanel extends javax.swing.JPanel {
-    
+
     private static Logger logger = LoggerConfig.getLogger();
-    
+
     VehiclesJPanel vehiclesJPanel = this;
 
     VehicleSelecter VehicleSelecterFrame = null;
@@ -47,7 +47,7 @@ public class VehiclesJPanel extends javax.swing.JPanel {
     VehicleServiceAppointment vehicleServiceAppointment = null;
     String From = "";
     String BaseFrame = "";
-    
+
     private static HashMap<String, String> vehicleTypesHashMap = new HashMap<>();
 
     public VehiclesJPanel() {
@@ -78,6 +78,8 @@ public class VehiclesJPanel extends javax.swing.JPanel {
         jRegNewVehicleBotton.setEnabled(false);
 
         vehicleViewTableRender();
+        loadVehicleTypes();
+        loadVehicles();
     }
 
     private void vehicleViewTableRender() {
@@ -134,23 +136,23 @@ public class VehiclesJPanel extends javax.swing.JPanel {
                 query += " AND `vehicle_type_id`LIKE'%%'";
             } else {
                 String typeID = vehicleTypesHashMap.get(vehicleType);
-                
-                query += " AND `vehicle_type_id`LIKE'%"+typeID+"%'";
-            } 
+
+                query += " AND `vehicle_type_id`LIKE'%" + typeID + "%'";
+            }
 
             String sort = String.valueOf(jSortComboBox.getSelectedItem());
             if (sort.contains("Brand A-Z")) {
                 query += " ORDER BY `vehicle_brand`.`name` ASC";
-                
+
             } else if (sort.contains("Brand Z-A")) {
                 query += " ORDER BY `vehicle_brand`.`name` DESC";
-                
+
             } else if (sort.contains("Model A-Z")) {
                 query += " ORDER BY `vehicle`.`model` ASC";
-                
+
             } else if (sort.contains("Model Z-A")) {
                 query += " ORDER BY `vehicle`.`model` DESC";
-                
+
             }
 
             ResultSet resultSet = MySqlConnection.executeSearch(query);
@@ -163,7 +165,7 @@ public class VehiclesJPanel extends javax.swing.JPanel {
                 row++;
                 Vector<String> vector = new Vector<>();
                 vector.add(resultSet.getString("vehicle_number"));
-                vector.add(resultSet.getString("first_name")+" "+resultSet.getString("last_name"));
+                vector.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
                 vector.add(resultSet.getString("vehicle_brand.name"));
                 vector.add(resultSet.getString("vehicle.model"));
                 vector.add(resultSet.getString("vehicle_type.name"));
@@ -178,7 +180,7 @@ public class VehiclesJPanel extends javax.swing.JPanel {
             logger.warning("Error while loadVehicles : " + e.getMessage());
         }
     }
-    
+
     private void loadVehicleTypes() {
 
         try {
