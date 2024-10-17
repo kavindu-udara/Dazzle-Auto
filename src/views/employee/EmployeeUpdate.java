@@ -36,6 +36,8 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
     private static HashMap<String, String> employeeTypeMap = new HashMap<>();
 
+    private boolean isEmployerHaveAnImage = false;
+
     private EmployeeModel employeeModel;
     private EmployeeImageModel employeeImageModel = new EmployeeImageModel();
 
@@ -90,6 +92,8 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
             // show image
             if (resultSet.next()) {
+                isEmployerHaveAnImage = true;
+
                 employeeImageModel.setPath(resultSet.getString("path"));
                 employeeImageModel.setId(resultSet.getInt("id"));
                 employeeImageModel.setEmployeeId(resultSet.getString("employee_id"));
@@ -106,6 +110,8 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 } else {
                     employee_image.setIcon(null);
                 }
+            } else {
+                isEmployerHaveAnImage = false;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -401,7 +407,17 @@ public class EmployeeUpdate extends java.awt.Dialog {
                     if (imagePath != null) {
                         employeeImageModel.setPath(imagePath);
 
-                        new EmployeeImageController().update(employeeImageModel);
+                        // check user had an image before
+                        if (isEmployerHaveAnImage) {
+                            new EmployeeImageController().update(employeeImageModel);
+                        } else {
+                            EmployeeImageModel employeeImageModel = new EmployeeImageModel();
+                            employeeImageModel.setPath(imagePath);
+                            employeeImageModel.setEmployeeId(employeeModel.getId());
+
+                            new EmployeeImageController().store(employeeImageModel);
+                        }
+
                     } else {
                         JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
