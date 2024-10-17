@@ -35,7 +35,7 @@ public class ServicesController {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
                 + "`name`='" + servicesModel.getName() + "', "
                 + "`vehicle_type_id`='" + servicesModel.getVehicleTypeId() + "', "
-                + "`charge`='" + servicesModel.getCharge() + "', "
+                + "`charge`='" + servicesModel.getCharge() + "' "
                 + "WHERE `id`='" + servicesModel.getId() + "' ");
     }
 

@@ -14,6 +14,7 @@ public class ServicesModel {
     private int vehicleTypeId;
     private double charge;
     private String name;
+    private String vehicleTypeName;
 
     /**
      * @return the id
@@ -71,6 +72,18 @@ public class ServicesModel {
         this.name = name;
     }
 
-    
+    /**
+     * @return the vehicleTypeName
+     */
+    public String getVehicleTypeName() {
+        return vehicleTypeName;
+    }
+
+    /**
+     * @param vehicleTypeName the vehicleTypeName to set
+     */
+    public void setVehicleTypeName(String vehicleTypeName) {
+        this.vehicleTypeName = vehicleTypeName;
+    }
 
 }

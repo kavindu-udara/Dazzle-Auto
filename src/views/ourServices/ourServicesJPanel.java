@@ -345,13 +345,13 @@ public class ourServicesJPanel extends javax.swing.JPanel {
         servicesModel.setVehicleTypeId(Integer.parseInt(vehicleTypesHashMap.get(vehicleType)));
         servicesModel.setCharge(Double.parseDouble(serviceCharge));
         servicesModel.setName(serviceName);
+        servicesModel.setVehicleTypeName(vehicleType);
 
         if (From.equals("Selecter")) {
             mainInvoice.setServiceDetails(serviceID, serviceName, vehicleType, serviceCharge);
             ServiceSelecterFrame.dispose();
         } else if (evt.getClickCount() == 2) {
-            UpdateService updateService = new UpdateService(null, true, servicesModel);
-            updateService.setVisible(true);
+            new UpdateService(null, true, servicesModel, thisPanel).setVisible(true);
         }
     }//GEN-LAST:event_ourServicesViewTableMouseClicked
 

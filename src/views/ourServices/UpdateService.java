@@ -4,7 +4,6 @@
  */
 package views.ourServices;
 
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import includes.OnlyDoubleDocumentFilter;
@@ -26,12 +25,15 @@ public class UpdateService extends java.awt.Dialog {
 
     private ServicesModel servicesModel;
 
+    private ourServicesJPanel parentPanel;
+
     /**
      * Creates new form SupplierRegistration
      */
-    public UpdateService(java.awt.Frame parent, boolean modal, ServicesModel servicesModel) {
+    public UpdateService(java.awt.Frame parent, boolean modal, ServicesModel servicesModel, ourServicesJPanel parentPanel) {
         super(parent, modal);
         this.servicesModel = servicesModel;
+        this.parentPanel = parentPanel;
         initComponents();
         setDocumentFilters();
         loadTypes();
@@ -68,7 +70,7 @@ public class UpdateService extends java.awt.Dialog {
         Service_Name.setText(servicesModel.getName());
 
         // TODO : need to fix this
-//        Vehicle_Type.setSelectedItem(servicesModel.getVehicleTypeId());
+        Vehicle_Type.setSelectedItem(servicesModel.getVehicleTypeName());
         Service_Price.setText(String.valueOf(servicesModel.getCharge()));
     }
 
@@ -232,16 +234,17 @@ public class UpdateService extends java.awt.Dialog {
 
         } //update
         try {
-            ServicesModel servicesmodel = new ServicesModel();
-            servicesmodel.setName(ServiceName);
-            servicesmodel.setVehicleTypeId(Integer.parseInt(vehicleTypeMap.get(Vehicle_Type.getSelectedItem())));
-            servicesmodel.setCharge(servicePrice);
+            servicesModel.setName(ServiceName);
+            servicesModel.setVehicleTypeId(Integer.parseInt(vehicleTypeMap.get(Vehicle_Type.getSelectedItem())));
+            servicesModel.setCharge(servicePrice);
 
-            new ServicesController().update(servicesmodel);
+            new ServicesController().update(servicesModel);
 
             JOptionPane.showMessageDialog(this, "Service Details Updated Successfully");
             reset();
 
+            // relaod table
+            parentPanel.reloadTable();
         } catch (Exception s) {
             JOptionPane.showMessageDialog(this, s.getMessage());
         }
@@ -275,7 +278,6 @@ public class UpdateService extends java.awt.Dialog {
 //            }
 //        });
 //    }
-
     private void reset() {
 
         Service_Name.setText("");
