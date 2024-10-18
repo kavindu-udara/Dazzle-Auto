@@ -16,7 +16,7 @@ import javax.swing.SwingUtilities;
 import models.LoginModel;
 import views.customer.CustomerJPanel;
 import views.employee.StaffJPanel;
-import views.finance.FinanceJPanel;
+import views.financeAndHr.FinanceAndHrJPanel;
 import views.ourServices.ourServicesJPanel;
 import views.payment.PaymentsPanel;
 import views.reports.ReportsJPanel;
@@ -414,7 +414,7 @@ public class Dashboard extends javax.swing.JFrame {
     private void jFinanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFinanceButtonActionPerformed
         jTabbedPane1.setSelectedIndex(6);
 
-        FinanceJPanel financeJPanel = new FinanceJPanel();
+        FinanceAndHrJPanel financeJPanel = new FinanceAndHrJPanel();
         jFinancePanel.add(financeJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jFinanceButtonActionPerformed
