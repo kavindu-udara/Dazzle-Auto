@@ -59,7 +59,7 @@ public class ourServicesJPanel extends javax.swing.JPanel {
     }
 
     //Constructer for service selector
-    public ourServicesJPanel(Frame parentFrame, OurServicesSelecter ourServicesSelecter, String BaseFrame) {
+    public ourServicesJPanel(Frame parentFrame, OurServicesSelecter ourServicesSelecter, String BaseFrame, String VehicleTYPE) {
         this.ServiceSelecterFrame = ourServicesSelecter;
         this.From = "Selecter";
         this.BaseFrame = BaseFrame;
@@ -75,10 +75,11 @@ public class ourServicesJPanel extends javax.swing.JPanel {
 
         serviceFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Service Name");
         jAddNewServiceButton.setEnabled(false);
-//        jVehicleTypeComboBox.setEnabled(false);
 
         OurServiceTableRender();
         loadVehicleTypes();
+        jVehicleTypeComboBox.setSelectedIndex(Integer.valueOf(vehicleTypesHashMap.get(VehicleTYPE)));
+        jVehicleTypeComboBox.setEnabled(false);
     }
 
     private void loadServices() {

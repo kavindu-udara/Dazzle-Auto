@@ -5,6 +5,9 @@
 package views.vehicleServiceAppointment;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import controllers.VehicleController;
+import controllers.VehicleTypeController;
+import java.sql.ResultSet;
 import models.AppointmentModel;
 
 /**
@@ -13,12 +16,11 @@ import models.AppointmentModel;
  */
 public class AppointmentSuccessDialog extends javax.swing.JDialog {
 
-    
     public AppointmentSuccessDialog(java.awt.Frame parent, boolean modal, AppointmentModel appointmentModel) {
         super(parent, modal);
         initComponents();
         roundPanels();
-        
+
         jButton1.setText(appointmentModel.getId());
         jVehicleNoLabel.setText(appointmentModel.getVehicleNumber());
         jBrandModelLabel.setText(appointmentModel.getVehicleModel());
@@ -26,14 +28,44 @@ public class AppointmentSuccessDialog extends javax.swing.JDialog {
         jDateLabel.setText(appointmentModel.getDate());
         jServiceLabel.setText(appointmentModel.getServiceName());
         jNoteLabel.setText(appointmentModel.getNote());
+
+    }
+
+    public AppointmentSuccessDialog(java.awt.Frame parent, boolean modal, String appointmentNumber, String vehicleNumber, String serviceName, String serviceDate, String note) {
+        super(parent, modal);
+        initComponents();
+        roundPanels();
+
+        jButton1.setText(appointmentNumber);
+        jVehicleNoLabel.setText(vehicleNumber);
+
+        try {
+            ResultSet rs = new VehicleController().show(vehicleNumber);
+            if (rs.next()) {
+                jBrandModelLabel.setText(rs.getString("model"));
+
+                ResultSet show = new VehicleTypeController().show(rs.getInt("vehicle_type_id"));
+                if (show.next()) {
+                    jTypeLabel1.setText(show.getString("name"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        jDateLabel.setText(serviceDate);
+        jServiceLabel.setText(serviceName);
+        jNoteLabel.setText(note);
         
+        jLabel1.setText("Scheduled Appointment");
+
     }
 
     private void roundPanels() {
         jButton1.putClientProperty(FlatClientProperties.STYLE, "arc:15");
 
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

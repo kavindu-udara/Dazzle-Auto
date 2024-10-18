@@ -17,13 +17,13 @@ public class OurServicesSelecter extends javax.swing.JDialog {
     Frame parentFrame = null;
     String BaseFrame = "";
     
-    public OurServicesSelecter(java.awt.Frame parent, boolean modal, String parentFrameName) {
+    public OurServicesSelecter(java.awt.Frame parent, boolean modal, String parentFrameName, String vehicleType) {
         super(parent, modal);
         this.parentFrame = parent;
         this.BaseFrame = parentFrameName;
         initComponents();
         
-        ourServicesJPanel ourServices = new ourServicesJPanel(parentFrame, this, BaseFrame);
+        ourServicesJPanel ourServices = new ourServicesJPanel(parent, this, parentFrameName, vehicleType);
         jPanel1.add(ourServices, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
     }

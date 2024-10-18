@@ -129,7 +129,7 @@ public class VehiclesJPanel extends javax.swing.JPanel {
                     + "INNER JOIN customer ON vehicle.customer_id=customer.id "
                     + "INNER JOIN vehicle_brand ON vehicle.vehicle_brand_id=vehicle_brand.id "
                     + "INNER JOIN vehicle_type ON vehicle.vehicle_type_id=vehicle_type.id "
-                    + "WHERE vehicle.vehicle_number LIKE '%" + vehicleFindField.getText() + "%' ";
+                    + "WHERE `vehicle`.`vehicle_number` LIKE '%" + vehicleFindField.getText() + "%' ";
 
             String vehicleType = String.valueOf(jVehicleTypeComboBox.getSelectedItem());
             if (vehicleType.equals("  All")) {

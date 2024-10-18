@@ -24,6 +24,13 @@ public class AppointmentController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
+    public ResultSet show(String vehicle_number, int services_id, String date) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` "
+                + "WHERE `vehicle_number`='" + vehicle_number + "' "
+                + "AND `services_id`='" + services_id + "' "
+                + "AND `date`='" + date + "' ");
+    }
+
     public ResultSet store(AppointmentModel appointmentModel) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`, `vehicle_number`, `services_id`, `date`, `note`, `appointment_status_id`) VALUES "
                 + "('" + appointmentModel.getId() + "', "
@@ -42,6 +49,12 @@ public class AppointmentController {
                 + "`note`='" + appointmentModel.getNote() + "', "
                 + "`appointment_status_id`='" + appointmentModel.getAppointmentStatusId() + "', "
                 + "WHERE `id`='" + appointmentModel.getId() + "' ");
+    }
+
+    public ResultSet updateStatus(String appointmentNumber, int statusID) throws Exception {
+        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` "
+                + "SET `appointment_status_id`='" + statusID + "' "
+                + "WHERE `id`='" + appointmentNumber + "' ");
     }
 
     public ResultSet search(String searchText) throws Exception {
