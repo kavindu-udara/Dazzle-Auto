@@ -390,7 +390,7 @@ public class Dashboard extends javax.swing.JFrame {
     private void jAppointmentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAppointmentsButtonActionPerformed
         jTabbedPane1.setSelectedIndex(2);
 
-        AppointmnetPanel appointmnetPanel = new AppointmnetPanel();
+        AppointmnetPanel appointmnetPanel = new AppointmnetPanel(this);
         jAppointmentPanel.add(appointmnetPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jAppointmentsButtonActionPerformed

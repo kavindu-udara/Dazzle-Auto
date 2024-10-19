@@ -815,11 +815,12 @@ public class MainInvoice extends javax.swing.JFrame {
 
     private void jServiceSelectorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jServiceSelectorButtonActionPerformed
         String vehicleNo = jVehicleNoLabel.getText();
+        String vehicleType = jVehicleTypeLabel.getText();
 
         if (vehicleNo.equals("Vehicle No.")) {
             JOptionPane.showMessageDialog(this, "Please Select Vehicle First !", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            new OurServicesSelecter(this, true, "MainInvoice").setVisible(true);
+            new OurServicesSelecter(this, true, "MainInvoice", vehicleType).setVisible(true);
         }
 
     }//GEN-LAST:event_jServiceSelectorButtonActionPerformed

@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import models.AppointmentModel;
 import views.ourServices.OurServicesSelecter;
 import includes.LoggerConfig;
+import java.sql.ResultSet;
 import java.util.logging.Logger;
 
 /**
@@ -20,9 +21,12 @@ import java.util.logging.Logger;
 public class VehicleServiceAppointment extends javax.swing.JFrame {
 
     private static Logger logger = LoggerConfig.getLogger();
+    
+    AppointmnetPanel AppointmnetPanel = null;
 
-    public VehicleServiceAppointment() {
+    public VehicleServiceAppointment(AppointmnetPanel appointmnetPanel) {
         initComponents();
+        this.AppointmnetPanel = appointmnetPanel;
 
         datePicker1.setEditor(dateField);
 
@@ -173,7 +177,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(90, 90, 90)
+                .addGap(70, 70, 70)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -312,19 +316,29 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                 appointmentModel.setNote(note);
                 appointmentModel.setAppointmentStatusId(1);
 
-                new AppointmentController().store(appointmentModel);
+                ResultSet rs = new AppointmentController().show(vehicleNumber, serviceID, date);
 
-                logger.info("New Appointment Scheduled : "
-                        + "" + appointmentID + " | For : "
-                        + "" + vehicleNumber + " | Service : "
-                        + "" + serviceName + " | Date : "
-                        + "" + date + " | Note : "
-                        + "" + note);
-                
-                reset();
-                
-                this.dispose();
-                new AppointmentSuccessDialog(this, true, appointmentModel).setVisible(true);
+                if (rs.next()) {
+                    JOptionPane.showMessageDialog(this, "This Appointment Already Scheduled !", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else {
+
+                    new AppointmentController().store(appointmentModel);
+
+                    logger.info("New Appointment Scheduled : "
+                            + "" + appointmentID + " | For : "
+                            + "" + vehicleNumber + " | Service : "
+                            + "" + serviceName + " | Date : "
+                            + "" + date + " | Note : "
+                            + "" + note);
+
+                    reset();
+
+                    this.dispose();
+                    new AppointmentSuccessDialog(this, true, appointmentModel).setVisible(true);
+                    
+                    AppointmnetPanel.loadAppointments();
+
+                }
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -336,11 +350,12 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
 
     private void jServiceSelectorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jServiceSelectorButtonActionPerformed
         String vehicleNo = jVehicleNoLabel.getText();
+        String vehicleType = jTypeLabel.getText();
 
         if (vehicleNo.equals("...............................................")) {
             JOptionPane.showMessageDialog(this, "Please Select Vehicle First !", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            new OurServicesSelecter(this, true, "VehicleServiceAppointment").setVisible(true);
+            new OurServicesSelecter(this, true, "VehicleServiceAppointment", vehicleType).setVisible(true);
         }
     }//GEN-LAST:event_jServiceSelectorButtonActionPerformed
 
