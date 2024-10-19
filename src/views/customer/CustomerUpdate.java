@@ -13,7 +13,9 @@ import includes.RegexValidator;
 import java.awt.Frame;
 import models.CustomerModel;
 import controllers.CustomerController;
+import includes.LoggerConfig;
 import includes.TimestampsGenerator;
+import java.util.logging.Logger;
 import javax.print.attribute.DateTimeSyntax;
 
 /**
@@ -22,6 +24,8 @@ import javax.print.attribute.DateTimeSyntax;
  */
 public class CustomerUpdate extends java.awt.Dialog {
 
+    private static final Logger logger = LoggerConfig.getLogger();
+    
     private CustomerModel customerModel;
 
     /**
@@ -42,7 +46,6 @@ public class CustomerUpdate extends java.awt.Dialog {
 
     private void setDocumentFilters() {
         ((AbstractDocument) customer_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
-
     }
 
     /**
@@ -216,7 +219,8 @@ public class CustomerUpdate extends java.awt.Dialog {
                 JOptionPane.showMessageDialog(this, "Customer details updated successfully");
                 reset();
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+                logger.severe("Error while updating customer : "+e.getMessage());
             }
 
         }

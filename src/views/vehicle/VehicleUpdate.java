@@ -7,7 +7,9 @@ package views.vehicle;
 import views.customer.*;
 import views.supplier.*;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import includes.LoggerConfig;
 import java.awt.Dialog;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,6 +17,8 @@ import javax.swing.JOptionPane;
  * @author USER Nimsara
  */
 public class VehicleUpdate extends java.awt.Dialog {
+    
+    private static final Logger logger = LoggerConfig.getLogger();
 
     Dialog vehicleUpdate = this;
 
@@ -220,7 +224,7 @@ public class VehicleUpdate extends java.awt.Dialog {
         } else if (VehicleModel.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Please select a Vehicle Model", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-
+            //
         }
 
     }//GEN-LAST:event_vehicle_register_btnActionPerformed

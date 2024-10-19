@@ -28,7 +28,6 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
     public Shop_StockJPanel() {
         initComponents();
         StockTableRender();
-        
     }
 
     public void StockTableRender() {

@@ -4,12 +4,14 @@ import controllers.EmployeeController;
 import controllers.ProductController;
 import controllers.SupplierController;
 import java.sql.ResultSet;
-
+import java.util.logging.Logger;
 /**
  *
  * @author Dinuka
  */
 public class IDGenarator {
+    
+    private static final Logger logger = LoggerConfig.getLogger();
 
     public static String invoiceID() {
         // Get the current time in milliseconds
@@ -62,6 +64,7 @@ public class IDGenarator {
             
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while generate Employee ID : "+e.getMessage());
         }
         
         newEmployeeNumber += row+1;
@@ -94,6 +97,7 @@ public class IDGenarator {
             
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while generate product ID : "+e.getMessage());
         }
         
         newProductNumber += row+1;
@@ -113,6 +117,7 @@ public class IDGenarator {
             
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while generate supplier ID : "+e.getMessage());
         }
         
         newSupplierNumber += row+1;

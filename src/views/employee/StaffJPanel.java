@@ -22,8 +22,10 @@ import controllers.EmployeeController;
 import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
 import controllers.StatusController;
+import includes.LoggerConfig;
 import java.awt.Frame;
 import java.util.HashMap;
+import java.util.logging.Logger;
 import models.EmployeeModel;
 
 /**
@@ -31,6 +33,8 @@ import models.EmployeeModel;
  * @author Dinuka
  */
 public class StaffJPanel extends javax.swing.JPanel {
+
+    private static final Logger logger = LoggerConfig.getLogger();
 
     /**
      * Creates new form StaffJPanel
@@ -112,6 +116,7 @@ public class StaffJPanel extends javax.swing.JPanel {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading Employee : " + e.getMessage());
         }
 
     }
@@ -161,6 +166,7 @@ public class StaffJPanel extends javax.swing.JPanel {
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            logger.severe("Error while fetching Employee : " + ex.getMessage());
         }
     }
 
@@ -405,6 +411,7 @@ public class StaffJPanel extends javax.swing.JPanel {
                 employeeUpdate.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
+                logger.severe("Error while showing employee update dialog : " + e.getMessage());
             }
 
             loadEmployees();
@@ -418,6 +425,7 @@ public class StaffJPanel extends javax.swing.JPanel {
             fetchUser(null);
         } catch (Exception ex) {
             ex.printStackTrace();
+            logger.severe("Error while jLabel4ComponentShown : " + ex.getMessage());
         }
 
     }//GEN-LAST:event_jLabel4ComponentShown
@@ -428,6 +436,7 @@ public class StaffJPanel extends javax.swing.JPanel {
             fetchUser(employeeFindField.getText().toString());
         } catch (Exception ex) {
             ex.printStackTrace();
+            logger.severe("Error while employeeFindFieldKeyReleased : " + ex.getMessage());
         }
 
     }//GEN-LAST:event_employeeFindFieldKeyReleased

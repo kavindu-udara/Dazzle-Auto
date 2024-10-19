@@ -8,11 +8,13 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.IntelliJTheme;
 import controllers.AccessRoleController;
 import includes.BDUtility;
+import includes.LoggerConfig;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
 import java.sql.ResultSet;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import models.LoginModel;
@@ -27,23 +29,25 @@ import views.shop.stock.Shop_StockJPanel;
  * @author Dinuka
  */
 public class ShopDashboard extends javax.swing.JFrame {
-
+    
+    private static Logger logger = LoggerConfig.getLogger();
+    
     private Color btnDefaultColor = new Color(246, 249, 255);
     private Color btnHoverColor = new Color(255, 248, 237);
     private Color btnSelectedColor = new Color(250, 238, 220);
     
     LoginModel loginModel;
-
+    
     public ShopDashboard(LoginModel loginModel) {
         this.loginModel = loginModel;
         initComponents();
-
+        
         roundPanels();
         dateTime();
         
         setLoggedUserDetails();
     }
-
+    
     public void roundPanels() {
         jDashboardbtn.putClientProperty(FlatClientProperties.STYLE, "arc:15");
         jPaymentsbtn.putClientProperty(FlatClientProperties.STYLE, "arc:15");
@@ -51,48 +55,48 @@ public class ShopDashboard extends javax.swing.JFrame {
         jItemsbtn.putClientProperty(FlatClientProperties.STYLE, "arc:15");
         jGRNbtn.putClientProperty(FlatClientProperties.STYLE, "arc:15");
     }
-
+    
     public void dateTime() {
         java.lang.Runnable runnable = new java.lang.Runnable() {
             @Override
             public void run() {
-
+                
                 while (true) {
                     java.util.Date date1 = new java.util.Date();
-
+                    
                     java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy.MM.dd '-' hh:mm:ss a");
                     String finaldate = dateFormat.format(date1);
                     jLabel49.setText(finaldate);
-
+                    
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
-//                        ERROR_LOGGER.log(Level.INFO, "Exception In datetime() method", ex);
+                        logger.severe("Error in dateTime() " + ex.getMessage());
                     }
                 }
-
+                
             }
-
+            
         };
-
+        
         java.lang.Thread thread = new java.lang.Thread(runnable);
         thread.start();
     }
     
-    private void setLoggedUserDetails (){
-        jEmployeeNameLabel.setText(loginModel.getFirstName()+" "+loginModel.getLastName());
+    private void setLoggedUserDetails() {
+        jEmployeeNameLabel.setText(loginModel.getFirstName() + " " + loginModel.getLastName());
         try {
             ResultSet rs = new AccessRoleController().show(loginModel.getAccessRoleId());
             
             if (rs.next()) {
                 jEmployeeRoleLabel.setText(rs.getString("role"));
             }
-            
-                        // Image setting
+
+            // Image setting
             String imagepath = BDUtility.getPath(loginModel.getImage());
             File imageFile = new File(imagepath);
-
+            
             if (imageFile.exists()) {
                 // Initialize ImageIcon with the image path
                 ImageIcon icon = new ImageIcon(imagepath);
@@ -102,16 +106,17 @@ public class ShopDashboard extends javax.swing.JFrame {
                 ImageIcon resizedIcon = new ImageIcon(image);
                 // Set it to the label
                 empImageLabel.setIcon(resizedIcon);
-
+                
             } else {
-
+                
             }
             // Image setting
         } catch (Exception ex) {
             ex.printStackTrace();
-        }        
+            logger.severe("Error while setting logged user details : " + ex.getMessage());
+        }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -460,13 +465,13 @@ public class ShopDashboard extends javax.swing.JFrame {
 
     private void jDashboardbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDashboardbtnMouseClicked
         jTabbedPane1.setSelectedIndex(0);
-
+        
         jDashboardbtn.setBackground(new Color(250, 238, 220));
         jPaymentsbtn.setBackground(new Color(246, 249, 255));
         jItemsbtn.setBackground(new Color(246, 249, 255));
         jStockbtn.setBackground(new Color(246, 249, 255));
         jGRNbtn.setBackground(new Color(246, 249, 255));
-
+        
         shop_DashboardJPanel shop_DashboardPanel = new shop_DashboardJPanel();
         jDashboardPanel.add(shop_DashboardPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
@@ -474,13 +479,13 @@ public class ShopDashboard extends javax.swing.JFrame {
 
     private void jPaymentsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPaymentsbtnMouseClicked
         jTabbedPane1.setSelectedIndex(1);
-
+        
         jDashboardbtn.setBackground(new Color(246, 249, 255));
         jPaymentsbtn.setBackground(new Color(250, 238, 220));
         jItemsbtn.setBackground(new Color(246, 249, 255));
         jStockbtn.setBackground(new Color(246, 249, 255));
         jGRNbtn.setBackground(new Color(246, 249, 255));
-
+        
         Shop_PaymentJPanel shop_PaymentJPanel = new Shop_PaymentJPanel();
         jPaymentsPanel.add(shop_PaymentJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
@@ -488,7 +493,7 @@ public class ShopDashboard extends javax.swing.JFrame {
 
     private void jItemsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jItemsbtnMouseClicked
         jTabbedPane1.setSelectedIndex(2);
-
+        
         jDashboardbtn.setBackground(new Color(246, 249, 255));
         jPaymentsbtn.setBackground(new Color(246, 249, 255));
         jItemsbtn.setBackground(new Color(250, 238, 220));
@@ -504,13 +509,13 @@ public class ShopDashboard extends javax.swing.JFrame {
 
     private void jStockbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jStockbtnMouseClicked
         jTabbedPane1.setSelectedIndex(3);
-
+        
         jDashboardbtn.setBackground(new Color(246, 249, 255));
         jPaymentsbtn.setBackground(new Color(246, 249, 255));
         jItemsbtn.setBackground(new Color(246, 249, 255));
         jStockbtn.setBackground(new Color(250, 238, 220));
         jGRNbtn.setBackground(new Color(246, 249, 255));
-
+        
         Shop_StockJPanel shop_StockJPanel = new Shop_StockJPanel();
         jStockPanel.add(shop_StockJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
@@ -518,13 +523,13 @@ public class ShopDashboard extends javax.swing.JFrame {
 
     private void jGRNbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGRNbtnMouseClicked
         jTabbedPane1.setSelectedIndex(4);
-
+        
         jDashboardbtn.setBackground(new Color(246, 249, 255));
         jPaymentsbtn.setBackground(new Color(246, 249, 255));
         jItemsbtn.setBackground(new Color(246, 249, 255));
         jStockbtn.setBackground(new Color(246, 249, 255));
         jGRNbtn.setBackground(new Color(250, 238, 220));
-
+        
         shop_GRNJPanel shop_grnjpanel = new shop_GRNJPanel();
         jGRNPanel.add(shop_grnjpanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);

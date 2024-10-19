@@ -177,7 +177,7 @@ public class VehiclesJPanel extends javax.swing.JPanel {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.warning("Error while loadVehicles : " + e.getMessage());
+            logger.severe("Error while loadVehicles : " + e.getMessage());
         }
     }
 
@@ -199,7 +199,7 @@ public class VehiclesJPanel extends javax.swing.JPanel {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.warning("Error while loadVehicleTypes : " + e.getMessage());
+            logger.severe("Error while loadVehicleTypes : " + e.getMessage());
         }
 
     }

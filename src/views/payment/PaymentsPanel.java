@@ -6,6 +6,7 @@ package views.payment;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import controllers.ServiceInvoiceController;
+import includes.LoggerConfig;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -13,6 +14,7 @@ import java.awt.Font;
 import java.sql.ResultSet;
 import java.util.Vector;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -27,6 +29,8 @@ import views.mainInvoice.MainInvoice;
  * @author Dinuka
  */
 public class PaymentsPanel extends javax.swing.JPanel {
+    
+    private static Logger logger = LoggerConfig.getLogger();
 
     /**
      * Creates new form paymentsPanel
@@ -41,12 +45,12 @@ public class PaymentsPanel extends javax.swing.JPanel {
     }
     
     private void PaidInvoiceTableRender() {
-
+        
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
+        
         JTableHeader tableHeader = jPaidInvoiceTable.getTableHeader();
-
+        
         tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -61,21 +65,21 @@ public class PaymentsPanel extends javax.swing.JPanel {
                 return label;
             }
         });
-
+        
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
-
+        
         for (int i = 0; i < 8; i++) {
             jPaidInvoiceTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
     
-    public void loadInvoices(){
+    public void loadInvoices() {
         try {
             ResultSet resultSet = new ServiceInvoiceController().search(jInvoiceSearchField.getText());
-
+            
             DefaultTableModel dtm = (DefaultTableModel) jPaidInvoiceTable.getModel();
             dtm.setRowCount(0);
-
+            
             int row = 0;
             while (resultSet.next()) {
                 row++;
@@ -87,18 +91,19 @@ public class PaymentsPanel extends javax.swing.JPanel {
                 vector.add(resultSet.getString("paid_amount"));
                 vector.add(resultSet.getString("balance"));
                 vector.add(resultSet.getString("method"));
-                vector.add(resultSet.getString("first_name")+" "+resultSet.getString("last_name"));
-
+                vector.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
+                
                 dtm.addRow(vector);
             }
-
+            
         } catch (Exception e) {
             e.printStackTrace();
 //            ERROR_LOGGER.log(Level.INFO, "Exception In loadinvoices() On Dashboard", e);
+            logger.severe("Error while loading invoices : " + e.getMessage());
         }
         
     }
-   
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

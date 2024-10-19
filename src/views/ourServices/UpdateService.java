@@ -11,10 +11,12 @@ import includes.OnlyDoubleDocumentFilter;
 import models.ServicesModel;
 import controllers.ServicesController;
 import controllers.VehicleTypeController;
+import includes.LoggerConfig;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -22,6 +24,8 @@ import javax.swing.DefaultComboBoxModel;
  * @author USER Nimsara
  */
 public class UpdateService extends java.awt.Dialog {
+    
+    private static final Logger logger = LoggerConfig.getLogger();
 
     private ServicesModel servicesModel;
 
@@ -59,6 +63,7 @@ public class UpdateService extends java.awt.Dialog {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading types : "+e.getMessage());
         }
     }
 
@@ -245,8 +250,9 @@ public class UpdateService extends java.awt.Dialog {
 
             // relaod table
             parentPanel.reloadTable();
-        } catch (Exception s) {
-            JOptionPane.showMessageDialog(this, s.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while updating service : "+e.getMessage());
         }
 
     }//GEN-LAST:event_Update_Service_btnActionPerformed

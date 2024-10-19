@@ -116,13 +116,9 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jDateTextField" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jStatusComboBox" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jLabel6" alignment="1" min="-2" pref="38" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                              <Component id="jStatusComboBox" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jLabel6" alignment="1" min="-2" pref="38" max="-2" attributes="0"/>
+                              <Component id="jDateTextField" min="-2" pref="38" max="-2" attributes="0"/>
                               <Component id="vehicleSearchField" max="32767" attributes="0"/>
                           </Group>
                       </Group>

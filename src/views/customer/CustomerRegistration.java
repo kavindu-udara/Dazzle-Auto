@@ -12,7 +12,9 @@ import includes.RegexValidator;
 import includes.TimestampsGenerator;
 import java.sql.ResultSet;
 import controllers.CustomerController;
+import includes.LoggerConfig;
 import java.awt.Frame;
+import java.util.logging.Logger;
 import models.CustomerModel;
 
 /**
@@ -21,6 +23,8 @@ import models.CustomerModel;
  */
 public class CustomerRegistration extends java.awt.Dialog {
 
+    private static final Logger logger = LoggerConfig.getLogger();
+    
     private CustomerJPanel customerJPanel;
 
     /**
@@ -39,7 +43,6 @@ public class CustomerRegistration extends java.awt.Dialog {
 
     private void setDocumentFilters() {
         ((AbstractDocument) customer_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
-
     }
 
    /**
@@ -223,6 +226,7 @@ public class CustomerRegistration extends java.awt.Dialog {
 
             } catch (Exception e) {
                 System.out.println(e);
+                logger.severe("Error while storing customer : "+e.getMessage());
             }
 
         }

@@ -6,11 +6,13 @@ package views.dashboard;
 
 import controllers.AccessRoleController;
 import includes.BDUtility;
+import includes.LoggerConfig;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 import java.sql.ResultSet;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import models.LoginModel;
@@ -29,6 +31,8 @@ import views.vehicleServiceAppointment.AppointmnetPanel;
  */
 public class Dashboard extends javax.swing.JFrame {
 
+    private static final Logger logger = LoggerConfig.getLogger();
+    
     LoginModel loginModel;
 
     public Dashboard(LoginModel loginModel) {
@@ -69,6 +73,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            logger.severe("Error while setting logged user details : "+ ex.getMessage());
         }
     }
 

@@ -6,6 +6,7 @@ package views.mainInvoice;
 
 import controllers.PaymentMethodController;
 import includes.IDGenarator;
+import includes.LoggerConfig;
 import includes.OnlyDoubleDocumentFilter;
 import includes.RegexValidator;
 import java.awt.Color;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -44,14 +46,16 @@ import views.vehicle.VehicleSelecter;
  */
 public class MainInvoice extends javax.swing.JFrame {
 
+    private static final Logger logger = LoggerConfig.getLogger();
+
     HashMap<String, MainInvoiceItemModel> invoiceItemMap = new HashMap<>();
     HashMap<String, String> paymentMethodmMap = new HashMap<>();
-    
+
     PaymentsPanel paymentsPanel;
 
     public MainInvoice(PaymentsPanel parent) {
         this.paymentsPanel = parent;
-        
+
         initComponents();
 
         setDocumentFilters();
@@ -63,7 +67,7 @@ public class MainInvoice extends javax.swing.JFrame {
         jButton4.setEnabled(false);
         discountField.setEditable(false);
         paymentField.setEditable(false);
-        
+
         jLabel19.setVisible(false);
         discountField.setVisible(false);
     }
@@ -119,7 +123,7 @@ public class MainInvoice extends javax.swing.JFrame {
 
         } catch (Exception e) {
             e.printStackTrace();
-//            ERROR_LOGGER.log(java.util.logging.Level.INFO, "Exception In loadPaymentMethods() On Invoice1Student", e);
+            logger.severe("Error while loading payment methods : " + e.getMessage());
         }
     }
 
@@ -804,7 +808,7 @@ public class MainInvoice extends javax.swing.JFrame {
 
             } catch (Exception e) {
                 e.printStackTrace();
-//                ERROR_LOGGER.log(java.util.logging.Level.INFO, "Exception In jButton4ActionPerformed On Invoice1Student", e);
+                logger.severe("Error while loading invoice : " + e.getMessage());
             }
         }
     }//GEN-LAST:event_jButton4ActionPerformed

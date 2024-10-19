@@ -19,7 +19,9 @@ import java.util.Objects;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import controllers.SupplierController;
+import includes.LoggerConfig;
 import java.awt.event.KeyEvent;
+import java.util.logging.Logger;
 import models.EmployeeModel;
 import models.SupplierModel;
 import views.employee.EmployeeUpdate;
@@ -29,6 +31,8 @@ import views.employee.EmployeeUpdate;
  * @author USER
  */
 public class SupplierView extends javax.swing.JFrame {
+
+    private static final Logger logger = LoggerConfig.getLogger();
 
     private Object search;
 
@@ -78,6 +82,7 @@ public class SupplierView extends javax.swing.JFrame {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading supplier : " + e.getMessage());
         }
 
     }
@@ -117,6 +122,7 @@ public class SupplierView extends javax.swing.JFrame {
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            logger.severe("Error while fetching supplier : " + ex.getMessage());
         }
     }
 
@@ -257,6 +263,7 @@ public class SupplierView extends javax.swing.JFrame {
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            logger.severe("Error in jPanel1ComponentShown : " + ex.getMessage());
         }
 
     }//GEN-LAST:event_jPanel1ComponentShown
@@ -264,11 +271,10 @@ public class SupplierView extends javax.swing.JFrame {
     private void employee_search_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_search_btnMouseClicked
 
         try {
-
             fetchUser(supplier_search_bar.getText().toString());
         } catch (Exception ex) {
-
             ex.printStackTrace();
+            logger.severe("Error in employee_search_btnMouseClicked : " + ex.getMessage());
         }
 
     }//GEN-LAST:event_employee_search_btnMouseClicked

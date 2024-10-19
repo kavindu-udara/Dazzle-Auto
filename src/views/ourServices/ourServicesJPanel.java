@@ -103,7 +103,8 @@ public class ourServicesJPanel extends javax.swing.JPanel {
                         vector.add("empty");
                     }
                 } catch (Exception e) {
-                    //
+                    e.printStackTrace();
+                    logger.severe("Error while showing vehicle types : " + e.getMessage());
                 }
 
                 vector.add(resultSet.getString("charge"));
@@ -112,7 +113,8 @@ public class ourServicesJPanel extends javax.swing.JPanel {
 
             }
         } catch (Exception e) {
-            //
+            e.printStackTrace();
+            logger.severe("Error while showing services : " + e.getMessage());
         }
     }
 
@@ -412,7 +414,8 @@ public class ourServicesJPanel extends javax.swing.JPanel {
                         vector.add("empty");
                     }
                 } catch (Exception e) {
-                    //
+                    e.printStackTrace();
+                    logger.severe("Error while searching services : " + e.getMessage());
                 }
 
                 vector.add(resultSet.getString("charge"));
@@ -421,7 +424,8 @@ public class ourServicesJPanel extends javax.swing.JPanel {
 
             }
         } catch (Exception e) {
-            //
+            e.printStackTrace();
+            logger.severe("Error while showing vehicle types : " + e.getMessage());
         }
     }
 
