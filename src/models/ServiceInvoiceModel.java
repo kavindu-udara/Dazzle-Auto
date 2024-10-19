@@ -10,9 +10,9 @@ package models;
  */
 public class ServiceInvoiceModel {
 
-    private int id;
+    private String id;
     private int paymentMethodId;
-    private int employeeId;
+    private String employeeId;
     private String vehicleNumber;
     private double total;
     private double paidAmount;
@@ -22,14 +22,14 @@ public class ServiceInvoiceModel {
     /**
      * @return the id
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -50,14 +50,14 @@ public class ServiceInvoiceModel {
     /**
      * @return the employeeId
      */
-    public int getEmployeeId() {
+    public String getEmployeeId() {
         return employeeId;
     }
 
     /**
      * @param employeeId the employeeId to set
      */
-    public void setEmployeeId(int employeeId) {
+    public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
 

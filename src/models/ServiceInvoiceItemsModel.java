@@ -11,7 +11,7 @@ package models;
 public class ServiceInvoiceItemsModel {
 
     private int id;
-    private int serviceInvoiceId;
+    private String serviceInvoiceId;
     private int serviceId;
     private String description;
 
@@ -32,14 +32,14 @@ public class ServiceInvoiceItemsModel {
     /**
      * @return the serviceInvoiceId
      */
-    public int getServiceInvoiceId() {
+    public String getServiceInvoiceId() {
         return serviceInvoiceId;
     }
 
     /**
      * @param serviceInvoiceId the serviceInvoiceId to set
      */
-    public void setServiceInvoiceId(int serviceInvoiceId) {
+    public void setServiceInvoiceId(String serviceInvoiceId) {
         this.serviceInvoiceId = serviceInvoiceId;
     }
 
