@@ -4,17 +4,22 @@
  */
 package views.financeAndHr;
 
+import java.awt.BorderLayout;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author Dinuka
  */
 public class FinanceAndHrJPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form FinanceJPanel
-     */
+    
     public FinanceAndHrJPanel() {
         initComponents();
+        
+        EmployeeAttendance employeeAttendance = new EmployeeAttendance();
+        EmloyeeAttendanceTab.add(employeeAttendance, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
     }
 
     /**
@@ -43,33 +48,11 @@ public class FinanceAndHrJPanel extends javax.swing.JPanel {
         jTabbedPane1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
 
         EmloyeeAttendanceTab.setBackground(new java.awt.Color(0, 51, 51));
-
-        javax.swing.GroupLayout EmloyeeAttendanceTabLayout = new javax.swing.GroupLayout(EmloyeeAttendanceTab);
-        EmloyeeAttendanceTab.setLayout(EmloyeeAttendanceTabLayout);
-        EmloyeeAttendanceTabLayout.setHorizontalGroup(
-            EmloyeeAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1089, Short.MAX_VALUE)
-        );
-        EmloyeeAttendanceTabLayout.setVerticalGroup(
-            EmloyeeAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 579, Short.MAX_VALUE)
-        );
-
+        EmloyeeAttendanceTab.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("Employee Attendance       ", EmloyeeAttendanceTab);
 
         EmployeeSalaryTab.setBackground(new java.awt.Color(0, 0, 102));
-
-        javax.swing.GroupLayout EmployeeSalaryTabLayout = new javax.swing.GroupLayout(EmployeeSalaryTab);
-        EmployeeSalaryTab.setLayout(EmployeeSalaryTabLayout);
-        EmployeeSalaryTabLayout.setHorizontalGroup(
-            EmployeeSalaryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1089, Short.MAX_VALUE)
-        );
-        EmployeeSalaryTabLayout.setVerticalGroup(
-            EmployeeSalaryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 579, Short.MAX_VALUE)
-        );
-
+        EmployeeSalaryTab.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("Employee Salary       ", EmployeeSalaryTab);
 
         jPanel4.setBackground(new java.awt.Color(51, 0, 51));

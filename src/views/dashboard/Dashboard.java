@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import models.LoginModel;
+import views.Settings;
 import views.customer.CustomerJPanel;
 import views.employee.StaffJPanel;
 import views.financeAndHr.FinanceAndHrJPanel;
@@ -112,6 +113,8 @@ public class Dashboard extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+        jLoginAccessMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DASHBOARD");
@@ -361,6 +364,24 @@ public class Dashboard extends javax.swing.JFrame {
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/settings-15.png"))); // NOI18N
+        jMenu3.setText("Settings");
+        jMenu3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenu3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
+        jLoginAccessMenuItem.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jLoginAccessMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/access-20.png"))); // NOI18N
+        jLoginAccessMenuItem.setText("Manage Login Access");
+        jLoginAccessMenuItem.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLoginAccessMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jLoginAccessMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jLoginAccessMenuItem);
+
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         pack();
@@ -440,6 +461,10 @@ public class Dashboard extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(this);
     }//GEN-LAST:event_jVehiclesButtonActionPerformed
 
+    private void jLoginAccessMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginAccessMenuItemActionPerformed
+        new Settings(this, true).setVisible(true);
+    }//GEN-LAST:event_jLoginAccessMenuItemActionPerformed
+
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -471,8 +496,10 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton jFinanceButton;
     private javax.swing.JPanel jFinancePanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenuItem jLoginAccessMenuItem;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JButton jOurServicesButton;
     private javax.swing.JPanel jOurServicesPanel;
