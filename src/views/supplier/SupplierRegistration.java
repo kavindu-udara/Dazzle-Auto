@@ -7,18 +7,22 @@ package views.supplier;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import controllers.SupplierController;
 import includes.IDGenarator;
+import includes.LoggerConfig;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
 import models.SupplierModel;
 import java.sql.ResultSet;
+import java.util.logging.Logger;
 
 /**
  *
  * @author USER nimsara
  */
 public class SupplierRegistration extends java.awt.Dialog {
+    
+    private static final Logger logger = LoggerConfig.getLogger();
 
     /**
      * Creates new form SupplierRegistration
@@ -28,7 +32,7 @@ public class SupplierRegistration extends java.awt.Dialog {
         initComponents();
         setDocumentFilters();
     }
-
+    
     private void setDocumentFilters() {
         ((AbstractDocument) supplier_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
     }
@@ -169,12 +173,12 @@ public class SupplierRegistration extends java.awt.Dialog {
     }//GEN-LAST:event_closeDialog
 
     private void supplier_register_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplier_register_btnActionPerformed
-
+        
         String firstName = supplier_firstname.getText();
         String lastName = supplier_lastname.getText();
         String email = supplier_email.getText();
         String mobile = supplier_mobile.getText();
-
+        
         if (firstName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (lastName.isEmpty()) {
@@ -190,23 +194,24 @@ public class SupplierRegistration extends java.awt.Dialog {
         } else {
             try {
                 String generatedId = IDGenarator.supplierID();
-
+                
                 SupplierModel suppliermodel = new SupplierModel();
                 suppliermodel.setId(generatedId);
                 suppliermodel.setFirstName(firstName);
                 suppliermodel.setLastName(lastName);
                 suppliermodel.setEmail(email);
-
+                
                 suppliermodel.setMobile(mobile);
                 suppliermodel.setStatusId(1);
-
+                
                 ResultSet resultSet = new SupplierController().store(suppliermodel);
-
+                
                 JOptionPane.showMessageDialog(this, "Supplier Registration Successfully");
                 reset();
-
+                
             } catch (Exception e) {
                 System.out.println(e);
+                logger.severe("Error while storing supplier : " + e.getMessage());
             }
         }
 
@@ -220,7 +225,7 @@ public class SupplierRegistration extends java.awt.Dialog {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-
+        
         FlatMacDarkLaf.setup();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -234,14 +239,14 @@ public class SupplierRegistration extends java.awt.Dialog {
             }
         });
     }
-
+    
     private void reset() {
-
+        
         supplier_firstname.setText("");
         supplier_lastname.setText("");
         supplier_mobile.setText("");
         supplier_email.setText("");
-
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

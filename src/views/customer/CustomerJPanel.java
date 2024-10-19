@@ -6,6 +6,7 @@ package views.customer;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import controllers.CustomerController;
+import includes.LoggerConfig;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
@@ -14,6 +15,7 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.sql.ResultSet;
 import java.util.Vector;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -22,9 +24,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import models.CustomerModel;
-import views.mainInvoice.MainInvoice;
 import views.vehicle.VehicleRegistration;
-import views.vehicle.VehicleSelecter;
 import views.vehicle.VehicleUpdate;
 
 /**
@@ -32,9 +32,10 @@ import views.vehicle.VehicleUpdate;
  * @author Dinuka
  */
 public class CustomerJPanel extends javax.swing.JPanel {
-    
-        private CustomerJPanel customerJPanel;
 
+    private static final Logger logger = LoggerConfig.getLogger();
+
+    private CustomerJPanel customerJPanel;
 
     CustomerSelector CustomerSelecterFrame = null;
 
@@ -51,8 +52,8 @@ public class CustomerJPanel extends javax.swing.JPanel {
         customerFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/Mobile");
 
         customerViewTableRender();
-        
-                this.customerJPanel = this;
+
+        this.customerJPanel = this;
 
     }
 
@@ -69,7 +70,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
         }
 
         initComponents();
-        
+
         jRegNewCustomerButton.setEnabled(false);
 
         loadCustomer();
@@ -77,7 +78,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
         customerViewTableRender();
 
     }
-  
+
     private void loadCustomer() {
         try {
 
@@ -102,6 +103,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading customer : " + e.getMessage());
         }
 
     }
@@ -126,6 +128,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            logger.severe("Error while fetching user : " + ex.getMessage());
         }
     }
 
@@ -321,7 +324,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
 
     private void jRegNewCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegNewCustomerButtonActionPerformed
 
-                new CustomerRegistration(null, true, customerJPanel).setVisible(true);
+        new CustomerRegistration(null, true, customerJPanel).setVisible(true);
 
     }//GEN-LAST:event_jRegNewCustomerButtonActionPerformed
 
@@ -358,13 +361,14 @@ public class CustomerJPanel extends javax.swing.JPanel {
                 customerUpdate.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
+                logger.warning("Error while opening customer update dialog : " + e.getMessage());
             }
 
             loadCustomer();
         }
 
     }//GEN-LAST:event_customerViewTableMouseClicked
-  public void reloadTable() {
+    public void reloadTable() {
         loadCustomer();
     }
 
@@ -372,10 +376,10 @@ public class CustomerJPanel extends javax.swing.JPanel {
 
         try {
             fetchUser(null);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warning("Error while jLabel2ComponentShown : " + e.getMessage());
         }
-
 
     }//GEN-LAST:event_jLabel2ComponentShown
 
@@ -385,8 +389,8 @@ public class CustomerJPanel extends javax.swing.JPanel {
             fetchUser(customerFindField.getText().toString());
         } catch (Exception ex) {
             ex.printStackTrace();
+            logger.warning("Error while customerFindFieldKeyReleased : " + ex.getMessage());
         }
-
 
     }//GEN-LAST:event_customerFindFieldKeyReleased
 

@@ -8,9 +8,11 @@ import controllers.ProductBrandController;
 import controllers.ProductController;
 import controllers.VehicleBrandController;
 import includes.IDGenarator;
+import includes.LoggerConfig;
 import java.util.HashMap;
 import java.sql.ResultSet;
 import java.util.Vector;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import models.ProductModel;
@@ -20,6 +22,8 @@ import models.ProductModel;
  * @author mypc
  */
 public class RegisterItems extends javax.swing.JDialog {
+
+    private static Logger logger = LoggerConfig.getLogger();
 
     /**
      * Creates new form RegisterItems
@@ -53,6 +57,7 @@ public class RegisterItems extends javax.swing.JDialog {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading brands : " + e.getMessage());
         }
     }
 
@@ -199,7 +204,7 @@ public class RegisterItems extends javax.swing.JDialog {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                
+                logger.severe("Error while storing product brands : " + e.getMessage());
             }
         }
     }//GEN-LAST:event_Register_btnActionPerformed
@@ -265,6 +270,6 @@ public class RegisterItems extends javax.swing.JDialog {
     private void reset() {
         Items_Name.setText("");
         Brand_Selector.setSelectedIndex(0);
-        
+
     }
 }

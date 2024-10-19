@@ -17,6 +17,7 @@ import controllers.EmployeeController;
 import controllers.EmployeeImageController;
 import includes.BDUtility;
 import includes.IDGenarator;
+import includes.LoggerConfig;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -25,6 +26,7 @@ import models.EmployeeModel;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -35,6 +37,8 @@ import models.EmployeeImageModel;
  * @author USER nimsara
  */
 public class EmployeeRegistration extends java.awt.Dialog {
+
+    private static final Logger logger = LoggerConfig.getLogger();
 
     private StaffJPanel staffJPanel;
 
@@ -67,6 +71,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading types : " + e.getMessage());
         }
     }
 
@@ -329,6 +334,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
+                logger.severe("Error while storing employee : " + e.getMessage());
             }
         }
     }//GEN-LAST:event_employee_register_btnActionPerformed
@@ -381,9 +387,8 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 employee_image.setIcon(icon);
 
             } catch (Exception ex) {
-
                 ex.printStackTrace();
-
+                logger.severe("Error while reading selected image : " + ex.getMessage());
             }
         }
     }//GEN-LAST:event_employee_imageMouseClicked
@@ -411,10 +416,9 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
                 return imageName;
 
-            } catch (IOException ex) {
-                ex.printStackTrace();
             } catch (Exception ex) {
                 ex.printStackTrace();
+                logger.severe("Error while saving selected image : " + ex.getMessage());
             }
         }
         return null;

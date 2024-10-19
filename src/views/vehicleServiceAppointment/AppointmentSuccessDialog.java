@@ -7,7 +7,9 @@ package views.vehicleServiceAppointment;
 import com.formdev.flatlaf.FlatClientProperties;
 import controllers.VehicleController;
 import controllers.VehicleTypeController;
+import includes.LoggerConfig;
 import java.sql.ResultSet;
+import java.util.logging.Logger;
 import models.AppointmentModel;
 
 /**
@@ -15,6 +17,8 @@ import models.AppointmentModel;
  * @author Dinuka
  */
 public class AppointmentSuccessDialog extends javax.swing.JDialog {
+
+    private static final Logger logger = LoggerConfig.getLogger();
 
     public AppointmentSuccessDialog(java.awt.Frame parent, boolean modal, AppointmentModel appointmentModel) {
         super(parent, modal);
@@ -51,6 +55,7 @@ public class AppointmentSuccessDialog extends javax.swing.JDialog {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading vehicle types : "+e.getMessage());
         }
 
         jDateLabel.setText(serviceDate);
@@ -63,7 +68,6 @@ public class AppointmentSuccessDialog extends javax.swing.JDialog {
 
     private void roundPanels() {
         jButton1.putClientProperty(FlatClientProperties.STYLE, "arc:15");
-
     }
 
     @SuppressWarnings("unchecked")

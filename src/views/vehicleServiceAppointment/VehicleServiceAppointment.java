@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class VehicleServiceAppointment extends javax.swing.JFrame {
 
     private static Logger logger = LoggerConfig.getLogger();
-    
+
     AppointmnetPanel AppointmnetPanel = null;
 
     public VehicleServiceAppointment(AppointmnetPanel appointmnetPanel) {
@@ -335,7 +335,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
 
                     this.dispose();
                     new AppointmentSuccessDialog(this, true, appointmentModel).setVisible(true);
-                    
+
                     AppointmnetPanel.loadAppointments();
 
                 }

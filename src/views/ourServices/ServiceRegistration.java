@@ -4,7 +4,6 @@
  */
 package views.ourServices;
 
-
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
@@ -14,10 +13,12 @@ import includes.RegexValidator;
 import models.ServicesModel;
 import controllers.ServicesController;
 import controllers.VehicleTypeController;
+import includes.LoggerConfig;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -29,9 +30,10 @@ public class ServiceRegistration extends java.awt.Dialog {
     /**
      * Creates new form SupplierRegistration
      */
-    
+    private static final Logger logger = LoggerConfig.getLogger();
+
     private ourServicesJPanel parentPanel;
-    
+
     public ServiceRegistration(java.awt.Frame parent, boolean modal, ourServicesJPanel parentPanel) {
         super(parent, modal);
         this.parentPanel = parentPanel;
@@ -39,10 +41,9 @@ public class ServiceRegistration extends java.awt.Dialog {
         setDocumentFilters();
         loadTypes();
     }
-    
+
     private static HashMap<String, String> vehicleTypeMap = new HashMap<>();
-    
-    
+
     private void loadTypes() {
 
         try {
@@ -62,9 +63,10 @@ public class ServiceRegistration extends java.awt.Dialog {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading types : " + e.getMessage());
         }
     }
-    
+
     private void setDocumentFilters() {
         AbstractDocument doc = (AbstractDocument) Price.getDocument();
         doc.setDocumentFilter(new OnlyDoubleDocumentFilter());
@@ -212,7 +214,6 @@ public class ServiceRegistration extends java.awt.Dialog {
         String VehicleType = String.valueOf(vehicle_type.getSelectedItem());
         String ServicePrice = Price.getText();
         double servicePrice = Double.parseDouble(ServicePrice);
-        
 
         if (ServiceName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter Service Name", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -223,24 +224,23 @@ public class ServiceRegistration extends java.awt.Dialog {
         } else {
 
         } //store
-        try{
+        try {
             ServicesModel servicesmodel = new ServicesModel();
             servicesmodel.setName(ServiceName);
             servicesmodel.setVehicleTypeId(Integer.parseInt(vehicleTypeMap.get(vehicle_type.getSelectedItem())));
             servicesmodel.setCharge(servicePrice);
-            
-            
-           
+
             new ServicesController().store(servicesmodel);
-            
+
             JOptionPane.showMessageDialog(this, "Service Registration Successfully");
-                reset();
-                
-                // reload our services jpanel table
-                parentPanel.reloadTable();
-            
-        }catch (Exception s){
-            JOptionPane.showMessageDialog(this, s.getMessage());
+            reset();
+
+            // reload our services jpanel table
+            parentPanel.reloadTable();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while storing service : " + e.getMessage());
         }
 
     }//GEN-LAST:event_service_register_btnActionPerformed
@@ -272,12 +272,10 @@ public class ServiceRegistration extends java.awt.Dialog {
 //            }
 //        });
 //    }
-
     private void reset() {
 
         Service_name.setText("");
         vehicle_type.setSelectedIndex(0);
-        
 
     }
 

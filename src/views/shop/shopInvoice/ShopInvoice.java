@@ -6,12 +6,14 @@ package views.shop.shopInvoice;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.IntelliJTheme;
+import includes.LoggerConfig;
 import includes.OnlyDoubleDocumentFilter;
 import includes.RegexValidator;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -26,6 +28,8 @@ import javax.swing.text.AbstractDocument;
  * @author Dinuka
  */
 public class ShopInvoice extends javax.swing.JFrame {
+    
+    private static final Logger logger = LoggerConfig.getLogger();
 
     /**
      * Creates new form ShopInvoice
@@ -37,13 +41,13 @@ public class ShopInvoice extends javax.swing.JFrame {
         invoiceTableRender();
         jInvoiceIDTextField.setText("SINV-" + generateInvoiceId());
     }
-
+    
     private void setDocumentFilters() {
         ((AbstractDocument) jQtyField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
         ((AbstractDocument) discountField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
         ((AbstractDocument) paymentField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
     }
-
+    
     public String generateInvoiceId() {
         // Get the current time in milliseconds
         long currentTimeMillis = System.currentTimeMillis();
@@ -53,17 +57,17 @@ public class ShopInvoice extends javax.swing.JFrame {
         if (code.length() > 8) {
             code = code.substring(code.length() - 8); // Take the last 8 digits
         }
-
+        
         return code;
     }
-
+    
     public void invoiceTableRender() {
-
+        
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
+        
         JTableHeader tableHeader = jTable1.getTableHeader();
-
+        
         tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -72,28 +76,28 @@ public class ShopInvoice extends javax.swing.JFrame {
                 Font headerFont = new Font("Verdana", Font.BOLD, 14);
                 label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
                 label.setFont(headerFont);
-                label.setBackground(new Color(33,43,108)); // Optional: Set header background color
+                label.setBackground(new Color(33, 43, 108)); // Optional: Set header background color
                 label.setForeground(Color.WHITE); // Optional: Set header text color
                 label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
                 return label;
             }
         });
-
+        
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
-
+        
         for (int i = 0; i < 7; i++) {
             jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-
+    
     private void calculate() {
-
+        
     }
-
+    
     private void reset() {
         jInvoiceIDTextField.setText("SINV-" + generateInvoiceId());
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -598,9 +602,9 @@ public class ShopInvoice extends javax.swing.JFrame {
                 reset();
             } catch (Exception e) {
                 e.printStackTrace();
-
+                logger.severe("Error while reseting : " + e.getMessage());
             }
-
+            
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

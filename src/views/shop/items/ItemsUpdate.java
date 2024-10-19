@@ -4,12 +4,13 @@
  */
 package views.shop.items;
 
-
 import controllers.ProductBrandController;
 import controllers.ProductController;
+import includes.LoggerConfig;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import models.ProductModel;
@@ -19,30 +20,29 @@ import models.ProductModel;
  * @author mypc
  */
 public class ItemsUpdate extends javax.swing.JDialog {
+
+    private static Logger logger = LoggerConfig.getLogger();
+
     private static HashMap<String, String> BrandMap = new HashMap<>();
 
     /**
      * Creates new form ItemsUpdate
      */
     private ProductModel productModel;
-    
-    
-    public ItemsUpdate(java.awt.Frame parent, boolean modal,ProductModel productModel) {
+
+    public ItemsUpdate(java.awt.Frame parent, boolean modal, ProductModel productModel) {
         super(parent, modal);
         initComponents();
         loadBrand();
-        
+
         this.productModel = productModel;
         Items_Name.setText(productModel.getName());
         Brand_Selector.setSelectedItem(productModel.getbrandName());
         Item_id_box.setText(productModel.getItemId());
-        
-       
 
-        
     }
 
-    private void loadBrand(){
+    private void loadBrand() {
         try {
             ResultSet resultSet = new ProductBrandController().show();
 
@@ -59,9 +59,11 @@ public class ItemsUpdate extends javax.swing.JDialog {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading brand : " + e.getMessage());
         }
-    
+
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -199,25 +201,23 @@ public class ItemsUpdate extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Please enter Item name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (Brand.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Please select a Brand", "Warning", JOptionPane.WARNING_MESSAGE);
-        }else {
+        } else {
             try {
 
                 productModel.setItemId(ItemId);
                 productModel.setName(ItemName);
                 productModel.setBrandId(Integer.parseInt(BrandMap.get(Brand_Selector.getSelectedItem())));
-               
 
                 new ProductController().update2(productModel);
-
 
                 JOptionPane.showMessageDialog(this, "Employee details updated successfully");
                 reset();
             } catch (Exception e) {
                 e.printStackTrace();
-                
+                logger.severe("Error while showing update product dialog : " + e.getMessage());
             }
         }
-      
+
     }//GEN-LAST:event_update_btnActionPerformed
 
     private void Clear_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Clear_btnActionPerformed
@@ -266,11 +266,11 @@ public class ItemsUpdate extends javax.swing.JDialog {
 //            }
 //        });
     }
+
     private void reset() {
         Item_id_box.setText("");
         Items_Name.setText("");
         Brand_Selector.setSelectedIndex(0);
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

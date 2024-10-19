@@ -33,11 +33,12 @@ import java.util.logging.Logger;
  */
 public class Shop_ItemsView extends javax.swing.JPanel {
 
+    private static final Logger logger = LoggerConfig.getLogger();
+
     /**
      * Creates new form shop_ItemsJPanel
      */
     private Shop_ItemsView shop_ItemsView;
-    private static Logger logger = LoggerConfig.getLogger();
 
     public Shop_ItemsView() {
         initComponents();
@@ -89,9 +90,6 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while loding items to table in Shop Items : " + e.getMessage());
-            
-            
-            
         }
 
     }
@@ -124,10 +122,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-             
             logger.severe("Error while searching Items in Shop Items : " + ex.getMessage());
-            
-            
         }
     }
 
@@ -138,8 +133,6 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         try {
             ResultSet resultSet = new ProductController().searchBrand(searchText);;
             ResultSet resultSet1 = new ProductBrandController().search("");
-            
-            
 
             HashMap<Integer, String> BrandMap = new HashMap<>();
 
@@ -161,14 +154,10 @@ public class Shop_ItemsView extends javax.swing.JPanel {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-             
             logger.severe("Error while searching Items in Shop Items : " + ex.getMessage());
-            
-            
         }
-        
     }
-    
+
     public void ItemsTableRender() {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -224,7 +213,6 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while loding brands to sort button in Shop Items : " + e.getMessage());
-            
         }
     }
 
@@ -421,7 +409,6 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.severe("Error while search Items in Shop Items : " + ex.getMessage());
-            
         }
     }//GEN-LAST:event_search_boxKeyReleased
 
@@ -434,8 +421,6 @@ public class Shop_ItemsView extends javax.swing.JPanel {
             String ItemId = String.valueOf(Items_View_Table.getValueAt(row, 0));
             String ItemName = String.valueOf(Items_View_Table.getValueAt(row, 1));
             String BrandName = String.valueOf(Items_View_Table.getValueAt(row, 3));
-            
-            
 
             ProductModel ItemModel = new ProductModel();
             ItemModel.setItemId(ItemId);
@@ -449,7 +434,6 @@ public class Shop_ItemsView extends javax.swing.JPanel {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             loadItems();
         }
 
@@ -457,7 +441,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
 
     private void Brand_chooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Brand_chooserActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_Brand_chooserActionPerformed
 
     private void Brand_chooserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_Brand_chooserItemStateChanged
@@ -467,9 +451,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.severe("Error while sorting brands in Shop Items : " + ex.getMessage());
-            
         }
-        
     }//GEN-LAST:event_Brand_chooserItemStateChanged
 
 
