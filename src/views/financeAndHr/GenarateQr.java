@@ -4,11 +4,36 @@
  */
 package views.financeAndHr;
 
+import com.google.gson.Gson;
+import static com.mysql.cj.conf.PropertyKey.logger;
+import controllers.EmployeeController;
+import controllers.EmployeeImageController;
+import controllers.EmployeeTypeController;
+import controllers.StatusController;
+import includes.BDUtility;
+import includes.LoggerConfig;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import net.glxn.qrgen.core.image.ImageType;
+import net.glxn.qrgen.javase.QRCode;
+
 /**
  *
  * @author USER
  */
 public class GenarateQr extends java.awt.Dialog {
+
+    private static final Logger logger = LoggerConfig.getLogger();
 
     /**
      * Creates new form GenarateQr
@@ -16,6 +41,37 @@ public class GenarateQr extends java.awt.Dialog {
     public GenarateQr(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        loadEmployees();
+    }
+
+    private void loadEmployees() {
+        try {
+
+            ResultSet employeeResultSet = new EmployeeController().show();
+
+            DefaultTableModel model = (DefaultTableModel) employeeViewTable.getModel();
+            model.setRowCount(0);
+
+            while (employeeResultSet.next()) {
+                Vector<String> vector = new Vector<>();
+
+                String employeeId = employeeResultSet.getString("id");
+                vector.add(employeeId);
+                vector.add(employeeResultSet.getString("nic"));
+                vector.add(employeeResultSet.getString("first_name"));
+                vector.add(employeeResultSet.getString("last_name"));
+                vector.add(employeeResultSet.getString("email"));
+                vector.add(employeeResultSet.getString("mobile"));
+                vector.add(employeeResultSet.getString("registered_date"));
+
+                model.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading Employee : " + e.getMessage());
+        }
+
     }
 
     /**
@@ -37,6 +93,12 @@ public class GenarateQr extends java.awt.Dialog {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
+            }
+        });
+
+        jPanel1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jPanel1ComponentShown(evt);
             }
         });
 
@@ -161,10 +223,37 @@ public class GenarateQr extends java.awt.Dialog {
         setVisible(false);
         dispose();
     }//GEN-LAST:event_closeDialog
-
+    ByteArrayOutputStream out = null;
+    String email = null;
     private void employeeViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeViewTableMouseClicked
 
-    //
+        int index = employeeViewTable.getSelectedRow();
+        TableModel model = employeeViewTable.getModel();
+
+        String id = model.getValueAt(index, 0).toString();
+        String nic = model.getValueAt(index, 1).toString();
+        email = model.getValueAt(index, 4).toString();
+
+        Map<String, String> data = new HashMap<>();
+        data.put("id", id);
+        data.put("nic", nic);
+        data.put("email", email);
+
+        Gson gson = new Gson();
+        String jsonData = gson.toJson(data);
+
+        out = QRCode.from(jsonData).withSize(322, 295).to(ImageType.PNG).stream();
+        try {
+
+            byte[] imageData = out.toByteArray();
+            ImageIcon icon = new ImageIcon(imageData);
+            lblimage1.setIcon(icon);
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+
+        }
+
     }//GEN-LAST:event_employeeViewTableMouseClicked
 
     private void lblimage1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblimage1MouseClicked
@@ -173,13 +262,80 @@ public class GenarateQr extends java.awt.Dialog {
 
     private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
 
-       //
+        try {
+            if (out == null) {
+
+                JOptionPane.showMessageDialog(null, "No Qr Generated");
+                return;
+            }
+
+            String defaultDir = BDUtility.getPath("qrCodes");
+            File directory = new File(defaultDir);
+            if (!directory.exists()) {
+
+                directory.mkdirs();
+
+            }
+
+            File defaultFile = new File(directory, email + ".Jpg");
+            try {
+
+                java.nio.file.Files.write(defaultFile.toPath(), out.toByteArray());
+                JOptionPane.showMessageDialog(null, "QR Code saved successfully!");
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error Saving Qr Code.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Something went wrong.");
+        }
+
+
     }//GEN-LAST:event_btnsaveActionPerformed
 
     private void btnsaveqratActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveqratActionPerformed
 
-     //
+        try {
+
+            if (out == null) {
+
+                JOptionPane.showMessageDialog(null, "No Qr Generated.!");
+                return;
+
+            }
+
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save QR Code at");
+            fileChooser.setSelectedFile(new File(email + ".png"));
+            int userselection = fileChooser.showSaveDialog(this);
+            if (userselection == fileChooser.APPROVE_OPTION) {
+
+                File fileToSave = fileChooser.getSelectedFile();
+
+                try {
+
+                    java.nio.file.Files.write(fileToSave.toPath(), out.toByteArray());
+                    JOptionPane.showMessageDialog(this, "QR Code saved Successfully!");
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Error Saving QR Code", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Something went wrong.");
+        }
+
+
     }//GEN-LAST:event_btnsaveqratActionPerformed
+
+    private void jPanel1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1ComponentShown
+
+        loadEmployees();
+
+    }//GEN-LAST:event_jPanel1ComponentShown
 
     /**
      * @param args the command line arguments
