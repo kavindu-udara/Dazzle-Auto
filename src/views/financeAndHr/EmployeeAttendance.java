@@ -207,27 +207,29 @@ public class EmployeeAttendance extends javax.swing.JPanel {
 
     private void employeeViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeViewTableMouseClicked
 
-  //
+        //
     }//GEN-LAST:event_employeeViewTableMouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
-                new GenarateQr(null, true).show();
-
         
+        new GenarateQr(null, true).show();
+        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        new ViewQr(null, true).show();
-
+//        new ViewQr(null, true).show();
+        ViewQr viewQr = new ViewQr();
+        viewQr.setVisible(true);
         
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-                new MarkAttendance(null, true).show();
-
+        
+        new MarkAttendance(null, true).show();
+        
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
