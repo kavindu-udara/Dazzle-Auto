@@ -23,61 +23,61 @@ public class LoginModel {
     
     // image
     private static String image;
-    
+
     /**
      * @return the id
      */
-    public String getId() {
+    public static String getId() {
         return id;
     }
 
     /**
-     * @param id the id to set
+     * @param aId the id to set
      */
-    public void setId(String id) {
-        this.id = id;
+    public static void setId(String aId) {
+        id = aId;
     }
 
     /**
      * @return the accessRoleId
      */
-    public int getAccessRoleId() {
+    public static int getAccessRoleId() {
         return accessRoleId;
     }
 
     /**
-     * @param accessRoleId the accessRoleId to set
+     * @param aAccessRoleId the accessRoleId to set
      */
-    public void setAccessRoleId(int accessRoleId) {
-        this.accessRoleId = accessRoleId;
-    }
-
-    /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    public static void setAccessRoleId(int aAccessRoleId) {
+        accessRoleId = aAccessRoleId;
     }
 
     /**
      * @return the employeeId
      */
-    public String getEmployeeId() {
+    public static String getEmployeeId() {
         return employeeId;
     }
 
     /**
-     * @param employeeId the employeeId to set
+     * @param aEmployeeId the employeeId to set
      */
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
+    public static void setEmployeeId(String aEmployeeId) {
+        employeeId = aEmployeeId;
+    }
+
+    /**
+     * @return the password
+     */
+    public static String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param aPassword the password to set
+     */
+    public static void setPassword(String aPassword) {
+        password = aPassword;
     }
 
     /**
@@ -135,5 +135,5 @@ public class LoginModel {
     public static void setImage(String aImage) {
         image = aImage;
     }
-
+    
 }

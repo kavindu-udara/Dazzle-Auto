@@ -5,6 +5,8 @@
 package views.mainInvoice;
 
 import controllers.PaymentMethodController;
+import controllers.ServiceInvoiceController;
+import controllers.ServiceInvoiceItemsController;
 import includes.IDGenarator;
 import includes.LoggerConfig;
 import includes.OnlyDoubleDocumentFilter;
@@ -32,6 +34,8 @@ import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
 import models.LoginModel;
 import models.MainInvoiceItemModel;
+import models.ServiceInvoiceItemsModel;
+import models.ServiceInvoiceModel;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
@@ -451,7 +455,7 @@ public class MainInvoice extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 101, Short.MAX_VALUE))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jEmployeeNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
@@ -508,7 +512,7 @@ public class MainInvoice extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -775,14 +779,30 @@ public class MainInvoice extends javax.swing.JFrame {
                 String balance = balanceField.getText();
 
                 //insert to invoice
-//                MySQL.executeIUD("");
-//                GENERAL_LOGGER.log(java.util.logging.Level.INFO, "Invoice : " + invoiceID + " Added. ");
-//                for (MainInvoiceItemModel invoiceItem : invoiceItemMap.values()) {
-//                    //insert to invoiceItem
-//                    MySQL.executeIUD("INSERT INTO `invoice_item` (`invoice_invoice_id`,`teachers_has_course_id`,`month`) "
-//                            + "VALUES ('" + invoiceID + "','" + invoiceItem.getCourseId() + "','" + invoiceItem.getMonth() + "' ) ");
-//
-//                }
+                ServiceInvoiceModel serviceInvoiceModel = new ServiceInvoiceModel();
+                serviceInvoiceModel.setId(invoiceID);
+                serviceInvoiceModel.setVehicleNumber(vehicleNumber);
+                serviceInvoiceModel.setDate(dateTimeForDB);
+                serviceInvoiceModel.setTotal(Double.parseDouble(total));
+                serviceInvoiceModel.setPaidAmount(Double.parseDouble(paidAmount));
+                serviceInvoiceModel.setBalance(Double.parseDouble(balance));
+                serviceInvoiceModel.setPaymentMethodId(Integer.valueOf(paymentMethodID));
+                serviceInvoiceModel.setEmployeeId(LoginModel.getEmployeeId());
+
+                new ServiceInvoiceController().store(serviceInvoiceModel);
+
+                logger.info("New Invoice Added : " + invoiceID + " | For : " + vehicleNumber);
+
+                for (MainInvoiceItemModel invoiceItem : invoiceItemMap.values()) {
+                    //insert to invoiceItem
+                    ServiceInvoiceItemsModel serviceInvoiceItemsModel = new ServiceInvoiceItemsModel();
+                    serviceInvoiceItemsModel.setServiceInvoiceId(invoiceID);
+                    serviceInvoiceItemsModel.setServiceId(Integer.valueOf(invoiceItem.getServiceID()));
+                    serviceInvoiceItemsModel.setDescription(invoiceItem.getServiceDescription());
+
+                    new ServiceInvoiceItemsController().store(serviceInvoiceItemsModel);
+                }
+
                 //View or print invoice
                 InputStream s = this.getClass().getResourceAsStream("/resources/reports/service_station_invoice.jasper");
 
@@ -846,32 +866,42 @@ public class MainInvoice extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Enter Valid Service Charge !", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
 
-            MainInvoiceItemModel mainInvoiceItem = new MainInvoiceItemModel();
-            mainInvoiceItem.setServiceID(serviceID);
-            mainInvoiceItem.setServiceName(serviceName);
-            mainInvoiceItem.setServiceDescription(serviceDescription);
-            mainInvoiceItem.setServiceCharge(serviceCharge);
+            if (serviceDescription.isBlank()) {
 
-            if (invoiceItemMap.get(serviceID + "" + serviceName) == null) {
-                invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
-            } else {
+                int showConfirm = JOptionPane.showConfirmDialog(this, "Description is empty ! Do You Want To Continue ?","Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                if (showConfirm == JOptionPane.YES_OPTION) {
+                    
+                    serviceDescription = "-";
 
-                MainInvoiceItemModel foundService = invoiceItemMap.get(serviceID + "" + serviceName);
+                    MainInvoiceItemModel mainInvoiceItem = new MainInvoiceItemModel();
+                    mainInvoiceItem.setServiceID(serviceID);
+                    mainInvoiceItem.setServiceName(serviceName);
+                    mainInvoiceItem.setServiceDescription(serviceDescription);
+                    mainInvoiceItem.setServiceCharge(serviceCharge);
 
-                if (foundService.getServiceName().equals(serviceName)) {
-                    JOptionPane.showMessageDialog(this, "This Invoice Already In Table", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
+                    if (invoiceItemMap.get(serviceID + "" + serviceName) == null) {
+                        invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
+                    } else {
+
+                        MainInvoiceItemModel foundService = invoiceItemMap.get(serviceID + "" + serviceName);
+
+                        if (foundService.getServiceName().equals(serviceName)) {
+                            JOptionPane.showMessageDialog(this, "This Invoice Already In Table", "Error", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
+                        }
+
+                    }
+
+                    loadInvoiceItem();              
+
+                paymentField.grabFocus();
+                discountField.setEditable(true);
+                paymentField.setEditable(true);
+                
                 }
-
             }
-
-            loadInvoiceItem();
         }
-
-        paymentField.grabFocus();
-        discountField.setEditable(true);
-        paymentField.setEditable(true);
     }//GEN-LAST:event_jAddInvoiceButtonActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked

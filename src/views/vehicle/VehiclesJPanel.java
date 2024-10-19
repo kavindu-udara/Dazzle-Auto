@@ -88,6 +88,10 @@ public class VehiclesJPanel extends javax.swing.JPanel {
 
             @Override
             public void onView(int row) {
+                
+                String vehicleNumber = String.valueOf(vehicleViewTable.getValueAt(row, 0));
+                
+                new ServiceHistory(vehicleNumber).setVisible(true);
 
             }
         };
