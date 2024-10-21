@@ -20,13 +20,14 @@ public class LoginController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
 
-    public ResultSet show(int id) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `login_id`='" + id + "'");
+    public ResultSet show(String id) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
     public ResultSet store(LoginModel loginModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`password`, `access_role_id`, `employee_id`) VALUES "
-                + "('" + loginModel.getPassword() + "', "
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`,`password`, `access_role_id`, `employee_id`) VALUES "
+                + "('" + loginModel.getId() + "', "
+                + "'" + loginModel.getPassword() + "', "
                 + "'" + loginModel.getAccessRoleId() + "', "
                 + "'" + loginModel.getEmployeeId() + "') ");
     }

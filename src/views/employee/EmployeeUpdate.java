@@ -61,8 +61,6 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
         loadAmployeeImage();
 
-        System.out.println(employeeModel.getId());
-
     }
 
     private void loadEmployeeTypes() {

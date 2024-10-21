@@ -28,10 +28,13 @@ import views.components.loginAccessTableRender.DeleteCellRender;
  */
 public class LoginAccessJPanel extends javax.swing.JPanel {
     
+    Settings settings;
+    
     private static Logger logger = LoggerConfig.getLogger();
 
-    public LoginAccessJPanel() {
+    public LoginAccessJPanel(Settings settings) {
         initComponents();
+        this.settings = settings;
         
         jNewAccessButton.putClientProperty(FlatClientProperties.STYLE, "arc:10");
         
@@ -137,6 +140,11 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
         jNewAccessButton.setBorderPainted(false);
         jNewAccessButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jNewAccessButton.setFocusPainted(false);
+        jNewAccessButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jNewAccessButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -170,6 +178,11 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jNewAccessButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jNewAccessButtonActionPerformed
+        settings.dispose();
+        new AddAndUpdateAccessJDialog(null, true, "ADD NEW ACCESS").setVisible(true);
+    }//GEN-LAST:event_jNewAccessButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
