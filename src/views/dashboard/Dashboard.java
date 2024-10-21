@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import models.LoginModel;
-import views.Settings;
+import views.settings.Settings;
 import views.customer.CustomerJPanel;
 import views.employee.StaffJPanel;
 import views.financeAndHr.FinanceAndHrJPanel;

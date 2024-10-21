@@ -124,5 +124,10 @@ public class IDGenarator {
 
         return "SUP0"+newSupplierNumber;
     }
+    
+    public static String loginID(String id, String name) {              
+
+        return id+""+name;
+    }
 }
 
