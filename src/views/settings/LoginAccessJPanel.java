@@ -5,6 +5,9 @@
 package views.settings;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import controllers.EmployeeController;
+import controllers.EmployeeTypeController;
+import controllers.LoginController;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -17,7 +20,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import raven.toast.Notifications;
 import includes.LoggerConfig;
+import includes.MySqlConnection;
+import java.sql.ResultSet;
+import java.util.Vector;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import models.EmployeeModel;
+import models.LoginModel;
 import views.components.loginAccessTableRender.DeleteActionCellEditor;
 import views.components.loginAccessTableRender.DeleteActionEvent;
 import views.components.loginAccessTableRender.DeleteCellRender;
@@ -27,21 +37,21 @@ import views.components.loginAccessTableRender.DeleteCellRender;
  * @author Dinuka
  */
 public class LoginAccessJPanel extends javax.swing.JPanel {
-    
+
     Settings settings;
-    
+
     private static Logger logger = LoggerConfig.getLogger();
 
     public LoginAccessJPanel(Settings settings) {
         initComponents();
         this.settings = settings;
-        
+
         jNewAccessButton.putClientProperty(FlatClientProperties.STYLE, "arc:10");
-        
+
         loginAccessTableTableRender();
+        loadLoginUsers();
     }
 
-    
     private void loginAccessTableTableRender() {
 
         DeleteActionEvent event = new DeleteActionEvent() {
@@ -52,7 +62,18 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
                 String loginID = String.valueOf(jLoginAccessTable.getValueAt(row, 3));
 
                 try {
-                    
+
+                    int showConfirm = JOptionPane.showConfirmDialog(settings, "Do You Want To Delete This Login Access ?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if (showConfirm == JOptionPane.YES_OPTION) {
+                        new LoginController().delete(loginID);
+                        
+                        JOptionPane.showMessageDialog(settings, "LoginID : " + loginID +", Login Access Successfully Deleted", "Information", JOptionPane.INFORMATION_MESSAGE);
+                        
+                        loadLoginUsers();
+
+                        logger.info("LoginID : " + loginID + ", Login Access Deleted");
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     logger.warning("Error while loginAccessTableTableRender() : " + e.getMessage());
@@ -89,7 +110,37 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
             jLoginAccessTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-    
+
+    public void loadLoginUsers() {
+
+        try {
+
+            ResultSet resultSet = new LoginController().show();
+
+            DefaultTableModel dtm = (DefaultTableModel) jLoginAccessTable.getModel();
+            dtm.setRowCount(0);
+
+            int row = 0;
+            while (resultSet.next()) {
+                row++;
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("employee.id"));
+                vector.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
+                vector.add(resultSet.getString("role"));
+                vector.add(resultSet.getString("login.id"));
+                vector.add(resultSet.getString("password"));
+
+                dtm.addRow(vector);
+            }
+
+            jLoginAccessTable.setModel(dtm);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loadLoginUsers() : " + e.getMessage());
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -108,7 +159,7 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
         jLoginAccessTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLoginAccessTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, "bbnb", "bnbnbn", "bnbn", "bnbnbn", ""}
+
             },
             new String [] {
                 "Employee ID", "Employee Name", "Access Role", "Login ID", "Password", ""
@@ -126,6 +177,11 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
         jLoginAccessTable.setFocusable(false);
         jLoginAccessTable.setRowHeight(40);
         jLoginAccessTable.getTableHeader().setReorderingAllowed(false);
+        jLoginAccessTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLoginAccessTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jLoginAccessTable);
         if (jLoginAccessTable.getColumnModel().getColumnCount() > 0) {
             jLoginAccessTable.getColumnModel().getColumn(5).setPreferredWidth(150);
@@ -183,6 +239,56 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
         settings.dispose();
         new AddAndUpdateAccessJDialog(null, true, "ADD NEW ACCESS").setVisible(true);
     }//GEN-LAST:event_jNewAccessButtonActionPerformed
+
+    private void jLoginAccessTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLoginAccessTableMouseClicked
+        int row = jLoginAccessTable.getSelectedRow();
+        String empID = String.valueOf(jLoginAccessTable.getValueAt(row, 0));
+        String accessRole = String.valueOf(jLoginAccessTable.getValueAt(row, 2));
+        String loginID = String.valueOf(jLoginAccessTable.getValueAt(row, 3));
+        String password = String.valueOf(jLoginAccessTable.getValueAt(row, 4));
+
+        String nic = "";
+        String first_name = "";
+        String last_name = "";
+        String employeeType = "";
+
+        if (evt.getClickCount() == 2) {
+            try {
+                ResultSet rs = new EmployeeController().show(empID);
+
+                if (rs.next()) {
+                    nic = rs.getString("nic");
+                    first_name = rs.getString("first_name");
+                    last_name = rs.getString("last_name");
+                    int emp_type_id = rs.getInt("employee_type_id");
+
+                    ResultSet type_rs = new EmployeeTypeController().show(emp_type_id);
+                    if (type_rs.next()) {
+                        employeeType = type_rs.getString("type");
+                    }
+                }
+
+                EmployeeModel employeeModel = new EmployeeModel();
+                employeeModel.setId(empID);
+                employeeModel.setNic(nic);
+                employeeModel.setFirstName(first_name);
+                employeeModel.setLastName(last_name);
+                employeeModel.setEmployeeTypeName(employeeType);
+
+                LoginModel loginModel = new LoginModel();
+                loginModel.setEmployeeId(accessRole); //accessRole
+                loginModel.setId(loginID);
+                loginModel.setPassword(password);
+
+                settings.dispose();
+                new AddAndUpdateAccessJDialog(null, true, "UPDATE USER ACCESS", employeeModel, loginModel).setVisible(true);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.severe("Error while jLoginAccessTableMouseClicked : " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jLoginAccessTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

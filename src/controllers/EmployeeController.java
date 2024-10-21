@@ -12,7 +12,7 @@ public class EmployeeController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
 
-    public ResultSet show(int id) throws Exception {
+    public ResultSet show(String id) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
@@ -36,6 +36,7 @@ public class EmployeeController {
                 + "`last_name`='" + employeeModel.getLastName() + "', "
                 + "`email`='" + employeeModel.getEmail() + "', "
                 + "`mobile`='" + employeeModel.getMobile() + "', "
+                + "`employee_type_id`='" + employeeModel.getEmployeeTypeId() + "', "
                 + "`status_id`='" + employeeModel.getStatusId() + "' "
                 + "WHERE `id`='" + employeeModel.getId() + "' ");
     }

@@ -17,7 +17,9 @@ public class LoginController {
     private final String tableName = "login";
 
     public ResultSet show() throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` "
+                + "INNER JOIN access_role ON login.access_role_id=access_role.id "
+                + "INNER JOIN employee ON login.employee_id=employee.id");
     }
 
     public ResultSet show(String id) throws Exception {
@@ -35,8 +37,7 @@ public class LoginController {
     public ResultSet update(LoginModel loginModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
                 + "`password`='" + loginModel.getPassword() + "', "
-                + "`access_role_id`='" + loginModel.getAccessRoleId() + "',"
-                + "`employee_id`='" + loginModel.getEmployeeId() + "', "
+                + "`access_role_id`='" + loginModel.getAccessRoleId() + "' "
                 + "WHERE `id`='" + loginModel.getId() + "' ");
     }
 
@@ -47,7 +48,7 @@ public class LoginController {
                 + "`employee_id` LIKE '%" + searchText + "%' ");
     }
 
-    public ResultSet delete(int id) throws Exception {
+    public ResultSet delete(String id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
 
