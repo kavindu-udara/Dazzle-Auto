@@ -14,6 +14,7 @@ import views.vehicle.VehiclesJPanel;
  */
 public class Settings extends javax.swing.JDialog {
 
+    Settings settings = this;
 
     public Settings(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -23,7 +24,7 @@ public class Settings extends javax.swing.JDialog {
 
 
     private void addJPanels(){
-        LoginAccessJPanel loginAccessJPanel = new LoginAccessJPanel();
+        LoginAccessJPanel loginAccessJPanel = new LoginAccessJPanel(this);
         loginAccessTab.add(loginAccessJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
     }

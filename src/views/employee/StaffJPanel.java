@@ -23,10 +23,12 @@ import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
 import controllers.StatusController;
 import includes.LoggerConfig;
+import java.awt.Dialog;
 import java.awt.Frame;
 import java.util.HashMap;
 import java.util.logging.Logger;
 import models.EmployeeModel;
+import views.settings.AddAndUpdateAccessJDialog;
 
 /**
  *
@@ -36,14 +38,39 @@ public class StaffJPanel extends javax.swing.JPanel {
 
     private static final Logger logger = LoggerConfig.getLogger();
 
-    /**
-     * Creates new form StaffJPanel
-     */
     private StaffJPanel staffJPanel;
+
+    EmployeeSelector employeeSelectorFrame = null;
+    AddAndUpdateAccessJDialog addAndUpdateAccessJDialog = null;
+
+    String From = "";
+    String BaseFrame = "";
 
     public StaffJPanel() {
         initComponents();
         loadEmployees();
+
+        employeeFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/NIC");
+
+        employeeViewTableRender();
+
+        this.staffJPanel = this;
+    }
+
+    //Constructer for EmployeeSelecter
+    public StaffJPanel(Dialog parentFrame, EmployeeSelector employeeSelector, String BaseFrame) {
+        initComponents();
+        loadEmployees();
+
+        this.employeeSelectorFrame = employeeSelector;
+        this.From = "Selecter";
+        this.BaseFrame = BaseFrame;
+
+        if (BaseFrame.equals("AddAndUpdateAccessJDialog")) {
+            this.addAndUpdateAccessJDialog = (AddAndUpdateAccessJDialog) parentFrame;
+        }
+
+        jRegNewEmployeeButton.setEnabled(false);
 
         employeeFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/NIC");
 
@@ -385,36 +412,47 @@ public class StaffJPanel extends javax.swing.JPanel {
     private void employeeViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeViewTableMouseClicked
 
         int row = employeeViewTable.getSelectedRow();
+        String employeeId = String.valueOf(employeeViewTable.getValueAt(row, 0));
+        String nic = String.valueOf(employeeViewTable.getValueAt(row, 1));
+        String firstName = String.valueOf(employeeViewTable.getValueAt(row, 2));
+        String lastName = String.valueOf(employeeViewTable.getValueAt(row, 3));
+        String email = String.valueOf(employeeViewTable.getValueAt(row, 4));
+        String mobile = String.valueOf(employeeViewTable.getValueAt(row, 5));
+        String employeeType = String.valueOf(employeeViewTable.getValueAt(row, 7));
 
-        if (evt.getClickCount() == 2 && row != -1) {
+        if (From.equals("Selecter")) {
 
-            String employeeId = String.valueOf(employeeViewTable.getValueAt(row, 0));
-            String firstName = String.valueOf(employeeViewTable.getValueAt(row, 2));
-            String lastName = String.valueOf(employeeViewTable.getValueAt(row, 3));
-            String email = String.valueOf(employeeViewTable.getValueAt(row, 4));
-            String nic = String.valueOf(employeeViewTable.getValueAt(row, 1));
-            String mobile = String.valueOf(employeeViewTable.getValueAt(row, 5));
-            String employeeType = String.valueOf(employeeViewTable.getValueAt(row, 7));
-
-            EmployeeModel employeeModel = new EmployeeModel();
-            employeeModel.setId(employeeId);
-            employeeModel.setFirstName(firstName);
-            employeeModel.setLastName(lastName);
-            employeeModel.setEmail(email);
-            employeeModel.setNic(nic);
-            employeeModel.setMobile(mobile);
-            employeeModel.setEmployeeTypeName(employeeType);
-
-            try {
-                Frame staffJPanel = null;
-                EmployeeUpdate employeeUpdate = new EmployeeUpdate(staffJPanel, true, employeeModel);
-                employeeUpdate.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-                logger.severe("Error while showing employee update dialog : " + e.getMessage());
+            if (BaseFrame.equals("AddAndUpdateAccessJDialog")) {
+                addAndUpdateAccessJDialog.setEmployeeDetails(employeeId, nic, firstName, lastName, employeeType);
             }
 
-            loadEmployees();
+            employeeSelectorFrame.dispose();
+
+        } else {
+
+            if (evt.getClickCount() == 2 && row != -1) {
+
+                EmployeeModel employeeModel = new EmployeeModel();
+                employeeModel.setId(employeeId);
+                employeeModel.setFirstName(firstName);
+                employeeModel.setLastName(lastName);
+                employeeModel.setEmail(email);
+                employeeModel.setNic(nic);
+                employeeModel.setMobile(mobile);
+                employeeModel.setEmployeeTypeName(employeeType);
+
+                try {
+                    Frame staffJPanel = null;
+                    EmployeeUpdate employeeUpdate = new EmployeeUpdate(staffJPanel, true, employeeModel);
+                    employeeUpdate.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.severe("Error while showing employee update dialog : " + e.getMessage());
+                }
+
+                loadEmployees();
+            }
+
         }
 
     }//GEN-LAST:event_employeeViewTableMouseClicked
