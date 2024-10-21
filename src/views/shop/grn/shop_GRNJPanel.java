@@ -176,7 +176,19 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         jLabel13.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel13.setText("MFD");
         jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, -1, -1));
+
+        MFDfield.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MFDfieldActionPerformed(evt);
+            }
+        });
         jPanel2.add(MFDfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 60, 140, 31));
+
+        EXPfield.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EXPfieldActionPerformed(evt);
+            }
+        });
         jPanel2.add(EXPfield, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 100, 140, 31));
 
         jLabel14.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
@@ -374,6 +386,14 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
      
 
     }//GEN-LAST:event_PaymenntFieldKeyReleased
+
+    private void MFDfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MFDfieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_MFDfieldActionPerformed
+
+    private void EXPfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EXPfieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_EXPfieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
