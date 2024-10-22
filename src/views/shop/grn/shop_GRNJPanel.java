@@ -326,8 +326,8 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 973, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1000, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
         jPanel3Layout.setVerticalGroup(
@@ -444,7 +444,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1300, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -648,13 +648,18 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_GRNViewTableMouseClicked
 
+    private int Stockid;
+    
     private void SaveGRNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveGRNActionPerformed
         // TODO add your handling code here:
+        
 
         if (jLabel17.getText().equals("Error")) {
             JOptionPane.showMessageDialog(this, "Error In Fields", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
 
+            
+            
             try {
                 String GrnID = GrnNumberField.getText();
                 String ProductId = ProductIdField.getText();
@@ -705,25 +710,60 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                 String dateTimeForDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
                 try {
-                    HashMap<Integer, String> StockMap = new HashMap<>();
 
-                    ResultSet resultSet1 = new StockController().show();
+                    StockModel stockModel = new StockModel();
 
-                    while (resultSet1.next()) {
-                        int stockId = resultSet1.getInt("id");
-                        String pId = resultSet1.getString("product_id");
-                        StockMap.put(stockId, pId);
+                    stockModel.setPrice(Double.parseDouble(SellingPrice));
+                    stockModel.setQty(Double.parseDouble(qty));
+                    stockModel.setProductId(ProductId);
+
+                    ResultSet resultSet = new StockController().store(stockModel);
+                    JOptionPane.showMessageDialog(this, "Add to Stock");
+                    
+                    if (resultSet.next()) {
+                        int Stokid = resultSet.getInt(1);
+                        Stockid = Stokid;
                     }
+                    
+                    
+
+                    
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+//                ERROR_LOGGER.log(java.util.logging.Level.INFO, "Exception In jButton4ActionPerformed On Invoice1Student", e);
+            }
+            
+            try {
+                String GrnID = GrnNumberField.getText();
+                String ProductId = ProductIdField.getText();
+                String BrandName = BrandNameField.getText();
+                String ProductName = ProductNameField.getText();
+                String qty = QtyField.getText();
+                String BuyingPrice = BuyingPriceField.getText();
+                String SellingPrice = SellingPriceField.getText();
+                String supplierId = SupplierIdField.getText();
+                String employeeName = EmployeeName.getText();
+                String paidAmount = PaymenntField.getText();
+                String dateTimeForDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+                try {
+//                   
                     GrnItemsModel grnItemsModel = new GrnItemsModel();
 
                     grnItemsModel.setGrnId(GrnID);
                     grnItemsModel.setQty(Double.parseDouble(qty));
                     grnItemsModel.setPrice(Double.parseDouble(SellingPrice));
-                    grnItemsModel.setStockId(Integer.parseInt(StockMap.get(ProductIdField.getText())));
+                    grnItemsModel.setStockId(Stockid);
 
-                    //.setBrandId(Integer.parseInt(BrandMap.get(Brand_Selector.getSelectedItem())));
                     ResultSet resultSet = new GrnItemsController().store(grnItemsModel);
                     JOptionPane.showMessageDialog(this, "Add to Grn Items");
+                    reset();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -756,41 +796,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
             }
 
-            try {
-                String GrnID = GrnNumberField.getText();
-                String ProductId = ProductIdField.getText();
-                String BrandName = BrandNameField.getText();
-                String ProductName = ProductNameField.getText();
-                String qty = QtyField.getText();
-                String BuyingPrice = BuyingPriceField.getText();
-                String SellingPrice = SellingPriceField.getText();
-                String supplierId = SupplierIdField.getText();
-                String employeeName = EmployeeName.getText();
-                String paidAmount = PaymenntField.getText();
-                String dateTimeForDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
-                try {
-
-                    StockModel stockModel = new StockModel();
-
-                    stockModel.setPrice(Double.parseDouble(SellingPrice));
-                    stockModel.setQty(Double.parseDouble(qty));
-                    stockModel.setProductId(ProductId);
-
-                    ResultSet resultSet = new StockController().store(stockModel);
-                    JOptionPane.showMessageDialog(this, "Add to Stock");
-
-                    reset();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-//                ERROR_LOGGER.log(java.util.logging.Level.INFO, "Exception In jButton4ActionPerformed On Invoice1Student", e);
-            }
+            
 
         }
     }//GEN-LAST:event_SaveGRNActionPerformed
