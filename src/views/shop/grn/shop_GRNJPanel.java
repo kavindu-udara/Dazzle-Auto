@@ -6,6 +6,8 @@ package views.shop.grn;
 
 import controllers.EmployeeController;
 import controllers.GrnController;
+import controllers.GrnItemsController;
+import controllers.StockController;
 import includes.IDGenarator;
 import includes.RegexValidator;
 import java.awt.Color;
@@ -37,6 +39,7 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import models.GrnModel;
+import models.StockModel;
 
 /**
  *
@@ -85,7 +88,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 8; i++) {
             GRNViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
@@ -180,6 +183,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         BalanceField = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         SaveGRN = new javax.swing.JButton();
+        ClearEverythigbtn = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(1300, 609));
         setPreferredSize(new java.awt.Dimension(1300, 609));
@@ -323,7 +327,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 992, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 973, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
         jPanel3Layout.setVerticalGroup(
@@ -374,12 +378,22 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
             }
         });
 
+        ClearEverythigbtn.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        ClearEverythigbtn.setForeground(new java.awt.Color(255, 0, 0));
+        ClearEverythigbtn.setText("CLEAR ALL");
+        ClearEverythigbtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        ClearEverythigbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearEverythigbtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+                .addGap(0, 18, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -389,13 +403,14 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(TotalField, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(PaymenntField, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jSeparator1)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(ClearEverythigbtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel4Layout.createSequentialGroup()
                             .addComponent(jLabel19)
                             .addGap(31, 31, 31)
                             .addComponent(BalanceField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(SaveGRN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(SaveGRN, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(14, 14, 14))
         );
         jPanel4Layout.setVerticalGroup(
@@ -415,9 +430,11 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
                     .addComponent(BalanceField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(50, 50, 50)
+                .addGap(18, 18, 18)
                 .addComponent(SaveGRN, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ClearEverythigbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -425,7 +442,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1300, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -439,9 +456,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -458,12 +473,8 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
     private void ClearAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearAllBtnActionPerformed
         // TODO add your handling code here:
-        int response = JOptionPane.showConfirmDialog(null, "Do you want to reset?", "Confirm",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        resetInputs();
 
-        if (response == JOptionPane.YES_OPTION) {
-            reset();
-        }
     }//GEN-LAST:event_ClearAllBtnActionPerformed
 
     private void PaymenntFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PaymenntFieldKeyReleased
@@ -579,7 +590,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Please Enter a Valid Selling Price !", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if ((Double.parseDouble(sellingPrice)) < (Double.parseDouble(buyingPrice))) {
             JOptionPane.showMessageDialog(this, "Selling Price can't be lower than the Buying Price !", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else if (qty.equals("")) {
+        } else if (qty.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Enter a Quantity !", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (Double.parseDouble(qty) <= 0) {
             JOptionPane.showMessageDialog(this, "Please Enter a Valid Quantity !", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -610,7 +621,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
             }
 
             loadGrnItem();
-            resetInputs();
+
         }
 
         PaymenntField.grabFocus();
@@ -639,78 +650,160 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
     private void SaveGRNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveGRNActionPerformed
         // TODO add your handling code here:
-//        if (jLabel17.getText().equals("Error")) {
-//            JOptionPane.showMessageDialog(this, "Error In Fields", "Error", JOptionPane.ERROR_MESSAGE);
-//        } else {
-//            try {
-//                String GrnID = GrnNumberField.getText();
-//                String ProductId = ProductIdField.getText();
-//                String BrandName = BrandNameField.getText();
-//                String ProductName = ProductNameField.getText();
-//                String qty = QtyField.getText();
-//                String BuyingPrice = BuyingPriceField.getText();
-//                String SellingPrice = SellingPriceField.getText();
-//                String supplierId = SupplierIdField.getText();
-//                String employeeName = EmployeeName.getText();
-//                String paidAmount = PaymenntField.getText();
-//                String dateTimeForDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+        if (jLabel17.getText().equals("Error")) {
+            JOptionPane.showMessageDialog(this, "Error In Fields", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+
+            try {
+                String GrnID = GrnNumberField.getText();
+                String ProductId = ProductIdField.getText();
+                String BrandName = BrandNameField.getText();
+                String ProductName = ProductNameField.getText();
+                String qty = QtyField.getText();
+                String BuyingPrice = BuyingPriceField.getText();
+                String SellingPrice = SellingPriceField.getText();
+                String supplierId = SupplierIdField.getText();
+                String employeeName = EmployeeName.getText();
+                String paidAmount = PaymenntField.getText();
+                String dateTimeForDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+                try {
+
+                    GrnModel grnModel = new GrnModel();
+
+                    grnModel.setGrnId(GrnID);
+                    grnModel.setDate(dateTimeForDB);
+                    grnModel.setPaidAmount(Double.parseDouble(paidAmount));
+                    grnModel.setSupplierId(supplierId);
+                    grnModel.setEmployeeId(LoginModel.getEmployeeId());
+
+                    ResultSet resultSet = new GrnController().store(grnModel);
+                    JOptionPane.showMessageDialog(this, "Add to Grn");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+//                ERROR_LOGGER.log(java.util.logging.Level.INFO, "Exception In jButton4ActionPerformed On Invoice1Student", e);
+            }
+
+            try {
+                String GrnID = GrnNumberField.getText();
+                String ProductId = ProductIdField.getText();
+                String BrandName = BrandNameField.getText();
+                String ProductName = ProductNameField.getText();
+                String qty = QtyField.getText();
+                String BuyingPrice = BuyingPriceField.getText();
+                String SellingPrice = SellingPriceField.getText();
+                String supplierId = SupplierIdField.getText();
+                String employeeName = EmployeeName.getText();
+                String paidAmount = PaymenntField.getText();
+                String dateTimeForDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+                try {
+                    HashMap<Integer, String> StockMap = new HashMap<>();
+
+                    ResultSet resultSet1 = new StockController().show();
+
+                    while (resultSet1.next()) {
+                        int stockId = resultSet1.getInt("id");
+                        String pId = resultSet1.getString("product_id");
+                        StockMap.put(stockId, pId);
+                    }
+                    GrnItemsModel grnItemsModel = new GrnItemsModel();
+
+                    grnItemsModel.setGrnId(GrnID);
+                    grnItemsModel.setQty(Double.parseDouble(qty));
+                    grnItemsModel.setPrice(Double.parseDouble(SellingPrice));
+                    grnItemsModel.setStockId(Integer.parseInt(StockMap.get(ProductIdField.getText())));
+
+                    //.setBrandId(Integer.parseInt(BrandMap.get(Brand_Selector.getSelectedItem())));
+                    ResultSet resultSet = new GrnItemsController().store(grnItemsModel);
+                    JOptionPane.showMessageDialog(this, "Add to Grn Items");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
+                //View or print invoice
+//                InputStream s = this.getClass().getResourceAsStream("/resources/reports/service_station_invoice.jasper");
 //
-//                try {
-//                    ResultSet employeeResultSet = new EmployeeController().show();
-//                    HashMap<String, String> employeeMap = new HashMap<>();
+//                HashMap<String, Object> params = new HashMap<>();
+//                params.put("dateParameter", dateTime);
+//                params.put("invoiceNoPara", invoiceID);
+//                params.put("vehicleName", vehicleName);
+//                params.put("vehicleNumber", vehicleNumber);
+//                params.put("cashierPara", cashierName);
 //
-//                    while (employeeResultSet.next()) {
-//                        String empId = employeeResultSet.getString("id");
-//                        String empName = employeeResultSet.getString("first_name");
-//                        employeeMap.put(empId, empName);
-//                    }
-//                    GrnModel grnModel = new GrnModel();
+//                params.put("totalPara", total);
+//                params.put("paymentPara", paidAmount);
+//                params.put("paymentMethodPara", paymentMethod);
+//                params.put("BalancePara", balance);
 //
-//                    
-//                    grnModel.setGrnId(GrnID);
-//                    grnModel.setDate(dateTimeForDB);
-//                    grnModel.setPaidAmount(Double.parseDouble(paidAmount));
-//                    grnModel.setSupplierId(supplierId);
-//                    grnModel.setEmployeeId(employeeMap.get(EmployeeName.getText()));
-//                    
-//                    ResultSet resultSet = new GrnController().store(grnModel);
-//                JOptionPane.showMessageDialog(this, "fit");
+//                JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
 //
-//                    reset();
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//
-//                }
-//
-//                //View or print invoice
-////                InputStream s = this.getClass().getResourceAsStream("/resources/reports/service_station_invoice.jasper");
-////
-////                HashMap<String, Object> params = new HashMap<>();
-////                params.put("dateParameter", dateTime);
-////                params.put("invoiceNoPara", invoiceID);
-////                params.put("vehicleName", vehicleName);
-////                params.put("vehicleNumber", vehicleNumber);
-////                params.put("cashierPara", cashierName);
-////
-////                params.put("totalPara", total);
-////                params.put("paymentPara", paidAmount);
-////                params.put("paymentMethodPara", paymentMethod);
-////                params.put("BalancePara", balance);
-////
-////                JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
-////
-////                JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
-////                JasperViewer.viewReport(report, false);
-//                reset();
-//                // paymentsPanel.loadInvoices();
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-////                ERROR_LOGGER.log(java.util.logging.Level.INFO, "Exception In jButton4ActionPerformed On Invoice1Student", e);
-//            }
-//        }
+//                JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+//                JasperViewer.viewReport(report, false);
+                //reset();
+                // paymentsPanel.loadInvoices();
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+            try {
+                String GrnID = GrnNumberField.getText();
+                String ProductId = ProductIdField.getText();
+                String BrandName = BrandNameField.getText();
+                String ProductName = ProductNameField.getText();
+                String qty = QtyField.getText();
+                String BuyingPrice = BuyingPriceField.getText();
+                String SellingPrice = SellingPriceField.getText();
+                String supplierId = SupplierIdField.getText();
+                String employeeName = EmployeeName.getText();
+                String paidAmount = PaymenntField.getText();
+                String dateTimeForDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+                try {
+
+                    StockModel stockModel = new StockModel();
+
+                    stockModel.setPrice(Double.parseDouble(SellingPrice));
+                    stockModel.setQty(Double.parseDouble(qty));
+                    stockModel.setProductId(ProductId);
+
+                    ResultSet resultSet = new StockController().store(stockModel);
+                    JOptionPane.showMessageDialog(this, "Add to Stock");
+
+                    reset();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+//                ERROR_LOGGER.log(java.util.logging.Level.INFO, "Exception In jButton4ActionPerformed On Invoice1Student", e);
+            }
+
+        }
     }//GEN-LAST:event_SaveGRNActionPerformed
+
+    private void ClearEverythigbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearEverythigbtnActionPerformed
+        // TODO add your handling code here:
+        int response = JOptionPane.showConfirmDialog(null, "Do you want to reset?", "Confirm",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (response == JOptionPane.YES_OPTION) {
+            reset();
+        }
+    }//GEN-LAST:event_ClearEverythigbtnActionPerformed
 
     public void loadGrnItem() {
         DefaultTableModel dtm = (DefaultTableModel) GRNViewTable.getModel();
@@ -776,6 +869,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField BrandNameField;
     private javax.swing.JTextField BuyingPriceField;
     private javax.swing.JButton ClearAllBtn;
+    private javax.swing.JButton ClearEverythigbtn;
     private javax.swing.JLabel EmployeeName;
     private javax.swing.JTable GRNViewTable;
     private javax.swing.JTextField GrnNumberField;
