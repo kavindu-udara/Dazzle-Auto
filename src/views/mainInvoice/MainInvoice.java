@@ -868,39 +868,38 @@ public class MainInvoice extends javax.swing.JFrame {
 
             if (serviceDescription.isBlank()) {
 
-                int showConfirm = JOptionPane.showConfirmDialog(this, "Description is empty ! Do You Want To Continue ?","Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                int showConfirm = JOptionPane.showConfirmDialog(this, "Description is empty ! Do You Want To Continue ?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 if (showConfirm == JOptionPane.YES_OPTION) {
-                    
                     serviceDescription = "-";
-
-                    MainInvoiceItemModel mainInvoiceItem = new MainInvoiceItemModel();
-                    mainInvoiceItem.setServiceID(serviceID);
-                    mainInvoiceItem.setServiceName(serviceName);
-                    mainInvoiceItem.setServiceDescription(serviceDescription);
-                    mainInvoiceItem.setServiceCharge(serviceCharge);
-
-                    if (invoiceItemMap.get(serviceID + "" + serviceName) == null) {
-                        invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
-                    } else {
-
-                        MainInvoiceItemModel foundService = invoiceItemMap.get(serviceID + "" + serviceName);
-
-                        if (foundService.getServiceName().equals(serviceName)) {
-                            JOptionPane.showMessageDialog(this, "This Invoice Already In Table", "Error", JOptionPane.ERROR_MESSAGE);
-                        } else {
-                            invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
-                        }
-
-                    }
-
-                    loadInvoiceItem();              
-
-                paymentField.grabFocus();
-                discountField.setEditable(true);
-                paymentField.setEditable(true);
-                
                 }
             }
+
+            MainInvoiceItemModel mainInvoiceItem = new MainInvoiceItemModel();
+            mainInvoiceItem.setServiceID(serviceID);
+            mainInvoiceItem.setServiceName(serviceName);
+            mainInvoiceItem.setServiceDescription(serviceDescription);
+            mainInvoiceItem.setServiceCharge(serviceCharge);
+
+            if (invoiceItemMap.get(serviceID + "" + serviceName) == null) {
+                invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
+            } else {
+
+                MainInvoiceItemModel foundService = invoiceItemMap.get(serviceID + "" + serviceName);
+
+                if (foundService.getServiceName().equals(serviceName)) {
+                    JOptionPane.showMessageDialog(this, "This Invoice Already In Table", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
+                }
+
+            }
+
+            loadInvoiceItem();
+
+            paymentField.grabFocus();
+            discountField.setEditable(true);
+            paymentField.setEditable(true);
+
         }
     }//GEN-LAST:event_jAddInvoiceButtonActionPerformed
 
