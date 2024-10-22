@@ -269,7 +269,7 @@ public class GenarateQr extends java.awt.Dialog {
                 return;
             }
 
-            String defaultDir = BDUtility.getPath("qrCodes");
+            String defaultDir = BDUtility.getPath("resources/qrCodes");
             File directory = new File(defaultDir);
             if (!directory.exists()) {
 
