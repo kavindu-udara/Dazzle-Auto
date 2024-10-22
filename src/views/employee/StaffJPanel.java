@@ -23,8 +23,10 @@ import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
 import controllers.StatusController;
 import includes.LoggerConfig;
+import includes.MySqlConnection;
 import java.awt.Dialog;
 import java.awt.Frame;
+import java.awt.event.ItemEvent;
 import java.util.HashMap;
 import java.util.logging.Logger;
 import models.EmployeeModel;
@@ -79,6 +81,65 @@ public class StaffJPanel extends javax.swing.JPanel {
         this.staffJPanel = this;
     }
 
+    private void sortEmployees() {
+        try {
+            String query = "SELECT * FROM employee";
+
+            String searchText = employeeFindField.getText().trim();
+            if (!searchText.isEmpty()) {
+                query += " WHERE `first_name` LIKE '%" + searchText + "%' OR "
+                        + "`last_name` LIKE '%" + searchText + "%' OR "
+                        + "`email` LIKE '%" + searchText + "%' OR "
+                        + "`mobile` LIKE '%" + searchText + "%'";
+            }
+
+            // Sorting logic
+            String sort = String.valueOf(jSortComboBox.getSelectedItem());
+            System.out.println("Selected sort option: " + sort);
+
+            // Append sorting conditions to the query
+            if (sort.contains("First Name A-Z")) {
+                query += " ORDER BY `first_name` ASC";
+            } else if (sort.contains("First Name Z-A")) {
+                query += " ORDER BY `first_name` DESC";
+            } else if (sort.contains("Last Name A-Z")) {
+                query += " ORDER BY `last_name` ASC";
+            } else if (sort.contains("Last Name Z-A")) {
+                query += " ORDER BY `last_name` DESC";
+            } else if (sort.contains("Registered Date Oldest")) {
+                query += " ORDER BY `registered_date` ASC";
+            } else if (sort.contains("Registered Date Newest")) {
+                query += " ORDER BY `registered_date` DESC";
+            }
+
+            System.out.println("Executing query: " + query);
+
+            ResultSet employeeResultSet = MySqlConnection.executeSearch(query);
+
+            DefaultTableModel model = (DefaultTableModel) employeeViewTable.getModel();
+            model.setRowCount(0);
+
+            while (employeeResultSet.next()) {
+                String employeeId = employeeResultSet.getString("id");
+                String nic = employeeResultSet.getString("nic");
+                String firstName = employeeResultSet.getString("first_name");
+                String lastName = employeeResultSet.getString("last_name");
+                String email = employeeResultSet.getString("email");
+                String mobile = employeeResultSet.getString("mobile");
+                String registeredDate = employeeResultSet.getString("registered_date");
+
+                model.addRow(new Object[]{employeeId, nic, firstName, lastName, email, mobile, registeredDate});
+            }
+
+            employeeViewTable.revalidate();
+            employeeViewTable.repaint();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading employees: " + e.getMessage());
+        }
+    }
+
     private void loadEmployees() {
         try {
 
@@ -86,6 +147,7 @@ public class StaffJPanel extends javax.swing.JPanel {
             ResultSet employeeTypeResultSet = new EmployeeTypeController().show();
             ResultSet statusResultSet = new StatusController().show();
             ResultSet employeeImageResultSet = new EmployeeImageController().show();
+            ResultSet emploResultSet = new EmployeeController().search(BaseFrame);
 
             HashMap<Integer, String> employeeTypeMap = new HashMap<>();
             HashMap<Integer, String> statusMap = new HashMap<>();
@@ -315,7 +377,17 @@ public class StaffJPanel extends javax.swing.JPanel {
         jLabel7.setText("Sort By :");
 
         jSortComboBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jSortComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Name A-Z", "Name Z-A", "Registered Date Old-New", "Registered Date Old-New" }));
+        jSortComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "First Name A-Z", "First Name Z-A", "Last Name A-Z", "Last Name Z-A", "Registered Date Oldest", "Registered Date Newest" }));
+        jSortComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jSortComboBoxItemStateChanged(evt);
+            }
+        });
+        jSortComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSortComboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -478,6 +550,18 @@ public class StaffJPanel extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_employeeFindFieldKeyReleased
+
+    private void jSortComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSortComboBoxActionPerformed
+//
+    }//GEN-LAST:event_jSortComboBoxActionPerformed
+
+    private void jSortComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jSortComboBoxItemStateChanged
+
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            sortEmployees();
+        }
+
+    }//GEN-LAST:event_jSortComboBoxItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
