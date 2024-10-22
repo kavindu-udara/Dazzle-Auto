@@ -104,11 +104,28 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 File imageFile = new File(imagePath);
 
                 if (imageFile.exists()) {
-                    ImageIcon icon = new ImageIcon(imagePath);
 
-                    Image image = icon.getImage().getScaledInstance(210, 240, Image.SCALE_SMOOTH);
-                    ImageIcon resizedIcon = new ImageIcon(image);
+                    BufferedImage image = ImageIO.read(imageFile);
+
+                    int imageWidth = image.getWidth();
+                    int imageHeight = image.getHeight();
+
+                    int labelWidth = employee_image.getWidth();
+                    int labelHeight = employee_image.getHeight();
+
+                    double scalex = (double) labelWidth / imageWidth;
+                    double scaleY = (double) labelHeight / imageHeight;
+
+                    double scale = Math.min(scalex, scaleY);
+
+                    int scaleWidth = (int) (imageWidth * scale);
+                    int scaleHeight = (int) (imageHeight * scale);
+
+                    Image scaledImage = image.getScaledInstance(scaleWidth, scaleHeight, Image.SCALE_SMOOTH);
+
+                    ImageIcon resizedIcon = new ImageIcon(scaledImage);
                     employee_image.setIcon(resizedIcon);
+
                 } else {
                     employee_image.setIcon(null);
                 }
