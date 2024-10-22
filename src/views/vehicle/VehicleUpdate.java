@@ -5,7 +5,6 @@
 package views.vehicle;
 
 import views.customer.*;
-import views.supplier.*;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import includes.LoggerConfig;
 import java.awt.Dialog;
