@@ -16,6 +16,15 @@ public class GrnItemsModel {
     private Double qty;
     private Double price;
 
+    private String ProductId;
+    private String BrandName;
+    private int BrandId;
+    private String ProductName;
+    private Double BuyingPrice;
+    private Double SellingPrice;
+    private String SupplierId;
+    private String EmployeeId;
+
     /**
      * @return the id
      */
@@ -84,5 +93,117 @@ public class GrnItemsModel {
      */
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    /**
+     * @return the ProductId
+     */
+    public String getProductId() {
+        return ProductId;
+    }
+
+    /**
+     * @param ProductId the ProductId to set
+     */
+    public void setProductId(String ProductId) {
+        this.ProductId = ProductId;
+    }
+
+    /**
+     * @return the BrandName
+     */
+    public String getBrandName() {
+        return BrandName;
+    }
+
+    /**
+     * @param BrandName the BrandName to set
+     */
+    public void setBrandName(String BrandName) {
+        this.BrandName = BrandName;
+    }
+
+    /**
+     * @return the BrandId
+     */
+    public int getBrandId() {
+        return BrandId;
+    }
+
+    /**
+     * @param BrandId the BrandId to set
+     */
+    public void setBrandId(int BrandId) {
+        this.BrandId = BrandId;
+    }
+
+    /**
+     * @return the ProductName
+     */
+    public String getProductName() {
+        return ProductName;
+    }
+
+    /**
+     * @param ProductName the ProductName to set
+     */
+    public void setProductName(String ProductName) {
+        this.ProductName = ProductName;
+    }
+
+    /**
+     * @return the BuyingPrice
+     */
+    public Double getBuyingPrice() {
+        return BuyingPrice;
+    }
+
+    /**
+     * @param BuyingPrice the BuyingPrice to set
+     */
+    public void setBuyingPrice(Double BuyingPrice) {
+        this.BuyingPrice = BuyingPrice;
+    }
+
+    /**
+     * @return the SellingPrice
+     */
+    public Double getSellingPrice() {
+        return SellingPrice;
+    }
+
+    /**
+     * @param SellingPrice the SellingPrice to set
+     */
+    public void setSellingPrice(Double SellingPrice) {
+        this.SellingPrice = SellingPrice;
+    }
+
+    /**
+     * @return the SupplierId
+     */
+    public String getSupplierId() {
+        return SupplierId;
+    }
+
+    /**
+     * @param SupplierId the SupplierId to set
+     */
+    public void setSupplierId(String SupplierId) {
+        this.SupplierId = SupplierId;
+    }
+
+    /**
+     * @return the EmployeeId
+     */
+    public String getEmployeeId() {
+        return EmployeeId;
+    }
+
+    /**
+     * @param EmployeeId the EmployeeId to set
+     */
+    public void setEmployeeId(String EmployeeId) {
+        this.EmployeeId = EmployeeId;
     }
 }

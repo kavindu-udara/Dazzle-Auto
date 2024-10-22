@@ -25,10 +25,10 @@ public class GrnController {
     }
 
     public ResultSet store(GrnModel grnModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`date`, `paid_amount`, `supplier_id`) VALUES "
-                + "('" + grnModel.getDate() + "', "
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`,`date`, `paid_amount`, `supplier_id`,`employee_id`) VALUES "
+                + "('" + grnModel.getId()+ "','" + grnModel.getDate() + "', "
                 + "'" + grnModel.getPaidAmount() + "', "
-                + "'" + grnModel.getSupplierId() + "') ");
+                + "'" + grnModel.getSupplierId() + "','" + grnModel.getEmployeeId()+ "') ");
     }
 
     public ResultSet update(GrnModel grnModel) throws Exception {

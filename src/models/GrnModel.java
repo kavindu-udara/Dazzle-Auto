@@ -16,6 +16,7 @@ public class GrnModel {
     private String supplierId;
     private String employeeId;
 
+    private String GrnId;
     /**
      * @return the id
      */
@@ -84,5 +85,19 @@ public class GrnModel {
      */
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
+    }
+
+    /**
+     * @return the GrnId
+     */
+    public String getGrnId() {
+        return GrnId;
+    }
+
+    /**
+     * @param GrnId the GrnId to set
+     */
+    public void setGrnId(String GrnId) {
+        this.GrnId = GrnId;
     }
 }
