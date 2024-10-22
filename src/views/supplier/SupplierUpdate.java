@@ -4,19 +4,14 @@
  */
 package views.supplier;
 
-import java.sql.ResultSet;
-
-import views.supplier.*;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import controllers.EmployeeController;
 import controllers.SupplierController;
+import includes.LoggerConfig;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.DocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
 import java.awt.Frame;
+import java.util.logging.Logger;
 import models.SupplierModel;
 
 /**
@@ -24,6 +19,8 @@ import models.SupplierModel;
  * @author USER
  */
 public class SupplierUpdate extends java.awt.Dialog {
+    
+    private static final Logger logger = LoggerConfig.getLogger();
 
     private SupplierModel supplierModel;
 
@@ -243,6 +240,7 @@ public class SupplierUpdate extends java.awt.Dialog {
                 reset();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                logger.severe("Error while updating supplier : " + e.getMessage());
             }
         }
 
