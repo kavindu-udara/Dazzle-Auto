@@ -7,3 +7,5 @@
 !/src/resources/employeeImages/default.png
 /logs/*
 !/logs/.gitkeep
+/src/resources/qrCodes/*
+!/src/resources/qrCodes/.gitkeep
