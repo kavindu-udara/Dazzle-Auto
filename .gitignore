@@ -3,10 +3,9 @@
 /dist/
 .env
 /src/resources/employeeImages/*
+/src/resources/qrCodes/*
 !/src/resources/employeeImages/.gitkeep
 !/src/resources/employeeImages/default.png
+!/src/resources/qrCodes/.gitkeep
 /logs/*
 !/logs/.gitkeep
-
-/src/resources/qrCodes/*
-!/src/resources/qrCodes/.gitkeep
