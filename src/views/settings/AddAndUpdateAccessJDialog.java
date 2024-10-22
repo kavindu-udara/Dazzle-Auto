@@ -16,6 +16,7 @@ import includes.LoggerConfig;
 import includes.RegexValidator;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import models.EmployeeModel;
 import models.LoginModel;
 
 /**
@@ -28,12 +29,34 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
 
     private static HashMap<String, Integer> accessRoleMap = new HashMap<>();
 
+    //constructor for add new access
     public AddAndUpdateAccessJDialog(java.awt.Frame parent, boolean modal, String process) {
         super(parent, modal);
         initComponents();
 
         loadAccessRoleTypes();
+        jLabel1.setText(process);
         jUpdateButton.setEnabled(false);
+    }
+
+    //constructor for update access
+    public AddAndUpdateAccessJDialog(java.awt.Frame parent, boolean modal, String process, EmployeeModel employeeModel, LoginModel loginModel) {
+        super(parent, modal);
+        initComponents();
+
+        loadAccessRoleTypes();
+        jLabel1.setText(process);
+        jEmployeeSelectButton.setEnabled(false);
+        jSaveButton.setEnabled(false);
+
+        jempIDLabel.setText(employeeModel.getId());
+        jNICTextField.setText(employeeModel.getNic());
+        jFnameTextField.setText(employeeModel.getFirstName());
+        jLnameTextField.setText(employeeModel.getLastName());
+        jEMPTypeTextField.setText(employeeModel.getEmployeeTypeName());
+        jAccesRoleComboBox.setSelectedIndex(accessRoleMap.get(loginModel.getEmployeeId()));
+        jLoginIDTextField.setText(loginModel.getId());
+        jPasswordTextField.setText(loginModel.getPassword());
     }
 
     public void setEmployeeDetails(String empID, String nic, String fname, String lname, String type) {
@@ -166,6 +189,11 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
         jUpdateButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(33, 43, 108), 1, true));
         jUpdateButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jUpdateButton.setFocusPainted(false);
+        jUpdateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jUpdateButtonActionPerformed(evt);
+            }
+        });
 
         jSaveButton.setBackground(new java.awt.Color(33, 43, 108));
         jSaveButton.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -360,6 +388,7 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
 
                     reset();
 
+                    JOptionPane.showMessageDialog(this, "New Login Access Added For : " + empID, "Information", JOptionPane.INFORMATION_MESSAGE);
                     logger.info("New Login Access Added For : " + empID + " | LoginID " + loginID);
 
                 }
@@ -373,6 +402,45 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         reset();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jUpdateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUpdateButtonActionPerformed
+
+        String loginID = jLoginIDTextField.getText();
+        String password = jPasswordTextField.getText();
+
+        if (loginID.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Select Employee", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (jAccesRoleComboBox.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Please Select Access Role", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter Password", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (!RegexValidator.isValidPassword(password)) {
+            JOptionPane.showMessageDialog(this, "The password must contain at least 8 characters, at least one lowercase letter, at least one uppercase letter, at least one digit, at least one special character", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int accessRoleId = accessRoleMap.get(String.valueOf(jAccesRoleComboBox.getSelectedItem()));
+
+            try {
+
+                LoginModel loginModel = new LoginModel();
+                loginModel.setId(loginID);
+                loginModel.setPassword(password);
+                loginModel.setAccessRoleId(accessRoleId);
+
+                new LoginController().update(loginModel);
+
+                JOptionPane.showMessageDialog(this, "Login Access Updated For : " + loginID, "Information", JOptionPane.INFORMATION_MESSAGE);
+                logger.info("Login Access Updated For LoginID : " + loginID);
+
+                this.dispose();
+                new Settings(null, true).setVisible(true);
+
+                reset();
+
+            } catch (Exception e) {
+                logger.warning("Error while jUpdateButtonActionPerformed : " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jUpdateButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
