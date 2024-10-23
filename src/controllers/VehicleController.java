@@ -25,12 +25,18 @@ public class VehicleController {
     }
 
     public ResultSet store(VehicleModel vehicleModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`vehicle_number`, `customer_id`, `vehicle_brand_id`, `model`, `vehicle_type_id`) VALUES "
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`vehicle_number`, `customer_id`, `vehicle_brand_id`, `model`, `vehicle_type_id`, "
+                + "`chassis_no`, `engine_no`, `engine_name`, `powertrain_types_id`, `drive_types_id`) VALUES "
                 + "('" + vehicleModel.getVehicleNumber() + "', "
                 + "'" + vehicleModel.getCustomerId() + "', "
                 + "'" + vehicleModel.getVehicleBrandId() + "', "
                 + "'" + vehicleModel.getModel() + "', "
-                + "'" + vehicleModel.getVehicleTypeId() + "') ");
+                + "'" + vehicleModel.getVehicleTypeId() + "', "
+                + " '" + vehicleModel.getChassisNumber() + "', "
+                + " '" + vehicleModel.getEngineNumber() + "', "
+                + " '" + vehicleModel.getEngineName() + "', "
+                + " '" + vehicleModel.getPowertrainTypeId() + "', "
+                + "'" + vehicleModel.getDriveTypesId() + "' ) ");
     }
 
     public ResultSet update(VehicleModel vehicleModel) throws Exception {

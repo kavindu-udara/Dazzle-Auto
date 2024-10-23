@@ -15,6 +15,12 @@ public class VehicleModel {
     private int vehicleTypeId;
     private String vehicleNumber;
     private String model;
+    
+    private String engineNumber;
+    private String chassisNumber;
+    private String engineName;
+    private int powertrainTypeId;
+    private int driveTypesId;
 
     /**
      * @return the customerId
@@ -84,6 +90,76 @@ public class VehicleModel {
      */
     public void setModel(String model) {
         this.model = model;
+    }
+
+    /**
+     * @return the engineNumber
+     */
+    public String getEngineNumber() {
+        return engineNumber;
+    }
+
+    /**
+     * @param engineNumber the engineNumber to set
+     */
+    public void setEngineNumber(String engineNumber) {
+        this.engineNumber = engineNumber;
+    }
+
+    /**
+     * @return the chassisNumber
+     */
+    public String getChassisNumber() {
+        return chassisNumber;
+    }
+
+    /**
+     * @param chassisNumber the chassisNumber to set
+     */
+    public void setChassisNumber(String chassisNumber) {
+        this.chassisNumber = chassisNumber;
+    }
+
+    /**
+     * @return the engineName
+     */
+    public String getEngineName() {
+        return engineName;
+    }
+
+    /**
+     * @param engineName the engineName to set
+     */
+    public void setEngineName(String engineName) {
+        this.engineName = engineName;
+    }
+
+    /**
+     * @return the powertrainTypeId
+     */
+    public int getPowertrainTypeId() {
+        return powertrainTypeId;
+    }
+
+    /**
+     * @param powertrainTypeId the powertrainTypeId to set
+     */
+    public void setPowertrainTypeId(int powertrainTypeId) {
+        this.powertrainTypeId = powertrainTypeId;
+    }
+
+    /**
+     * @return the driveTypesId
+     */
+    public int getDriveTypesId() {
+        return driveTypesId;
+    }
+
+    /**
+     * @param driveTypesId the driveTypesId to set
+     */
+    public void setDriveTypesId(int driveTypesId) {
+        this.driveTypesId = driveTypesId;
     }
     
     
