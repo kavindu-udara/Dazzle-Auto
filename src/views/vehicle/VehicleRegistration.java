@@ -4,6 +4,8 @@
  */
 package views.vehicle;
 
+import controllers.DriveTypesController;
+import controllers.PowertrainTypesController;
 import views.customer.*;
 import controllers.VehicleBrandController;
 import controllers.VehicleController;
@@ -29,6 +31,8 @@ public class VehicleRegistration extends java.awt.Dialog {
     
     private static HashMap<String, String> vehicleTypesHashMap = new HashMap<>();
     private static HashMap<String, String> vehicleBrandHashMap = new HashMap<>();
+    private static HashMap<String, String> powertrainTypesHashMap = new HashMap<>();
+    private static HashMap<String, String> driveTypesHashMap = new HashMap<>();
     
     Dialog vehicleRegistration = this;
     
@@ -42,6 +46,8 @@ public class VehicleRegistration extends java.awt.Dialog {
         initComponents();
         loadVehicleTypes();
         loadVehicleBrand();
+        loadPowertrainTypes();
+        loadDriveTypes();
     }
     
     private void loadVehicleTypes() {
@@ -89,6 +95,48 @@ public class VehicleRegistration extends java.awt.Dialog {
         }
     }
     
+    private void loadPowertrainTypes() {
+        try {
+            ResultSet resultSet = new PowertrainTypesController().show();
+            Vector vector = new Vector();
+            
+            vector.add("Select");
+            
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("name"));
+                powertrainTypesHashMap.put(resultSet.getString("name"), resultSet.getString("id"));
+            }
+            
+            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
+            powertrainTypesComboBox.setModel(comboBoxModel);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading powerTrainTypes : " + e.getMessage());
+        }
+    }
+    
+    private void loadDriveTypes() {
+        try {
+            ResultSet resultSet = new DriveTypesController().show();
+            Vector vector = new Vector();
+            
+            vector.add("Select");
+            
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("name"));
+                driveTypesHashMap.put(resultSet.getString("name"), resultSet.getString("id"));
+            }
+            
+            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
+            driveTypesComboBox.setModel(comboBoxModel);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading powerTrainTypes : " + e.getMessage());
+        }
+    }
+    
     public void setCustomerDetails(String customerID, String firstName, String lastName) {
         jLabel2.setText(firstName + " " + lastName);
         jLabel7.setText(customerID);
@@ -113,6 +161,16 @@ public class VehicleRegistration extends java.awt.Dialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         vehicleModelTextField = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        engineNumberField = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        chassisNumberField = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        engineNameField = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        powertrainTypesComboBox = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+        driveTypesComboBox = new javax.swing.JComboBox<>();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -169,20 +227,45 @@ public class VehicleRegistration extends java.awt.Dialog {
         jLabel7.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel7.setText("Customer ID");
 
+        jLabel8.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel8.setText("Engine Number");
+
+        jLabel9.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel9.setText("Chassis Number");
+
+        jLabel10.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel10.setText("Engine Name");
+
+        jLabel11.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel11.setText("Powertrain Types");
+
+        powertrainTypesComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        powertrainTypesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel12.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel12.setText("Drive Types");
+
+        driveTypesComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        driveTypesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(63, Short.MAX_VALUE)
+                .addContainerGap(51, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(64, 64, 64)
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel12)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(driveTypesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                             .addComponent(vehicle_register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                             .addComponent(vehicle_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,15 +273,23 @@ public class VehicleRegistration extends java.awt.Dialog {
                                 .addComponent(jLabel6)
                                 .addComponent(jLabel4)
                                 .addComponent(jLabel5)
-                                .addComponent(jButton1))
-                            .addGap(38, 38, 38)
+                                .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel11)
+                                .addComponent(jLabel9)
+                                .addComponent(jLabel8)
+                                .addComponent(jLabel10))
+                            .addGap(50, 50, 50)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(vehicle_number, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                                 .addComponent(vehicle_brand, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(vehicle_type, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(vehicleModelTextField)))))
+                                .addComponent(vehicleModelTextField)
+                                .addComponent(engineNumberField)
+                                .addComponent(chassisNumberField)
+                                .addComponent(engineNameField)
+                                .addComponent(powertrainTypesComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addGap(65, 65, 65))
         );
         jPanel1Layout.setVerticalGroup(
@@ -225,17 +316,37 @@ public class VehicleRegistration extends java.awt.Dialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(vehicleModelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(engineNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chassisNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(engineNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(powertrainTypesComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12)
+                    .addComponent(driveTypesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(3, 3, 3)
                 .addComponent(jLabel7)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(vehicle_register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(vehicle_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGap(39, 39, 39))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -268,6 +379,12 @@ public class VehicleRegistration extends java.awt.Dialog {
         String vehicleBrand = String.valueOf(vehicle_brand.getSelectedItem());
         String vehicleModelValue = vehicleModelTextField.getText();
         
+        String engineNumber = String.valueOf(engineNumberField.getText());
+        String chassisNumber = String.valueOf(chassisNumberField.getText());
+        String engineName = String.valueOf(engineNameField.getText());
+        String powertrainType = String.valueOf(powertrainTypesComboBox.getSelectedItem());
+        String driveType = String.valueOf(driveTypesComboBox.getSelectedItem());
+        
         if (vehicleNumberValue.isEmpty()) {
             showWarningMessage("Please enter your Vehicle Number");
         } else if (!RegexValidator.isValidVehicleNumber(vehicleNumberValue)) {
@@ -280,6 +397,16 @@ public class VehicleRegistration extends java.awt.Dialog {
             showWarningMessage("Vehicle Model is Required");
         } else if (jLabel2.getText().equals("Customer Name") || jLabel7.getText().equals("Customer ID")) {
             showWarningMessage("Please select a customer");
+        } else if (engineNumber.isEmpty()) {
+            showWarningMessage("Please enter an engine number");
+        } else if (chassisNumber.isEmpty()) {
+            showWarningMessage("Please enter a chassis number");
+        } else if (engineName.isEmpty()) {
+            showWarningMessage("Plese enter an engine name");
+        } else if (powertrainType.equals("Select")) {
+            showWarningMessage("Plese select a powertrain type");
+        } else if (driveType.equals("Select")) {
+            showWarningMessage("Please select a drive type");
         } else {
             
             VehicleModel vehicleModel = new VehicleModel();
@@ -288,10 +415,16 @@ public class VehicleRegistration extends java.awt.Dialog {
             vehicleModel.setVehicleBrandId(Integer.parseInt(vehicleBrandHashMap.get(vehicleBrand)));
             vehicleModel.setModel(vehicleModelValue);
             vehicleModel.setVehicleTypeId(Integer.parseInt(vehicleTypesHashMap.get(vehicleType)));
+            
+            vehicleModel.setEngineNumber(engineNumber);
+            vehicleModel.setChassisNumber(chassisNumber);
+            vehicleModel.setEngineName(engineName);
+            vehicleModel.setPowertrainTypeId(Integer.parseInt(powertrainTypesHashMap.get(powertrainType)));
+            vehicleModel.setDriveTypesId(Integer.parseInt(driveTypesHashMap.get(driveType)));
 
             // check vehicle number
             if (!isThisVehicleNumberAlreadyExist(vehicleModel.getVehicleNumber())) {
-            // store vehicle
+                // store vehicle
                 try {
                     ResultSet resultSet = new VehicleController().store(vehicleModel);
                     JOptionPane.showMessageDialog(this, "Vehicle Registred Success !", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -345,15 +478,25 @@ public class VehicleRegistration extends java.awt.Dialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField chassisNumberField;
+    private javax.swing.JComboBox<String> driveTypesComboBox;
+    private javax.swing.JTextField engineNameField;
+    private javax.swing.JTextField engineNumberField;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JComboBox<String> powertrainTypesComboBox;
     private javax.swing.JTextField vehicleModelTextField;
     private javax.swing.JComboBox<String> vehicle_brand;
     private javax.swing.JTextField vehicle_number;
