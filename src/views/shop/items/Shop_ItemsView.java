@@ -452,6 +452,11 @@ public class Shop_ItemsView extends javax.swing.JPanel {
             ex.printStackTrace();
             logger.severe("Error while sorting brands in Shop Items : " + ex.getMessage());
         }
+        String BrandName = String.valueOf(Brand_chooser.getSelectedItem());
+        if (BrandName.equals("Select")) {
+            reloadTable();
+        }
+
     }//GEN-LAST:event_Brand_chooserItemStateChanged
 
 

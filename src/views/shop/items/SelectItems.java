@@ -36,7 +36,6 @@ public class SelectItems extends javax.swing.JDialog {
 
     private shop_GRNJPanel shop_grnpanel;
 
-
     private static Logger logger = LoggerConfig.getLogger();
 
     /**
@@ -235,7 +234,7 @@ public class SelectItems extends javax.swing.JDialog {
         model.setRowCount(0);
 
         try {
-            ResultSet resultSet = new ProductController().searchBrand(searchText);;
+            ResultSet resultSet = new ProductController().searchBrand(searchText);
             ResultSet resultSet1 = new ProductBrandController().search("");
 
             HashMap<Integer, String> BrandMap = new HashMap<>();
@@ -349,11 +348,18 @@ public class SelectItems extends javax.swing.JDialog {
         // TODO add your handling code here:
         try {
             fetchBrands(Brand_chooser.getSelectedItem().toString());
+
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.severe("Error while sorting brands in select Items : " + ex.getMessage());
 
         }
+        
+        String BrandName = String.valueOf(Brand_chooser.getSelectedItem());
+        if (BrandName.equals("Select")) {
+            reloadTable();
+        }
+
 
     }//GEN-LAST:event_Brand_chooserItemStateChanged
 
@@ -407,10 +413,10 @@ public class SelectItems extends javax.swing.JDialog {
             ItemModel.setbrandName(BrandName);
 
             shop_grnpanel.setSelectedProduct(ItemModel);
-     
+
             this.dispose();
         }
-        
+
 
     }//GEN-LAST:event_Items_View_TableMouseClicked
 

@@ -4,7 +4,6 @@
  */
 package views.shop.grn;
 
-import controllers.EmployeeController;
 import controllers.GrnController;
 import controllers.GrnItemsController;
 import controllers.StockController;
@@ -14,7 +13,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.BorderFactory;
@@ -95,7 +93,6 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
     //for Item Select
     public shop_GRNJPanel(java.awt.Frame parent, boolean modal, ProductModel ItemModel) {
-        // super(parent, modal);
 
         initComponents();
         this.productModel = ItemModel;
@@ -128,7 +125,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     }
 
     public void setSelectedSupplier(SupplierModel supplierModel) {
-        // Set the fields in this panel with the product data
+        // Set the fields in this panel with the Supplier data
         this.supModel = supplierModel;
         SupplierNameField.setText(supplierModel.getFirstName() + " " + supplierModel.getLastName());
         SupplierIdField.setText(supplierModel.getId());
@@ -492,10 +489,8 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_PaymenntFieldKeyReleased
 
     private double total = 0;
-    // private double discount = 0;
     private double payment = 0;
     private double balance = 0;
-    // private String paymentMethod = "Cash";
 
     private void calculate() {
 
@@ -504,10 +499,9 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
             String BuyingPrice = String.valueOf(GRNViewTable.getValueAt(i, 4));
             String qty = String.valueOf(GRNViewTable.getValueAt(i, 3));
 
-//            double rowPrice = Double.parseDouble(tablePrice);
-//
-//            total += rowPrice;
-            total = (Double.parseDouble(BuyingPrice)) * (Double.parseDouble(qty));
+            double rowPrice = (Double.parseDouble(BuyingPrice)) * (Double.parseDouble(qty));
+            total += rowPrice;
+
         }
 
         TotalField.setText(String.valueOf(total));
@@ -521,13 +515,9 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         total = Double.parseDouble(TotalField.getText());
 
         if (total < 0) {
-            //JOptionPane.showMessageDialog(this, "Something Wrong in Discount !", "Error", JOptionPane.ERROR_MESSAGE);
-            //discountField.setText("0");
+            JOptionPane.showMessageDialog(this, "Enter a Valid Payment!", "Error", JOptionPane.ERROR_MESSAGE);
             PaymenntField.setText("0");
             BalanceField.setText("0");
-        } else {
-            //discount ok
-
         }
 
         balance = payment - total;
@@ -535,16 +525,13 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         if (balance < 0) {
             SaveGRN.setEnabled(false);
+        } else if (balance < total) {
+            SaveGRN.setEnabled(false);
         } else {
             SaveGRN.setEnabled(true);
         }
 
-//            payment = total;
-//            balance = 0;
-//            PaymenntField.setText(String.valueOf(payment));
-//            PaymenntField.setEnabled(false);
-//   //         jButton4.setEnabled(true);
-        //      }
+          
         BalanceField.setText(String.valueOf(balance));
 
     }
@@ -631,35 +618,19 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_AddGRNBtnActionPerformed
 
     private void GRNViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GRNViewTableMouseClicked
-        // TODO add your handling code here:
-        int row = GRNViewTable.getSelectedRow();
 
-        if (evt.getClickCount() == 2 && row != -1) {
 
-//            String productId = String.valueOf(GRNViewTable.getValueAt(row, 0));
-//            String brand = String.valueOf(GRNViewTable.getValueAt(row, 1));
-//            String supplierId = String.valueOf(GRNViewTable.getValueAt(row, 6));
-//
-//            if (GrnItemMap.get(productId + "" + supplierId + "" + brand) != null) {
-//                GrnItemMap.remove(productId + "" + supplierId + "" + brand);
-//            }
-            loadGrnItem();
-            calculate();
-        }
     }//GEN-LAST:event_GRNViewTableMouseClicked
 
     private int Stockid;
-    
+
     private void SaveGRNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveGRNActionPerformed
         // TODO add your handling code here:
-        
 
         if (jLabel17.getText().equals("Error")) {
             JOptionPane.showMessageDialog(this, "Error In Fields", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
 
-            
-            
             try {
                 String GrnID = GrnNumberField.getText();
                 String ProductId = ProductIdField.getText();
@@ -719,15 +690,11 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
                     ResultSet resultSet = new StockController().store(stockModel);
                     JOptionPane.showMessageDialog(this, "Add to Stock");
-                    
+
                     if (resultSet.next()) {
                         int Stokid = resultSet.getInt(1);
                         Stockid = Stokid;
                     }
-                    
-                    
-
-                    
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -738,7 +705,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                 e.printStackTrace();
 //                ERROR_LOGGER.log(java.util.logging.Level.INFO, "Exception In jButton4ActionPerformed On Invoice1Student", e);
             }
-            
+
             try {
                 String GrnID = GrnNumberField.getText();
                 String ProductId = ProductIdField.getText();
@@ -770,33 +737,10 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
                 }
 
-                //View or print invoice
-//                InputStream s = this.getClass().getResourceAsStream("/resources/reports/service_station_invoice.jasper");
-//
-//                HashMap<String, Object> params = new HashMap<>();
-//                params.put("dateParameter", dateTime);
-//                params.put("invoiceNoPara", invoiceID);
-//                params.put("vehicleName", vehicleName);
-//                params.put("vehicleNumber", vehicleNumber);
-//                params.put("cashierPara", cashierName);
-//
-//                params.put("totalPara", total);
-//                params.put("paymentPara", paidAmount);
-//                params.put("paymentMethodPara", paymentMethod);
-//                params.put("BalancePara", balance);
-//
-//                JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
-//
-//                JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
-//                JasperViewer.viewReport(report, false);
-                //reset();
-                // paymentsPanel.loadInvoices();
             } catch (Exception e) {
                 e.printStackTrace();
 
             }
-
-            
 
         }
     }//GEN-LAST:event_SaveGRNActionPerformed
@@ -829,6 +773,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
             dtm.addRow(vector);
 
+            calculate();
         }
     }
 
