@@ -210,7 +210,7 @@ public class ItemsUpdate extends javax.swing.JDialog {
 
                 new ProductController().update2(productModel);
 
-                JOptionPane.showMessageDialog(this, "Employee details updated successfully");
+                JOptionPane.showMessageDialog(this, "Item details updated successfully");
                 reset();
             } catch (Exception e) {
                 e.printStackTrace();
