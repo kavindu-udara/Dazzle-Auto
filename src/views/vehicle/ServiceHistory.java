@@ -209,10 +209,6 @@ public class ServiceHistory extends javax.swing.JFrame {
             String s2 = new File(this.getClass().getResource("/resources/reports/History_sub_report.jasper").getFile()).getAbsolutePath();
             subPath = s2.replace("\\", "/");
             
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/service_station_db", "root", "Dinu854210dilshan");
-
-            System.out.println(subPath);
             HashMap<String, Object> params = new HashMap<>();
             params.put("subPath", subPath);
             params.put("connection", MySqlConnection.connection);

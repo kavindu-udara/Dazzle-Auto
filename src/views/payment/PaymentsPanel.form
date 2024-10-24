@@ -242,6 +242,9 @@
               <Font name="Roboto" size="16" style="1"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jInvoiceSearchFieldKeyReleased"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
