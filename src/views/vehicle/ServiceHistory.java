@@ -20,9 +20,21 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import includes.LoggerConfig;
+import java.io.File;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Logger;
+import models.LoginModel;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -31,6 +43,13 @@ import java.util.logging.Logger;
 public class ServiceHistory extends javax.swing.JFrame {
 
     private static Logger logger = LoggerConfig.getLogger();
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    LocalDateTime start = LocalDateTime.parse("2024-01-01 00:00:00", formatter);
+    ;
+    LocalDateTime end = LocalDateTime.parse("2050-01-01 00:00:00", formatter);
+    ;
 
     String VehicleNumber = "";
 
@@ -116,12 +135,6 @@ public class ServiceHistory extends javax.swing.JFrame {
 
             String query = "SELECT * FROM `service_invoice` WHERE `vehicle_number`='" + VehicleNumber + "'";
 
-            LocalDateTime start = null;
-            LocalDateTime end = null;
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-
             if (FromDatePicker.isDateSelected()) {
                 start = FromDatePicker.getSelectedDate().atStartOfDay();
                 query += "  AND `date` > '" + start.format(formatter) + "'";
@@ -186,6 +199,42 @@ public class ServiceHistory extends javax.swing.JFrame {
         }
     }
 
+    public JasperPrint makeReport() {
+
+        String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
+        String subPath = "";
+        
+        try {
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/History_main_report.jasper");
+            String s2 = new File(this.getClass().getResource("/resources/reports/History_sub_report.jasper").getFile()).getAbsolutePath();
+            subPath = s2.replace("\\", "/");
+            
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/service_station_db", "root", "Dinu854210dilshan");
+
+            System.out.println(subPath);
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("subPath", subPath);
+            params.put("connection", connection);
+            params.put("vNum", VehicleNumber);
+            params.put("fromDate", start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            params.put("toDate", end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            params.put("vehicleModel", "Land Cruiser Prado TX ");
+            params.put("vType", "Motercycle");
+            params.put("date", dateTime);
+
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, connection);
+
+            return report;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while makeReport() : " + e.getMessage());
+        }
+        return null;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -205,6 +254,8 @@ public class ServiceHistory extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        viewReportb = new javax.swing.JButton();
+        printReportb = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1058, 629));
@@ -294,35 +345,66 @@ public class ServiceHistory extends javax.swing.JFrame {
         jTable2.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(jTable2);
 
+        viewReportb.setBackground(new java.awt.Color(51, 51, 51));
+        viewReportb.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
+        viewReportb.setForeground(new java.awt.Color(255, 255, 255));
+        viewReportb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/analyze-30.png"))); // NOI18N
+        viewReportb.setText(" View Report");
+        viewReportb.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        viewReportb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewReportbActionPerformed(evt);
+            }
+        });
+
+        printReportb.setBackground(new java.awt.Color(0, 102, 0));
+        printReportb.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
+        printReportb.setForeground(new java.awt.Color(255, 255, 255));
+        printReportb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/print-30.png"))); // NOI18N
+        printReportb.setText(" Print Report");
+        printReportb.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        printReportb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printReportbActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jVehicleNumberLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(FromField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(136, 136, 136))
-                            .addComponent(ToField)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
-                .addGap(28, 28, 28))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jSeparator1)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jVehicleNumberLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(FromField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addGap(136, 136, 136))
+                                    .addComponent(ToField)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2))
+                        .addGap(28, 28, 28))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(viewReportb, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(printReportb, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -345,7 +427,11 @@ public class ServiceHistory extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(printReportb, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                    .addComponent(viewReportb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -368,7 +454,7 @@ public class ServiceHistory extends javax.swing.JFrame {
         String invoiceID = String.valueOf(jTable1.getValueAt(row, 0));
 
         loadServiceItems(invoiceID);
-        
+
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void FromFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_FromFieldPropertyChange
@@ -378,6 +464,31 @@ public class ServiceHistory extends javax.swing.JFrame {
     private void ToFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_ToFieldPropertyChange
         loadServices();
     }//GEN-LAST:event_ToFieldPropertyChange
+
+    private void viewReportbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReportbActionPerformed
+
+        try {
+            JasperPrint report = makeReport();
+            JasperViewer.viewReport(report, false);
+
+            logger.info("Vehicle : "+VehicleNumber+", History Report Viewed By : "+LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while viewReportbActionPerformed : " + e.getMessage());
+        }
+    }//GEN-LAST:event_viewReportbActionPerformed
+
+    private void printReportbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printReportbActionPerformed
+        try {
+            JasperPrint report = makeReport();
+            JasperPrintManager.printReport(report, false);
+
+            logger.info("Vehicle : "+VehicleNumber+", History Report Printed By : "+LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while printReportbActionPerformed : " + e.getMessage());
+        }
+    }//GEN-LAST:event_printReportbActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -396,5 +507,12 @@ public class ServiceHistory extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JLabel jVehicleNumberLabel;
+    private javax.swing.JButton printReportb;
+    private javax.swing.JButton viewReportb;
+    private javax.swing.JButton viewReportb1;
+    private javax.swing.JButton viewReportb2;
+    private javax.swing.JButton viewReportb3;
+    private javax.swing.JButton viewReportb4;
+    private javax.swing.JButton viewReportb5;
     // End of variables declaration//GEN-END:variables
 }
