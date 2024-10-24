@@ -4,16 +4,22 @@
  */
 package views.shop.stock;
 
+import includes.LoggerConfig;
+import includes.MySqlConnection;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import java.util.Vector;
+import java.sql.ResultSet;
 
 
 /**
@@ -21,6 +27,7 @@ import javax.swing.table.JTableHeader;
  * @author Dinuka
  */
 public class Shop_StockJPanel extends javax.swing.JPanel {
+            private static Logger logger = LoggerConfig.getLogger();
 
     /**
      * Creates new form shop_ItemsJPanel
@@ -28,6 +35,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
     public Shop_StockJPanel() {
         initComponents();
         StockTableRender();
+        sortby();
     }
 
     public void StockTableRender() {
@@ -58,6 +66,47 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
             StockViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
+        //sort by option
+    public void sortby(){
+        try{
+
+            String query = "SELECT * FROM stock"
+                    + "INNER JOIN product ON stock.product_id =product.name"
+                    + "INNER JOIN product ON stock.product_id =product.brand_id";
+                    
+            
+            String sort = String.valueOf(jComboBox1.getSelectedItem());
+
+            if(sort.equals("Ascending")){
+            query += "ORDER BY`stock`.`id` ASC";
+            
+            }else if(sort.equals("Decending")){
+            query += "ORDER BY`stock`.`id` DESC";
+            }
+            ResultSet resultSet = MySqlConnection.executeSearch(query);
+            
+            DefaultTableModel model = (DefaultTableModel) StockViewTable.getModel();
+            model.setRowCount(0);
+
+           
+            while(resultSet.next()){
+            Vector<String> vector = new Vector<>();
+            vector.add(resultSet.getString("id"));
+            vector.add(resultSet.getString("vehicle_type_id"));
+            vector.add(resultSet.getString("name"));
+            vector.add(resultSet.getString("product_id"));
+            
+            model.addRow(vector);
+
+            }
+            StockViewTable.setModel(model);
+
+        }catch(Exception e){
+        e.printStackTrace();
+        
+        }
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -73,10 +122,6 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         PriceTo = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        ExpFromDateChooser = new javax.swing.JFormattedTextField();
-        ExpToDateChooser = new javax.swing.JFormattedTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         PriceFrom = new javax.swing.JFormattedTextField();
@@ -118,21 +163,12 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         jLabel7.setText("TO");
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 20, -1, 32));
 
-        jLabel8.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jLabel8.setText("EXP");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 20, -1, 32));
-
-        jLabel9.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jLabel9.setText("TO");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 20, -1, 32));
-
-        ExpFromDateChooser.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 18)); // NOI18N
-        jPanel2.add(ExpFromDateChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 20, 112, 36));
-
-        ExpToDateChooser.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 18)); // NOI18N
-        jPanel2.add(ExpToDateChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 20, 112, 36));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ascending", "Decending" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 135, 39));
 
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
@@ -235,11 +271,14 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_PriceFromActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        sortby();
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton DateFindBtn;
-    private javax.swing.JFormattedTextField ExpFromDateChooser;
-    private javax.swing.JFormattedTextField ExpToDateChooser;
     private javax.swing.JButton PriceFindBtn2;
     private javax.swing.JFormattedTextField PriceFrom;
     private javax.swing.JFormattedTextField PriceTo;
@@ -249,8 +288,6 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
