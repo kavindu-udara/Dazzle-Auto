@@ -209,13 +209,13 @@ public class ServiceHistory extends javax.swing.JFrame {
             String s2 = new File(this.getClass().getResource("/resources/reports/History_sub_report.jasper").getFile()).getAbsolutePath();
             subPath = s2.replace("\\", "/");
             
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/service_station_db", "root", "Dinu854210dilshan");
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/service_station_db", "root", "Dinu854210dilshan");
 
             System.out.println(subPath);
             HashMap<String, Object> params = new HashMap<>();
             params.put("subPath", subPath);
-            params.put("connection", connection);
+            params.put("connection", MySqlConnection.connection);
             params.put("vNum", VehicleNumber);
             params.put("fromDate", start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             params.put("toDate", end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -223,8 +223,7 @@ public class ServiceHistory extends javax.swing.JFrame {
             params.put("vType", "Motercycle");
             params.put("date", dateTime);
 
-
-            JasperPrint report = JasperFillManager.fillReport(s, params, connection);
+            JasperPrint report = JasperFillManager.fillReport(s, params, MySqlConnection.connection);
 
             return report;
 

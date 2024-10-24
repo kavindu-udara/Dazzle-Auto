@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 public class MySqlConnection {
 
-    private static Connection connection;
+    public static Connection connection;
 
     private static Dotenv dotenv = Dotenv.load();
 
