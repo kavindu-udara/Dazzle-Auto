@@ -174,6 +174,11 @@ public class PaymentsPanel extends javax.swing.JPanel {
         jLabel5.setText("Search INVOICE :");
 
         jInvoiceSearchField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        jInvoiceSearchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jInvoiceSearchFieldKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -236,6 +241,10 @@ public class PaymentsPanel extends javax.swing.JPanel {
         MainInvoice mainInvoice = new MainInvoice(this);
         mainInvoice.setVisible(true);
     }//GEN-LAST:event_invoiceAddButtonActionPerformed
+
+    private void jInvoiceSearchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jInvoiceSearchFieldKeyReleased
+        loadInvoices();
+    }//GEN-LAST:event_jInvoiceSearchFieldKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

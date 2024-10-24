@@ -33,7 +33,7 @@ import views.vehicleServiceAppointment.AppointmnetPanel;
 public class Dashboard extends javax.swing.JFrame {
 
     private static final Logger logger = LoggerConfig.getLogger();
-    
+
     LoginModel loginModel;
 
     public Dashboard(LoginModel loginModel) {
@@ -42,6 +42,12 @@ public class Dashboard extends javax.swing.JFrame {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
 
         setLoggedUserDetails();
+
+        jTabbedPane1.setSelectedIndex(0);
+
+        DashboardPanel dashboardPanel = new DashboardPanel();
+        jDashboardPanel.add(dashboardPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
     }
 
     private void setLoggedUserDetails() {
@@ -74,7 +80,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            logger.severe("Error while setting logged user details : "+ ex.getMessage());
+            logger.severe("Error while setting logged user details : " + ex.getMessage());
         }
     }
 

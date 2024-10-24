@@ -229,8 +229,8 @@
                           <Group type="102" attributes="0">
                               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel5" max="32767" attributes="0"/>
-                                  <Component id="jLabel6" pref="150" max="32767" attributes="0"/>
+                                  <Component id="jLabel5" pref="150" max="32767" attributes="0"/>
+                                  <Component id="jLabel6" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
@@ -257,7 +257,7 @@
                           <Color blue="33" green="0" red="0" type="rgb"/>
                         </Property>
                         <Property name="horizontalAlignment" type="int" value="0"/>
-                        <Property name="text" type="java.lang.String" value="Items"/>
+                        <Property name="text" type="java.lang.String" value="Items &amp; Suppliers"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel5">
