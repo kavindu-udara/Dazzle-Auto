@@ -26,117 +26,117 @@ import java.util.logging.Logger;
  * @author USER Nimsara
  */
 public class VehicleRegistration extends java.awt.Dialog {
-    
+
     private static final Logger logger = LoggerConfig.getLogger();
-    
+
     private static HashMap<String, String> vehicleTypesHashMap = new HashMap<>();
     private static HashMap<String, String> vehicleBrandHashMap = new HashMap<>();
     private static HashMap<String, String> powertrainTypesHashMap = new HashMap<>();
     private static HashMap<String, String> driveTypesHashMap = new HashMap<>();
-    
+
     Dialog vehicleRegistration = this;
-    
+
     private VehiclesJPanel vehicleJPanel;
-    
+
     public VehicleRegistration(java.awt.Frame parent, boolean modal, VehiclesJPanel vehiclesJPanel) {
         super(parent, modal);
-        
+
         this.vehicleJPanel = vehiclesJPanel;
-        
+
         initComponents();
         loadVehicleTypes();
         loadVehicleBrand();
         loadPowertrainTypes();
         loadDriveTypes();
     }
-    
+
     private void loadVehicleTypes() {
-        
+
         try {
             ResultSet resultSet = new VehicleTypeController().show();
-            
+
             Vector vector = new Vector();
-            
+
             vector.add("Select");
             while (resultSet.next()) {
                 vector.add(resultSet.getString("name"));
                 vehicleTypesHashMap.put(resultSet.getString("name"), resultSet.getString("id"));
             }
-            
+
             DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
             vehicle_type.setModel(comboBoxModel);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while loading vehicle Types : " + e.getMessage());
         }
-        
+
     }
-    
+
     private void loadVehicleBrand() {
-        
+
         try {
             ResultSet resultSet = new VehicleBrandController().show();
-            
+
             Vector vector = new Vector();
-            
+
             vector.add("Select");
             while (resultSet.next()) {
                 vector.add(resultSet.getString("name"));
                 vehicleBrandHashMap.put(resultSet.getString("name"), resultSet.getString("id"));
             }
-            
+
             DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
             vehicle_brand.setModel(comboBoxModel);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while loading vehicle Brands : " + e.getMessage());
         }
     }
-    
+
     private void loadPowertrainTypes() {
         try {
             ResultSet resultSet = new PowertrainTypesController().show();
             Vector vector = new Vector();
-            
+
             vector.add("Select");
-            
+
             while (resultSet.next()) {
                 vector.add(resultSet.getString("name"));
                 powertrainTypesHashMap.put(resultSet.getString("name"), resultSet.getString("id"));
             }
-            
+
             DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
             powertrainTypesComboBox.setModel(comboBoxModel);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while loading powerTrainTypes : " + e.getMessage());
         }
     }
-    
+
     private void loadDriveTypes() {
         try {
             ResultSet resultSet = new DriveTypesController().show();
             Vector vector = new Vector();
-            
+
             vector.add("Select");
-            
+
             while (resultSet.next()) {
                 vector.add(resultSet.getString("name"));
                 driveTypesHashMap.put(resultSet.getString("name"), resultSet.getString("id"));
             }
-            
+
             DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
             driveTypesComboBox.setModel(comboBoxModel);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while loading powerTrainTypes : " + e.getMessage());
         }
     }
-    
+
     public void setCustomerDetails(String customerID, String firstName, String lastName) {
         jLabel2.setText(firstName + " " + lastName);
         jLabel7.setText(customerID);
@@ -373,18 +373,18 @@ public class VehicleRegistration extends java.awt.Dialog {
     }//GEN-LAST:event_closeDialog
 
     private void vehicle_register_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehicle_register_btnActionPerformed
-        
+
         String vehicleNumberValue = vehicle_number.getText();
         String vehicleType = String.valueOf(vehicle_type.getSelectedItem());
         String vehicleBrand = String.valueOf(vehicle_brand.getSelectedItem());
         String vehicleModelValue = vehicleModelTextField.getText();
-        
+
         String engineNumber = String.valueOf(engineNumberField.getText());
         String chassisNumber = String.valueOf(chassisNumberField.getText());
         String engineName = String.valueOf(engineNameField.getText());
         String powertrainType = String.valueOf(powertrainTypesComboBox.getSelectedItem());
         String driveType = String.valueOf(driveTypesComboBox.getSelectedItem());
-        
+
         if (vehicleNumberValue.isEmpty()) {
             showWarningMessage("Please enter your Vehicle Number");
         } else if (!RegexValidator.isValidVehicleNumber(vehicleNumberValue)) {
@@ -408,14 +408,14 @@ public class VehicleRegistration extends java.awt.Dialog {
         } else if (driveType.equals("Select")) {
             showWarningMessage("Please select a drive type");
         } else {
-            
+
             VehicleModel vehicleModel = new VehicleModel();
             vehicleModel.setVehicleNumber(vehicleNumberValue);
             vehicleModel.setCustomerId(String.valueOf(jLabel7.getText()));
             vehicleModel.setVehicleBrandId(Integer.parseInt(vehicleBrandHashMap.get(vehicleBrand)));
             vehicleModel.setModel(vehicleModelValue);
             vehicleModel.setVehicleTypeId(Integer.parseInt(vehicleTypesHashMap.get(vehicleType)));
-            
+
             vehicleModel.setEngineNumber(engineNumber);
             vehicleModel.setChassisNumber(chassisNumber);
             vehicleModel.setEngineName(engineName);
@@ -433,14 +433,14 @@ public class VehicleRegistration extends java.awt.Dialog {
                     e.printStackTrace();
                     logger.severe("Error while registering a vehicle : " + e.getMessage());
                 }
-                
+
                 vehicleJPanel.loadVehicles();
             } else {
                 showWarningMessage("This vehicle number is already registered !");
             }
         }
     }//GEN-LAST:event_vehicle_register_btnActionPerformed
-    
+
     private boolean isThisVehicleNumberAlreadyExist(String vehicleNumber) {
         try {
             ResultSet resultSet = new VehicleController().show(vehicleNumber);
@@ -452,29 +452,34 @@ public class VehicleRegistration extends java.awt.Dialog {
         }
         return false;
     }
-    
+
     private void showWarningMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Warning", JOptionPane.WARNING_MESSAGE);
     }
 
     private void vehicle_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehicle_reset_btnActionPerformed
-        
+
         reset();
     }//GEN-LAST:event_vehicle_reset_btnActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         new CustomerSelector(null, true, vehicleRegistration, "vehicleRegistration").setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
-    
+
     private void reset() {
-        
+
         vehicle_number.setText("");
         vehicle_type.setSelectedIndex(0);
         vehicle_brand.setSelectedIndex(0);
         vehicleModelTextField.setText("");
         jLabel2.setText("Customer Name");
         jLabel7.setText("Customer ID");
-        
+        engineNumberField.setText("");
+        chassisNumberField.setText("");
+        engineNameField.setText("");
+        powertrainTypesComboBox.setSelectedIndex(0);
+        driveTypesComboBox.setSelectedIndex(0);
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
