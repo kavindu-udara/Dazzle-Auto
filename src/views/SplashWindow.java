@@ -17,7 +17,7 @@ public class SplashWindow extends javax.swing.JFrame {
     public SplashWindow() {
         splashWindow = this;
         initComponents();
-        jLabel1.setIcon(new javax.swing.ImageIcon("src/resources/loading-animation2.gif"));
+        jLabel1.setIcon(new javax.swing.ImageIcon("src/resources/NewsplashAnimatin.gif"));
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
         lodingAnimation();
     }
@@ -27,7 +27,7 @@ public class SplashWindow extends javax.swing.JFrame {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i <= 100; i++) {
+                for (int i = 0; i <= 130; i++) {
                     ProgressBar.setValue(i);
                     try {
                         Thread.sleep(10);
