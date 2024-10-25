@@ -30,6 +30,7 @@ import views.vehicleServiceAppointment.VehicleServiceAppointment;
 import includes.LoggerConfig;
 import includes.MySqlConnection;
 import java.util.logging.Logger;
+import models.VehicleModel;
 
 /**
  *
@@ -183,6 +184,10 @@ public class VehiclesJPanel extends javax.swing.JPanel {
             e.printStackTrace();
             logger.severe("Error while loadVehicles : " + e.getMessage());
         }
+    }
+    
+    public void reloadTable(){
+        loadVehicles();
     }
 
     private void loadVehicleTypes() {
@@ -416,6 +421,12 @@ public class VehiclesJPanel extends javax.swing.JPanel {
             }
 
             VehicleSelecterFrame.dispose();
+        }else if(evt.getClickCount() == 2){
+            VehicleModel modelVehicle = new VehicleModel();
+            modelVehicle.setVehicleNumber(vehicleNumber);
+            
+            new VehicleUpdate(null, true, modelVehicle, vehiclesJPanel).setVisible(true);
+            
         }
     }//GEN-LAST:event_vehicleViewTableMouseClicked
 

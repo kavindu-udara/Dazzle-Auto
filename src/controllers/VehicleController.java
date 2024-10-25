@@ -45,6 +45,11 @@ public class VehicleController {
                 + "`vehicle_brand_id`='" + vehicleModel.getVehicleBrandId() + "', "
                 + "`model`='" + vehicleModel.getModel() + "', "
                 + "`vehicle_type_id`='" + vehicleModel.getVehicleTypeId() + "', "
+                + "`chassis_no`='" + vehicleModel.getChassisNumber() + "', "
+                + "`engine_no`='" + vehicleModel.getEngineNumber() + "', "
+                + "`engine_name`='" + vehicleModel.getEngineName() + "', "
+                + "`powertrain_types_id`='" + vehicleModel.getPowertrainTypeId() + "', "
+                + "`drive_types_id`='" + vehicleModel.getDriveTypesId() + "' "
                 + "WHERE `vehicle_number`='" + vehicleModel.getVehicleNumber() + "' ");
     }
 
