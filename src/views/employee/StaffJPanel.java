@@ -112,8 +112,6 @@ public class StaffJPanel extends javax.swing.JPanel {
                 query += " ORDER BY `registered_date` DESC";
             }
 
-            System.out.println("Executing query: " + query);
-
             ResultSet employeeResultSet = MySqlConnection.executeSearch(query);
 
             DefaultTableModel model = (DefaultTableModel) employeeViewTable.getModel();
