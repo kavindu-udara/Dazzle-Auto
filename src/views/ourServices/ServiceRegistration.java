@@ -276,6 +276,7 @@ public class ServiceRegistration extends java.awt.Dialog {
 
         Service_name.setText("");
         vehicle_type.setSelectedIndex(0);
+        Price.setText("");
 
     }
 
