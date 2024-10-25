@@ -19,4 +19,8 @@ public class DriveTypesController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
 
+    public ResultSet show(int id) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
+    }
+
 }
