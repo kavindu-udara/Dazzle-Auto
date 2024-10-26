@@ -13,6 +13,7 @@ import includes.TimestampsGenerator;
 import java.sql.ResultSet;
 import controllers.CustomerController;
 import includes.LoggerConfig;
+import includes.OnlyLettersDocumentFilter;
 import java.awt.Frame;
 import java.util.logging.Logger;
 import models.CustomerModel;
@@ -43,6 +44,8 @@ public class CustomerRegistration extends java.awt.Dialog {
 
     private void setDocumentFilters() {
         ((AbstractDocument) customer_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) customer_firstname.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
+        ((AbstractDocument) customer_lastname.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
     }
 
    /**

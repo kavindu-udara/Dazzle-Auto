@@ -6,6 +6,7 @@ package views.shop.items;
 
 import java.awt.BorderLayout;
 import javax.swing.SwingUtilities;
+import views.supplier.SupplierViewJPanel;
 
 /**
  *
@@ -21,6 +22,10 @@ public class shop_ItemsJPanel extends javax.swing.JPanel {
         
         Shop_ItemsView Shop_itemsView = new Shop_ItemsView();
         jtemsTabPanel.add(Shop_itemsView, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
+        
+        SupplierViewJPanel supplierview = new SupplierViewJPanel();
+        jSuppliersTabPanel.add(supplierview, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
     }
 
@@ -43,6 +48,7 @@ public class shop_ItemsJPanel extends javax.swing.JPanel {
         jPanel2.setPreferredSize(new java.awt.Dimension(1300, 570));
 
         jTabbedPane1.setBackground(new java.awt.Color(250, 238, 220));
+        jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTabbedPane1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jTabbedPane1.setOpaque(true);
 

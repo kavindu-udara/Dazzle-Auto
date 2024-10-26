@@ -41,10 +41,10 @@
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="employee_register_btn" pref="187" max="32767" attributes="0"/>
+                                  <Component id="employee_register_btn" pref="192" max="32767" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="employee_reset_btn" min="-2" pref="150" max="-2" attributes="0"/>
                               </Group>
@@ -78,7 +78,7 @@
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="52" max="32767" attributes="0"/>
+                  <EmptySpace pref="62" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -124,12 +124,12 @@
                           <Component id="employee_type" min="-2" pref="35" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="employee_register_btn" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
-                      <Component id="employee_reset_btn" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+                      <Component id="employee_register_btn" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
+                      <Component id="employee_reset_btn" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="25" max="32767" attributes="0"/>
+                  <EmptySpace pref="26" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
