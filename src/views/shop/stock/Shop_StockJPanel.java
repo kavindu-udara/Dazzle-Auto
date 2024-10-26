@@ -4,8 +4,8 @@
  */
 package views.shop.stock;
 
+import controllers.StockController;
 import includes.LoggerConfig;
-import includes.MySqlConnection;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -21,13 +21,17 @@ import javax.swing.table.JTableHeader;
 import java.util.Vector;
 import java.sql.ResultSet;
 
-
 /**
  *
  * @author Dinuka
  */
 public class Shop_StockJPanel extends javax.swing.JPanel {
-            private static Logger logger = LoggerConfig.getLogger();
+
+    private static Logger logger = LoggerConfig.getLogger();
+
+    private String tableName = "stock";
+    private String executeQuery;
+    private boolean isFinded = false;
 
     /**
      * Creates new form shop_ItemsJPanel
@@ -35,7 +39,11 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
     public Shop_StockJPanel() {
         initComponents();
         StockTableRender();
+//        this.executeQuery = "SELECT * FROM stock "
+//                    + "INNER JOIN product ON stock.product_id =product.id "
+//                    + "INNER JOIN product_brand ON product.brand_id =product_brand.id ";
         sortby();
+        searchByPrice();
     }
 
     public void StockTableRender() {
@@ -62,51 +70,102 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             StockViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-        //sort by option
-    public void sortby(){
-        try{
+    //sort by option
 
-            String query = "SELECT * FROM stock"
-                    + "INNER JOIN product ON stock.product_id =product.name"
-                    + "INNER JOIN product ON stock.product_id =product.brand_id";
-                    
-            
+    public void sortby() {
+        try {
+
+            String query = "SELECT * FROM `"+tableName+"` "
+                    + "INNER JOIN product ON `"+tableName+"`.product_id =product.id "
+                    + "INNER JOIN product_brand ON product.brand_id =product_brand.id ";
+
             String sort = String.valueOf(jComboBox1.getSelectedItem());
 
-            if(sort.equals("Ascending")){
-            query += "ORDER BY`stock`.`id` ASC";
-            
-            }else if(sort.equals("Decending")){
-            query += "ORDER BY`stock`.`id` DESC";
+            if (sort.equals("Ascending")) {
+                query += " ORDER BY`"+tableName+"`.`id` ASC";
+
+            } else if (sort.equals("Decending")) {
+                query += " ORDER BY `"+tableName+"`.`id` DESC";
             }
-            ResultSet resultSet = MySqlConnection.executeSearch(query);
-            
+
+            executeQuery = query;
+            isFinded = false;
+
+            loadTableData(query);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+    }
+
+    private void searchByPrice() {
+        try {
+
+            String query = "SELECT * FROM `"+tableName+"` INNER JOIN `product`"
+                    + "ON `"+tableName+"`.`product_id` = `product`.`id` "
+                    + "INNER JOIN `product_brand` ON `product_brand`.`id` = `product`.`brand_id` WHERE ";
+
+            double min_price = 0;
+            double max_price = 0;
+
+            if (!PriceFrom.getText().isEmpty()) {
+                min_price = Double.parseDouble(PriceFrom.getText());
+            }
+
+            if (!PriceTo.getText().isEmpty()) {
+                max_price = Double.parseDouble(PriceTo.getText());
+            }
+
+            if (min_price > 0 && max_price == 0) {
+                query += "`"+tableName+"`.`price` > '" + min_price + "' ";
+            } else if (min_price == 0 && max_price > 0) {
+                query += "`"+tableName+"`.`price` < '" + max_price + "' ";
+            } else if (min_price > 0 && max_price > 0) {
+                query += "`"+tableName+"`.`price` > '" + min_price + "' AND `"+tableName+"`.`price` <  '" + max_price + "'";
+
+                executeQuery = query;
+
+                loadTableData(query);
+
+                isFinded = true;
+
+            } else if (min_price == 0.00 && max_price == 0.00) {
+                sortby();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadTableData(String query) {
+        try {
+            ResultSet resultSet = new StockController().customQuery(query);
+
             DefaultTableModel model = (DefaultTableModel) StockViewTable.getModel();
             model.setRowCount(0);
 
-           
-            while(resultSet.next()){
-            Vector<String> vector = new Vector<>();
-            vector.add(resultSet.getString("id"));
-            vector.add(resultSet.getString("vehicle_type_id"));
-            vector.add(resultSet.getString("name"));
-            vector.add(resultSet.getString("product_id"));
-            
-            model.addRow(vector);
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("qty"));
+                vector.add(resultSet.getString("price"));
+                vector.add(resultSet.getString("product_id"));
+
+                model.addRow(vector);
 
             }
             StockViewTable.setModel(model);
-
-        }catch(Exception e){
-        e.printStackTrace();
-        
+        } catch (Exception e) {
+            logger.severe("Error while loading table : " + e.getMessage());
         }
-        
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -125,8 +184,8 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         PriceFrom = new javax.swing.JFormattedTextField();
-        DateFindBtn = new javax.swing.JButton();
         PriceFindBtn2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         StockViewTable = new javax.swing.JTable();
@@ -185,17 +244,24 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         });
         jPanel2.add(PriceFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 92, 34));
 
-        DateFindBtn.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
-        DateFindBtn.setForeground(new java.awt.Color(5, 15, 76));
-        DateFindBtn.setText("FIND");
-        DateFindBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(5, 15, 76)));
-        jPanel2.add(DateFindBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 20, 99, 36));
-
         PriceFindBtn2.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         PriceFindBtn2.setForeground(new java.awt.Color(5, 15, 76));
         PriceFindBtn2.setText("FIND");
         PriceFindBtn2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(5, 15, 76)));
+        PriceFindBtn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PriceFindBtn2ActionPerformed(evt);
+            }
+        });
         jPanel2.add(PriceFindBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 20, 99, 36));
+
+        jButton1.setText("Refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 30, -1, -1));
 
         StockViewTable.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         StockViewTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -203,11 +269,11 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Stock ID", "Product ID", "Name", "Brand", "Price", "Quantity", "MFD", "EXP"
+                "Stock ID", "Product ID", "Price", "Quantity"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true, true
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -265,24 +331,49 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
 
     private void PriceToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PriceToActionPerformed
         // TODO add your handling code here:
+        searchByPrice();
     }//GEN-LAST:event_PriceToActionPerformed
 
     private void PriceFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PriceFromActionPerformed
         // TODO add your handling code here:
+        searchByPrice();
     }//GEN-LAST:event_PriceFromActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-        sortby();
+        if (isFinded) {
+            String sort = String.valueOf(jComboBox1.getSelectedItem());
+            String orderBy = "";
+            if (sort.equals("Ascending")) {
+                orderBy = " ORDER BY`stock`.`id` ASC";
+            } else if (sort.equals("Decending")) {
+                orderBy = " ORDER BY`stock`.`id` DESC";
+            }
+            loadTableData(executeQuery + orderBy);
+        } else {
+            sortby();
+        }
+
+
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void PriceFindBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PriceFindBtn2ActionPerformed
+        // TODO add your handling code here:
+        searchByPrice();
+    }//GEN-LAST:event_PriceFindBtn2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        sortby();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton DateFindBtn;
     private javax.swing.JButton PriceFindBtn2;
     private javax.swing.JFormattedTextField PriceFrom;
     private javax.swing.JFormattedTextField PriceTo;
     private javax.swing.JTable StockViewTable;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel4;

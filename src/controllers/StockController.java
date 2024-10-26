@@ -45,6 +45,10 @@ public class StockController {
                 + "`qty` LIKE '%" + searchText + "%' OR "
                 + "`product_id` LIKE '%" + searchText + "%'");
     }
+    
+    public ResultSet customQuery(String query) throws Exception {
+        return MySqlConnection.executeSearch(query);
+    }
 
     public ResultSet delete(int id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
