@@ -9,6 +9,7 @@ import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
 import includes.BDUtility;
 import includes.LoggerConfig;
+import includes.OnlyLettersDocumentFilter;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import includes.OnlyNumbersDocumentFilter;
@@ -86,6 +87,8 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
     private void setDocumentFilters() {
         ((AbstractDocument) employee_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) employee_firstname.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
+        ((AbstractDocument) employee_lastname.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
     }
 
     private void loadAmployeeImage() {

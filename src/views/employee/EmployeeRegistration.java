@@ -18,6 +18,7 @@ import controllers.EmployeeImageController;
 import includes.BDUtility;
 import includes.IDGenarator;
 import includes.LoggerConfig;
+import includes.OnlyLettersDocumentFilter;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -77,6 +78,8 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
     private void setDocumentFilters() {
         ((AbstractDocument) employee_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) employee_firstname.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
+        ((AbstractDocument) employee_lastname.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
