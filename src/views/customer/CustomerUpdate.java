@@ -14,6 +14,7 @@ import java.awt.Frame;
 import models.CustomerModel;
 import controllers.CustomerController;
 import includes.LoggerConfig;
+import includes.OnlyLettersDocumentFilter;
 import includes.TimestampsGenerator;
 import java.util.logging.Logger;
 import javax.print.attribute.DateTimeSyntax;
@@ -46,6 +47,8 @@ public class CustomerUpdate extends java.awt.Dialog {
 
     private void setDocumentFilters() {
         ((AbstractDocument) customer_mobile.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) customer_firstname.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
+        ((AbstractDocument) customer_lastname.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
     }
 
     /**
