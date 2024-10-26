@@ -29,7 +29,6 @@ public class shop_ItemsJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         mainjPanel = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jtemsTabPanel = new javax.swing.JPanel();
@@ -40,17 +39,10 @@ public class shop_ItemsJPanel extends javax.swing.JPanel {
 
         mainjPanel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel4.setBackground(new java.awt.Color(250, 238, 220));
-        jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/items-30.png"))); // NOI18N
-        jLabel4.setText(" Items & Suppliers");
-        jLabel4.setOpaque(true);
-
         jPanel2.setMinimumSize(new java.awt.Dimension(1300, 570));
         jPanel2.setPreferredSize(new java.awt.Dimension(1300, 570));
 
-        jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jTabbedPane1.setBackground(new java.awt.Color(250, 238, 220));
         jTabbedPane1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jTabbedPane1.setOpaque(true);
 
@@ -67,26 +59,24 @@ public class shop_ItemsJPanel extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1300, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout mainjPanelLayout = new javax.swing.GroupLayout(mainjPanel);
         mainjPanel.setLayout(mainjPanelLayout);
         mainjPanelLayout.setHorizontalGroup(
             mainjPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         mainjPanelLayout.setVerticalGroup(
             mainjPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainjPanelLayout.createSequentialGroup()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -103,7 +93,6 @@ public class shop_ItemsJPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jSuppliersTabPanel;
     private javax.swing.JTabbedPane jTabbedPane1;
