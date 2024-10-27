@@ -236,6 +236,7 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
                 .addGap(12, 12, 12))
         );
 
+        SupplierViewTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         SupplierViewTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -252,6 +253,7 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        SupplierViewTable.setRowHeight(30);
         SupplierViewTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 SupplierViewTableMouseClicked(evt);

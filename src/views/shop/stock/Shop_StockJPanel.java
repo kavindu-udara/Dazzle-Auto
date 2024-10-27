@@ -4,12 +4,15 @@
  */
 package views.shop.stock;
 
+import controllers.ProductBrandController;
+import controllers.ProductController;
 import controllers.StockController;
 import includes.LoggerConfig;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -20,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.util.Vector;
 import java.sql.ResultSet;
+import views.shop.shopInvoice.ShopInvoice;
 
 /**
  *
@@ -29,21 +33,37 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
 
     private static Logger logger = LoggerConfig.getLogger();
 
+    Shop_StockJPanel thisPanel = this;
+    JStockSelector StockSelectorFrame = null;
+
+    ShopInvoice shopInvoice = null;
+    String From = "";
+    String BaseFrame = "";
+
     private String tableName = "stock";
     private String executeQuery;
     private boolean isFinded = false;
 
-    /**
-     * Creates new form shop_ItemsJPanel
-     */
     public Shop_StockJPanel() {
         initComponents();
         StockTableRender();
-//        this.executeQuery = "SELECT * FROM stock "
-//                    + "INNER JOIN product ON stock.product_id =product.id "
-//                    + "INNER JOIN product_brand ON product.brand_id =product_brand.id ";
         sortby();
         searchByPrice();
+    }
+
+    public Shop_StockJPanel(Frame parentFrame, JStockSelector stockSelector, String BaseFrame) {
+        initComponents();
+        StockTableRender();
+        sortby();
+        searchByPrice();
+
+        this.StockSelectorFrame = stockSelector;
+        this.From = "Selecter";
+        this.BaseFrame = BaseFrame;
+        
+        if (BaseFrame.equals("ShopInvoice")) {
+            this.shopInvoice = (ShopInvoice) parentFrame;
+        }
     }
 
     public void StockTableRender() {
@@ -70,7 +90,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             StockViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
@@ -79,17 +99,17 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
     public void sortby() {
         try {
 
-            String query = "SELECT * FROM `"+tableName+"` "
-                    + "INNER JOIN product ON `"+tableName+"`.product_id =product.id "
+            String query = "SELECT * FROM `" + tableName + "` "
+                    + "INNER JOIN product ON `" + tableName + "`.product_id =product.id "
                     + "INNER JOIN product_brand ON product.brand_id =product_brand.id ";
 
             String sort = String.valueOf(jComboBox1.getSelectedItem());
 
             if (sort.equals("Ascending")) {
-                query += " ORDER BY`"+tableName+"`.`id` ASC";
+                query += " ORDER BY`" + tableName + "`.`id` ASC";
 
             } else if (sort.equals("Decending")) {
-                query += " ORDER BY `"+tableName+"`.`id` DESC";
+                query += " ORDER BY `" + tableName + "`.`id` DESC";
             }
 
             executeQuery = query;
@@ -107,8 +127,8 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
     private void searchByPrice() {
         try {
 
-            String query = "SELECT * FROM `"+tableName+"` INNER JOIN `product`"
-                    + "ON `"+tableName+"`.`product_id` = `product`.`id` "
+            String query = "SELECT * FROM `" + tableName + "` INNER JOIN `product`"
+                    + "ON `" + tableName + "`.`product_id` = `product`.`id` "
                     + "INNER JOIN `product_brand` ON `product_brand`.`id` = `product`.`brand_id` WHERE ";
 
             double min_price = 0;
@@ -123,11 +143,11 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
             }
 
             if (min_price > 0 && max_price == 0) {
-                query += "`"+tableName+"`.`price` > '" + min_price + "' ";
+                query += "`" + tableName + "`.`price` > '" + min_price + "' ";
             } else if (min_price == 0 && max_price > 0) {
-                query += "`"+tableName+"`.`price` < '" + max_price + "' ";
+                query += "`" + tableName + "`.`price` < '" + max_price + "' ";
             } else if (min_price > 0 && max_price > 0) {
-                query += "`"+tableName+"`.`price` > '" + min_price + "' AND `"+tableName+"`.`price` <  '" + max_price + "'";
+                query += "`" + tableName + "`.`price` > '" + min_price + "' AND `" + tableName + "`.`price` <  '" + max_price + "'";
 
                 executeQuery = query;
 
@@ -151,12 +171,21 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
             model.setRowCount(0);
 
             while (resultSet.next()) {
+
                 Vector<String> vector = new Vector<>();
                 vector.add(resultSet.getString("id"));
                 vector.add(resultSet.getString("product_id"));
-                vector.add(resultSet.getString("price"));
+                ResultSet product_rs = new ProductController().show(resultSet.getString("product_id"));
+                if (product_rs.next()) {
+                    vector.add(product_rs.getString("name"));
+                }
+                ResultSet brand_rs = new ProductBrandController().show(product_rs.getInt("brand_id"));
+                if (brand_rs.next()) {
+                    vector.add(brand_rs.getString("name"));
+                }
                 vector.add(resultSet.getString("qty"));
-                 model.addRow(vector);
+                vector.add(resultSet.getString("price"));
+                model.addRow(vector);
 
             }
             StockViewTable.setModel(model);
@@ -198,7 +227,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/stock-30.png"))); // NOI18N
-        jLabel4.setText("Stock");
+        jLabel4.setText("  Stock");
         jLabel4.setOpaque(true);
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -266,21 +295,28 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         });
         jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 20, 100, 40));
 
-        StockViewTable.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        StockViewTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         StockViewTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Stock ID", "Product ID", "Price", "Quantity"
+                "Stock ID", "Product ID", "Product Name", "Brand", "Quantity", "Price"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        StockViewTable.setRowHeight(30);
+        StockViewTable.getTableHeader().setReorderingAllowed(false);
+        StockViewTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                StockViewTableMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(StockViewTable);
@@ -369,6 +405,23 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         sortby();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void StockViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StockViewTableMouseClicked
+        int row = StockViewTable.getSelectedRow();
+        String stockID = String.valueOf(StockViewTable.getValueAt(row, 0));
+        String productName = String.valueOf(StockViewTable.getValueAt(row, 2));
+        String brand = String.valueOf(StockViewTable.getValueAt(row, 3));
+        String qty = String.valueOf(StockViewTable.getValueAt(row, 4));
+        String sellingPrice = String.valueOf(StockViewTable.getValueAt(row, 5));
+
+        if (From.equals("Selecter")) {
+            if (BaseFrame.equals("ShopInvoice")) {
+                shopInvoice.setStockDetails(stockID, brand, productName, qty, sellingPrice);
+            }
+
+            StockSelectorFrame.dispose();
+        }
+    }//GEN-LAST:event_StockViewTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -131,6 +131,7 @@ public class SelectItems extends javax.swing.JDialog {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
+        Items_View_Table.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         Items_View_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -147,6 +148,7 @@ public class SelectItems extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        Items_View_Table.setRowHeight(30);
         Items_View_Table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Items_View_TableMouseClicked(evt);
@@ -401,7 +403,7 @@ public class SelectItems extends javax.swing.JDialog {
         // TODO add your handling code here:
         int row = Items_View_Table.getSelectedRow();
 
-        if (evt.getClickCount() == 2 && row != -1) {
+        if (row != -1) {
 
             String ItemId = String.valueOf(Items_View_Table.getValueAt(row, 0));
             String ItemName = String.valueOf(Items_View_Table.getValueAt(row, 1));

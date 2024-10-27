@@ -103,6 +103,7 @@ public class SelectSuppliers extends javax.swing.JDialog {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
+        Supplier_View_Table.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         Supplier_View_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -119,6 +120,7 @@ public class SelectSuppliers extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        Supplier_View_Table.setRowHeight(30);
         Supplier_View_Table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Supplier_View_TableMouseClicked(evt);
@@ -266,7 +268,7 @@ public class SelectSuppliers extends javax.swing.JDialog {
         // TODO add your handling code here:
         int row = Supplier_View_Table.getSelectedRow();
 
-        if (evt.getClickCount() == 2 && row != -1) {
+        if (row != -1) {
 
             String id = String.valueOf(Supplier_View_Table.getValueAt(row, 0));
             String fName = String.valueOf(Supplier_View_Table.getValueAt(row, 1));
@@ -282,51 +284,8 @@ public class SelectSuppliers extends javax.swing.JDialog {
 
             this.dispose();
         }
-
-
     }//GEN-LAST:event_Supplier_View_TableMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(SelectItems.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(SelectItems.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(SelectItems.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(SelectItems.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the dialog */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                SelectItems dialog = new SelectItems(new javax.swing.JFrame(), true);
-//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    @Override
-//                    public void windowClosing(java.awt.event.WindowEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//                dialog.setVisible(true);
-//            }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Supplier_View_Table;
