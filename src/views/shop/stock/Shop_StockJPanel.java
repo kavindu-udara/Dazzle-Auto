@@ -153,11 +153,10 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
             while (resultSet.next()) {
                 Vector<String> vector = new Vector<>();
                 vector.add(resultSet.getString("id"));
-                vector.add(resultSet.getString("qty"));
-                vector.add(resultSet.getString("price"));
                 vector.add(resultSet.getString("product_id"));
-
-                model.addRow(vector);
+                vector.add(resultSet.getString("price"));
+                vector.add(resultSet.getString("qty"));
+                 model.addRow(vector);
 
             }
             StockViewTable.setModel(model);
@@ -228,10 +227,10 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
                 jComboBox1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 135, 39));
+        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 135, 39));
 
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jLabel10.setText("Sort By");
+        jLabel10.setText("Sort By ID");
         jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, 32));
 
         PriceFrom.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
@@ -255,13 +254,17 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         });
         jPanel2.add(PriceFindBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 20, 99, 36));
 
+        jButton1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(222, 123, 14));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/refresh-yellow.png"))); // NOI18N
         jButton1.setText("Refresh");
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(222, 123, 14)));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 30, -1, -1));
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1180, 20, 100, 40));
 
         StockViewTable.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         StockViewTable.setModel(new javax.swing.table.DefaultTableModel(
