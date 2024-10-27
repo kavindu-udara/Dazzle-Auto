@@ -381,7 +381,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         ClearEverythigbtn.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         ClearEverythigbtn.setForeground(new java.awt.Color(255, 0, 0));
-        ClearEverythigbtn.setText("CLEAR ALL");
+        ClearEverythigbtn.setText("RESET ALL");
         ClearEverythigbtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
         ClearEverythigbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
