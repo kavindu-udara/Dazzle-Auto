@@ -319,6 +319,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
                 .addGap(9, 9, 9))
         );
 
+        Items_View_Table.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         Items_View_Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -335,6 +336,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        Items_View_Table.setRowHeight(30);
         Items_View_Table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 Items_View_TableMouseClicked(evt);

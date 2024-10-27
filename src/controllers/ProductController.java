@@ -23,7 +23,7 @@ public class ProductController {
     }
     
 
-    public ResultSet show(int id) throws Exception {
+    public ResultSet show(String id) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 

@@ -105,6 +105,7 @@ public class Shop_PaymentJPanel extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel5.setText("Paid Invoices");
 
+        jPaidInvoiceTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jPaidInvoiceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
