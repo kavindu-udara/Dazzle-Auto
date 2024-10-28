@@ -51,6 +51,7 @@ public class StaffJPanel extends javax.swing.JPanel {
     public StaffJPanel() {
         initComponents();
         loadEmployees();
+        employeeViewTable.clearSelection();
 
         employeeFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/NIC");
 
@@ -333,6 +334,7 @@ public class StaffJPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        employeeViewTable.setFocusable(false);
         employeeViewTable.setRowHeight(30);
         employeeViewTable.getTableHeader().setReorderingAllowed(false);
         employeeViewTable.addMouseListener(new java.awt.event.MouseAdapter() {

@@ -30,6 +30,12 @@ public class StockController {
                 + "'" + stockModel.getQty() + "', "
                 + "'" + stockModel.getProductId() + "') ");
     }
+    
+    public ResultSet update(double qty, int stockid) throws Exception {
+        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
+                + "`qty`=`qty`-'" + qty + "' "
+                + "WHERE `id`='" + stockid + "' ");
+    }
 
     public ResultSet update(StockModel stockModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "

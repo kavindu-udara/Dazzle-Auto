@@ -6,6 +6,10 @@ package views.shop.shopInvoice;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.IntelliJTheme;
+import controllers.PaymentMethodController;
+import controllers.ShopInoviceController;
+import controllers.ShopInvoiceItemsController;
+import controllers.StockController;
 import includes.IDGenarator;
 import includes.LoggerConfig;
 import includes.OnlyDoubleDocumentFilter;
@@ -14,10 +18,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.InputStream;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -28,6 +37,12 @@ import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
 import models.LoginModel;
 import models.ShopInvoiceItemModel;
+import models.ShopInvoiceModel;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
+import views.shop.payments.Shop_PaymentJPanel;
 import views.shop.stock.JStockSelector;
 
 /**
@@ -39,12 +54,18 @@ public class ShopInvoice extends javax.swing.JFrame {
     private static final Logger logger = LoggerConfig.getLogger();
 
     HashMap<String, ShopInvoiceItemModel> invoiceItemMap = new HashMap<>();
+    HashMap<String, String> paymentMethodmMap = new HashMap<>();
+    
+    Shop_PaymentJPanel ShopPaymentJPanel = null;
 
-    public ShopInvoice() {
+    public ShopInvoice(Shop_PaymentJPanel shop_PaymentJPanel) {
         initComponents();
 
+        this.ShopPaymentJPanel = shop_PaymentJPanel;
+        
         setDocumentFilters();
         invoiceTableRender();
+        loadPaymentMethods();
         jInvoiceIDTextField.setText(IDGenarator.shopInvoiceID());
         jEmployeeNameLabel.setText(LoginModel.getFirstName() + " " + LoginModel.getLastName());
 
@@ -64,6 +85,26 @@ public class ShopInvoice extends javax.swing.JFrame {
         ((AbstractDocument) QtyField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
         ((AbstractDocument) discountField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
         ((AbstractDocument) paymentField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
+    }
+
+    private void loadPaymentMethods() {
+        try {
+            ResultSet reseltset = new PaymentMethodController().show();
+
+            Vector<String> vector = new Vector<>();
+
+            while (reseltset.next()) {
+                vector.add(reseltset.getString("method"));
+                paymentMethodmMap.put(reseltset.getString("method"), reseltset.getString("id"));
+            }
+
+            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel<>(vector);
+            paymentMethodComboBox.setModel(comboBoxModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading payment methods : " + e.getMessage());
+        }
     }
 
     public void invoiceTableRender() {
@@ -104,7 +145,7 @@ public class ShopInvoice extends javax.swing.JFrame {
         for (ShopInvoiceItemModel invoiceItem : invoiceItemMap.values()) {
 
             Vector<String> vector = new Vector<>();
-            vector.add(String.valueOf(invoiceItem.getId()));
+            vector.add(String.valueOf(invoiceItem.getStockID()));
             vector.add(invoiceItem.getItem());
             vector.add(invoiceItem.getDescription());
             vector.add(String.valueOf(invoiceItem.getPrice()));
@@ -729,14 +770,66 @@ public class ShopInvoice extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error In Fields", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
+                String invoiceID = jInvoiceIDTextField.getText();
+                String cashierName = jEmployeeNameLabel.getText();
+                String cashierID = LoginModel.getEmployeeId();
+                String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
+                String dateTimeForDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                String total = totalField.getText();
+                String paymentMethodID = paymentMethodmMap.get(String.valueOf(paymentMethodComboBox.getSelectedItem()));
+                String paymentMethod = String.valueOf(paymentMethodComboBox.getSelectedItem());
+                String paidAmount = paymentField.getText();
+                String balance = balanceField.getText();
 
                 //insert to invoice
-                
-                
+                ShopInvoiceModel shopInvoiceModel = new ShopInvoiceModel();
+                shopInvoiceModel.setId(invoiceID);
+                shopInvoiceModel.setDate(dateTimeForDB);
+                shopInvoiceModel.setTotal(Double.parseDouble(total));
+                shopInvoiceModel.setPaidAmount(Double.parseDouble(paidAmount));
+                shopInvoiceModel.setBalance(Double.parseDouble(balance));
+                shopInvoiceModel.setPaymentMethodId(Integer.valueOf(paymentMethodmMap.get(paymentMethod)));
+                shopInvoiceModel.setEmployeeId(cashierID);
+
+                new ShopInoviceController().store(shopInvoiceModel);
+
+                logger.info("New Invoice Added In Shop : " + invoiceID + " By : " + cashierID + " | " + cashierName);
+
+                for (ShopInvoiceItemModel invoiceItem : invoiceItemMap.values()) {
+                    //insert to invoiceItem
+                    ShopInvoiceItemModel shopInvoiceItemModel = new ShopInvoiceItemModel();
+                    shopInvoiceItemModel.setStockID(invoiceItem.getStockID());
+                    shopInvoiceItemModel.setQty(invoiceItem.getQty());
+                    shopInvoiceItemModel.setDescription(invoiceItem.getDescription());
+                    shopInvoiceItemModel.setShopInvoiceId(invoiceID);
+
+                    new ShopInvoiceItemsController().store(shopInvoiceItemModel);
+
+                    //stockUpdate
+                    ResultSet update = new StockController().update(invoiceItem.getQty(), invoiceItem.getStockID());
+                }
+
                 //View or print invoice
-                
-                
-                reset();
+                InputStream s = this.getClass().getResourceAsStream("/resources/reports/shop_invoice.jasper");
+
+                HashMap<String, Object> params = new HashMap<>();
+                params.put("dateParameter", dateTime);
+                params.put("invoiceNoPara", invoiceID);
+                params.put("cashierPara", cashierName);
+
+                params.put("totalPara", total);
+                params.put("paymentPara", paidAmount);
+                params.put("paymentMethodPara", paymentMethod);
+                params.put("BalancePara", balance);
+
+                JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
+
+                JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+                JasperViewer.viewReport(report, false);
+
+                reset();               
+                ShopPaymentJPanel.loadInvoices();
+
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.severe("Error while jButton4ActionPerformed : " + e.getMessage());
@@ -774,7 +867,7 @@ public class ShopInvoice extends javax.swing.JFrame {
             }
 
             ShopInvoiceItemModel shopInvoiceItemModel = new ShopInvoiceItemModel();
-            shopInvoiceItemModel.setId(Integer.parseInt(stockID));
+            shopInvoiceItemModel.setStockID(Integer.parseInt(stockID));
             shopInvoiceItemModel.setItem(item + "-" + brand);
             shopInvoiceItemModel.setDescription(note);
             shopInvoiceItemModel.setPrice(Double.parseDouble(price));
@@ -812,21 +905,6 @@ public class ShopInvoice extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        IntelliJTheme.setup(ShopInvoice.class.getResourceAsStream(
-                "/resources/themes/arc-theme.theme.json"));
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ShopInvoice().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField QtyField;

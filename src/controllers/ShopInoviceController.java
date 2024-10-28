@@ -20,13 +20,14 @@ public class ShopInoviceController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
 
-    public ResultSet show(int id) throws Exception {
+    public ResultSet show(String id) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
     public ResultSet store(ShopInvoiceModel shopInvoiceModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`date`, `total`, `paid_amount`, `balance`, `payment_method_id`, `employee_id`) VALUES "
-                + "('" + shopInvoiceModel.getDate() + "', "
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`, `date`, `total`, `paid_amount`, `balance`, `payment_method_id`, `employee_id`) VALUES "
+                + "('" + shopInvoiceModel.getId() + "', "
+                + "'" + shopInvoiceModel.getDate() + "', "
                 + "'" + shopInvoiceModel.getTotal() + "', "
                 + "'" + shopInvoiceModel.getPaidAmount() + "', "
                 + "'" + shopInvoiceModel.getBalance() + "', "
@@ -46,13 +47,10 @@ public class ShopInoviceController {
     }
 
     public ResultSet search(String searchText) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
-                + "`date` LIKE '%" + searchText + "%' OR "
-                + "`total` LIKE '%" + searchText + "%' OR "
-                + "`paid_amount` LIKE '%" + searchText + "%' OR "
-                + "`balance` LIKE '%" + searchText + "%' OR "
-                + "`payment_method_id` LIKE '%" + searchText + "%' OR "
-                + "`employee_id` LIKE '%" + searchText + "%'");
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` "
+                + "INNER JOIN payment_method ON shop_invoice.payment_method_id=payment_method.id "
+                + "INNER JOIN employee ON shop_invoice.employee_id=employee.id "
+                + "WHERE `shop_invoice`.`id`LIKE'%" + searchText + "%'");
     }
 
     public ResultSet delete(int id) throws Exception {

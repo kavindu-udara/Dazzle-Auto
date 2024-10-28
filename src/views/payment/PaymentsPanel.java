@@ -13,7 +13,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.sql.ResultSet;
 import java.util.Vector;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -98,7 +97,6 @@ public class PaymentsPanel extends javax.swing.JPanel {
             
         } catch (Exception e) {
             e.printStackTrace();
-//            ERROR_LOGGER.log(Level.INFO, "Exception In loadinvoices() On Dashboard", e);
             logger.severe("Error while loading invoices : " + e.getMessage());
         }
         

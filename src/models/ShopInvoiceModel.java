@@ -10,7 +10,7 @@ package models;
  */
 public class ShopInvoiceModel {
 
-    private int id;
+    private String id;
     private int paymentMethodId;
     private String date;
     private String employeeId;
@@ -21,14 +21,14 @@ public class ShopInvoiceModel {
     /**
      * @return the id
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
