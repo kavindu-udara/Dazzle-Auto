@@ -36,6 +36,16 @@ public class Dashboard extends javax.swing.JFrame {
 
     LoginModel loginModel;
 
+    StaffJPanel staffJPanel = null;
+    DashboardPanel dashboardPanel = null;
+    PaymentsPanel paymentPanel = null;
+    AppointmnetPanel appointmnetPanel = null;
+    CustomerJPanel customerJPanel = null;
+    ourServicesJPanel ourServices = null;
+    FinanceAndHrJPanel financeJPanel = null;
+    ReportsJPanel reportsJPanel = null;
+    VehiclesJPanel vehiclesJPanel = null;
+
     public Dashboard(LoginModel loginModel) {
         this.loginModel = loginModel;
         initComponents();
@@ -45,7 +55,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         jTabbedPane1.setSelectedIndex(0);
 
-        DashboardPanel dashboardPanel = new DashboardPanel();
+        dashboardPanel = new DashboardPanel();
         jDashboardPanel.add(dashboardPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
     }
@@ -397,74 +407,87 @@ public class Dashboard extends javax.swing.JFrame {
     private void jStaffButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jStaffButtonActionPerformed
         jTabbedPane1.setSelectedIndex(8);
 
-        StaffJPanel staffJPanel = new StaffJPanel();
-        jStaffPanel.add(staffJPanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (staffJPanel == null) {
+            staffJPanel = new StaffJPanel();
+            jStaffPanel.add(staffJPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
+
     }//GEN-LAST:event_jStaffButtonActionPerformed
 
     private void jDashboardButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDashboardButton1ActionPerformed
         jTabbedPane1.setSelectedIndex(0);
 
-        DashboardPanel dashboardPanel = new DashboardPanel();
-        jDashboardPanel.add(dashboardPanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (dashboardMainPanel == null) {
+            dashboardPanel = new DashboardPanel();
+            jDashboardPanel.add(dashboardPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }//GEN-LAST:event_jDashboardButton1ActionPerformed
 
     private void jPaymentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPaymentButtonActionPerformed
         jTabbedPane1.setSelectedIndex(1);
 
-        PaymentsPanel paymentPanel = new PaymentsPanel();
-        jPaymentsPanel.add(paymentPanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (paymentPanel == null) {
+            paymentPanel = new PaymentsPanel();
+            jPaymentsPanel.add(paymentPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
 
     }//GEN-LAST:event_jPaymentButtonActionPerformed
 
     private void jAppointmentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAppointmentsButtonActionPerformed
         jTabbedPane1.setSelectedIndex(2);
-
-        AppointmnetPanel appointmnetPanel = new AppointmnetPanel(this);
-        jAppointmentPanel.add(appointmnetPanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (appointmnetPanel == null) {
+            appointmnetPanel = new AppointmnetPanel(this);
+            jAppointmentPanel.add(appointmnetPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }//GEN-LAST:event_jAppointmentsButtonActionPerformed
 
     private void jCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCustomerButtonActionPerformed
         jTabbedPane1.setSelectedIndex(4);
-
-        CustomerJPanel customerJPanel = new CustomerJPanel();
-        jCustomerPanel.add(customerJPanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (customerJPanel == null) {
+            customerJPanel = new CustomerJPanel();
+            jCustomerPanel.add(customerJPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }//GEN-LAST:event_jCustomerButtonActionPerformed
 
     private void jOurServicesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOurServicesButtonActionPerformed
         jTabbedPane1.setSelectedIndex(5);
-
-        ourServicesJPanel ourServices = new ourServicesJPanel();
-        jOurServicesPanel.add(ourServices, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (ourServices == null) {
+            ourServices = new ourServicesJPanel();
+            jOurServicesPanel.add(ourServices, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }//GEN-LAST:event_jOurServicesButtonActionPerformed
 
     private void jFinanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFinanceButtonActionPerformed
         jTabbedPane1.setSelectedIndex(6);
-
-        FinanceAndHrJPanel financeJPanel = new FinanceAndHrJPanel();
-        jFinancePanel.add(financeJPanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (financeJPanel == null) {
+            financeJPanel = new FinanceAndHrJPanel();
+            jFinancePanel.add(financeJPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }//GEN-LAST:event_jFinanceButtonActionPerformed
 
     private void jReportsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jReportsButtonActionPerformed
         jTabbedPane1.setSelectedIndex(7);
-
-        ReportsJPanel reportsJPanel = new ReportsJPanel();
-        jReportPanel.add(reportsJPanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (reportsJPanel == null) {
+            reportsJPanel = new ReportsJPanel();
+            jReportPanel.add(reportsJPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }//GEN-LAST:event_jReportsButtonActionPerformed
 
     private void jVehiclesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehiclesButtonActionPerformed
         jTabbedPane1.setSelectedIndex(3);
-
-        VehiclesJPanel vehiclesJPanel = new VehiclesJPanel();
-        jVehiclesPanel.add(vehiclesJPanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (vehiclesJPanel == null) {
+            vehiclesJPanel = new VehiclesJPanel();
+            jVehiclesPanel.add(vehiclesJPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }//GEN-LAST:event_jVehiclesButtonActionPerformed
 
     private void jLoginAccessMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginAccessMenuItemActionPerformed
