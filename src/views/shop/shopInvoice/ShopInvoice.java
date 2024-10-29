@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
@@ -55,14 +56,14 @@ public class ShopInvoice extends javax.swing.JFrame {
 
     HashMap<String, ShopInvoiceItemModel> invoiceItemMap = new HashMap<>();
     HashMap<String, String> paymentMethodmMap = new HashMap<>();
-    
+
     Shop_PaymentJPanel ShopPaymentJPanel = null;
 
     public ShopInvoice(Shop_PaymentJPanel shop_PaymentJPanel) {
         initComponents();
 
         this.ShopPaymentJPanel = shop_PaymentJPanel;
-        
+
         setDocumentFilters();
         invoiceTableRender();
         loadPaymentMethods();
@@ -234,6 +235,9 @@ public class ShopInvoice extends javax.swing.JFrame {
 
         balanceField.setText(String.valueOf(balance));
 
+        if (jTable1.getRowCount() <= 0) {
+            jButton4.setEnabled(false);
+        }
     }
 
     private void reset() {
@@ -809,10 +813,14 @@ public class ShopInvoice extends javax.swing.JFrame {
                     ResultSet update = new StockController().update(invoiceItem.getQty(), invoiceItem.getStockID());
                 }
 
+                String imgPath = "";
                 //View or print invoice
                 InputStream s = this.getClass().getResourceAsStream("/resources/reports/shop_invoice.jasper");
+                String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+                imgPath = img.replace("\\", "/");
 
                 HashMap<String, Object> params = new HashMap<>();
+                params.put("imgpath", imgPath);
                 params.put("dateParameter", dateTime);
                 params.put("invoiceNoPara", invoiceID);
                 params.put("cashierPara", cashierName);
@@ -827,7 +835,7 @@ public class ShopInvoice extends javax.swing.JFrame {
                 JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
                 JasperViewer.viewReport(report, false);
 
-                reset();               
+                reset();
                 ShopPaymentJPanel.loadInvoices();
 
             } catch (Exception e) {
@@ -859,33 +867,40 @@ public class ShopInvoice extends javax.swing.JFrame {
         } else if (Double.parseDouble(qty) <= 0 || Double.parseDouble(qty) > stockQty) {
             JOptionPane.showMessageDialog(this, "Quantity must be greater than 0 and less than the available quantity. ", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
+
+            boolean addToTable = false;
             if (note.isBlank()) {
                 int showConfirm = JOptionPane.showConfirmDialog(this, "Additional Note is empty ! Do You Want To Continue ?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 if (showConfirm == JOptionPane.YES_OPTION) {
                     note = "-";
+                    addToTable = true;
                 }
-            }
-
-            ShopInvoiceItemModel shopInvoiceItemModel = new ShopInvoiceItemModel();
-            shopInvoiceItemModel.setStockID(Integer.parseInt(stockID));
-            shopInvoiceItemModel.setItem(item + "-" + brand);
-            shopInvoiceItemModel.setDescription(note);
-            shopInvoiceItemModel.setPrice(Double.parseDouble(price));
-            shopInvoiceItemModel.setQty(Double.parseDouble(qty));
-
-            if (invoiceItemMap.get(stockID) == null) {
-                invoiceItemMap.put(stockID, shopInvoiceItemModel);
             } else {
-
-                ShopInvoiceItemModel found = invoiceItemMap.get(stockID);
-
-                int option = JOptionPane.showConfirmDialog(this, "Do you want to update Qty of Product: " + item, "Message", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-                if (option == JOptionPane.YES_OPTION) {
-                    found.setQty(found.getQty() + Double.parseDouble(qty));
-                }
+                addToTable = true;
             }
 
-            loadInvoiceItem();
+            if (addToTable) {
+                ShopInvoiceItemModel shopInvoiceItemModel = new ShopInvoiceItemModel();
+                shopInvoiceItemModel.setStockID(Integer.parseInt(stockID));
+                shopInvoiceItemModel.setItem(item + "-" + brand);
+                shopInvoiceItemModel.setDescription(note);
+                shopInvoiceItemModel.setPrice(Double.parseDouble(price));
+                shopInvoiceItemModel.setQty(Double.parseDouble(qty));
+
+                if (invoiceItemMap.get(stockID) == null) {
+                    invoiceItemMap.put(stockID, shopInvoiceItemModel);
+                } else {
+
+                    ShopInvoiceItemModel found = invoiceItemMap.get(stockID);
+
+                    int option = JOptionPane.showConfirmDialog(this, "Do you want to update Qty of Product: " + item, "Message", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    if (option == JOptionPane.YES_OPTION) {
+                        found.setQty(found.getQty() + Double.parseDouble(qty));
+                    }
+                }
+
+                loadInvoiceItem();
+            }
         }
 
     }//GEN-LAST:event_jButton3ActionPerformed

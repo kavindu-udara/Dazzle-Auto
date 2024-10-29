@@ -16,8 +16,10 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import models.LoginModel;
+import views.LoginChooser;
 import views.shop.grn.shop_GRNJPanel;
 import views.shop.items.Shop_ItemsView;
 import views.shop.items.shop_ItemsJPanel;
@@ -156,6 +158,7 @@ public class ShopDashboard extends javax.swing.JFrame {
         empImageLabel = new javax.swing.JLabel();
         jLabel49 = new javax.swing.JLabel();
         jEmployeeRoleLabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jContentPanel = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jDashboardPanel = new javax.swing.JPanel();
@@ -414,19 +417,30 @@ public class ShopDashboard extends javax.swing.JFrame {
         empImageLabel.setMinimumSize(new java.awt.Dimension(56, 56));
         empImageLabel.setOpaque(true);
         empImageLabel.setPreferredSize(new java.awt.Dimension(56, 56));
-        jHeaderPanel.add(empImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 40, -1, 50));
+        jHeaderPanel.add(empImageLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1240, 40, -1, 60));
 
         jLabel49.setFont(new java.awt.Font("Courier New", 1, 24)); // NOI18N
         jLabel49.setForeground(new java.awt.Color(0, 0, 153));
         jLabel49.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel49.setText(" Date & Time");
         jLabel49.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-        jHeaderPanel.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -2, 1300, 30));
+        jHeaderPanel.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, -2, 1160, 30));
 
         jEmployeeRoleLabel.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jEmployeeRoleLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jEmployeeRoleLabel.setText("Role");
         jHeaderPanel.add(jEmployeeRoleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 70, 120, 20));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/ounded-30.png"))); // NOI18N
+        jButton1.setBorderPainted(false);
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.setFocusPainted(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jHeaderPanel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1250, 0, -1, 30));
 
         jPanel2.add(jHeaderPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 100));
 
@@ -628,24 +642,18 @@ public class ShopDashboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jGRNbtnMouseExited
 
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        IntelliJTheme.setup(ShopDashboard.class.getResourceAsStream(
-//                "/resources/themes/arc-theme.theme.json"));
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new ShopDashboard().setVisible(true);
-//            }
-//        });
-//    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int showConfirm = JOptionPane.showConfirmDialog(this, "Do You Want To LogOut ?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if (showConfirm == JOptionPane.YES_OPTION) {
+            this.dispose();
+            new LoginChooser().setVisible(true);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel empImageLabel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jContentPanel;
     private javax.swing.JPanel jDashboardPanel;
     private javax.swing.JPanel jDashboardbtn;
