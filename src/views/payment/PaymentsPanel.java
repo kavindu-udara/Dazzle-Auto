@@ -7,6 +7,7 @@ package views.payment;
 import com.formdev.flatlaf.FlatClientProperties;
 import controllers.ServiceInvoiceController;
 import includes.LoggerConfig;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -18,9 +19,11 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import views.dashboard.Dashboard;
 import views.mainInvoice.MainInvoice;
 
 /**
@@ -28,28 +31,28 @@ import views.mainInvoice.MainInvoice;
  * @author Dinuka
  */
 public class PaymentsPanel extends javax.swing.JPanel {
-    
+
     private static Logger logger = LoggerConfig.getLogger();
 
-    /**
-     * Creates new form paymentsPanel
-     */
-    public PaymentsPanel() {
+    Dashboard dashboard = null;
+
+    public PaymentsPanel(Dashboard dashboard) {
         initComponents();
-        
+        this.dashboard = dashboard;
+
         jInvoiceSearchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "INVOICE ID/Vehicle No.");
-        
+
         loadInvoices();
         PaidInvoiceTableRender();
     }
-    
+
     private void PaidInvoiceTableRender() {
-        
+
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        
+
         JTableHeader tableHeader = jPaidInvoiceTable.getTableHeader();
-        
+
         tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -64,21 +67,21 @@ public class PaymentsPanel extends javax.swing.JPanel {
                 return label;
             }
         });
-        
+
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
-        
+
         for (int i = 0; i < 8; i++) {
             jPaidInvoiceTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-    
+
     public void loadInvoices() {
         try {
             ResultSet resultSet = new ServiceInvoiceController().search(jInvoiceSearchField.getText());
-            
+
             DefaultTableModel dtm = (DefaultTableModel) jPaidInvoiceTable.getModel();
             dtm.setRowCount(0);
-            
+
             int row = 0;
             while (resultSet.next()) {
                 row++;
@@ -91,17 +94,17 @@ public class PaymentsPanel extends javax.swing.JPanel {
                 vector.add(resultSet.getString("balance"));
                 vector.add(resultSet.getString("method"));
                 vector.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
-                
+
                 dtm.addRow(vector);
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while loading invoices : " + e.getMessage());
         }
-        
+
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -159,8 +162,15 @@ public class PaymentsPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jPaidInvoiceTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPaidInvoiceTable.setFocusable(false);
         jPaidInvoiceTable.setRowHeight(30);
         jPaidInvoiceTable.getTableHeader().setReorderingAllowed(false);
+        jPaidInvoiceTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPaidInvoiceTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jPaidInvoiceTable);
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -243,6 +253,23 @@ public class PaymentsPanel extends javax.swing.JPanel {
     private void jInvoiceSearchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jInvoiceSearchFieldKeyReleased
         loadInvoices();
     }//GEN-LAST:event_jInvoiceSearchFieldKeyReleased
+
+    private void jPaidInvoiceTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPaidInvoiceTableMouseClicked
+
+        int row = jPaidInvoiceTable.getSelectedRow();
+
+        if (row != -1) {
+            String invoiceID = String.valueOf(jPaidInvoiceTable.getValueAt(row, 0));
+
+            dashboard.jPaymentsPanel.remove(this);
+            SwingUtilities.updateComponentTreeUI(dashboard.jPaymentsPanel);
+
+            InvoiceItems invoiceItems = new InvoiceItems(dashboard, invoiceID);
+            dashboard.jPaymentsPanel.add(invoiceItems, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
+
+    }//GEN-LAST:event_jPaidInvoiceTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

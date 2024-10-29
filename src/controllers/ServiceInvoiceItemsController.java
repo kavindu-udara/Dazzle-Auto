@@ -20,8 +20,8 @@ public class ServiceInvoiceItemsController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
 
-    public ResultSet show(int id) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
+    public ResultSet show(String id) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `service_invoice_id`='" + id + "'");
     }
 
     public ResultSet store(ServiceInvoiceItemsModel serviceInvoiceItemsModel) throws Exception {

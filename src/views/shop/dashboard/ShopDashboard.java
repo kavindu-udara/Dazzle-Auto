@@ -40,6 +40,12 @@ public class ShopDashboard extends javax.swing.JFrame {
 
     LoginModel loginModel;
 
+    shop_DashboardJPanel shop_DashboardPanel = null;
+    public Shop_PaymentJPanel shop_PaymentJPanel = null;
+    shop_ItemsJPanel shop_itemjpanel = null;
+    Shop_StockJPanel shop_StockJPanel = null;
+    shop_GRNJPanel shop_grnjpanel = null;
+
     public ShopDashboard(LoginModel loginModel) {
         this.loginModel = loginModel;
         initComponents();
@@ -57,7 +63,7 @@ public class ShopDashboard extends javax.swing.JFrame {
         jStockbtn.setBackground(new Color(246, 249, 255));
         jGRNbtn.setBackground(new Color(246, 249, 255));
 
-        shop_DashboardJPanel shop_DashboardPanel = new shop_DashboardJPanel();
+        shop_DashboardPanel = new shop_DashboardJPanel();
         jDashboardPanel.add(shop_DashboardPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
     }
@@ -498,9 +504,11 @@ public class ShopDashboard extends javax.swing.JFrame {
         jStockbtn.setBackground(new Color(246, 249, 255));
         jGRNbtn.setBackground(new Color(246, 249, 255));
 
-        shop_DashboardJPanel shop_DashboardPanel = new shop_DashboardJPanel();
-        jDashboardPanel.add(shop_DashboardPanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (shop_DashboardPanel == null) {
+            shop_DashboardPanel = new shop_DashboardJPanel();
+            jDashboardPanel.add(shop_DashboardPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }//GEN-LAST:event_jDashboardbtnMouseClicked
 
     private void jPaymentsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPaymentsbtnMouseClicked
@@ -512,9 +520,11 @@ public class ShopDashboard extends javax.swing.JFrame {
         jStockbtn.setBackground(new Color(246, 249, 255));
         jGRNbtn.setBackground(new Color(246, 249, 255));
 
-        Shop_PaymentJPanel shop_PaymentJPanel = new Shop_PaymentJPanel();
-        jPaymentsPanel.add(shop_PaymentJPanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (shop_PaymentJPanel == null) {
+            shop_PaymentJPanel = new Shop_PaymentJPanel(this);
+            jPaymentsPanel.add(shop_PaymentJPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }//GEN-LAST:event_jPaymentsbtnMouseClicked
 
     private void jItemsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jItemsbtnMouseClicked
@@ -526,9 +536,11 @@ public class ShopDashboard extends javax.swing.JFrame {
         jStockbtn.setBackground(new Color(246, 249, 255));
         jGRNbtn.setBackground(new Color(246, 249, 255));
 
-        shop_ItemsJPanel shop_itemjpanel = new shop_ItemsJPanel();
-        jItemsPanel.add(shop_itemjpanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (shop_itemjpanel == null) {
+            shop_itemjpanel = new shop_ItemsJPanel();
+            jItemsPanel.add(shop_itemjpanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }//GEN-LAST:event_jItemsbtnMouseClicked
 
     private void jStockbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jStockbtnMouseClicked
@@ -540,9 +552,11 @@ public class ShopDashboard extends javax.swing.JFrame {
         jStockbtn.setBackground(new Color(250, 238, 220));
         jGRNbtn.setBackground(new Color(246, 249, 255));
 
-        Shop_StockJPanel shop_StockJPanel = new Shop_StockJPanel();
-        jStockPanel.add(shop_StockJPanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (shop_StockJPanel == null) {
+            shop_StockJPanel = new Shop_StockJPanel();
+            jStockPanel.add(shop_StockJPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }//GEN-LAST:event_jStockbtnMouseClicked
 
     private void jGRNbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGRNbtnMouseClicked
@@ -554,9 +568,11 @@ public class ShopDashboard extends javax.swing.JFrame {
         jStockbtn.setBackground(new Color(246, 249, 255));
         jGRNbtn.setBackground(new Color(250, 238, 220));
 
-        shop_GRNJPanel shop_grnjpanel = new shop_GRNJPanel();
-        jGRNPanel.add(shop_grnjpanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+        if (shop_grnjpanel == null) {
+            shop_grnjpanel = new shop_GRNJPanel();
+            jGRNPanel.add(shop_grnjpanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
     }//GEN-LAST:event_jGRNbtnMouseClicked
 
     //Set Button Hover Color 
@@ -677,7 +693,7 @@ public class ShopDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPaymentsPanel;
+    public javax.swing.JPanel jPaymentsPanel;
     private javax.swing.JPanel jPaymentsbtn;
     private javax.swing.JPanel jStockPanel;
     private javax.swing.JPanel jStockbtn;
