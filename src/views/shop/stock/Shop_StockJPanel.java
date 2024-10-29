@@ -105,13 +105,15 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
 
             String sort = String.valueOf(jComboBox1.getSelectedItem());
 
-            if (sort.equals("Ascending")) {
-                query += " ORDER BY`" + tableName + "`.`id` ASC";
-
-            } else if (sort.equals("Decending")) {
-                query += " ORDER BY `" + tableName + "`.`id` DESC";
+            if (sort.equals("Product ID A-Z")) {
+                query += " ORDER BY`product`.`id` ASC";
+            } else if (sort.equals("Product ID Z-A")) {
+                query += " ORDER BY `product`.`id` DESC";
+            } else if (sort.equals("Brand A-Z")) {
+                query += " ORDER BY `product_brand`.`id` ASC";
+            } else if (sort.equals("Brand Z-A")) {
+                query += " ORDER BY `product_brand`.`id` DESC";
             }
-
             executeQuery = query;
             isFinded = false;
 
@@ -250,7 +252,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         jLabel7.setText("TO");
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 20, -1, 32));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ascending", "Decending" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product ID A-Z", "Product ID Z-A", "Brand A-Z", "Brand Z-A" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -382,11 +384,15 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (isFinded) {
             String sort = String.valueOf(jComboBox1.getSelectedItem());
-            String orderBy = "";
-            if (sort.equals("Ascending")) {
-                orderBy = " ORDER BY`stock`.`id` ASC";
-            } else if (sort.equals("Decending")) {
-                orderBy = " ORDER BY`stock`.`id` DESC";
+            String orderBy = "ORDER BY";
+           if (sort.equals("Product ID A-Z")) {
+                orderBy = " ORDER BY`product`.`id` ASC";
+            } else if (sort.equals("Product ID Z-A")) {
+                orderBy = " ORDER BY `product`.`id` DESC";
+            } else if (sort.equals("Brand A-Z")) {
+                orderBy = " ORDER BY `product_brand`.`id` ASC";
+            } else if (sort.equals("Brand Z-")) {
+                orderBy = " ORDER BY `product_brand`.`id` DESC";
             }
             loadTableData(executeQuery + orderBy);
         } else {
