@@ -40,7 +40,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     StaffJPanel staffJPanel = null;
     DashboardPanel dashboardPanel = null;
-    PaymentsPanel paymentPanel = null;
+    public PaymentsPanel paymentPanel = null;
     AppointmnetPanel appointmnetPanel = null;
     CustomerJPanel customerJPanel = null;
     ourServicesJPanel ourServices = null;
@@ -455,7 +455,7 @@ public class Dashboard extends javax.swing.JFrame {
         jTabbedPane1.setSelectedIndex(1);
 
         if (paymentPanel == null) {
-            paymentPanel = new PaymentsPanel();
+            paymentPanel = new PaymentsPanel(this);
             jPaymentsPanel.add(paymentPanel, BorderLayout.CENTER);
             SwingUtilities.updateComponentTreeUI(this);
         }
@@ -571,7 +571,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JButton jPaymentButton;
-    private javax.swing.JPanel jPaymentsPanel;
+    public javax.swing.JPanel jPaymentsPanel;
     private javax.swing.JPanel jReportPanel;
     private javax.swing.JButton jReportsButton;
     private javax.swing.JSeparator jSeparator1;

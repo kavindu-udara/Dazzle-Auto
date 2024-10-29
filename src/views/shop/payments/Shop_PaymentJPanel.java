@@ -7,6 +7,7 @@ package views.shop.payments;
 import com.formdev.flatlaf.FlatClientProperties;
 import controllers.ShopInoviceController;
 import includes.LoggerConfig;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -21,7 +22,9 @@ import javax.swing.table.JTableHeader;
 import views.shop.shopInvoice.ShopInvoice;
 import java.sql.ResultSet;
 import java.util.Vector;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import views.shop.dashboard.ShopDashboard;
 
 /**
  *
@@ -31,8 +34,11 @@ public class Shop_PaymentJPanel extends javax.swing.JPanel {
 
     private static Logger logger = LoggerConfig.getLogger();
 
-    public Shop_PaymentJPanel() {
+    ShopDashboard ShopDashboard = null;
+
+    public Shop_PaymentJPanel(ShopDashboard dashboard) {
         initComponents();
+        this.ShopDashboard = dashboard;
 
         jInvoiceSerachField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter INVOICE ID");
 
@@ -40,7 +46,7 @@ public class Shop_PaymentJPanel extends javax.swing.JPanel {
         loadInvoices();
     }
 
-    public void PaidInvoiceTableRender() {
+    private void PaidInvoiceTableRender() {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -155,8 +161,15 @@ public class Shop_PaymentJPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jPaidInvoiceTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPaidInvoiceTable.setFocusable(false);
         jPaidInvoiceTable.setRowHeight(30);
         jPaidInvoiceTable.getTableHeader().setReorderingAllowed(false);
+        jPaidInvoiceTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPaidInvoiceTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jPaidInvoiceTable);
 
         jInvoiceSerachField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
@@ -231,6 +244,21 @@ public class Shop_PaymentJPanel extends javax.swing.JPanel {
     private void jInvoiceSerachFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jInvoiceSerachFieldKeyReleased
         loadInvoices();
     }//GEN-LAST:event_jInvoiceSerachFieldKeyReleased
+
+    private void jPaidInvoiceTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPaidInvoiceTableMouseClicked
+        int row = jPaidInvoiceTable.getSelectedRow();
+
+        if (row != -1) {
+            String invoiceID = String.valueOf(jPaidInvoiceTable.getValueAt(row, 0));
+
+            ShopDashboard.jPaymentsPanel.remove(this);
+            SwingUtilities.updateComponentTreeUI(ShopDashboard.jPaymentsPanel);
+
+            ShopInvoiceItemsPanel invoiceItemsPanel = new ShopInvoiceItemsPanel(ShopDashboard, invoiceID);
+            ShopDashboard.jPaymentsPanel.add(invoiceItemsPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+        }
+    }//GEN-LAST:event_jPaidInvoiceTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
