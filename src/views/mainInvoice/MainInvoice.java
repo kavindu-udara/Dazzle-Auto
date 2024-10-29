@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
@@ -232,6 +233,9 @@ public class MainInvoice extends javax.swing.JFrame {
 
         balanceField.setText(String.valueOf(balance));
 
+        if (jTable1.getRowCount() <= 0) {
+            jButton4.setEnabled(false);
+        }
     }
 
     public void reset() {
@@ -509,7 +513,7 @@ public class MainInvoice extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(jVehicleTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(0, 0, Short.MAX_VALUE))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         jTable1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -803,11 +807,15 @@ public class MainInvoice extends javax.swing.JFrame {
                     new ServiceInvoiceItemsController().store(serviceInvoiceItemsModel);
                 }
 
+                String imgPath = "";
                 //View or print invoice
                 InputStream s = this.getClass().getResourceAsStream("/resources/reports/service_station_invoice.jasper");
+                String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+                imgPath = img.replace("\\", "/");
 
                 HashMap<String, Object> params = new HashMap<>();
                 params.put("dateParameter", dateTime);
+                params.put("imgpath", imgPath);
                 params.put("invoiceNoPara", invoiceID);
                 params.put("vehicleName", vehicleName);
                 params.put("vehicleNumber", vehicleNumber);
@@ -866,40 +874,46 @@ public class MainInvoice extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Enter Valid Service Charge !", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
 
+            boolean addToTable = false;
             if (serviceDescription.isBlank()) {
 
                 int showConfirm = JOptionPane.showConfirmDialog(this, "Description is empty ! Do You Want To Continue ?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 if (showConfirm == JOptionPane.YES_OPTION) {
                     serviceDescription = "-";
+                    addToTable = true;
                 }
-            }
-
-            MainInvoiceItemModel mainInvoiceItem = new MainInvoiceItemModel();
-            mainInvoiceItem.setServiceID(serviceID);
-            mainInvoiceItem.setServiceName(serviceName);
-            mainInvoiceItem.setServiceDescription(serviceDescription);
-            mainInvoiceItem.setServiceCharge(serviceCharge);
-
-            if (invoiceItemMap.get(serviceID + "" + serviceName) == null) {
-                invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
             } else {
-
-                MainInvoiceItemModel foundService = invoiceItemMap.get(serviceID + "" + serviceName);
-
-                if (foundService.getServiceName().equals(serviceName)) {
-                    JOptionPane.showMessageDialog(this, "This Invoice Already In Table", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
-                }
-
+                addToTable = true;
             }
 
-            loadInvoiceItem();
+            if (addToTable) {
+                MainInvoiceItemModel mainInvoiceItem = new MainInvoiceItemModel();
+                mainInvoiceItem.setServiceID(serviceID);
+                mainInvoiceItem.setServiceName(serviceName);
+                mainInvoiceItem.setServiceDescription(serviceDescription);
+                mainInvoiceItem.setServiceCharge(serviceCharge);
 
-            paymentField.grabFocus();
-            discountField.setEditable(true);
-            paymentField.setEditable(true);
+                if (invoiceItemMap.get(serviceID + "" + serviceName) == null) {
+                    invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
+                } else {
 
+                    MainInvoiceItemModel foundService = invoiceItemMap.get(serviceID + "" + serviceName);
+
+                    if (foundService.getServiceName().equals(serviceName)) {
+                        JOptionPane.showMessageDialog(this, "This Invoice Already In Table", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
+                    }
+
+                }
+
+                loadInvoiceItem();
+
+                paymentField.grabFocus();
+                discountField.setEditable(true);
+                paymentField.setEditable(true);
+
+            }
         }
     }//GEN-LAST:event_jAddInvoiceButtonActionPerformed
 

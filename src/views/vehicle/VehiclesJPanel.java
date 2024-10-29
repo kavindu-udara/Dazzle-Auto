@@ -29,6 +29,7 @@ import views.mainInvoice.MainInvoice;
 import views.vehicleServiceAppointment.VehicleServiceAppointment;
 import includes.LoggerConfig;
 import includes.MySqlConnection;
+import java.awt.event.MouseEvent;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import models.VehicleModel;
@@ -187,7 +188,7 @@ public class VehiclesJPanel extends javax.swing.JPanel {
         }
     }
 
-    public void reloadTable(){
+    public void reloadTable() {
         loadVehicles();
     }
 
@@ -382,29 +383,37 @@ public class VehiclesJPanel extends javax.swing.JPanel {
 
     private void vehicleViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vehicleViewTableMouseClicked
         int row = vehicleViewTable.getSelectedRow();
-        String vehicleNumber = String.valueOf(vehicleViewTable.getValueAt(row, 0));
-        String vehicleOwner = String.valueOf(vehicleViewTable.getValueAt(row, 1));
-        String vehicleBrand = String.valueOf(vehicleViewTable.getValueAt(row, 2));
-        String vehicleModel = String.valueOf(vehicleViewTable.getValueAt(row, 3));
-        String vehicleType = String.valueOf(vehicleViewTable.getValueAt(row, 4));
-        
-        new VehicleFullDetailsDialog(null, true, vehicleNumber,vehicleOwner).setVisible(true);
 
-        if (From.equals("Selecter")) {
+        if (row != -1) {
+            String vehicleNumber = String.valueOf(vehicleViewTable.getValueAt(row, 0));
+            String vehicleOwner = String.valueOf(vehicleViewTable.getValueAt(row, 1));
+            String vehicleBrand = String.valueOf(vehicleViewTable.getValueAt(row, 2));
+            String vehicleModel = String.valueOf(vehicleViewTable.getValueAt(row, 3));
+            String vehicleType = String.valueOf(vehicleViewTable.getValueAt(row, 4));
 
-            if (BaseFrame.equals("MainInvoice")) {
-                mainInvoice.setVehicleDetails(vehicleNumber, vehicleOwner, vehicleBrand, vehicleModel, vehicleType);
-            } else if (BaseFrame.equals("VehicleServiceAppointment")) {
-                vehicleServiceAppointment.setVehicleDetails(vehicleNumber, vehicleOwner, vehicleBrand, vehicleModel, vehicleType);
+            if (From.equals("Selecter")) {
+
+                if (BaseFrame.equals("MainInvoice")) {
+                    mainInvoice.setVehicleDetails(vehicleNumber, vehicleOwner, vehicleBrand, vehicleModel, vehicleType);
+                } else if (BaseFrame.equals("VehicleServiceAppointment")) {
+                    vehicleServiceAppointment.setVehicleDetails(vehicleNumber, vehicleOwner, vehicleBrand, vehicleModel, vehicleType);
+                }
+
+                VehicleSelecterFrame.dispose();
+            } else {
+
+                if (evt.getButton() == MouseEvent.BUTTON3) {
+                    new VehicleFullDetailsDialog(null, true, vehicleNumber, vehicleOwner).setVisible(true);
+                }
+
+                if (evt.getClickCount() == 2) {
+                    VehicleModel modelVehicle = new VehicleModel();
+                    modelVehicle.setVehicleNumber(vehicleNumber);
+
+                    new VehicleUpdate(null, true, modelVehicle, vehiclesJPanel).setVisible(true);
+
+                }
             }
-
-            VehicleSelecterFrame.dispose();
-        } else if (evt.getClickCount() == 2) {
-            VehicleModel modelVehicle = new VehicleModel();
-            modelVehicle.setVehicleNumber(vehicleNumber);
-
-            new VehicleUpdate(null, true, modelVehicle, vehiclesJPanel).setVisible(true);
-
         }
     }//GEN-LAST:event_vehicleViewTableMouseClicked
 

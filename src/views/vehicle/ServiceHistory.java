@@ -5,6 +5,9 @@
 package views.vehicle;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import controllers.VehicleBrandController;
+import controllers.VehicleController;
+import controllers.VehicleTypeController;
 import includes.MySqlConnection;
 import java.awt.Color;
 import java.awt.Component;
@@ -203,20 +206,47 @@ public class ServiceHistory extends javax.swing.JFrame {
 
         String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
         String subPath = "";
-        
+        String imgPath = "";
+        String vehicleBrand = "";
+        String vehicleModel = "";
+        String vehicleType = "";
+
+        try {
+            ResultSet vehicleRs = new VehicleController().show(VehicleNumber);
+            if (vehicleRs.next()) {
+                vehicleModel = vehicleRs.getString("model");
+
+                ResultSet brandRs = new VehicleBrandController().show(vehicleRs.getInt("vehicle_brand_id"));
+                if (brandRs.next()) {
+                    vehicleBrand = brandRs.getString("name");
+                }
+
+                ResultSet typeRs = new VehicleTypeController().show(vehicleRs.getInt("vehicle_type_id"));
+                if (typeRs.next()) {
+                    vehicleType = typeRs.getString("name");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while makeReport() vehicle detail Resultset : " + e.getMessage());
+        }
+
         try {
             InputStream s = this.getClass().getResourceAsStream("/resources/reports/History_main_report.jasper");
             String s2 = new File(this.getClass().getResource("/resources/reports/History_sub_report.jasper").getFile()).getAbsolutePath();
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
             subPath = s2.replace("\\", "/");
-            
+            imgPath = img.replace("\\", "/");
+
             HashMap<String, Object> params = new HashMap<>();
             params.put("subPath", subPath);
+            params.put("imgPath", imgPath);
             params.put("connection", MySqlConnection.connection);
             params.put("vNum", VehicleNumber);
             params.put("fromDate", start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             params.put("toDate", end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            params.put("vehicleModel", "Land Cruiser Prado TX ");
-            params.put("vType", "Motercycle");
+            params.put("vehicleModel", vehicleBrand+" "+vehicleModel);
+            params.put("vType", vehicleType);
             params.put("date", dateTime);
 
             JasperPrint report = JasperFillManager.fillReport(s, params, MySqlConnection.connection);
@@ -466,7 +496,7 @@ public class ServiceHistory extends javax.swing.JFrame {
             JasperPrint report = makeReport();
             JasperViewer.viewReport(report, false);
 
-            logger.info("Vehicle : "+VehicleNumber+", History Report Viewed By : "+LoginModel.getEmployeeId());
+            logger.info("Vehicle : " + VehicleNumber + ", History Report Viewed By : " + LoginModel.getEmployeeId());
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while viewReportbActionPerformed : " + e.getMessage());
@@ -478,7 +508,7 @@ public class ServiceHistory extends javax.swing.JFrame {
             JasperPrint report = makeReport();
             JasperPrintManager.printReport(report, false);
 
-            logger.info("Vehicle : "+VehicleNumber+", History Report Printed By : "+LoginModel.getEmployeeId());
+            logger.info("Vehicle : " + VehicleNumber + ", History Report Printed By : " + LoginModel.getEmployeeId());
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while printReportbActionPerformed : " + e.getMessage());

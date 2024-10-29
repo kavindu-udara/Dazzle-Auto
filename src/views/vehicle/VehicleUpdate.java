@@ -294,6 +294,7 @@ public class VehicleUpdate extends java.awt.Dialog {
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel3.setText("Vehicle Number");
 
+        vehicle_number.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         vehicle_number.setEnabled(false);
 
         jLabel4.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
@@ -319,8 +320,10 @@ public class VehicleUpdate extends java.awt.Dialog {
             }
         });
 
+        vehicle_brand.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         vehicle_brand.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Tata", "Honda" }));
 
+        vehicle_type.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         vehicle_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Bike", "Lorry", "Three - Wheel" }));
 
         jLabel6.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
@@ -340,26 +343,34 @@ public class VehicleUpdate extends java.awt.Dialog {
         jLabel7.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel7.setText("Customer ID");
 
-        powertrainTypesComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        powertrainTypesComboBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         powertrainTypesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel12.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel12.setText("Drive Types");
 
-        driveTypesComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        driveTypesComboBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         driveTypesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        vehicleModelTextField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
 
         jLabel8.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel8.setText("Engine Number");
 
+        engineNumberField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+
         jLabel9.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel9.setText("Chassis Number");
+
+        chassisNumberField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel5.setText("Vehicle Model");
 
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel10.setText("Engine Name");
+
+        engineNameField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
 
         jLabel11.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel11.setText("Powertrain Types");
@@ -517,11 +528,11 @@ public class VehicleUpdate extends java.awt.Dialog {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 826, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
