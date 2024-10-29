@@ -4,11 +4,71 @@
  */
 package views.financeAndHr;
 
+import com.github.sarxos.webcam.WebcamPanel;
+import com.github.sarxos.webcam.Webcam;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
+import controllers.EmployeeAttendanceController;
+import controllers.EmployeeController;
+import includes.BDUtility;
+import includes.LoggerConfig;
+import includes.TimestampsGenerator;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.HeadlessException;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+
 /**
  *
  * @author USER
  */
-public class MarkAttendance extends java.awt.Dialog {
+public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadFactory {
+
+    private static final Logger logger = LoggerConfig.getLogger();
+
+    private WebcamPanel panel = null;
+    private Webcam webcam = null;
+
+    private ExecutorService executor = Executors.newSingleThreadExecutor(this);
+    private volatile boolean running = true;
 
     /**
      * Creates new form MarkAttendance
@@ -16,6 +76,74 @@ public class MarkAttendance extends java.awt.Dialog {
     public MarkAttendance(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        initwebcam();
+        Timer timer = new Timer(1, e -> updateTime());
+        timer.start();
+    }
+
+    private void updateTime() {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss");
+        lbltime2.setText(simpleDateFormat.format(new Date()));
+
+    }
+
+    Map<String, String> resultMap = new HashMap<String, String>();
+
+    @Override
+    public void run() {
+
+        do {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                logger.severe("Error while Thread Sleep : " + ex.getMessage());
+            }
+
+            try {
+
+                Result result = null;
+                BufferedImage image = null;
+                if (webcam.isOpen()) {
+                    if ((image = webcam.getImage()) == null) {
+                        continue;
+                    }
+                }
+
+                LuminanceSource source = new BufferedImageLuminanceSource(image);
+                BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+                try {
+                    result = new MultiFormatReader().decode(bitmap);
+                } catch (NotFoundException ex) {
+                    logger.severe("NotFoundException : " + ex.getMessage());
+                }
+                if (result != null) {
+
+                    String jsonstring = result.getText();
+                    Gson gson = new Gson();
+                    java.lang.reflect.Type type = new TypeToken<Map<String, String>>() {
+                    }.getType();
+
+                    resultMap = gson.fromJson(jsonstring, type);
+
+                    String finalpath = BDUtility.getPath("resources/qrCodes/" + resultMap.get("email") + ".jpg");
+                    CircularImageFrame(finalpath);
+
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+        } while (running);
+
+    }
+
+    @Override
+    public Thread newThread(Runnable r) {
+        Thread t = new Thread(r, "My Thread");
+        t.setDaemon(true);
+        return t;
     }
 
     /**
@@ -27,13 +155,15 @@ public class MarkAttendance extends java.awt.Dialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        webcam = new javax.swing.JPanel();
+        webcampanel = new javax.swing.JPanel();
         lblcheckinchechout = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         lbltime2 = new javax.swing.JLabel();
         lblimage = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lblname = new javax.swing.JLabel();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -41,11 +171,11 @@ public class MarkAttendance extends java.awt.Dialog {
             }
         });
 
-        webcam.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        webcam.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        webcampanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        webcampanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblcheckinchechout.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        webcam.add(lblcheckinchechout, new org.netbeans.lib.awtextra.AbsoluteConstraints(313, 6, -1, -1));
+        webcampanel.add(lblcheckinchechout, new org.netbeans.lib.awtextra.AbsoluteConstraints(313, 6, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("DATE");
@@ -63,36 +193,51 @@ public class MarkAttendance extends java.awt.Dialog {
             }
         });
 
+        jLabel3.setText("jLabel3");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+
+        lblname.setText("jLabel4");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addComponent(webcam, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(80, 80, 80)
+                .addComponent(webcampanel, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lbltime2, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel5)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1)
-                            .addGap(37, 37, 37)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblimage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(100, 100, 100))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lbltime2, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel1)
+                                        .addGap(37, 37, 37))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(69, 69, 69)
+                                .addComponent(lblname)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblimage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(100, 100, 100))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(webcam, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(82, 82, 82)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -102,8 +247,18 @@ public class MarkAttendance extends java.awt.Dialog {
                         .addComponent(lbltime2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(lblimage, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(63, 63, 63)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(63, 63, 63)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(53, 53, 53)
+                                .addComponent(lblname))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(webcampanel, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -133,6 +288,23 @@ public class MarkAttendance extends java.awt.Dialog {
 
     }//GEN-LAST:event_lblimageMouseClicked
 
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        // TODO add your handling code here:
+
+        running = false;
+        stopwebcam();
+
+        if (executor != null && !executor.isShutdown()) {
+
+            executor.shutdown();
+
+        }
+
+//        cashierdash dash = new cashierdash();
+//        dash.setVisible(true);
+//        this.dispose();
+    }//GEN-LAST:event_jLabel3MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -154,11 +326,197 @@ public class MarkAttendance extends java.awt.Dialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblcheckinchechout;
     private javax.swing.JLabel lblimage;
+    private javax.swing.JLabel lblname;
     private javax.swing.JLabel lbltime2;
-    private javax.swing.JPanel webcam;
+    private javax.swing.JPanel webcampanel;
     // End of variables declaration//GEN-END:variables
+
+    private void initwebcam() {
+
+        webcam = webcam.getDefault();
+        if (webcam != null) {
+
+            Dimension[] resolutions = webcam.getViewSizes();
+            Dimension maxResolution = resolutions[resolutions.length - 1];
+
+            if (webcam.isOpen()) {
+                webcam.close();
+            }
+
+            webcam.setViewSize(maxResolution);
+            webcam.open();
+
+            panel = new WebcamPanel(webcam);
+            panel.setPreferredSize(maxResolution);
+            panel.setFPSDisplayed(true);
+
+            webcampanel.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 689, 518));
+
+            executor.execute(this);
+            executor.shutdown();
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Issue with webcam");
+        }
+
+    }
+
+    private void stopwebcam() {
+        if (webcam != null && webcam.isOpen()) {
+            webcam.close();
+        }
+    }
+    private BufferedImage image = null;
+
+    private void CircularImageFrame(String imagepath) {
+
+        try {
+
+            ResultSet employeeResultSet = new EmployeeController().show(resultMap.get("id"));
+
+            if (!employeeResultSet.next()) {
+                JOptionPane.showMessageDialog(null, "This employee doesn't registered ! ");
+                return;
+            }
+
+            image = null;
+            File imageFile = new File(imagepath);
+
+            if (imageFile.exists()) {
+
+                try {
+                    image = ImageIO.read(new File(imagepath));
+                    image = createCircularImage(image);
+                    ImageIcon icon = new ImageIcon(image);
+                    lblimage.setIcon(icon);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    logger.severe("Error while read image file : " + ex.getMessage());
+                }
+            } else {
+
+                BufferedImage imageee = new BufferedImage(300, 300, BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g2d = imageee.createGraphics();
+
+                g2d.setColor(Color.BLACK);
+                g2d.fillOval(25, 25, 250, 250);
+
+                g2d.setFont(new Font("Serif", Font.BOLD, 250));
+                g2d.setColor(Color.WHITE);
+                g2d.drawString(String.valueOf(resultMap.get("name").charAt(0)).toUpperCase(), 75, 225);
+                g2d.dispose();
+
+                ImageIcon imageIcon = new ImageIcon(imageee);
+                lblimage.setIcon(imageIcon);
+//                this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                this.pack();
+                this.setLocationRelativeTo(null);
+                this.setVisible(true);
+
+            }
+
+            lblname.setHorizontalAlignment(JLabel.CENTER);
+            lblname.setText(resultMap.get("name"));
+
+            if (!checkInCheckout()) {
+
+                return;
+
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void showPopUpForCertainDuration(String popUpMesssage, String popUpHeader, Integer iconId) throws HeadlessException {
+
+        final JOptionPane optionPane = new JOptionPane(popUpMesssage, iconId);
+        final JDialog dialog = optionPane.createDialog(popUpHeader);
+        Timer timer = new Timer(5000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+
+                dialog.dispose();
+                clearUserDetails();
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+        dialog.setVisible(true);
+    }
+
+    private void clearUserDetails() {
+
+        lblcheckinchechout.setText("");
+        lblcheckinchechout.setBackground(null);
+        lblcheckinchechout.setForeground(null);
+        lblcheckinchechout.setOpaque(false);
+        lblname.setText("");
+        lblimage.setIcon(null);
+
+    }
+
+    private BufferedImage createCircularImage(BufferedImage image) {
+
+        int diameter = 285;
+        BufferedImage resizedImage = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImage.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(image, 0, 0, diameter, diameter, null);
+        g2.dispose();
+        BufferedImage circularImage = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
+        g2 = circularImage.createGraphics();
+        Ellipse2D.Double circle = new Ellipse2D.Double(0, 0, diameter, diameter);
+        g2.setClip(circle);
+        g2.drawImage(resizedImage, 0, 0, null);
+        g2.dispose();
+        return circularImage;
+
+    }
+
+    private boolean checkInCheckout() throws HeadlessException, SQLException {
+
+        String popUpHeader = null;
+        String popUpMessage = null;
+        Color color = null;
+
+        String timeStamp = TimestampsGenerator.getFormattedDateTime();
+
+        try {
+            ResultSet empAttendanceResultSet = new EmployeeAttendanceController().show(resultMap.get("id"), timeStamp);
+            
+            if(empAttendanceResultSet.next()){
+                JOptionPane.showMessageDialog(null , "Already added");
+            }else{
+                // TODO : store attendance
+                
+                JOptionPane.showMessageDialog(null , "Need to code store process 510");
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while showing attendance : "+e.getMessage());
+        }
+
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public void paint(Graphics g) {
+
+        super.paint(g);
+        if (image != null) {
+
+            g.drawImage(image, 0, 0, null);
+
+        }
+
+    }
+
 }
