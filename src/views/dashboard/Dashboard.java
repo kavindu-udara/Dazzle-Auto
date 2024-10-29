@@ -14,8 +14,10 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import models.LoginModel;
+import views.LoginChooser;
 import views.settings.Settings;
 import views.customer.CustomerJPanel;
 import views.employee.StaffJPanel;
@@ -126,6 +128,8 @@ public class Dashboard extends javax.swing.JFrame {
         jEmployeeNameLabel = new javax.swing.JLabel();
         jEmployeeRoleLabel = new javax.swing.JLabel();
         empImageLabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -341,33 +345,55 @@ public class Dashboard extends javax.swing.JFrame {
         empImageLabel.setOpaque(true);
         empImageLabel.setPreferredSize(new java.awt.Dimension(56, 56));
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/log-out-40.png"))); // NOI18N
+        jButton1.setBorderPainted(false);
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.setFocusPainted(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
         javax.swing.GroupLayout HeaderPanelLayout = new javax.swing.GroupLayout(HeaderPanel);
         HeaderPanel.setLayout(HeaderPanelLayout);
         HeaderPanelLayout.setHorizontalGroup(
             HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(HeaderPanelLayout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(886, 886, 886)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 820, Short.MAX_VALUE)
                 .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jEmployeeNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jEmployeeRoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(empImageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(jButton1)
+                .addGap(7, 7, 7))
         );
         HeaderPanelLayout.setVerticalGroup(
             HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(HeaderPanelLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jEmployeeNameLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jEmployeeRoleLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(empImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(empImageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(HeaderPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(HeaderPanelLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jEmployeeNameLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jEmployeeRoleLabel)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addComponent(jSeparator1)
         );
 
         jPanel1.add(HeaderPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 70));
@@ -494,6 +520,15 @@ public class Dashboard extends javax.swing.JFrame {
         new Settings(this, true).setVisible(true);
     }//GEN-LAST:event_jLoginAccessMenuItemActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int showConfirm = JOptionPane.showConfirmDialog(this, "Do You Want To LogOut ?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if (showConfirm == JOptionPane.YES_OPTION) {
+            this.dispose();
+            new LoginChooser().setVisible(true);
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -516,6 +551,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel empImageLabel;
     private javax.swing.JPanel jAppointmentPanel;
     private javax.swing.JButton jAppointmentsButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jCustomerButton;
     private javax.swing.JPanel jCustomerPanel;
     private javax.swing.JButton jDashboardButton1;
@@ -538,6 +574,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPaymentsPanel;
     private javax.swing.JPanel jReportPanel;
     private javax.swing.JButton jReportsButton;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton jStaffButton;
     private javax.swing.JPanel jStaffPanel;
     private javax.swing.JTabbedPane jTabbedPane1;
