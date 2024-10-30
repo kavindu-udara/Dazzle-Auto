@@ -45,7 +45,7 @@ public class Dashboard extends javax.swing.JFrame {
     CustomerJPanel customerJPanel = null;
     ourServicesJPanel ourServices = null;
     FinanceAndHrJPanel financeJPanel = null;
-    ReportsJPanel reportsJPanel = null;
+    public ReportsJPanel reportsJPanel = null;
     VehiclesJPanel vehiclesJPanel = null;
 
     public Dashboard(LoginModel loginModel) {
@@ -501,7 +501,7 @@ public class Dashboard extends javax.swing.JFrame {
     private void jReportsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jReportsButtonActionPerformed
         jTabbedPane1.setSelectedIndex(7);
         if (reportsJPanel == null) {
-            reportsJPanel = new ReportsJPanel();
+            reportsJPanel = new ReportsJPanel(this);
             jReportPanel.add(reportsJPanel, BorderLayout.CENTER);
             SwingUtilities.updateComponentTreeUI(this);
         }
@@ -572,7 +572,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JButton jPaymentButton;
     public javax.swing.JPanel jPaymentsPanel;
-    private javax.swing.JPanel jReportPanel;
+    public javax.swing.JPanel jReportPanel;
     private javax.swing.JButton jReportsButton;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton jStaffButton;

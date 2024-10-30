@@ -31,7 +31,10 @@ import views.components.reportsTableRender.viewReportFrameActionCellEditor;
 import views.components.reportsTableRender.viewReportFrameActionEvent;
 import views.components.reportsTableRender.viewReportFrameCellRender;
 import includes.LoggerConfig;
+import java.awt.BorderLayout;
 import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
+import views.dashboard.Dashboard;
 
 /**
  *
@@ -41,8 +44,11 @@ public class ReportsJPanel extends javax.swing.JPanel {
 
     private static Logger logger = LoggerConfig.getLogger();
 
-    public ReportsJPanel() {
+    Dashboard dashboard = null;
+
+    public ReportsJPanel(Dashboard dashboard) {
         initComponents();
+        this.dashboard = dashboard;
 
         reportsTableRender();
         loadReports();
@@ -54,6 +60,30 @@ public class ReportsJPanel extends javax.swing.JPanel {
 
             @Override
             public void onView(int row) {
+
+                if (row != -1) {
+                    String reportName = String.valueOf(jReportsTable.getValueAt(row, 0));
+
+                    if (reportName.equals("Employees Report")) {
+                        openEmployeesReport();
+                    } else if (reportName.equals("Vehicle Report")) {
+                        openVehiclesReport();
+                    } else if (reportName.equals("Customer Report")) {
+                        openCustomersReport();
+                    }else if (reportName.equals("Appointment Report")) {
+                        openAppointmentReport();
+                    }else if (reportName.equals("Our Services Report")) {
+                        openOurServicesReport();
+                    }else if (reportName.equals("Products Report")) {
+                        openProductsReport();
+                    }else if (reportName.equals("Suppliers Report")) {
+                        openSuppliersReport();
+                    }else if (reportName.equals("Stock Report")) {
+                        openStockReport();
+                    }else if (reportName.equals("GRN Report")) {
+                        openGRNReport();
+                    }
+                }
 
             }
         };
@@ -85,6 +115,83 @@ public class ReportsJPanel extends javax.swing.JPanel {
         for (int i = 0; i < 2; i++) {
             jReportsTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
+    }
+
+    private void removeThisPanel() {
+        dashboard.jReportPanel.remove(this);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
+    private void openEmployeesReport() {
+        removeThisPanel();
+
+        EmployeeReportPanel employeeReportPanel = new EmployeeReportPanel(dashboard);
+        dashboard.jReportPanel.add(employeeReportPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
+    private void openVehiclesReport() {
+        removeThisPanel();
+
+        VehiclesReportPanel vehiclesReportPanel = new VehiclesReportPanel(dashboard);
+        dashboard.jReportPanel.add(vehiclesReportPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
+    private void openCustomersReport() {
+        removeThisPanel();
+
+        CustomersReportPanel customersReportPanel = new CustomersReportPanel(dashboard);
+        dashboard.jReportPanel.add(customersReportPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
+    private void openAppointmentReport() {
+        removeThisPanel();
+
+        AppointmentReportPanel appointmentReportPanel = new AppointmentReportPanel(dashboard);
+        dashboard.jReportPanel.add(appointmentReportPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
+    private void openOurServicesReport() {
+        removeThisPanel();
+
+        OurServicesReportPanel ourServicesReportPanel = new OurServicesReportPanel(dashboard);
+        dashboard.jReportPanel.add(ourServicesReportPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
+    private void openProductsReport() {
+        removeThisPanel();
+
+        ProductsReportPanel productsReportPanel = new ProductsReportPanel(dashboard);
+        dashboard.jReportPanel.add(productsReportPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
+    private void openSuppliersReport() {
+        removeThisPanel();
+
+        SuppliersReportPanel suppliersReportPanel = new SuppliersReportPanel(dashboard);
+        dashboard.jReportPanel.add(suppliersReportPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
+    private void openStockReport() {
+        removeThisPanel();
+
+        StockReportPanel stockReportPanel = new StockReportPanel(dashboard);
+        dashboard.jReportPanel.add(stockReportPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
+    private void openGRNReport() {
+        removeThisPanel();
+
+        GRNReportPanel grnReportPanel = new GRNReportPanel(dashboard);
+        dashboard.jReportPanel.add(grnReportPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }
 
     public void loadReports() {
