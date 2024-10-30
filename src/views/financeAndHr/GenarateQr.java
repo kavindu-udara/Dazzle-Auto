@@ -243,6 +243,7 @@ public class GenarateQr extends java.awt.Dialog {
         String jsonData = gson.toJson(data);
 
         out = QRCode.from(jsonData).withSize(322, 295).to(ImageType.PNG).stream();
+        
         try {
 
             byte[] imageData = out.toByteArray();
