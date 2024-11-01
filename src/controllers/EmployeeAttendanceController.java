@@ -24,27 +24,33 @@ public class EmployeeAttendanceController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
     
+    public ResultSet showByDateId(int dateId) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `attendance_date_id`='" + dateId + "'");
+    }
+
     public ResultSet show(String id, String time) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + id + "' AND `checkin`='"+time+"' OR `checkout`='"+time+"' ");
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + id + "' AND `checkin`='" + time + "' OR `checkout`='" + time + "' ");
     }
 
-    public ResultSet store(EmployeeAttendance employeeAttendanceModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`employee_id`, `date`, `on_time`, `off_time`) VALUES "
+    public ResultSet storeWithNulls(EmployeeAttendance employeeAttendanceModel) throws Exception {
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`employee_id`, `attendance_date_id`, `attendance_status_id`) VALUES "
                 + "('" + employeeAttendanceModel.getEmployeeId() + "', "
-                + "'" + employeeAttendanceModel.getDate() + "', "
-                + "'" + employeeAttendanceModel.getOnTime() + "', "
-                + "'" + employeeAttendanceModel.getOffTime() + "') ");
+                + "'" + employeeAttendanceModel.getAttendanceDateId() + "', "
+                + "'" + employeeAttendanceModel.getAttendanceStatusId() + "') ");
     }
 
-    public ResultSet update(EmployeeAttendance employeeAttendanceModel) throws Exception {
+    public ResultSet updateCheckInByUserId(String checkIn, String UserId, int dateId) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
-                + "`employee_id`='" + employeeAttendanceModel.getEmployeeId() + "', "
-                + "`date`='" + employeeAttendanceModel.getDate() + "',"
-                + "`on_time`='" + employeeAttendanceModel.getOnTime() + "', "
-                + "`off_time`='" + employeeAttendanceModel.getOffTime() + "', "
-                + "WHERE `id`='" + employeeAttendanceModel.getId() + "' ");
+                + "`checkin`='" + checkIn + "' "
+                + "WHERE `employee_id`='" + UserId + "' AND `attendance_date_id`='" + dateId + "' ");
     }
-
+    
+    public ResultSet updateCheckOutByUserId(String checkIn, String UserId, int dateId) throws Exception {
+        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
+                + "`checkout`='" + checkIn + "' "
+                + "WHERE `employee_id`='" + UserId + "' AND `attendance_date_id`='" + dateId + "' ");
+    }
+    
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
                 + "`employee_id` LIKE '%" + searchText + "%' OR "

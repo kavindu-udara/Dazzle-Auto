@@ -16,6 +16,10 @@ public class EmployeeController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
+    public ResultSet showByIdAndNIC(String id, String nic) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "' AND `nic`='" + nic + "' ");
+    }
+
     public ResultSet store(EmployeeModel employeeModel) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`, `nic`, `first_name`, `last_name`, `email`, `mobile`, `registered_date`, `employee_type_id`, `status_id`) "
                 + "VALUES ('" + employeeModel.getId() + "'"

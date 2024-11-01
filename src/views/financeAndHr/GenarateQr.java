@@ -86,7 +86,6 @@ public class GenarateQr extends java.awt.Dialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         employeeViewTable = new javax.swing.JTable();
         lblimage1 = new javax.swing.JLabel();
-        btnsave = new javax.swing.JButton();
         btnsaveqrat = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -136,16 +135,6 @@ public class GenarateQr extends java.awt.Dialog {
             }
         });
 
-        btnsave.setBackground(new java.awt.Color(204, 204, 0));
-        btnsave.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
-        btnsave.setForeground(new java.awt.Color(255, 255, 255));
-        btnsave.setText("SAVE QR");
-        btnsave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnsaveActionPerformed(evt);
-            }
-        });
-
         btnsaveqrat.setBackground(new java.awt.Color(153, 153, 153));
         btnsaveqrat.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         btnsaveqrat.setForeground(new java.awt.Color(255, 255, 255));
@@ -171,17 +160,11 @@ public class GenarateQr extends java.awt.Dialog {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                                .addComponent(lblimage1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(45, 45, 45))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addComponent(btnsave, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnsaveqrat, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblimage1, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+                            .addComponent(btnsaveqrat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(45, 45, 45))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,9 +178,7 @@ public class GenarateQr extends java.awt.Dialog {
                 .addGap(158, 158, 158)
                 .addComponent(lblimage1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnsave, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnsaveqrat, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnsaveqrat, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -243,7 +224,7 @@ public class GenarateQr extends java.awt.Dialog {
         String jsonData = gson.toJson(data);
 
         out = QRCode.from(jsonData).withSize(322, 295).to(ImageType.PNG).stream();
-        
+
         try {
 
             byte[] imageData = out.toByteArray();
@@ -260,40 +241,6 @@ public class GenarateQr extends java.awt.Dialog {
     private void lblimage1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblimage1MouseClicked
 
     }//GEN-LAST:event_lblimage1MouseClicked
-
-    private void btnsaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveActionPerformed
-
-        try {
-            if (out == null) {
-
-                JOptionPane.showMessageDialog(null, "No Qr Generated");
-                return;
-            }
-
-            String defaultDir = BDUtility.getPath("resources/qrCodes");
-            File directory = new File(defaultDir);
-            if (!directory.exists()) {
-
-                directory.mkdirs();
-
-            }
-
-            File defaultFile = new File(directory, email + ".Jpg");
-            try {
-
-                java.nio.file.Files.write(defaultFile.toPath(), out.toByteArray());
-                JOptionPane.showMessageDialog(null, "QR Code saved successfully!");
-
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Error Saving Qr Code.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Something went wrong.");
-        }
-
-
-    }//GEN-LAST:event_btnsaveActionPerformed
 
     private void btnsaveqratActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsaveqratActionPerformed
 
@@ -357,7 +304,6 @@ public class GenarateQr extends java.awt.Dialog {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnsave;
     private javax.swing.JButton btnsaveqrat;
     private javax.swing.JTable employeeViewTable;
     private javax.swing.JLabel jLabel1;
