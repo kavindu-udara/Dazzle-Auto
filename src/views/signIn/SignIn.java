@@ -72,12 +72,12 @@ public class SignIn extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel2.setText("Sign In");
         jPanel2.add(jLabel2);
-        jLabel2.setBounds(166, 112, 112, 43);
+        jLabel2.setBounds(166, 112, 180, 43);
 
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel3.setText("Username");
         jPanel2.add(jLabel3);
-        jLabel3.setBounds(40, 201, 81, 22);
+        jLabel3.setBounds(40, 201, 83, 22);
 
         EmailField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jPanel2.add(EmailField);

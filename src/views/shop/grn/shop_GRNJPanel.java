@@ -9,11 +9,14 @@ import controllers.GrnItemsController;
 import controllers.StockController;
 import includes.IDGenarator;
 import includes.LoggerConfig;
+import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.BorderFactory;
@@ -38,6 +41,10 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
+import javax.swing.text.AbstractDocument;
 import models.GrnModel;
 import models.StockModel;
 
@@ -58,12 +65,21 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     public shop_GRNJPanel() {
         initComponents();
         GRNTableRender();
+        setDocumentFilters();
+
         GrnNumberField.setText(IDGenarator.GrnID());
         GrnNumberField.setEditable(false);
         EmployeeName.setText(LoginModel.getFirstName() + " " + LoginModel.getLastName());
         PaymenntField.setEditable(false);
         ProductIdField.setEditable(false);
         BrandNameField.setEditable(false);
+    }
+
+    private void setDocumentFilters() {
+        ((AbstractDocument) BuyingPriceField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) SellingPriceField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) QtyField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+
     }
 
     public void GRNTableRender() {
@@ -202,24 +218,25 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel1.setText("Product :");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, 20));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, 20));
 
         BrandNameField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jPanel2.add(BrandNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 140, 31));
+        jPanel2.add(BrandNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 150, 31));
 
         ProductSelectBtn.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         ProductSelectBtn.setForeground(new java.awt.Color(33, 43, 108));
         ProductSelectBtn.setText("SELECT");
+        ProductSelectBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         ProductSelectBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ProductSelectBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(ProductSelectBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 160, 31));
+        jPanel2.add(ProductSelectBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(293, 20, -1, 31));
 
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel2.setText("Product ID :");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, 20));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, 20));
 
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel5.setText("Brand Name :");
@@ -255,6 +272,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         AddGRNBtn.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         AddGRNBtn.setForeground(new java.awt.Color(255, 255, 255));
         AddGRNBtn.setText("ADD TO GRN");
+        AddGRNBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         AddGRNBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AddGRNBtnActionPerformed(evt);
@@ -266,6 +284,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         ClearAllBtn.setForeground(new java.awt.Color(255, 0, 0));
         ClearAllBtn.setText("CLEAR ALL");
         ClearAllBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        ClearAllBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         ClearAllBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ClearAllBtnActionPerformed(evt);
@@ -279,6 +298,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         SupplierSelectBtn.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         SupplierSelectBtn.setForeground(new java.awt.Color(33, 43, 108));
         SupplierSelectBtn.setText("SELECT");
+        SupplierSelectBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         SupplierSelectBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SupplierSelectBtnActionPerformed(evt);
@@ -288,10 +308,10 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         jPanel2.add(QtyField, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 20, 80, 31));
 
         ProductNameField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jPanel2.add(ProductNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 260, 31));
+        jPanel2.add(ProductNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 150, 31));
 
         ProductIdField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jPanel2.add(ProductIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 140, 31));
+        jPanel2.add(ProductIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 150, 31));
 
         SupplierNameField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jPanel2.add(SupplierNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, 150, 31));
@@ -329,6 +349,9 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         GRNViewTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 GRNViewTableMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                GRNViewTableMousePressed(evt);
             }
         });
         jScrollPane1.setViewportView(GRNViewTable);
@@ -384,6 +407,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         SaveGRN.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         SaveGRN.setForeground(new java.awt.Color(255, 255, 255));
         SaveGRN.setText("SAVE GRN");
+        SaveGRN.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         SaveGRN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SaveGRNActionPerformed(evt);
@@ -394,6 +418,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         ClearEverythigbtn.setForeground(new java.awt.Color(255, 0, 0));
         ClearEverythigbtn.setText("RESET ALL");
         ClearEverythigbtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        ClearEverythigbtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         ClearEverythigbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ClearEverythigbtnActionPerformed(evt);
@@ -495,7 +520,6 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
             jLabel17.setForeground(Color.BLACK);
             calculate();
-//        
         }
 
     }//GEN-LAST:event_PaymenntFieldKeyReleased
@@ -552,8 +576,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         SelectItems si = new SelectItems(null, true, this);
         si.setVisible(true);
-        GrnNumberField.setText(IDGenarator.GrnID());
-        GrnNumberField.setEditable(false);
+
 
     }//GEN-LAST:event_ProductSelectBtnActionPerformed
 
@@ -630,20 +653,19 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
     private void GRNViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GRNViewTableMouseClicked
 
-
     }//GEN-LAST:event_GRNViewTableMouseClicked
 
     private int Stockid;
 
     private void SaveGRNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveGRNActionPerformed
-        // TODO add your handling code here:
 
+//loading to GRN Table
         try {
+
             String GrnID = GrnNumberField.getText();
             String supplierId = SupplierIdField.getText();
             String paidAmount = PaymenntField.getText();
             String dateTimeForDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
             try {
 
                 GrnModel grnModel = new GrnModel();
@@ -664,33 +686,35 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while saving items to GRN table : " + e.getMessage());
+
         }
 
+//loading to Stock Table
         try {
+            for (int i = 0; i < GRNViewTable.getRowCount(); i++) {
+                String ProductId = String.valueOf(GRNViewTable.getValueAt(i, 0));
+                String qty = String.valueOf(GRNViewTable.getValueAt(i, 3));
+                String SellingPrice = String.valueOf(GRNViewTable.getValueAt(i, 5));
 
-            String ProductId = ProductIdField.getText();
-            String qty = QtyField.getText();
-            String SellingPrice = SellingPriceField.getText();
+                try {
 
-            try {
+                    StockModel stockModel = new StockModel();
 
-                StockModel stockModel = new StockModel();
+                    stockModel.setPrice(Double.parseDouble(SellingPrice));
+                    stockModel.setQty(Double.parseDouble(qty));
+                    stockModel.setProductId(ProductId);
 
-                stockModel.setPrice(Double.parseDouble(SellingPrice));
-                stockModel.setQty(Double.parseDouble(qty));
-                stockModel.setProductId(ProductId);
+                    ResultSet resultSet = new StockController().store(stockModel);
 
-                ResultSet resultSet = new StockController().store(stockModel);
-                //JOptionPane.showMessageDialog(this, "Add to Stock");
+                    if (resultSet.next()) {
+                        int Stokid = resultSet.getInt(1);
+                        Stockid = Stokid;
+                    }
 
-                if (resultSet.next()) {
-                    int Stokid = resultSet.getInt(1);
-                    Stockid = Stokid;
+                } catch (Exception e) {
+                    e.printStackTrace();
+
                 }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-
             }
 
         } catch (Exception e) {
@@ -698,27 +722,31 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
             logger.severe("Error while saving items to Stock table : " + e.getMessage());
         }
 
+//loading to GRN Items Table
         try {
-            String GrnID = GrnNumberField.getText();
-            String qty = QtyField.getText();
-            String SellingPrice = SellingPriceField.getText();
 
-            try {
-//                   
-                GrnItemsModel grnItemsModel = new GrnItemsModel();
+            for (int i = 0; i < GRNViewTable.getRowCount(); i++) {
+                String GrnID = GrnNumberField.getText();
+                String qty = String.valueOf(GRNViewTable.getValueAt(i, 3));
+                String SellingPrice = String.valueOf(GRNViewTable.getValueAt(i, 5));
 
-                grnItemsModel.setGrnId(GrnID);
-                grnItemsModel.setQty(Double.parseDouble(qty));
-                grnItemsModel.setPrice(Double.parseDouble(SellingPrice));
-                grnItemsModel.setStockId(Stockid);
+                try {
+                    GrnItemsModel grnItemsModel = new GrnItemsModel();
 
-                ResultSet resultSet = new GrnItemsController().store(grnItemsModel);
+                    grnItemsModel.setGrnId(GrnID);
+                    grnItemsModel.setQty(Double.parseDouble(qty));
+                    grnItemsModel.setPrice(Double.parseDouble(SellingPrice));
+                    grnItemsModel.setStockId(Stockid);
+
+                    ResultSet resultSet = new GrnItemsController().store(grnItemsModel);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
                 JOptionPane.showMessageDialog(this, "Add to GRN ,GRN Items & Stock");
                 reset();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-
             }
 
         } catch (Exception e) {
@@ -727,6 +755,8 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         }
         resetInputs();
+        GrnNumberField.setText(IDGenarator.GrnID());
+        GrnNumberField.setEditable(false);
 
 
     }//GEN-LAST:event_SaveGRNActionPerformed
@@ -741,6 +771,50 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_ClearEverythigbtnActionPerformed
 
+
+    private void GRNViewTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GRNViewTableMousePressed
+
+        if (SwingUtilities.isRightMouseButton(evt) && GRNViewTable.getSelectedRow() != -1) {
+            int row = GRNViewTable.rowAtPoint(evt.getPoint());
+            GRNViewTable.setRowSelectionInterval(row, row);
+            showContextMenu(evt, row);
+        }
+
+    }//GEN-LAST:event_GRNViewTableMousePressed
+
+    private void showContextMenu(MouseEvent evt, int row) {
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem deleteItem = new JMenuItem("Delete");
+
+        deleteItem.addActionListener(e -> deleteRow(row));
+        popupMenu.add(deleteItem);
+
+        popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+    }
+
+    private void deleteRow(int row) {
+        
+        DefaultTableModel dtm = (DefaultTableModel) GRNViewTable.getModel();
+
+        for (int i = 0; i < GRNViewTable.getRowCount(); i++) {
+            
+            String productId = (String) dtm.getValueAt(i, 0);
+            String supplierId = (String) dtm.getValueAt(i, 6);
+            String brand = (String) dtm.getValueAt(i, 1);
+
+            String compositeKey = productId + "" + supplierId + "" + brand;
+
+            // Remove from HashMap
+            GrnItemMap.remove(compositeKey);
+
+            // Remove from table model
+            dtm.removeRow(row);
+        }
+
+        JOptionPane.showMessageDialog(null, "Row deleted successfully.");
+        
+    }
+
     public void loadGrnItem() {
         DefaultTableModel dtm = (DefaultTableModel) GRNViewTable.getModel();
         dtm.setRowCount(0);
@@ -748,6 +822,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         for (GrnItemsModel grnItem : GrnItemMap.values()) {
 
             Vector<String> vector = new Vector<>();
+
             vector.add(grnItem.getProductId());
             vector.add(grnItem.getBrandName());
             vector.add(grnItem.getProductName());
@@ -773,8 +848,6 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         BuyingPriceField.setText("");
         SellingPriceField.setText("");
         QtyField.setText("");
-        GrnNumberField.setEditable(true);
-        GrnNumberField.setText("");
         SupplierNameField.setText("");
 
     }
