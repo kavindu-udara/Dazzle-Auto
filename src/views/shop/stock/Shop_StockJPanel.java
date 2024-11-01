@@ -410,6 +410,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         sortby();
+        resetPricePanel();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void StockViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StockViewTableMouseClicked
@@ -429,6 +430,10 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_StockViewTableMouseClicked
 
+        private void resetPricePanel() {
+            PriceFrom.setText("");
+            PriceTo.setText("");
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton PriceFindBtn2;
