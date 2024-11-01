@@ -16,28 +16,34 @@ import java.util.Date;
  * @author kavindu
  */
 public class TimestampsGenerator {
-    
-    public static Instant getInstant(){
+
+    public static Instant getInstant() {
         return Instant.now();
     }
 
-    public static LocalDateTime getLocalDateTime(){
+    public static LocalDateTime getLocalDateTime() {
         return LocalDateTime.now();
     }
 
-    public static ZonedDateTime getZonedDateTime(){
+    public static ZonedDateTime getZonedDateTime() {
         return ZonedDateTime.now();
     }
 
-    public static String getFormattedDateTime(){
+    public static String getFormattedDateTime() {
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return currentDateTime.format(formatter);
     }
 
-    public static String getTodayDate(){
+    public static String getTodayDate() {
         Date date = new Date();
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
         return dateformat.format(date);
+    }
+
+    public static String getCurrentTime() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return currentTime.format(timeFormatter);
     }
 }

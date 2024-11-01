@@ -15,33 +15,19 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import controllers.AttendanceDateController;
 import controllers.EmployeeAttendanceController;
 import controllers.EmployeeController;
-import includes.BDUtility;
 import includes.LoggerConfig;
 import includes.TimestampsGenerator;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.HeadlessException;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,10 +35,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
@@ -70,11 +53,21 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
     private ExecutorService executor = Executors.newSingleThreadExecutor(this);
     private volatile boolean running = true;
 
+    private String action = "";
+
+    private String todayDate = TimestampsGenerator.getTodayDate();
+
+    private Runnable actionMethod;
+
     /**
      * Creates new form MarkAttendance
+     *
+     * @param action
      */
-    public MarkAttendance(java.awt.Frame parent, boolean modal) {
+    public MarkAttendance(java.awt.Frame parent, boolean modal, String action, Runnable actionMethod) {
         super(parent, modal);
+        this.action = action;
+        this.actionMethod = actionMethod;
         initComponents();
         initwebcam();
         Timer timer = new Timer(1, e -> updateTime());
@@ -92,16 +85,13 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
 
     @Override
     public void run() {
-
         do {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 logger.severe("Error while Thread Sleep : " + ex.getMessage());
             }
-
             try {
-
                 Result result = null;
                 BufferedImage image = null;
                 if (webcam.isOpen()) {
@@ -109,16 +99,17 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
                         continue;
                     }
                 }
-
                 LuminanceSource source = new BufferedImageLuminanceSource(image);
                 BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 
                 try {
                     result = new MultiFormatReader().decode(bitmap);
                 } catch (NotFoundException ex) {
-                    logger.severe("NotFoundException : " + ex.getMessage());
+//                    logger.severe("NotFoundException : " + ex.getMessage());
                 }
                 if (result != null) {
+
+                    JOptionPane.showMessageDialog(null, "User found : " + result.getText());
 
                     String jsonstring = result.getText();
                     Gson gson = new Gson();
@@ -127,9 +118,13 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
 
                     resultMap = gson.fromJson(jsonstring, type);
 
-                    String finalpath = BDUtility.getPath("resources/qrCodes/" + resultMap.get("email") + ".jpg");
-                    CircularImageFrame(finalpath);
-
+                    if (action != "") {
+                        if (action == "checkin") {
+                            checkInEmployer(resultMap);
+                        } else if (action == "checkout") {
+                            checkOutEmployer(resultMap);
+                        }
+                    }
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -137,6 +132,80 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
 
         } while (running);
 
+    }
+
+    private ResultSet getAttendanceDateResultSet() throws Exception {
+        return new AttendanceDateController().show(todayDate);
+    }
+
+    private ResultSet gentEmployerResultSet() throws Exception {
+        return new EmployeeController().showByIdAndNIC(resultMap.get("id"), resultMap.get("nic"));
+    }
+
+    private void checkInEmployer(Map<String, String> resultMap) {
+
+        int dateId = 0;
+        try {
+            ResultSet dateResultSet = getAttendanceDateResultSet();
+            if (dateResultSet.next()) {
+                dateId = dateResultSet.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String currentTime = TimestampsGenerator.getCurrentTime();
+        if (dateId != 0) {
+            try {
+                ResultSet employeeResultSet = gentEmployerResultSet();
+                if (employeeResultSet.next()) {
+                    try {
+                        ResultSet checkInResultSet = new EmployeeAttendanceController().updateCheckInByUserId(currentTime, employeeResultSet.getString("id"), dateId);
+                        JOptionPane.showMessageDialog(null, "mark attendance success");
+                        actionMethod.run();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "employee not found");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void checkOutEmployer(Map<String, String> resultMap) {
+
+        int dateId = 0;
+        try {
+            ResultSet dateResultSet = getAttendanceDateResultSet();
+            if (dateResultSet.next()) {
+                dateId = dateResultSet.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String currentTime = TimestampsGenerator.getCurrentTime();
+        if (dateId != 0) {
+            try {
+                ResultSet employeeResultSet = gentEmployerResultSet();
+                if (employeeResultSet.next()) {
+                    try {
+                        ResultSet checkInResultSet = new EmployeeAttendanceController().updateCheckOutByUserId(currentTime, employeeResultSet.getString("id"), dateId);
+                        JOptionPane.showMessageDialog(null, "mark attendance success");
+                        actionMethod.run();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "employee not found");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -162,8 +231,7 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
         lbltime2 = new javax.swing.JLabel();
         lblimage = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        lblname = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -193,14 +261,12 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
             }
         });
 
-        jLabel3.setText("jLabel3");
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
+        jButton1.setText("close webcam");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
-
-        lblname.setText("jLabel4");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -211,28 +277,23 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
                 .addComponent(webcampanel, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(80, 80, 80)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbltime2, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(80, 80, 80)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lbltime2, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel1)
-                                        .addGap(37, 37, 37))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(69, 69, 69)
-                                .addComponent(lblname)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblimage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(100, 100, 100))
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addGap(37, 37, 37))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(113, 113, 113)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblimage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1)))))
+                .addGap(100, 100, 100))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,18 +308,13 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
                         .addComponent(lbltime2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(lblimage, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(63, 63, 63)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(53, 53, 53)
-                                .addComponent(lblname))))
+                        .addGap(63, 63, 63)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(webcampanel, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(webcampanel, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -288,50 +344,20 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
 
     }//GEN-LAST:event_lblimageMouseClicked
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-
-        running = false;
         stopwebcam();
-
-        if (executor != null && !executor.isShutdown()) {
-
-            executor.shutdown();
-
-        }
-
-//        cashierdash dash = new cashierdash();
-//        dash.setVisible(true);
-//        this.dispose();
-    }//GEN-LAST:event_jLabel3MouseClicked
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                MarkAttendance dialog = new MarkAttendance(new java.awt.Frame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblcheckinchechout;
     private javax.swing.JLabel lblimage;
-    private javax.swing.JLabel lblname;
     private javax.swing.JLabel lbltime2;
     private javax.swing.JPanel webcampanel;
     // End of variables declaration//GEN-END:variables
@@ -339,6 +365,7 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
     private void initwebcam() {
 
         webcam = webcam.getDefault();
+
         if (webcam != null) {
 
             Dimension[] resolutions = webcam.getViewSizes();
@@ -371,68 +398,8 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
             webcam.close();
         }
     }
+
     private BufferedImage image = null;
-
-    private void CircularImageFrame(String imagepath) {
-
-        try {
-
-            ResultSet employeeResultSet = new EmployeeController().show(resultMap.get("id"));
-
-            if (!employeeResultSet.next()) {
-                JOptionPane.showMessageDialog(null, "This employee doesn't registered ! ");
-                return;
-            }
-
-            image = null;
-            File imageFile = new File(imagepath);
-
-            if (imageFile.exists()) {
-
-                try {
-                    image = ImageIO.read(new File(imagepath));
-                    image = createCircularImage(image);
-                    ImageIcon icon = new ImageIcon(image);
-                    lblimage.setIcon(icon);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    logger.severe("Error while read image file : " + ex.getMessage());
-                }
-            } else {
-
-                BufferedImage imageee = new BufferedImage(300, 300, BufferedImage.TYPE_INT_ARGB);
-                Graphics2D g2d = imageee.createGraphics();
-
-                g2d.setColor(Color.BLACK);
-                g2d.fillOval(25, 25, 250, 250);
-
-                g2d.setFont(new Font("Serif", Font.BOLD, 250));
-                g2d.setColor(Color.WHITE);
-                g2d.drawString(String.valueOf(resultMap.get("name").charAt(0)).toUpperCase(), 75, 225);
-                g2d.dispose();
-
-                ImageIcon imageIcon = new ImageIcon(imageee);
-                lblimage.setIcon(imageIcon);
-//                this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                this.pack();
-                this.setLocationRelativeTo(null);
-                this.setVisible(true);
-
-            }
-
-            lblname.setHorizontalAlignment(JLabel.CENTER);
-            lblname.setText(resultMap.get("name"));
-
-            if (!checkInCheckout()) {
-
-                return;
-
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 
     private void showPopUpForCertainDuration(String popUpMesssage, String popUpHeader, Integer iconId) throws HeadlessException {
 
@@ -457,66 +424,15 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
         lblcheckinchechout.setBackground(null);
         lblcheckinchechout.setForeground(null);
         lblcheckinchechout.setOpaque(false);
-        lblname.setText("");
         lblimage.setIcon(null);
 
     }
 
-    private BufferedImage createCircularImage(BufferedImage image) {
-
-        int diameter = 285;
-        BufferedImage resizedImage = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImage.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(image, 0, 0, diameter, diameter, null);
-        g2.dispose();
-        BufferedImage circularImage = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
-        g2 = circularImage.createGraphics();
-        Ellipse2D.Double circle = new Ellipse2D.Double(0, 0, diameter, diameter);
-        g2.setClip(circle);
-        g2.drawImage(resizedImage, 0, 0, null);
-        g2.dispose();
-        return circularImage;
-
-    }
-
-    private boolean checkInCheckout() throws HeadlessException, SQLException {
-
-        String popUpHeader = null;
-        String popUpMessage = null;
-        Color color = null;
-
-        String timeStamp = TimestampsGenerator.getFormattedDateTime();
-
-        try {
-            ResultSet empAttendanceResultSet = new EmployeeAttendanceController().show(resultMap.get("id"), timeStamp);
-            
-            if(empAttendanceResultSet.next()){
-                JOptionPane.showMessageDialog(null , "Already added");
-            }else{
-                // TODO : store attendance
-                
-                JOptionPane.showMessageDialog(null , "Need to code store process 510");
-            }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.severe("Error while showing attendance : "+e.getMessage());
-        }
-
-        return Boolean.TRUE;
-    }
-
     @Override
     public void paint(Graphics g) {
-
         super.paint(g);
         if (image != null) {
-
             g.drawImage(image, 0, 0, null);
-
         }
-
     }
-
 }

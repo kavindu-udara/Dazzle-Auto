@@ -11,10 +11,12 @@ package models;
 public class EmployeeAttendance {
 
     private int id;
-    private int employeeId;
-    private String date;
-    private String onTime;
-    private String offTime;
+    private int attendanceStatusId;
+    private String employeeId;
+    private int attendanceDateId;
+    private String checkin;
+    private String checkout;
+    
 
     /**
      * @return the id
@@ -33,57 +35,71 @@ public class EmployeeAttendance {
     /**
      * @return the employeeId
      */
-    public int getEmployeeId() {
+    public String getEmployeeId() {
         return employeeId;
     }
 
     /**
      * @param employeeId the employeeId to set
      */
-    public void setEmployeeId(int employeeId) {
+    public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
 
     /**
-     * @return the date
+     * @return the attendanceStatusId
      */
-    public String getDate() {
-        return date;
+    public int getAttendanceStatusId() {
+        return attendanceStatusId;
     }
 
     /**
-     * @param date the date to set
+     * @param attendanceStatusId the attendanceStatusId to set
      */
-    public void setDate(String date) {
-        this.date = date;
+    public void setAttendanceStatusId(int attendanceStatusId) {
+        this.attendanceStatusId = attendanceStatusId;
     }
 
     /**
-     * @return the onTime
+     * @return the checkin
      */
-    public String getOnTime() {
-        return onTime;
+    public String getCheckin() {
+        return checkin;
     }
 
     /**
-     * @param onTime the onTime to set
+     * @param checkin the checkin to set
      */
-    public void setOnTime(String onTime) {
-        this.onTime = onTime;
+    public void setCheckin(String checkin) {
+        this.checkin = checkin;
     }
 
     /**
-     * @return the offTime
+     * @return the checkout
      */
-    public String getOffTime() {
-        return offTime;
+    public String getCheckout() {
+        return checkout;
     }
 
     /**
-     * @param offTime the offTime to set
+     * @param checkout the checkout to set
      */
-    public void setOffTime(String offTime) {
-        this.offTime = offTime;
+    public void setCheckout(String checkout) {
+        this.checkout = checkout;
+    }
+
+    /**
+     * @return the attendanceDateId
+     */
+    public int getAttendanceDateId() {
+        return attendanceDateId;
+    }
+
+    /**
+     * @param attendanceDateId the attendanceDateId to set
+     */
+    public void setAttendanceDateId(int attendanceDateId) {
+        this.attendanceDateId = attendanceDateId;
     }
 
 }
