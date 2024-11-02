@@ -535,6 +535,7 @@ public class ShopInvoice extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setToolTipText("Double click to remove row");
         jTable1.setRowHeight(30);
         jTable1.getTableHeader().setReorderingAllowed(false);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {

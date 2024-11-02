@@ -509,6 +509,7 @@
                     <Column editable="false" title="Total" type="java.lang.Object"/>
                   </Table>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Double click to remove row"/>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="90" minWidth="-1" prefWidth="150" resizable="true">

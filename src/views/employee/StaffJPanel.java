@@ -24,13 +24,19 @@ import controllers.EmployeeTypeController;
 import controllers.StatusController;
 import includes.LoggerConfig;
 import includes.MySqlConnection;
+import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 import models.EmployeeModel;
+import raven.toast.Notifications;
+import views.dashboard.Dashboard;
 import views.settings.AddAndUpdateAccessJDialog;
+import views.shop.payments.ShopInvoiceItemsPanel;
 
 /**
  *
@@ -48,8 +54,11 @@ public class StaffJPanel extends javax.swing.JPanel {
     String From = "";
     String BaseFrame = "";
 
-    public StaffJPanel() {
+    Dashboard Dashboard = null;
+
+    public StaffJPanel(Dashboard dashboard) {
         initComponents();
+        this.Dashboard = dashboard;
         loadEmployees();
         employeeViewTable.clearSelection();
 
@@ -58,6 +67,7 @@ public class StaffJPanel extends javax.swing.JPanel {
         employeeViewTableRender();
 
         this.staffJPanel = this;
+        Notifications.getInstance().setJFrame(dashboard);
     }
 
     //Constructer for EmployeeSelecter
@@ -146,7 +156,6 @@ public class StaffJPanel extends javax.swing.JPanel {
             ResultSet employeeTypeResultSet = new EmployeeTypeController().show();
             ResultSet statusResultSet = new StatusController().show();
             ResultSet employeeImageResultSet = new EmployeeImageController().show();
-            ResultSet emploResultSet = new EmployeeController().search(BaseFrame);
 
             HashMap<Integer, String> employeeTypeMap = new HashMap<>();
             HashMap<Integer, String> statusMap = new HashMap<>();
@@ -295,6 +304,8 @@ public class StaffJPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         mainPanel = new javax.swing.JPanel();
         jSeparator2 = new javax.swing.JSeparator();
         jPanel3 = new javax.swing.JPanel();
@@ -307,6 +318,17 @@ public class StaffJPanel extends javax.swing.JPanel {
         jSortComboBox = new javax.swing.JComboBox<>();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
+
+        jMenuItem1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/details-35.png"))); // NOI18N
+        jMenuItem1.setText(" View Profile");
+        jMenuItem1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem1);
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
         setPreferredSize(new java.awt.Dimension(1100, 610));
@@ -334,10 +356,15 @@ public class StaffJPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        employeeViewTable.setToolTipText("Right Click Employee to view Profile");
+        employeeViewTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         employeeViewTable.setFocusable(false);
         employeeViewTable.setRowHeight(30);
         employeeViewTable.getTableHeader().setReorderingAllowed(false);
         employeeViewTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                employeeViewTableMouseReleased(evt);
+            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 employeeViewTableMouseClicked(evt);
             }
@@ -484,45 +511,49 @@ public class StaffJPanel extends javax.swing.JPanel {
     private void employeeViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeViewTableMouseClicked
 
         int row = employeeViewTable.getSelectedRow();
-        String employeeId = String.valueOf(employeeViewTable.getValueAt(row, 0));
-        String nic = String.valueOf(employeeViewTable.getValueAt(row, 1));
-        String firstName = String.valueOf(employeeViewTable.getValueAt(row, 2));
-        String lastName = String.valueOf(employeeViewTable.getValueAt(row, 3));
-        String email = String.valueOf(employeeViewTable.getValueAt(row, 4));
-        String mobile = String.valueOf(employeeViewTable.getValueAt(row, 5));
-        String employeeType = String.valueOf(employeeViewTable.getValueAt(row, 7));
 
-        if (From.equals("Selecter")) {
+        if (row != -1) {
+            String employeeId = String.valueOf(employeeViewTable.getValueAt(row, 0));
+            String nic = String.valueOf(employeeViewTable.getValueAt(row, 1));
+            String firstName = String.valueOf(employeeViewTable.getValueAt(row, 2));
+            String lastName = String.valueOf(employeeViewTable.getValueAt(row, 3));
+            String email = String.valueOf(employeeViewTable.getValueAt(row, 4));
+            String mobile = String.valueOf(employeeViewTable.getValueAt(row, 5));
+            String employeeType = String.valueOf(employeeViewTable.getValueAt(row, 7));
 
-            if (BaseFrame.equals("AddAndUpdateAccessJDialog")) {
-                addAndUpdateAccessJDialog.setEmployeeDetails(employeeId, nic, firstName, lastName, employeeType);
-            }
+            if (From.equals("Selecter")) {
 
-            employeeSelectorFrame.dispose();
-
-        } else {
-
-            if (evt.getClickCount() == 2 && row != -1) {
-
-                EmployeeModel employeeModel = new EmployeeModel();
-                employeeModel.setId(employeeId);
-                employeeModel.setFirstName(firstName);
-                employeeModel.setLastName(lastName);
-                employeeModel.setEmail(email);
-                employeeModel.setNic(nic);
-                employeeModel.setMobile(mobile);
-                employeeModel.setEmployeeTypeName(employeeType);
-
-                try {
-                    Frame staffJPanel = null;
-                    EmployeeUpdate employeeUpdate = new EmployeeUpdate(staffJPanel, true, employeeModel);
-                    employeeUpdate.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    logger.severe("Error while showing employee update dialog : " + e.getMessage());
+                if (BaseFrame.equals("AddAndUpdateAccessJDialog")) {
+                    addAndUpdateAccessJDialog.setEmployeeDetails(employeeId, nic, firstName, lastName, employeeType);
                 }
 
-                loadEmployees();
+                employeeSelectorFrame.dispose();
+
+            } else {
+
+                if (evt.getClickCount() == 2) {
+
+                    EmployeeModel employeeModel = new EmployeeModel();
+                    employeeModel.setId(employeeId);
+                    employeeModel.setFirstName(firstName);
+                    employeeModel.setLastName(lastName);
+                    employeeModel.setEmail(email);
+                    employeeModel.setNic(nic);
+                    employeeModel.setMobile(mobile);
+                    employeeModel.setEmployeeTypeName(employeeType);
+
+                    try {
+                        Frame staffJPanel = null;
+                        EmployeeUpdate employeeUpdate = new EmployeeUpdate(staffJPanel, true, employeeModel);
+                        employeeUpdate.setVisible(true);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        logger.severe("Error while showing employee update dialog : " + e.getMessage());
+                    }
+
+                    loadEmployees();
+                }
+
             }
 
         }
@@ -563,6 +594,37 @@ public class StaffJPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jSortComboBoxItemStateChanged
 
+    private void employeeViewTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeViewTableMouseReleased
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            int row = employeeViewTable.getSelectedRow();
+            if (row != -1) {
+                jPopupMenu1.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+    }//GEN-LAST:event_employeeViewTableMouseReleased
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+
+        int row = employeeViewTable.getSelectedRow();
+
+        if (row != -1) {
+            String empID = String.valueOf(employeeViewTable.getValueAt(row, 0));
+
+            Dashboard.jStaffPanel.remove(this);
+            SwingUtilities.updateComponentTreeUI(Dashboard.jStaffPanel);
+
+            EmployeeFullDetailsPanel employeeFullDetailsPanel = new EmployeeFullDetailsPanel(Dashboard, empID);
+            Dashboard.jStaffPanel.add(employeeFullDetailsPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(Dashboard.jStaffPanel);
+        } else {
+            Notifications.getInstance().show(
+                    Notifications.Type.ERROR,
+                    Notifications.Location.TOP_RIGHT,
+                    "Select User For View Profile");
+        }
+
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField employeeFindField;
@@ -570,7 +632,9 @@ public class StaffJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JButton jRegNewEmployeeButton;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;

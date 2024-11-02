@@ -533,6 +533,7 @@ public class MainInvoice extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setToolTipText("Double click to remove row");
         jTable1.setFocusable(false);
         jTable1.setRowHeight(30);
         jTable1.getTableHeader().setReorderingAllowed(false);

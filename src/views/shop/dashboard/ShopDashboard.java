@@ -438,6 +438,7 @@ public class ShopDashboard extends javax.swing.JFrame {
         jHeaderPanel.add(jEmployeeRoleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 70, 120, 20));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/ounded-30.png"))); // NOI18N
+        jButton1.setToolTipText("LogOut");
         jButton1.setBorderPainted(false);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.setFocusPainted(false);
