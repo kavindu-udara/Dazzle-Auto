@@ -40,7 +40,7 @@ public class viewReportFramePanelAction extends javax.swing.JPanel {
         cmdDelete.setBackground(new java.awt.Color(255, 227, 213));
         cmdDelete.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         cmdDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/analysis-30.png"))); // NOI18N
-        cmdDelete.setText("  Genarate Report");
+        cmdDelete.setText("  Genarate");
         cmdDelete.setToolTipText("Change Status");
         cmdDelete.setBorderPainted(false);
         cmdDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -57,7 +57,7 @@ public class viewReportFramePanelAction extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cmdDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmdDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(

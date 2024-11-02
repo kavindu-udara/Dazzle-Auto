@@ -38,7 +38,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     LoginModel loginModel;
 
-    StaffJPanel staffJPanel = null;
+    public StaffJPanel staffJPanel = null;
     DashboardPanel dashboardPanel = null;
     public PaymentsPanel paymentPanel = null;
     AppointmnetPanel appointmnetPanel = null;
@@ -346,6 +346,7 @@ public class Dashboard extends javax.swing.JFrame {
         empImageLabel.setPreferredSize(new java.awt.Dimension(56, 56));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/log-out-40.png"))); // NOI18N
+        jButton1.setToolTipText("LogOut");
         jButton1.setBorderPainted(false);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.setFocusPainted(false);
@@ -434,7 +435,7 @@ public class Dashboard extends javax.swing.JFrame {
         jTabbedPane1.setSelectedIndex(8);
 
         if (staffJPanel == null) {
-            staffJPanel = new StaffJPanel();
+            staffJPanel = new StaffJPanel(this);
             jStaffPanel.add(staffJPanel, BorderLayout.CENTER);
             SwingUtilities.updateComponentTreeUI(this);
         }
@@ -576,7 +577,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton jReportsButton;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton jStaffButton;
-    private javax.swing.JPanel jStaffPanel;
+    public javax.swing.JPanel jStaffPanel;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton jVehiclesButton;
     private javax.swing.JPanel jVehiclesPanel;

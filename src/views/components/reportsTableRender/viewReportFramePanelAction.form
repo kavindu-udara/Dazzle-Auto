@@ -23,7 +23,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="cmdDelete" min="-2" pref="212" max="-2" attributes="0"/>
+              <Component id="cmdDelete" min="-2" pref="177" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -50,7 +50,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/resources/icons/analysis-30.png"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="  Genarate Report"/>
+        <Property name="text" type="java.lang.String" value="  Genarate"/>
         <Property name="toolTipText" type="java.lang.String" value="Change Status"/>
         <Property name="borderPainted" type="boolean" value="false"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
