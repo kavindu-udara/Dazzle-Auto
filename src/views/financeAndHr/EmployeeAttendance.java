@@ -10,12 +10,22 @@ import controllers.EmployeeAttendanceController;
 import controllers.EmployeeController;
 import includes.LoggerConfig;
 import includes.TimestampsGenerator;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import models.AttendanceDateModel;
 
 /**
@@ -38,6 +48,7 @@ public class EmployeeAttendance extends javax.swing.JPanel {
     public EmployeeAttendance() {
         initComponents();
         getAttendanceStatusResultSet();
+        AttendanceTableRender();
         todayDateLabel.setText(todayDate);
         isRowsCreted();
         if (todayDateId != 0) {
@@ -61,11 +72,14 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         todayDateLabel = new javax.swing.JLabel();
         checkInButton = new javax.swing.JButton();
         checkOutButton = new javax.swing.JButton();
+        Date = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
 
         setMinimumSize(new java.awt.Dimension(1089, 579));
         setPreferredSize(new java.awt.Dimension(1089, 579));
 
         jPanel1.setBackground(new java.awt.Color(250, 250, 250));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         attendanceTable.setFont(new java.awt.Font("Roboto", 1, 15)); // NOI18N
         attendanceTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -93,63 +107,61 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(attendanceTable);
 
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 101, 1042, 458));
+
         jButton4.setText("CONFIG");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(935, 32, 124, 42));
 
+        todayDateLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        todayDateLabel.setForeground(new java.awt.Color(242, 153, 5));
         todayDateLabel.setText("Today Date");
+        jPanel1.add(todayDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(801, 40, -1, -1));
 
-        checkInButton.setText("checkin");
+        checkInButton.setBackground(new java.awt.Color(33, 43, 108));
+        checkInButton.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        checkInButton.setForeground(new java.awt.Color(255, 255, 255));
+        checkInButton.setText("CHECK IN");
+        checkInButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         checkInButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkInButtonActionPerformed(evt);
             }
         });
+        jPanel1.add(checkInButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 31, 131, 44));
 
-        checkOutButton.setText("checkout");
+        checkOutButton.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        checkOutButton.setForeground(new java.awt.Color(33, 43, 108));
+        checkOutButton.setText("CHECK OUT");
+        checkOutButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(33, 43, 108)));
+        checkOutButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         checkOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkOutButtonActionPerformed(evt);
             }
         });
+        jPanel1.add(checkOutButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(176, 30, 123, 44));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1055, Short.MAX_VALUE)
-                .addGap(17, 17, 17))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(todayDateLabel)
-                    .addComponent(checkInButton))
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
-                    .addComponent(checkOutButton))
-                .addGap(48, 48, 48))
+        Date.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        Date.setText("Today :");
+        jPanel1.add(Date, new org.netbeans.lib.awtextra.AbsoluteConstraints(736, 40, -1, -1));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1090, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkInButton)
-                    .addComponent(checkOutButton))
-                .addGap(48, 48, 48)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(todayDateLabel))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1090, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -163,6 +175,34 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public void AttendanceTableRender() {
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        JTableHeader tableHeader = attendanceTable.getTableHeader();
+
+        tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Font headerFont = new Font("Verdana", Font.BOLD, 14);
+                label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
+                label.setFont(headerFont);
+                label.setBackground(new Color(33, 43, 108)); // Optional: Set header background color
+                label.setForeground(Color.WHITE); // Optional: Set header text color
+                label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+                return label;
+            }
+        });
+
+        tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
+
+        for (int i = 0; i < 3; i++) {
+            attendanceTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
     private void attendanceTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_attendanceTableMouseClicked
 
         //
@@ -307,11 +347,13 @@ public class EmployeeAttendance extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Date;
     private javax.swing.JTable attendanceTable;
     private javax.swing.JButton checkInButton;
     private javax.swing.JButton checkOutButton;
     private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel todayDateLabel;
     // End of variables declaration//GEN-END:variables

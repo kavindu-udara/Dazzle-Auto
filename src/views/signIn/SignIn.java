@@ -109,7 +109,7 @@ public class SignIn extends javax.swing.JFrame {
             }
         });
         jPanel2.add(SignInButton);
-        SignInButton.setBounds(139, 319, 220, 40);
+        SignInButton.setBounds(139, 319, 220, 50);
 
         jButton2.setBackground(new java.awt.Color(5, 15, 76));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/eye.png"))); // NOI18N
