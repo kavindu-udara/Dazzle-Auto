@@ -278,6 +278,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         PriceFindBtn2.setForeground(new java.awt.Color(5, 15, 76));
         PriceFindBtn2.setText("FIND");
         PriceFindBtn2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(5, 15, 76)));
+        PriceFindBtn2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         PriceFindBtn2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PriceFindBtn2ActionPerformed(evt);
@@ -290,6 +291,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/refresh-yellow.png"))); // NOI18N
         jButton1.setText("Refresh");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(222, 123, 14)));
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
