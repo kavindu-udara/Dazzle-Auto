@@ -9,3 +9,4 @@
 !/src/resources/qrCodes/.gitkeep
 /logs/*
 !/logs/.gitkeep
+hs_err_pid7308.log
