@@ -4,6 +4,7 @@
  */
 package views.employee;
 
+import com.google.gson.Gson;
 import controllers.EmployeeController;
 import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
@@ -19,11 +20,16 @@ import views.dashboard.Dashboard;
 import includes.LoggerConfig;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.table.TableModel;
 import models.EmployeeImageModel;
+import net.glxn.qrgen.core.image.ImageType;
+import net.glxn.qrgen.javase.QRCode;
 
 /**
  *
@@ -34,10 +40,13 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
     private static Logger logger = LoggerConfig.getLogger();
 
     Dashboard Dashboard = null;
+    ByteArrayOutputStream out = null;
+    String empId;
 
     public EmployeeFullDetailsPanel(Dashboard dashboard, String empID) {
         initComponents();
         this.Dashboard = dashboard;
+        this.empId = empID;
 
         jLabel1.setText("  Employee Profile - " + empID);
         employeeIDLabel.setText(empID);
@@ -47,13 +56,15 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
     private void setEmployeeDetails() {
         try {
 
-            ResultSet employeeResultSet = new EmployeeController().show(employeeIDLabel.getText());
+            ResultSet employeeResultSet = new EmployeeController().show(empId);
             if (employeeResultSet.next()) {
                 ResultSet employeeTypeResultSet = new EmployeeTypeController().show(employeeResultSet.getInt("employee_type_id"));
                 if (employeeTypeResultSet.next()) {
                     String employeeTypeName = employeeTypeResultSet.getString("type");
                     String employeeSalary = employeeTypeResultSet.getString("basic_salary");
                     empTypeLabel.setText(employeeTypeName);
+                    employeeTypeInId.setText(employeeTypeName);
+
                     salaryLable.setText(employeeSalary);
                 }
 
@@ -64,12 +75,20 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
                 }
 
                 nicLabel.setText(employeeResultSet.getString("nic"));
+                nicInId.setText(employeeResultSet.getString("nic"));
+
                 nameLabel.setText(employeeResultSet.getString("first_name") + " " + employeeResultSet.getString("last_name"));
+                nameInId.setText(employeeResultSet.getString("first_name") + " " + employeeResultSet.getString("last_name"));
+
                 emailLabel.setText(employeeResultSet.getString("email"));
+
                 mobileLabel.setText(employeeResultSet.getString("mobile"));
+                mobileInId.setText(employeeResultSet.getString("mobile"));
+
                 regDateLabel.setText(employeeResultSet.getString("registered_date"));
 
                 loadAmployeeImage();
+                loadQr(empId, employeeResultSet.getString("nic"), employeeResultSet.getString("mobile"));
             }
 
         } catch (Exception e) {
@@ -101,7 +120,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
                     // Initialize ImageIcon with the image path
                     ImageIcon icon = new ImageIcon(imagepath);
                     // Get the image and scale it
-                    Image image = icon.getImage().getScaledInstance(140, 170, Image.SCALE_SMOOTH);
+                    Image image = icon.getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH);
                     // Create the resized icon
                     ImageIcon resizedIcon = new ImageIcon(image);
                     // Set it to the label
@@ -119,6 +138,29 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
             logger.severe("Error while loading employee image : " + e.getMessage());
         }
 
+    }
+
+    private void loadQr(String id, String nic, String mobile) {
+
+        Map<String, String> data = new HashMap<>();
+        data.put("id", id);
+        data.put("nic", nic);
+        data.put("mobile", mobile);
+
+        Gson gson = new Gson();
+        String jsonData = gson.toJson(data);
+
+        out = QRCode.from(jsonData).withSize(170, 170).to(ImageType.PNG).stream();
+
+        try {
+
+            byte[] imageData = out.toByteArray();
+            ImageIcon icon = new ImageIcon(imageData);
+            qrLabel.setIcon(icon);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.severe("Error while loading loadQr : " + ex.getMessage());
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -151,6 +193,11 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         salaryLable = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         employeeImgLabel = new javax.swing.JLabel();
+        nicInId = new javax.swing.JLabel();
+        nameInId = new javax.swing.JLabel();
+        mobileInId = new javax.swing.JLabel();
+        employeeTypeInId = new javax.swing.JLabel();
+        qrLabel = new javax.swing.JLabel();
         idFront = new javax.swing.JLabel();
         idBack = new javax.swing.JLabel();
 
@@ -237,23 +284,51 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         salaryLable.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         salaryLable.setText(".............................................");
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(241, 245, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        employeeImgLabel.setBackground(new java.awt.Color(255, 153, 153));
+        employeeImgLabel.setBackground(new java.awt.Color(255, 255, 255));
         employeeImgLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         employeeImgLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/account-60.png"))); // NOI18N
-        employeeImgLabel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 0, 0), 1, true));
+        employeeImgLabel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 142, 0), 1, true));
         employeeImgLabel.setOpaque(true);
-        jPanel1.add(employeeImgLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 40, 140, 170));
+        jPanel1.add(employeeImgLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 120, 140));
 
-        idFront.setText("jLabel2");
+        nicInId.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        nicInId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nicInId.setText("nicInId");
+        jPanel1.add(nicInId, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 130, 210, -1));
+
+        nameInId.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        nameInId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nameInId.setText("nameInId");
+        jPanel1.add(nameInId, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, 210, -1));
+
+        mobileInId.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        mobileInId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mobileInId.setText("mobileInId");
+        jPanel1.add(mobileInId, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 160, 210, -1));
+
+        employeeTypeInId.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        employeeTypeInId.setForeground(new java.awt.Color(0, 69, 0));
+        employeeTypeInId.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        employeeTypeInId.setText("employeeTypeInId");
+        jPanel1.add(employeeTypeInId, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 100, 210, -1));
+
+        qrLabel.setBackground(new java.awt.Color(255, 255, 255));
+        qrLabel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 142, 0), 1, true));
+        qrLabel.setOpaque(true);
+        jPanel1.add(qrLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 320, 170, 170));
+
+        idFront.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        idFront.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/empIdCard/empid-front.png"))); // NOI18N
         idFront.setOpaque(true);
-        jPanel1.add(idFront, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 566, 240));
+        jPanel1.add(idFront, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 0, 370, 240));
 
-        idBack.setText("jLabel3");
+        idBack.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        idBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/empIdCard/empid-back.png"))); // NOI18N
         idBack.setOpaque(true);
-        jPanel1.add(idBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 252, 566, 240));
+        jPanel1.add(idBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 250, 440, 290));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -409,6 +484,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
     private javax.swing.JLabel empTypeLabel;
     private javax.swing.JLabel employeeIDLabel;
     private javax.swing.JLabel employeeImgLabel;
+    private javax.swing.JLabel employeeTypeInId;
     private javax.swing.JLabel idBack;
     private javax.swing.JLabel idFront;
     private javax.swing.JButton jButton1;
@@ -427,9 +503,13 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JLabel mobileInId;
     private javax.swing.JLabel mobileLabel;
+    private javax.swing.JLabel nameInId;
     private javax.swing.JLabel nameLabel;
+    private javax.swing.JLabel nicInId;
     private javax.swing.JLabel nicLabel;
+    private javax.swing.JLabel qrLabel;
     private javax.swing.JLabel regDateLabel;
     private javax.swing.JLabel salaryLable;
     private javax.swing.JLabel statusLabel;
