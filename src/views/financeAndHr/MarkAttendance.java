@@ -140,11 +140,11 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
         return new AttendanceDateController().show(todayDate);
     }
 
-    private ResultSet gentEmployerResultSet() throws Exception {
-        return new EmployeeController().showByIdAndNIC(resultMap.get("id"), resultMap.get("nic"));
+    private ResultSet getEmployerResultSet(Map<String, String> rMap) throws Exception {
+        return new EmployeeController().showByIdAndNIC(rMap.get("id"), rMap.get("nic"));
     }
 
-    private void checkInEmployer(Map<String, String> resultMap) {
+    private void checkInEmployer(Map<String, String> rtMap) {
 
         int dateId = 0;
         try {
@@ -159,7 +159,7 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
         String currentTime = TimestampsGenerator.getCurrentTime();
         if (dateId != 0) {
             try {
-                ResultSet employeeResultSet = gentEmployerResultSet();
+                ResultSet employeeResultSet = getEmployerResultSet(rtMap);
                 if (employeeResultSet.next()) {
                     try {
                         ResultSet checkInResultSet = new EmployeeAttendanceController().updateCheckInByUserId(currentTime, employeeResultSet.getString("id"), dateId);
@@ -177,7 +177,7 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
         }
     }
 
-    private void checkOutEmployer(Map<String, String> resultMap) {
+    private void checkOutEmployer(Map<String, String> rMap) {
 
         int dateId = 0;
         try {
@@ -192,14 +192,18 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
         String currentTime = TimestampsGenerator.getCurrentTime();
         if (dateId != 0) {
             try {
-                ResultSet employeeResultSet = gentEmployerResultSet();
+                ResultSet employeeResultSet = getEmployerResultSet(rMap);
                 if (employeeResultSet.next()) {
-                    try {
-                        ResultSet checkInResultSet = new EmployeeAttendanceController().updateCheckOutByUserId(currentTime, employeeResultSet.getString("id"), dateId);
-                        JOptionPane.showMessageDialog(null, "mark attendance success");
-                        actionMethod.run();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                    if (!employeeResultSet.getString("checkin").isEmpty()) {
+                        try {
+                            ResultSet checkInResultSet = new EmployeeAttendanceController().updateCheckOutByUserId(currentTime, employeeResultSet.getString("id"), dateId);
+                            JOptionPane.showMessageDialog(null, "mark attendance success");
+                            actionMethod.run();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Check in first !");
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "employee not found");
