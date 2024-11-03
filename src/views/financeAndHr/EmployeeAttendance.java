@@ -218,6 +218,8 @@ public class EmployeeAttendance extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Attendance already created ! ");
         }
 
+        loadTableData();
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void checkInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkInButtonActionPerformed
@@ -337,6 +339,8 @@ public class EmployeeAttendance extends javax.swing.JPanel {
                     }
                     loadTableData();
                     JOptionPane.showMessageDialog(null, "stored attendance");
+
+                    loadTableData();
                 } catch (Exception e) {
                     e.printStackTrace();
                     logger.severe("Error while storing employee : " + e.getMessage());

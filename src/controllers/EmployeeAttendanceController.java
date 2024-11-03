@@ -41,7 +41,7 @@ public class EmployeeAttendanceController {
 
     public ResultSet updateCheckInByUserId(String checkIn, String UserId, int dateId) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
-                + "`checkin`='" + checkIn + "' "
+                + "`checkin`='" + checkIn + "', `attendance_status_id`='1' "
                 + "WHERE `employee_id`='" + UserId + "' AND `attendance_date_id`='" + dateId + "' ");
     }
     
