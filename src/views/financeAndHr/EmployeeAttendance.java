@@ -264,7 +264,6 @@ public class EmployeeAttendance extends javax.swing.JPanel {
     }
 
     private boolean isRowsCreted() {
-
         try {
             ResultSet resultSet = new AttendanceDateController().show(todayDate);
             if (resultSet.next()) {
@@ -304,7 +303,6 @@ public class EmployeeAttendance extends javax.swing.JPanel {
     private void createRows() {
 
         String dateId = "";
-
         try {
             ResultSet storeDateResultSet = storeDate();
             if (storeDateResultSet.next()) {
