@@ -7,6 +7,7 @@ package views.employee;
 import controllers.EmployeeController;
 import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
+import controllers.StatusController;
 import includes.BDUtility;
 import includes.LoggerConfig;
 import includes.OnlyLettersDocumentFilter;
@@ -37,6 +38,7 @@ import java.util.logging.Logger;
 public class EmployeeUpdate extends java.awt.Dialog {
 
     private static HashMap<String, String> employeeTypeMap = new HashMap<>();
+    private static HashMap<String, String> StatusMap = new HashMap<>();
 
     private static final Logger logger = LoggerConfig.getLogger();
 
@@ -50,6 +52,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
         initComponents();
         setDocumentFilters();
         loadEmployeeTypes();
+        loadempStatus();
 
         this.employeeModel = employeeModel;
 
@@ -59,11 +62,31 @@ public class EmployeeUpdate extends java.awt.Dialog {
         employee_nic.setText(employeeModel.getNic());
         employee_mobile.setText(employeeModel.getMobile());
         employee_type.setSelectedItem(employeeModel.getEmployeeTypeName());
+        emp_status.setSelectedItem(employeeModel.getStatusName());
 
         loadAmployeeImage();
 
     }
+  private void loadempStatus() {
+        try {
+            ResultSet resultSet = new StatusController().show();
 
+            Vector<String> vector = new Vector<>();
+            vector.add("Select");
+
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("status"));
+                StatusMap.put(resultSet.getString("status"), resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
+          emp_status.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading employee types : " + e.getMessage());
+        }
+    }
     private void loadEmployeeTypes() {
         try {
             ResultSet resultSet = new EmployeeTypeController().show();
@@ -169,6 +192,8 @@ public class EmployeeUpdate extends java.awt.Dialog {
         employee_reset_btn = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         employee_type = new javax.swing.JComboBox<>();
+        employee_status = new javax.swing.JLabel();
+        emp_status = new javax.swing.JComboBox<>();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -239,6 +264,11 @@ public class EmployeeUpdate extends java.awt.Dialog {
             }
         });
 
+        employee_status.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        employee_status.setText("Status");
+
+        emp_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select" }));
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -252,44 +282,49 @@ public class EmployeeUpdate extends java.awt.Dialog {
                         .addContainerGap(36, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(employee_update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addGap(11, 11, 11)
                                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel7)
-                                        .addComponent(jLabel8))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(employee_type, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(employee_mobile, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)))
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addGap(96, 96, 96)
-                                        .addComponent(employee_nic, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(employee_update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(162, 162, 162))))
+                                        .addComponent(jLabel4)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addComponent(jLabel5)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(employee_email, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel8)
+                                                    .addComponent(jLabel7)
+                                                    .addComponent(employee_status))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(emp_status, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(employee_type, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(employee_mobile, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))))
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addComponent(jLabel6)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(employee_nic, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addGap(264, 264, 264)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(229, 229, 229)))))
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addGap(84, 84, 84))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGap(83, 83, 83)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel5)
-                            .addGap(85, 85, 85)
-                            .addComponent(employee_email, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addGap(56, 56, 56)
+                            .addGap(199, 199, 199)
                             .addComponent(employee_lastname, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addGap(54, 54, 54)
+                            .addGap(199, 199, 199)
                             .addComponent(employee_firstname, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGap(92, 92, 92)
+                            .addGap(175, 175, 175)
                             .addComponent(employee_image, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addContainerGap(84, Short.MAX_VALUE)))
         );
@@ -298,7 +333,15 @@ public class EmployeeUpdate extends java.awt.Dialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 390, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(46, 46, 46)
+                .addComponent(jLabel4)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(employee_email, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(employee_nic, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
@@ -310,7 +353,11 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(employee_type, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(emp_status, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(employee_status))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(employee_update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(employee_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -320,18 +367,10 @@ public class EmployeeUpdate extends java.awt.Dialog {
                     .addGap(65, 65, 65)
                     .addComponent(employee_image, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(49, 49, 49)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(employee_firstname, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(employee_firstname, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(25, 25, 25)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(employee_lastname, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4))
-                    .addGap(25, 25, 25)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(employee_email, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5))
-                    .addContainerGap(261, Short.MAX_VALUE)))
+                    .addComponent(employee_lastname, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(320, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -393,6 +432,8 @@ public class EmployeeUpdate extends java.awt.Dialog {
         String email = employee_email.getText();
         String mobile = employee_mobile.getText();
         String employeeType = String.valueOf(employee_type.getSelectedItem());
+                String status = String.valueOf(emp_status.getSelectedItem());
+
 
         if (firstName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -412,6 +453,8 @@ public class EmployeeUpdate extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Invalid mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (employeeType.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Please select an employee type", "Warning", JOptionPane.WARNING_MESSAGE);
+             } else if (status.equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please Select Supplier Status", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
 
@@ -421,7 +464,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employeeModel.setEmail(email);
                 employeeModel.setMobile(mobile);
                 employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
-                employeeModel.setStatusId(1);
+                employeeModel.setStatusId(Integer.parseInt(StatusMap.get(emp_status.getSelectedItem())));
 
                 new EmployeeController().update(employeeModel);
 
@@ -568,6 +611,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> emp_status;
     private javax.swing.JTextField employee_email;
     private javax.swing.JTextField employee_firstname;
     private javax.swing.JLabel employee_image;
@@ -575,6 +619,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
     private javax.swing.JTextField employee_mobile;
     private javax.swing.JTextField employee_nic;
     private javax.swing.JButton employee_reset_btn;
+    private javax.swing.JLabel employee_status;
     private javax.swing.JComboBox<String> employee_type;
     private javax.swing.JButton employee_update_btn;
     private javax.swing.JLabel jLabel1;
