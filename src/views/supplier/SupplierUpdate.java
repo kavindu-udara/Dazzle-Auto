@@ -4,6 +4,8 @@
  */
 package views.supplier;
 
+
+import controllers.StatusController;
 import controllers.SupplierController;
 import includes.LoggerConfig;
 import includes.OnlyLettersDocumentFilter;
@@ -12,7 +14,14 @@ import javax.swing.text.AbstractDocument;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
 import java.awt.Frame;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Vector;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JToggleButton;
+import javax.swing.JToggleButton.ToggleButtonModel;
+import javax.swing.table.DefaultTableModel;
 import models.SupplierModel;
 
 /**
@@ -20,8 +29,9 @@ import models.SupplierModel;
  * @author USER
  */
 public class SupplierUpdate extends java.awt.Dialog {
-    
+
     private static final Logger logger = LoggerConfig.getLogger();
+    private static HashMap<String, String> StatusMap = new HashMap<>();
 
     private SupplierModel supplierModel;
 
@@ -32,13 +42,15 @@ public class SupplierUpdate extends java.awt.Dialog {
         super(parent, modal);
         initComponents();
         setDocumentFilters();
-
+        loadSupplierStatus();
+        
         this.supplierModel = supplierModel;
 
         supplier_firstname.setText(supplierModel.getFirstName());
         supplier_lastname.setText(supplierModel.getLastName());
         supplier_email.setText(supplierModel.getEmail());
         supplier_mobile.setText(supplierModel.getMobile());
+        sup_status.setSelectedItem(supplierModel.getStatusName());
 
     }
 
@@ -47,6 +59,27 @@ public class SupplierUpdate extends java.awt.Dialog {
         ((AbstractDocument) supplier_firstname.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
         ((AbstractDocument) supplier_lastname.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
 
+    }
+    
+    private void loadSupplierStatus() {
+        try {
+            ResultSet resultSet = new StatusController().show();
+
+            Vector<String> vector = new Vector<>();
+            vector.add("Select");
+
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("status"));
+                StatusMap.put(resultSet.getString("status"), resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
+            sup_status.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading employee types : " + e.getMessage());
+        }
     }
 
     /**
@@ -72,6 +105,8 @@ public class SupplierUpdate extends java.awt.Dialog {
         supplier_reset_btn = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        sup_status = new javax.swing.JComboBox<>();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -123,7 +158,7 @@ public class SupplierUpdate extends java.awt.Dialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(126, 126, 126))
+                .addGap(130, 130, 130))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,12 +168,18 @@ public class SupplierUpdate extends java.awt.Dialog {
                 .addGap(33, 33, 33))
         );
 
+        jLabel8.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jLabel8.setText("Status");
+
+        sup_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(80, Short.MAX_VALUE)
+                .addContainerGap(77, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(supplier_update_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -146,18 +187,23 @@ public class SupplierUpdate extends java.awt.Dialog {
                         .addComponent(supplier_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3))
-                        .addGap(55, 55, 55)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3))
+                                .addGap(55, 55, 55))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(83, 83, 83)))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(supplier_firstname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(supplier_lastname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(supplier_email, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(supplier_mobile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(77, 77, 77))
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(supplier_mobile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(sup_status, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(80, 80, 80))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,11 +225,15 @@ public class SupplierUpdate extends java.awt.Dialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(supplier_mobile, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addGap(40, 40, 40)
+                .addGap(25, 25, 25)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sup_status, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(25, 25, 25)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(supplier_update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(supplier_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -237,6 +287,7 @@ public class SupplierUpdate extends java.awt.Dialog {
         String lastName = supplier_lastname.getText();
         String email = supplier_email.getText();
         String mobile = supplier_mobile.getText();
+        String status = String.valueOf(sup_status.getSelectedItem());
 
         if (firstName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -250,6 +301,9 @@ public class SupplierUpdate extends java.awt.Dialog {
         } else if (mobile.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
 
+        } else if (status.equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please Select Supplier Status", "Warning", JOptionPane.WARNING_MESSAGE);
+
         } else {
             try {
 
@@ -257,8 +311,8 @@ public class SupplierUpdate extends java.awt.Dialog {
                 supplierModel.setLastName(lastName);
                 supplierModel.setEmail(email);
                 supplierModel.setMobile(mobile);
-                supplierModel.setStatusId(1);
-
+                supplierModel.setStatusId(Integer.parseInt(StatusMap.get(sup_status.getSelectedItem())));
+                
                 new SupplierController().update(supplierModel);
 
                 JOptionPane.showMessageDialog(this, "Supplier details updated successfully");
@@ -270,13 +324,15 @@ public class SupplierUpdate extends java.awt.Dialog {
         }
 
 
-
     }//GEN-LAST:event_supplier_update_btnActionPerformed
 
     private void supplier_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplier_reset_btnActionPerformed
 
         reset();
     }//GEN-LAST:event_supplier_reset_btnActionPerformed
+
+ 
+
 
     private void reset() {
 
@@ -292,10 +348,12 @@ public class SupplierUpdate extends java.awt.Dialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JComboBox<String> sup_status;
     private javax.swing.JTextField supplier_email;
     private javax.swing.JTextField supplier_firstname;
     private javax.swing.JTextField supplier_lastname;

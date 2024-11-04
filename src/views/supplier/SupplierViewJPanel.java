@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import includes.LoggerConfig;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.SupplierModel;
 
@@ -35,6 +36,7 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
 
     private SupplierViewJPanel supplierViewJPanel;
     private static final Logger logger = LoggerConfig.getLogger();
+    private static HashMap<Integer, String> StatusMap = new HashMap<>();
 
     /**
      * Creates new form shop_ItemsJPanel
@@ -325,14 +327,16 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
     private void SupplierViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SupplierViewTableMouseClicked
         // TODO add your handling code here:
         int row = SupplierViewTable.getSelectedRow();
-
+       
         if (evt.getClickCount() == 2 && row != -1) {
-            
+
             String supplierId = String.valueOf(SupplierViewTable.getValueAt(row, 0));
             String firstName = String.valueOf(SupplierViewTable.getValueAt(row, 1));
             String lastName = String.valueOf(SupplierViewTable.getValueAt(row, 2));
             String email = String.valueOf(SupplierViewTable.getValueAt(row, 3));
             String mobile = String.valueOf(SupplierViewTable.getValueAt(row, 4));
+            String status = String.valueOf(SupplierViewTable.getValueAt(row, 5));
+            
 
             SupplierModel supplierModel = new SupplierModel();
             supplierModel.setId(supplierId);
@@ -340,13 +344,14 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
             supplierModel.setLastName(lastName);
             supplierModel.setEmail(email);
             supplierModel.setMobile(mobile);
+            supplierModel.setStatusName(status);
+            //supplierModel.setStatusId(Integer.parseInt(StatusMap.get(status)));
 
             try {
                 Frame supplierViewJPanel = null;
                 SupplierUpdate supUpdate = new SupplierUpdate(supplierViewJPanel, true, supplierModel);
                 supUpdate.setVisible(true);
-                
-               
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
