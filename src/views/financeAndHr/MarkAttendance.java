@@ -194,19 +194,22 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
             try {
                 ResultSet employeeResultSet = getEmployerResultSet(rMap);
                 if (employeeResultSet.next()) {
-                    if (!employeeResultSet.getString("checkin").isEmpty()) {
-                        try {
-                            ResultSet checkInResultSet = new EmployeeAttendanceController().updateCheckOutByUserId(currentTime, employeeResultSet.getString("id"), dateId);
-                            JOptionPane.showMessageDialog(null, "mark attendance success");
-                            actionMethod.run();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
+                    ResultSet employeeAttendanceResultSet = new EmployeeAttendanceController().showByDateIdAndEmpId(employeeResultSet.getString("id"), dateId);
+                    if (employeeAttendanceResultSet.next()) {
+                        if (employeeAttendanceResultSet.getString("checkin") != null) {
+                            try {
+                                ResultSet checkInResultSet = new EmployeeAttendanceController().updateCheckOutByUserId(currentTime, employeeResultSet.getString("id"), dateId);
+                                JOptionPane.showMessageDialog(null, "mark attendance success");
+                                actionMethod.run();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Check in first !");
                         }
-                    }else{
-                        JOptionPane.showMessageDialog(null, "Check in first !");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "employee not found");
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "employee not found");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
