@@ -31,6 +31,10 @@ public class EmployeeAttendanceController {
     public ResultSet show(String id, String time) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + id + "' AND `checkin`='" + time + "' OR `checkout`='" + time + "' ");
     }
+    
+    public ResultSet showByDateIdAndEmpId(String empId, int dateId) throws Exception{
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + empId + "' AND `attendance_date_id`='" + dateId + "'");
+    }
 
     public ResultSet storeWithNulls(EmployeeAttendance employeeAttendanceModel) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`employee_id`, `attendance_date_id`, `attendance_status_id`) VALUES "
