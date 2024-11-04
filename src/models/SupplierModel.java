@@ -19,7 +19,10 @@ public class SupplierModel {
     private String lastName;
     private String email;
     private String mobile;
-
+    
+    
+    private String statusName;
+    
     /**
      * @return the id
      */
@@ -102,6 +105,20 @@ public class SupplierModel {
      */
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    /**
+     * @return the statusName
+     */
+    public String getStatusName() {
+        return statusName;
+    }
+
+    /**
+     * @param statusName the statusName to set
+     */
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 
 }
