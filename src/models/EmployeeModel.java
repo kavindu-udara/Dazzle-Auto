@@ -11,9 +11,10 @@ public class EmployeeModel {
     private String email;
     private String mobile;
     private String registeredDate;
-    
+
     //
     private String employeeTypeName;
+    private String statusName;
 
     /**
      * @return the id
@@ -153,6 +154,17 @@ public class EmployeeModel {
      */
     public void setEmployeeTypeName(String employeeTypeName) {
         this.employeeTypeName = employeeTypeName;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    /**
+     * @param statusName the statusName to set
+     */
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 
 }
