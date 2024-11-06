@@ -37,18 +37,15 @@ public class SupplierController {
 
     }
 
-
-
- public ResultSet update(SupplierModel supplierModel) throws Exception {
-    return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
-            + "`first_name`='" + supplierModel.getFirstName() + "', "
-            + "`last_name`='" + supplierModel.getLastName() + "', "
-            + "`email`='" + supplierModel.getEmail() + "', "
-            + "`mobile`='" + supplierModel.getMobile() + "', "
-            + "`status_id`='" + supplierModel.getStatusId() + "' "
-            + "WHERE `id`='" + supplierModel.getId() + "' ");
-}
-
+    public ResultSet update(SupplierModel supplierModel) throws Exception {
+        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
+                + "`first_name`='" + supplierModel.getFirstName() + "', "
+                + "`last_name`='" + supplierModel.getLastName() + "', "
+                + "`email`='" + supplierModel.getEmail() + "', "
+                + "`mobile`='" + supplierModel.getMobile() + "', "
+                + "`status_id`='" + supplierModel.getStatusId() + "' "
+                + "WHERE `id`='" + supplierModel.getId() + "' ");
+    }
 
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
@@ -64,4 +61,11 @@ public class SupplierController {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
 
+    public ResultSet getSuppliersByStatusId(int statusId) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `status_id` = " + statusId);
+    }
+
+    public ResultSet searchAll() throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
+    }
 }
