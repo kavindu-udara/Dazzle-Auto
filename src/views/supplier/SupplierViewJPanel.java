@@ -24,8 +24,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import includes.LoggerConfig;
+import java.awt.event.ItemEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import models.SupplierModel;
 
 /**
@@ -36,7 +39,7 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
 
     private SupplierViewJPanel supplierViewJPanel;
     private static final Logger logger = LoggerConfig.getLogger();
-    private static HashMap<Integer, String> StatusMap = new HashMap<>();
+    private static HashMap<String, String> StatusMap = new HashMap<>();
 
     /**
      * Creates new form shop_ItemsJPanel
@@ -44,12 +47,34 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
     public SupplierViewJPanel() {
         initComponents();
         loadsupplier();
+        loadStatusToSortBtn();
 
         search_box.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Supplier Name / Id / Mobile or Email ");
 
         this.supplierViewJPanel = this;
         SupplierTableRender();
 
+    }
+
+    private void loadStatusToSortBtn() {
+        try {
+            ResultSet resultSet = new StatusController().show();
+
+            Vector<String> vector = new Vector<>();
+            vector.add("Select");
+
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("status"));
+                StatusMap.put(resultSet.getString("status"), resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
+            StatusSortBtn.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading employee types : " + e.getMessage());
+        }
     }
 
     private void loadsupplier() {
@@ -176,6 +201,8 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         search_box = new javax.swing.JTextField();
         Supllier_Register_Button = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        StatusSortBtn = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         SupplierViewTable = new javax.swing.JTable();
@@ -211,6 +238,21 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        jLabel2.setText("Status");
+
+        StatusSortBtn.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        StatusSortBtn.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                StatusSortBtnItemStateChanged(evt);
+            }
+        });
+        StatusSortBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StatusSortBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -219,23 +261,34 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
                 .addGap(22, 22, 22)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(search_box, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Supllier_Register_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(search_box, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(63, 63, 63)
+                        .addComponent(jLabel2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(StatusSortBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(386, 386, 386)
+                .addComponent(Supllier_Register_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
-                .addComponent(Supllier_Register_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(search_box)
-                .addGap(12, 12, 12))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(StatusSortBtn))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(15, 15, 15)
+                            .addComponent(jLabel1)
+                            .addGap(6, 6, 6)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(search_box, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(18, 18, 18)
+                            .addComponent(Supllier_Register_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(15, 15, 15))
         );
 
         SupplierViewTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
@@ -275,9 +328,9 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(11, 11, 11)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -327,7 +380,7 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
     private void SupplierViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SupplierViewTableMouseClicked
         // TODO add your handling code here:
         int row = SupplierViewTable.getSelectedRow();
-       
+
         if (evt.getClickCount() == 2 && row != -1) {
 
             String supplierId = String.valueOf(SupplierViewTable.getValueAt(row, 0));
@@ -336,7 +389,6 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
             String email = String.valueOf(SupplierViewTable.getValueAt(row, 3));
             String mobile = String.valueOf(SupplierViewTable.getValueAt(row, 4));
             String status = String.valueOf(SupplierViewTable.getValueAt(row, 5));
-            
 
             SupplierModel supplierModel = new SupplierModel();
             supplierModel.setId(supplierId);
@@ -360,11 +412,78 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_SupplierViewTableMouseClicked
 
+    private void StatusSortBtnItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_StatusSortBtnItemStateChanged
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_StatusSortBtnItemStateChanged
+
+    private void StatusSortBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StatusSortBtnActionPerformed
+        // TODO add your handling code here:
+        String selectedStatus = StatusSortBtn.getSelectedItem().toString();
+        SortStatus(selectedStatus);
+
+    }//GEN-LAST:event_StatusSortBtnActionPerformed
+
+    private void SortStatus(String searchText) {
+        try {
+            DefaultTableModel model = (DefaultTableModel) SupplierViewTable.getModel();
+            model.setRowCount(0);
+
+            ResultSet resultSet;
+
+            if (searchText.equals("Select")) {
+                resultSet = new SupplierController().searchAll();
+            } else {
+               
+                ResultSet statusResultSet = new StatusController().search(searchText);
+                int statusId = -1;
+                if (statusResultSet.next()) {
+                    statusId = statusResultSet.getInt("id");
+                }
+
+                if (statusId != -1) {
+                    resultSet = new SupplierController().getSuppliersByStatusId(statusId);
+                } else {
+                    model.setRowCount(0);
+                    return;
+                }
+            }
+
+            HashMap<Integer, String> statusMap = new HashMap<>();
+            ResultSet allStatuses = new StatusController().search("");
+            while (allStatuses.next()) {
+                int id = allStatuses.getInt("id");
+                String name = allStatuses.getString("status");
+                statusMap.put(id, name);
+            }
+
+            
+            while (resultSet.next()) {
+                String id = resultSet.getString("id");
+                String fname = resultSet.getString("first_name");
+                String lname = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String mobile = resultSet.getString("mobile");
+                int statusId = resultSet.getInt("status_id");
+
+                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
+
+                model.addRow(new Object[]{id, fname, lname, email, mobile, statusName});
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> StatusSortBtn;
     private javax.swing.JButton Supllier_Register_Button;
     private javax.swing.JTable SupplierViewTable;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
