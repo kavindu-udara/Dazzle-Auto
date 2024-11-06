@@ -20,6 +20,10 @@ public class FinanceAndHrJPanel extends javax.swing.JPanel {
         EmployeeAttendance employeeAttendance = new EmployeeAttendance();
         EmloyeeAttendanceTab.add(employeeAttendance, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
+        
+        IncomeTaxCalculator incomeTax = new IncomeTaxCalculator();
+        IncomeTaxTab.add(incomeTax, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
     }
 
     /**
@@ -36,7 +40,7 @@ public class FinanceAndHrJPanel extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         EmloyeeAttendanceTab = new javax.swing.JPanel();
         EmployeeSalaryTab = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
+        IncomeTaxTab = new javax.swing.JPanel();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -54,21 +58,23 @@ public class FinanceAndHrJPanel extends javax.swing.JPanel {
         EmployeeSalaryTab.setBackground(new java.awt.Color(0, 0, 102));
         EmployeeSalaryTab.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("Employee Salary       ", EmployeeSalaryTab);
+        EmployeeSalaryTab.getAccessibleContext().setAccessibleName("");
 
-        jPanel4.setBackground(new java.awt.Color(51, 0, 51));
+        IncomeTaxTab.setBackground(new java.awt.Color(51, 0, 51));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout IncomeTaxTabLayout = new javax.swing.GroupLayout(IncomeTaxTab);
+        IncomeTaxTab.setLayout(IncomeTaxTabLayout);
+        IncomeTaxTabLayout.setHorizontalGroup(
+            IncomeTaxTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1089, Short.MAX_VALUE)
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        IncomeTaxTabLayout.setVerticalGroup(
+            IncomeTaxTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 579, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab3", jPanel4);
+        jTabbedPane1.addTab("Income Tax Calculator", null, IncomeTaxTab, "");
+        IncomeTaxTab.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -101,8 +107,8 @@ public class FinanceAndHrJPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel EmloyeeAttendanceTab;
     private javax.swing.JPanel EmployeeSalaryTab;
+    private javax.swing.JPanel IncomeTaxTab;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
