@@ -4,6 +4,7 @@
  */
 package views.employee;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import com.google.gson.Gson;
 import controllers.EmployeeController;
 import controllers.EmployeeImageController;
@@ -13,23 +14,28 @@ import includes.BDUtility;
 import java.awt.BorderLayout;
 import java.sql.ResultSet;
 import java.util.HashMap;
-import java.util.Vector;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 import views.dashboard.Dashboard;
 import includes.LoggerConfig;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.table.TableModel;
 import models.EmployeeImageModel;
+import models.LoginModel;
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -43,10 +49,16 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
     ByteArrayOutputStream out = null;
     String empId;
 
+    String empImgPath;
+    File tempFile;
+
     public EmployeeFullDetailsPanel(Dashboard dashboard, String empID) {
         initComponents();
         this.Dashboard = dashboard;
         this.empId = empID;
+
+        viewReportb.putClientProperty(FlatClientProperties.STYLE, "arc:15");
+        printReportb.putClientProperty(FlatClientProperties.STYLE, "arc:15");
 
         jLabel1.setText("  Employee Profile - " + empID);
         employeeIDLabel.setText(empID);
@@ -113,12 +125,12 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
                 employeeImageModel.setEmployeeId(resultSet.getString("employee_id"));
 
                 // Image setting
-                String imagepath = BDUtility.getPath("resources/employeeImages/" + resultSet.getString("path"));
-                File imageFile = new File(imagepath);
+                empImgPath = BDUtility.getPath("resources/employeeImages/" + resultSet.getString("path"));
+                File imageFile = new File(empImgPath);
 
                 if (imageFile.exists()) {
                     // Initialize ImageIcon with the image path
-                    ImageIcon icon = new ImageIcon(imagepath);
+                    ImageIcon icon = new ImageIcon(empImgPath);
                     // Get the image and scale it
                     Image image = icon.getImage().getScaledInstance(120, 140, Image.SCALE_SMOOTH);
                     // Create the resized icon
@@ -150,9 +162,14 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         Gson gson = new Gson();
         String jsonData = gson.toJson(data);
 
-        out = QRCode.from(jsonData).withSize(170, 170).to(ImageType.PNG).stream();
+        out = QRCode.from(jsonData).withSize(140, 140).to(ImageType.PNG).stream();
 
         try {
+            // Save the image to a temporary file
+            tempFile = File.createTempFile("qrcode", ".png");
+            try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+                fos.write(out.toByteArray());
+            }
 
             byte[] imageData = out.toByteArray();
             ImageIcon icon = new ImageIcon(imageData);
@@ -161,6 +178,60 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
             ex.printStackTrace();
             logger.severe("Error while loading loadQr : " + ex.getMessage());
         }
+    }
+
+    public JasperPrint makeReport() {
+
+        String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
+
+        String headerImg;
+        String idFront;
+        String idBack;
+        String empImg;
+        String qr;
+        try {
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/Employee_Profile.jasper");
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+            String front = new File(this.getClass().getResource("/resources/reports/FRONT-01.png").getFile()).getAbsolutePath();
+            String back = new File(this.getClass().getResource("/resources/reports/FRONT-02.png").getFile()).getAbsolutePath();
+            String qrPath = tempFile.getAbsolutePath();
+
+            headerImg = img.replace("\\", "/");
+            idFront = front.replace("\\", "/");
+            idBack = back.replace("\\", "/");
+            empImg = empImgPath.replace("\\", "/");
+            qr = qrPath.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("headerImg", headerImg);
+            params.put("idFront", idFront);
+            params.put("IdBack", idBack);
+            params.put("empImg", empImg);
+            params.put("qr", qr);
+            
+            params.put("employeeID", empId);
+            params.put("issuedBy", LoginModel.getFirstName()+" "+LoginModel.getLastName());
+            params.put("nic", nicLabel.getText());
+            params.put("fullName", nameLabel.getText());
+            params.put("email", emailLabel.getText());
+            params.put("mobile", mobileLabel.getText());
+            params.put("regDate", regDateLabel.getText());
+            params.put("empType", empTypeLabel.getText());
+            params.put("curruntStatus", statusLabel.getText());
+            params.put("salary", salaryLable.getText());
+            params.put("date", dateTime);
+
+            JREmptyDataSource emptyDataSource = new JREmptyDataSource();
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, emptyDataSource);
+
+            return report;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while makeReport() : " + e.getMessage());
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")
@@ -200,6 +271,8 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         qrLabel = new javax.swing.JLabel();
         idFront = new javax.swing.JLabel();
         idBack = new javax.swing.JLabel();
+        viewReportb = new javax.swing.JButton();
+        printReportb = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -318,7 +391,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         qrLabel.setBackground(new java.awt.Color(255, 255, 255));
         qrLabel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 142, 0), 1, true));
         qrLabel.setOpaque(true);
-        jPanel1.add(qrLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 320, 170, 170));
+        jPanel1.add(qrLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 310, 140, 140));
 
         idFront.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         idFront.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/empIdCard/empid-front.png"))); // NOI18N
@@ -328,7 +401,31 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         idBack.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         idBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/empIdCard/empid-back.png"))); // NOI18N
         idBack.setOpaque(true);
-        jPanel1.add(idBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 250, 440, 290));
+        jPanel1.add(idBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 370, 240));
+
+        viewReportb.setBackground(new java.awt.Color(51, 51, 51));
+        viewReportb.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
+        viewReportb.setForeground(new java.awt.Color(255, 255, 255));
+        viewReportb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/analyze-30.png"))); // NOI18N
+        viewReportb.setText(" Save Profile");
+        viewReportb.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        viewReportb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewReportbActionPerformed(evt);
+            }
+        });
+
+        printReportb.setBackground(new java.awt.Color(0, 102, 0));
+        printReportb.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
+        printReportb.setForeground(new java.awt.Color(255, 255, 255));
+        printReportb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/print-30.png"))); // NOI18N
+        printReportb.setText(" Print Profile");
+        printReportb.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        printReportb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printReportbActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -342,11 +439,11 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator3)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addContainerGap(14, Short.MAX_VALUE)
+                                .addGap(32, 32, 32)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                                                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -379,14 +476,16 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
                                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
                                                 .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(empTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                .addComponent(empTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(employeeIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(12, 12, 12)
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(employeeIDLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(viewReportb, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(printReportb, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(9, 9, 9)))
                 .addContainerGap())
         );
@@ -437,6 +536,10 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(salaryLable, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(printReportb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(viewReportb, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE))
                 .addContainerGap())
@@ -478,6 +581,31 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         SwingUtilities.updateComponentTreeUI(Dashboard.jStaffPanel);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void viewReportbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReportbActionPerformed
+
+        try {
+            JasperPrint report = makeReport();
+            JasperViewer.viewReport(report, false);
+
+            logger.info("Employee : " + empId + ", Profile Viewed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while viewReportbActionPerformed : " + e.getMessage());
+        }
+    }//GEN-LAST:event_viewReportbActionPerformed
+
+    private void printReportbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printReportbActionPerformed
+        try {
+            JasperPrint report = makeReport();
+            JasperPrintManager.printReport(report, false);
+
+            logger.info("Employee : " + empId + ", Profile Printed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while printReportbActionPerformed : " + e.getMessage());
+        }
+    }//GEN-LAST:event_printReportbActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel emailLabel;
@@ -509,10 +637,12 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
     private javax.swing.JLabel nameLabel;
     private javax.swing.JLabel nicInId;
     private javax.swing.JLabel nicLabel;
+    private javax.swing.JButton printReportb;
     private javax.swing.JLabel qrLabel;
     private javax.swing.JLabel regDateLabel;
     private javax.swing.JLabel salaryLable;
     private javax.swing.JLabel statusLabel;
+    private javax.swing.JButton viewReportb;
     // End of variables declaration//GEN-END:variables
 
 }

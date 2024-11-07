@@ -174,17 +174,6 @@ public class ShopInvoice extends javax.swing.JFrame {
 
     private void calculate() {
 
-        total = 0;
-        for (int i = 0; i < jTable1.getRowCount(); i++) {
-            String tablePrice = String.valueOf(jTable1.getValueAt(i, 3));
-
-            double rowPrice = Double.parseDouble(tablePrice);
-
-            total += rowPrice;
-        }
-
-        totalField.setText(String.valueOf(total));
-
         if (discountField.getText().isEmpty()) {
             discount = 0;
         } else {
