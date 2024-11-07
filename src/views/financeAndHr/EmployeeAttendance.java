@@ -109,13 +109,17 @@ public class EmployeeAttendance extends javax.swing.JPanel {
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 101, 1042, 458));
 
-        jButton4.setText("CONFIG");
+        jButton4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(0, 102, 0));
+        jButton4.setText("SCHEDULE");
+        jButton4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 0), 1, true));
+        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(935, 32, 124, 42));
+        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(919, 32, 140, 42));
 
         todayDateLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         todayDateLabel.setForeground(new java.awt.Color(242, 153, 5));
@@ -217,7 +221,6 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         } else {
             JOptionPane.showMessageDialog(null, "Attendance already created ! ");
         }
-        loadTableData();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void checkInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkInButtonActionPerformed
@@ -238,6 +241,7 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
         model.setRowCount(0);
         try {
+            System.out.println(todayDateId);
             ResultSet attendanceResultSet = new EmployeeAttendanceController().showByDateId(todayDateId);
             while (attendanceResultSet.next()) {
                 Vector<String> vector = new Vector<>();
@@ -268,7 +272,7 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         try {
             ResultSet resultSet = new AttendanceDateController().show(todayDate);
             if (resultSet.next()) {
-                todayDateId = resultSet.getInt("id");
+                this.todayDateId = resultSet.getInt("id");
                 return true;
             }
         } catch (Exception e) {
@@ -335,14 +339,15 @@ public class EmployeeAttendance extends javax.swing.JPanel {
 
                         new EmployeeAttendanceController().storeWithNulls(employeeAttendanceModel);
                     }
+                    
                     JOptionPane.showMessageDialog(null, "stored attendance");
+                    isRowsCreted();
                     loadTableData();
                 } catch (Exception e) {
                     e.printStackTrace();
                     logger.severe("Error while storing employee : " + e.getMessage());
                 }
             }
-            loadTableData();
         }
     }
 

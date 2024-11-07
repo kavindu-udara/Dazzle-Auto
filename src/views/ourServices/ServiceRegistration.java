@@ -220,7 +220,7 @@ public class ServiceRegistration extends java.awt.Dialog {
         } else if (VehicleType.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Please select a Vehicle Type", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (ServicePrice.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter Serice Price", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please enter Service Price", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
 
         } //store
