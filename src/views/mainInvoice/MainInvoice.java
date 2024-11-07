@@ -843,6 +843,7 @@ public class MainInvoice extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jVehicleSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehicleSelectButtonActionPerformed
+        reset();
         new VehicleSelecter(this, true, "MainInvoice").setVisible(true);
     }//GEN-LAST:event_jVehicleSelectButtonActionPerformed
 
@@ -901,7 +902,7 @@ public class MainInvoice extends javax.swing.JFrame {
                     MainInvoiceItemModel foundService = invoiceItemMap.get(serviceID + "" + serviceName);
 
                     if (foundService.getServiceName().equals(serviceName)) {
-                        JOptionPane.showMessageDialog(this, "This Invoice Already In Table", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "This Service Already In Table", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
                         invoiceItemMap.put(serviceID + "" + serviceName, mainInvoiceItem);
                     }

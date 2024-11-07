@@ -17,6 +17,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.BorderFactory;
@@ -245,7 +247,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         EmployeeName.setFont(new java.awt.Font("Roboto", 3, 16)); // NOI18N
         EmployeeName.setText("Emp_Name");
-        jPanel2.add(EmployeeName, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 140, -1, -1));
+        jPanel2.add(EmployeeName, new org.netbeans.lib.awtextra.AbsoluteConstraints(891, 140, 110, -1));
 
         jLabel9.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel9.setText("Supplier ID :");
@@ -261,13 +263,13 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         jLabel11.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel11.setText("Buying Price :");
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, -1, -1));
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 119, -1, 30));
         jPanel2.add(BuyingPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 130, 31));
         jPanel2.add(SellingPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 120, 130, 31));
 
         jLabel12.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel12.setText("Selling Price :");
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 130, -1, -1));
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 119, -1, 30));
 
         AddGRNBtn.setBackground(new java.awt.Color(33, 43, 108));
         AddGRNBtn.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
@@ -327,7 +329,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         jLabel14.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel14.setText("Issued By :");
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 140, -1, -1));
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 140, -1, -1));
 
         GRNViewTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         GRNViewTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -587,7 +589,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         String SupName = SupplierNameField.getText();
         String SupId = SupplierIdField.getText();
 
-       if (SupName.isEmpty() || SupId.isEmpty()) {
+        if (SupName.isEmpty() || SupId.isEmpty()) {
 
             SelectSuppliers selectSup = new SelectSuppliers(null, true, this);
             selectSup.setVisible(true);
@@ -773,7 +775,35 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
             logger.severe("Error while saving items to GRN Item table : " + e.getMessage());
 
         }
-        JOptionPane.showMessageDialog(this, "Add to GRN ,GRN Items & Stock");
+
+        try {
+            String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
+            String imgPath = "";
+            //View or print grn
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/Shop_Grn.jasper");
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+            imgPath = img.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("img", imgPath);
+            params.put("date", dateTime);
+            params.put("grnNo", GrnNumberField.getText());
+            params.put("empName", EmployeeName.getText());
+            params.put("supplier", SupplierNameField.getText());
+
+            params.put("total", TotalField.getText());
+            params.put("payment", PaymenntField.getText());
+            params.put("balance", BalanceField.getText());
+
+            JRTableModelDataSource dataSource = new JRTableModelDataSource(GRNViewTable.getModel());
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+            JasperViewer.viewReport(report, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while grn printing : " + e.getMessage());
+        }
+
         reset();
 
         GrnNumberField.setText(IDGenarator.GrnID());
