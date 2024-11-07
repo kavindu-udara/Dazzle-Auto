@@ -119,7 +119,6 @@ public class LoginChooser extends javax.swing.JFrame {
         });
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/car-workshop.png"))); // NOI18N
-        jLabel4.setText("jLabel2");
 
         jLabel5.setFont(new java.awt.Font("Roboto", 1, 28)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
