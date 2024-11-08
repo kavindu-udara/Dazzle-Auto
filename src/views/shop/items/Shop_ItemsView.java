@@ -189,6 +189,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
 
     public void reloadTable() {
         loadItems();
+        loadBrands();
     }
 
     private static HashMap<String, String> BrandMap = new HashMap<>();
@@ -232,6 +233,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         Brand_chooser = new javax.swing.JComboBox<>();
         Item_Register_Button = new javax.swing.JButton();
+        ItemBrandRegisterBtn = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Items_View_Table = new javax.swing.JTable();
@@ -283,6 +285,20 @@ public class Shop_ItemsView extends javax.swing.JPanel {
             }
         });
 
+        ItemBrandRegisterBtn.setBackground(new java.awt.Color(199, 228, 232));
+        ItemBrandRegisterBtn.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        ItemBrandRegisterBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/add-3.png"))); // NOI18N
+        ItemBrandRegisterBtn.setText(" REGISTER BRAND");
+        ItemBrandRegisterBtn.setBorderPainted(false);
+        ItemBrandRegisterBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ItemBrandRegisterBtn.setFocusPainted(false);
+        ItemBrandRegisterBtn.setFocusable(false);
+        ItemBrandRegisterBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemBrandRegisterBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -296,7 +312,9 @@ public class Shop_ItemsView extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(Brand_chooser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 576, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ItemBrandRegisterBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
                 .addComponent(Item_Register_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
         );
@@ -305,8 +323,10 @@ public class Shop_ItemsView extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(18, Short.MAX_VALUE)
-                        .addComponent(Item_Register_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(25, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Item_Register_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ItemBrandRegisterBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -351,7 +371,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,7 +392,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(78, 78, 78))
         );
@@ -452,9 +472,15 @@ public class Shop_ItemsView extends javax.swing.JPanel {
 
     }//GEN-LAST:event_Brand_chooserItemStateChanged
 
+    private void ItemBrandRegisterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemBrandRegisterBtnActionPerformed
+        // TODO add your handling code here:
+        new RegisterBrand(null, true, shop_ItemsView).setVisible(true);
+    }//GEN-LAST:event_ItemBrandRegisterBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> Brand_chooser;
+    private javax.swing.JButton ItemBrandRegisterBtn;
     private javax.swing.JButton Item_Register_Button;
     private javax.swing.JTable Items_View_Table;
     private javax.swing.JLabel jLabel1;

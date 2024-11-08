@@ -6,7 +6,6 @@ package views.shop.items;
 
 import controllers.ProductBrandController;
 import controllers.ProductController;
-import controllers.VehicleBrandController;
 import includes.IDGenarator;
 import includes.LoggerConfig;
 import java.util.HashMap;
@@ -15,13 +14,14 @@ import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import models.ProductBrandModel;
 import models.ProductModel;
 
 /**
  *
  * @author mypc
  */
-public class RegisterItems extends javax.swing.JDialog {
+public class RegisterBrand extends javax.swing.JDialog {
 
     private static Logger logger = LoggerConfig.getLogger();
 
@@ -30,36 +30,13 @@ public class RegisterItems extends javax.swing.JDialog {
      */
     private Shop_ItemsView shop_ItemsView;
 
-    public RegisterItems(java.awt.Frame parent, boolean modal, Shop_ItemsView shop_ItemsView) {
+    public RegisterBrand(java.awt.Frame parent, boolean modal, Shop_ItemsView shop_ItemsView) {
         super(parent, modal);
         initComponents();
-        loadBrands();
         this.shop_ItemsView = shop_ItemsView;
     }
 
-    private static HashMap<String, String> BrandMap = new HashMap<>();
-
-    private void loadBrands() {
-
-        try {
-            ResultSet resultSet = new ProductBrandController().show();
-
-            Vector<String> vector = new Vector<>();
-            vector.add("Select");
-
-            while (resultSet.next()) {
-                vector.add(resultSet.getString("name"));
-                BrandMap.put(resultSet.getString("name"), resultSet.getString("id"));
-            }
-
-            DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
-            Brand_Selector.setModel(model);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.severe("Error while loading brands : " + e.getMessage());
-        }
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -72,9 +49,7 @@ public class RegisterItems extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        Items_Name = new javax.swing.JTextField();
-        Brand_Selector = new javax.swing.JComboBox<>();
+        BrandNameField = new javax.swing.JTextField();
         Register_btn = new javax.swing.JButton();
         Clear_btn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -84,15 +59,9 @@ public class RegisterItems extends javax.swing.JDialog {
         setResizable(false);
 
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jLabel3.setText("Items Name");
+        jLabel3.setText("Brand Name");
 
-        jLabel4.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jLabel4.setText("Brand");
-
-        Items_Name.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-
-        Brand_Selector.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        Brand_Selector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        BrandNameField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
 
         Register_btn.setBackground(new java.awt.Color(33, 43, 108));
         Register_btn.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
@@ -116,68 +85,58 @@ public class RegisterItems extends javax.swing.JDialog {
             }
         });
 
-        jPanel2.setBackground(new java.awt.Color(33, 43, 108));
+        jPanel2.setBackground(new java.awt.Color(252, 183, 81));
 
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("REGISTER ITEMS");
+        jLabel1.setText("REGISTER BRAND");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(116, 116, 116)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(105, Short.MAX_VALUE))
+                .addGap(93, 93, 93))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(42, 42, 42)
                 .addComponent(jLabel1)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(Clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(Register_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
-                            .addGap(23, 23, 23)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(Items_Name)
-                                .addComponent(Brand_Selector, 0, 202, Short.MAX_VALUE)))))
-                .addGap(50, 50, 50))
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(Register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(Clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(BrandNameField)))
+                .addGap(0, 40, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
+                .addGap(30, 30, 30)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BrandNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Items_Name, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Brand_Selector, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(Clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(Register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(79, Short.MAX_VALUE))
+                    .addComponent(Register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Clear_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -197,32 +156,20 @@ public class RegisterItems extends javax.swing.JDialog {
 
     private void Register_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Register_btnActionPerformed
         // TODO add your handling code here:
-        String ItemName = Items_Name.getText();
-        String Brand = String.valueOf(Brand_Selector.getSelectedItem());
-
-        if (ItemName.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter Item name", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else if (Brand.equals("Select")) {
-            JOptionPane.showMessageDialog(this, "Please select a Brand", "Warning", JOptionPane.WARNING_MESSAGE);
+        String BrandName = BrandNameField.getText();
+         if (BrandName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please Enter a Brand name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
 
-            // Store employee information
-            try {
-                String generatedId = IDGenarator.productID();
-
-                ProductModel ItemModel = new ProductModel();
-
-                //ItemModel.setId(Integer.parseInt(generatedId));
-                ItemModel.setItemId(generatedId);
-                ItemModel.setName(ItemName);
-                ItemModel.setBrandId(Integer.parseInt(BrandMap.get(Brand_Selector.getSelectedItem())));
-
-                ResultSet resultSet = new ProductController().store2(ItemModel);
-//                JOptionPane.showMessageDialog(this, "Item Registration Successful");
+             try {
+                 ProductBrandModel productModel = new ProductBrandModel();
+                productModel.setName(BrandName);
+               
+                ResultSet resultSet = new ProductBrandController().store(productModel);
 
                 // Reload view table
                 shop_ItemsView.reloadTable();
-
+                JOptionPane.showMessageDialog(this, "Brand Regitered Succesfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 reset();
 
             } catch (Exception e) {
@@ -280,20 +227,17 @@ public class RegisterItems extends javax.swing.JDialog {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> Brand_Selector;
+    private javax.swing.JTextField BrandNameField;
     private javax.swing.JButton Clear_btn;
-    private javax.swing.JTextField Items_Name;
     private javax.swing.JButton Register_btn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 
     private void reset() {
-        Items_Name.setText("");
-        Brand_Selector.setSelectedIndex(0);
-
+        BrandNameField.setText("");
+       
     }
 }
