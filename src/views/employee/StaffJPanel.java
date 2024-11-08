@@ -106,7 +106,7 @@ public class StaffJPanel extends javax.swing.JPanel {
 
             // Sorting logic
             String sort = String.valueOf(jSortComboBox.getSelectedItem());
-            System.out.println("Selected sort option: " + sort);
+            //System.out.println("Selected sort option: " + sort);
 
             // Append sorting conditions to the query
             if (sort.contains("First Name A-Z")) {

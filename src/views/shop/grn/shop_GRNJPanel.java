@@ -42,6 +42,7 @@ import views.supplier.SelectSuppliers;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -677,7 +678,8 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_GRNViewTableMouseClicked
 
-    private int Stockid;
+    //to store Stock IDs by Product IDs
+    private HashMap<String, Integer> productStockIds = new HashMap<>();
 
     private void SaveGRNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveGRNActionPerformed
 
@@ -712,70 +714,87 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         }
 
-//loading to Stock Table
+// Loading to Stock Table
         try {
             for (int i = 0; i < GRNViewTable.getRowCount(); i++) {
-                String ProductId = String.valueOf(GRNViewTable.getValueAt(i, 0));
+                String productId = String.valueOf(GRNViewTable.getValueAt(i, 0));
                 String qty = String.valueOf(GRNViewTable.getValueAt(i, 3));
-                String SellingPrice = String.valueOf(GRNViewTable.getValueAt(i, 5));
+                String sellingPrice = String.valueOf(GRNViewTable.getValueAt(i, 5));
 
                 try {
+                    StockController stockController = new StockController();
+                    double quantityToAdd = Double.parseDouble(qty);
+                    double price = Double.parseDouble(sellingPrice);
 
-                    StockModel stockModel = new StockModel();
+                    // Check if the same product with the same price already exists
+                    ResultSet existingStock = stockController.findByProductIdAndPrice(productId, price);
 
-                    stockModel.setPrice(Double.parseDouble(SellingPrice));
-                    stockModel.setQty(Double.parseDouble(qty));
-                    stockModel.setProductId(ProductId);
+                    if (existingStock.next()) {
+                       int stockId = existingStock.getInt("id");
+                        double currentQty = existingStock.getDouble("qty");
+                        double newQty = currentQty + quantityToAdd;
+                        
+                        stockController.updateQuantity(stockId, newQty);
 
-                    ResultSet resultSet = new StockController().store(stockModel);
+                        productStockIds.put(productId, stockId);
 
-                    if (resultSet.next()) {
-                        int Stokid = resultSet.getInt(1);
-                        Stockid = Stokid;
+                    } else {
+                        // Product with the same price does not exist
+                        StockModel stockModel = new StockModel();
+                        stockModel.setPrice(price);
+                        stockModel.setQty(quantityToAdd);
+                        stockModel.setProductId(productId);
+
+                        ResultSet resultSet = stockController.store(stockModel);
+
+                        if (resultSet.next()) {
+                            int stockId = resultSet.getInt(1);
+                            productStockIds.put(productId, stockId); 
+                        }
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
-
+                    logger.severe("Error on row " + i + ": " + e.getMessage());
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
-            logger.severe("Error while saving items to Stock table : " + e.getMessage());
+            logger.severe("Error while saving items to Stock table: " + e.getMessage());
         }
 
-//loading to GRN Items Table
+// Loading to GRN Items Table
         try {
-
             for (int i = 0; i < GRNViewTable.getRowCount(); i++) {
-                String GrnID = GrnNumberField.getText();
+                String grnID = GrnNumberField.getText();
+                String productId = String.valueOf(GRNViewTable.getValueAt(i, 0));
                 String qty = String.valueOf(GRNViewTable.getValueAt(i, 3));
-                String SellingPrice = String.valueOf(GRNViewTable.getValueAt(i, 5));
+                String sellingPrice = String.valueOf(GRNViewTable.getValueAt(i, 5));
 
-                try {
-                    GrnItemsModel grnItemsModel = new GrnItemsModel();
+                Integer stockId = productStockIds.get(productId);
 
-                    grnItemsModel.setGrnId(GrnID);
-                    grnItemsModel.setQty(Double.parseDouble(qty));
-                    grnItemsModel.setPrice(Double.parseDouble(SellingPrice));
-                    grnItemsModel.setStockId(Stockid);
+                if (stockId != null) {
+                    try {
+                        GrnItemsModel grnItemsModel = new GrnItemsModel();
+                        grnItemsModel.setGrnId(grnID);
+                        grnItemsModel.setQty(Double.parseDouble(qty));
+                        grnItemsModel.setPrice(Double.parseDouble(sellingPrice));
+                        grnItemsModel.setStockId(stockId);
 
-                    ResultSet resultSet = new GrnItemsController().store(grnItemsModel);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-
+                        ResultSet resultSet = new GrnItemsController().store(grnItemsModel);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        logger.severe("Error on row " + i + ": " + e.getMessage());
+                    }
+                } else {
+                    logger.warning("Stock ID not found for Product ID: " + productId);
                 }
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
-            logger.severe("Error while saving items to GRN Item table : " + e.getMessage());
-
+            logger.severe("Error while saving items to GRN Item table: " + e.getMessage());
         }
 
+//Report  
         try {
             String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
             String imgPath = "";

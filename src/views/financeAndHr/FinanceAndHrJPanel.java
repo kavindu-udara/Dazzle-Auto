@@ -22,7 +22,7 @@ public class FinanceAndHrJPanel extends javax.swing.JPanel {
         SwingUtilities.updateComponentTreeUI(this);
         
         IncomeTaxCalculator incomeTax = new IncomeTaxCalculator();
-        IncomeTaxTab.add(incomeTax, BorderLayout.CENTER);
+        EmployeeSalaryTab.add(incomeTax, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
     }
 
