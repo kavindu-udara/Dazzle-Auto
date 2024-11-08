@@ -55,6 +55,16 @@ public class StockController {
     public ResultSet customQuery(String query) throws Exception {
         return MySqlConnection.executeSearch(query);
     }
+    
+     public ResultSet findByProductIdAndPrice(String productId, double price) throws Exception {
+        String query = "SELECT id, qty FROM `" + tableName + "` WHERE `product_id` = '" + productId + "' AND `price` = " + price;
+        return MySqlConnection.executeSearch(query);
+    }
+    
+      public void updateQuantity(int stockId, double newQty) throws Exception {
+        String updateQuery = "UPDATE `" + tableName + "` SET `qty` = " + newQty + " WHERE `id` = " + stockId;
+        MySqlConnection.executeIUD(updateQuery);
+    }
 
     public ResultSet delete(int id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
