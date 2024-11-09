@@ -30,6 +30,7 @@ import java.awt.Frame;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import models.EmployeeModel;
@@ -520,6 +521,7 @@ public class StaffJPanel extends javax.swing.JPanel {
             String email = String.valueOf(employeeViewTable.getValueAt(row, 4));
             String mobile = String.valueOf(employeeViewTable.getValueAt(row, 5));
             String employeeType = String.valueOf(employeeViewTable.getValueAt(row, 7));
+            String employeeStatus = String.valueOf(employeeViewTable.getValueAt(row, 8));
 
             if (From.equals("Selecter")) {
 
@@ -529,31 +531,37 @@ public class StaffJPanel extends javax.swing.JPanel {
 
                 employeeSelectorFrame.dispose();
 
-            } else {
+            } else if (evt.getClickCount() == 2) {
 
-                if (evt.getClickCount() == 2) {
+                EmployeeModel employeeModel = new EmployeeModel();
+                employeeModel.setId(employeeId);
+                employeeModel.setFirstName(firstName);
+                employeeModel.setLastName(lastName);
+                employeeModel.setEmail(email);
+                employeeModel.setNic(nic);
+                employeeModel.setMobile(mobile);
+                employeeModel.setEmployeeTypeName(employeeType);
 
-                    EmployeeModel employeeModel = new EmployeeModel();
-                    employeeModel.setId(employeeId);
-                    employeeModel.setFirstName(firstName);
-                    employeeModel.setLastName(lastName);
-                    employeeModel.setEmail(email);
-                    employeeModel.setNic(nic);
-                    employeeModel.setMobile(mobile);
-                    employeeModel.setEmployeeTypeName(employeeType);
-
-                    try {
-                        Frame staffJPanel = null;
-                        EmployeeUpdate employeeUpdate = new EmployeeUpdate(staffJPanel, true, employeeModel);
-                        employeeUpdate.setVisible(true);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        logger.severe("Error while showing employee update dialog : " + e.getMessage());
+                try {
+                    ResultSet employeeStatusResultSet = new StatusController().show(employeeStatus);
+                    if (employeeStatusResultSet.next()) {
+                        employeeModel.setStatusId(employeeStatusResultSet.getInt("id"));
                     }
-
-                    loadEmployees();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    logger.severe("Error while finding Status : " + ex.getMessage());
                 }
 
+                try {
+                    Frame staffJPanel = null;
+                    EmployeeUpdate employeeUpdate = new EmployeeUpdate(staffJPanel, true, employeeModel, this.staffJPanel);
+                    employeeUpdate.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.severe("Error while showing employee update dialog : " + e.getMessage());
+                }
+
+                loadEmployees();
             }
 
         }

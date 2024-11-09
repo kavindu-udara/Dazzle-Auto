@@ -47,7 +47,9 @@ public class EmployeeUpdate extends java.awt.Dialog {
     private EmployeeModel employeeModel;
     private EmployeeImageModel employeeImageModel = new EmployeeImageModel();
 
-    public EmployeeUpdate(Frame parent, boolean modal, EmployeeModel employeeModel) {
+    private StaffJPanel staffJPanel;
+
+    public EmployeeUpdate(Frame parent, boolean modal, EmployeeModel employeeModel, StaffJPanel staffJPanel) {
         super(parent, modal);
         initComponents();
         setDocumentFilters();
@@ -55,7 +57,14 @@ public class EmployeeUpdate extends java.awt.Dialog {
         loadempStatus();
 
         this.employeeModel = employeeModel;
+        this.staffJPanel = staffJPanel;
 
+        setEmployeeData();
+        loadAmployeeImage();
+
+    }
+
+    private void setEmployeeData() {
         employee_firstname.setText(employeeModel.getFirstName());
         employee_lastname.setText(employeeModel.getLastName());
         employee_email.setText(employeeModel.getEmail());
@@ -64,10 +73,18 @@ public class EmployeeUpdate extends java.awt.Dialog {
         employee_type.setSelectedItem(employeeModel.getEmployeeTypeName());
         emp_status.setSelectedItem(employeeModel.getStatusName());
 
-        loadAmployeeImage();
+        try {
+            ResultSet resultSet = new StatusController().show(employeeModel.getStatusId());
+            if (resultSet.next()) {
+                emp_status.setSelectedItem(resultSet.getString("status"));
+            }
+        } catch (Exception e) {
+            logger.severe("Error while setting status : " + e.getMessage());
+        }
 
     }
-  private void loadempStatus() {
+
+    private void loadempStatus() {
         try {
             ResultSet resultSet = new StatusController().show();
 
@@ -80,13 +97,14 @@ public class EmployeeUpdate extends java.awt.Dialog {
             }
 
             DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
-          emp_status.setModel(model);
+            emp_status.setModel(model);
 
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while loading employee types : " + e.getMessage());
         }
     }
+
     private void loadEmployeeTypes() {
         try {
             ResultSet resultSet = new EmployeeTypeController().show();
@@ -432,8 +450,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
         String email = employee_email.getText();
         String mobile = employee_mobile.getText();
         String employeeType = String.valueOf(employee_type.getSelectedItem());
-                String status = String.valueOf(emp_status.getSelectedItem());
-
+        String status = String.valueOf(emp_status.getSelectedItem());
 
         if (firstName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -453,7 +470,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Invalid mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (employeeType.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Please select an employee type", "Warning", JOptionPane.WARNING_MESSAGE);
-             } else if (status.equals("Select")) {
+        } else if (status.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Please Select Supplier Status", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
@@ -488,9 +505,8 @@ public class EmployeeUpdate extends java.awt.Dialog {
                         JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
                 }
-
                 JOptionPane.showMessageDialog(this, "Employee details updated successfully");
-                reset();
+                staffJPanel.reloadTable();
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.severe("Error while updating employee : " + e.getMessage());
