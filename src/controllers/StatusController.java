@@ -24,6 +24,11 @@ public class StatusController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
+    public ResultSet show(String status) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `status`='" + status + "'");
+    }
+    
+
     public ResultSet store(StatusModel statusModel) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`status`) VALUES "
                 + "('" + statusModel.getStatus() + "') ");
