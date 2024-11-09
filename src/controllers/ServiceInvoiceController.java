@@ -7,6 +7,8 @@ package controllers;
 import java.sql.ResultSet;
 import models.ServiceInvoiceModel;
 import includes.MySqlConnection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  *
@@ -60,4 +62,34 @@ public class ServiceInvoiceController {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
 
+     public ResultSet getMonthlyTotal(int month, int year) throws SQLException, Exception {
+        String query = "SELECT SUM(total) AS total_income FROM `" + tableName + "` WHERE MONTH(date) = ? AND YEAR(date) = ?";
+        
+        try {
+            MySqlConnection.createConnection();  
+            PreparedStatement stmt = MySqlConnection.connection.prepareStatement(query);
+            stmt.setInt(1, month); 
+            stmt.setInt(2, year); 
+            return stmt.executeQuery(); 
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    
+    public ResultSet getYearlyTotal(int year) throws SQLException, Exception {
+        String query = "SELECT SUM(total) AS total_income FROM `" + tableName + "` WHERE YEAR(date) = ?";
+       
+        try {
+            MySqlConnection.createConnection(); 
+            PreparedStatement stmt = MySqlConnection.connection.prepareStatement(query);
+            stmt.setInt(1, year);  
+            return stmt.executeQuery(); 
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 }
