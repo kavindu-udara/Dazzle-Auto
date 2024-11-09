@@ -6,8 +6,10 @@ package controllers;
 
 import includes.MySqlConnection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import models.ShopInvoiceModel;
-
+import java.sql.PreparedStatement;
+import javax.swing.JComboBox;
 /**
  *
  * @author kavindu
@@ -56,4 +58,37 @@ public class ShopInoviceController {
     public ResultSet delete(int id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
+    
+    public ResultSet getMonthlyTotal(int month, int year) throws SQLException, Exception {
+        String query = "SELECT SUM(total) AS total_income FROM `" + tableName + "` WHERE MONTH(date) = ? AND YEAR(date) = ?";
+        
+        try {
+            MySqlConnection.createConnection(); 
+            PreparedStatement stmt = MySqlConnection.connection.prepareStatement(query);
+            stmt.setInt(1, month);  
+            stmt.setInt(2, year);  
+            return stmt.executeQuery();
+          
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    
+    public ResultSet getYearlyTotal(int year) throws SQLException, Exception {
+        String query = "SELECT SUM(total) AS total_income FROM `" + tableName + "` WHERE YEAR(date) = ?";
+       
+        try {
+            MySqlConnection.createConnection(); 
+            PreparedStatement stmt = MySqlConnection.connection.prepareStatement(query);
+            stmt.setInt(1, year);
+            return stmt.executeQuery();  
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    
+   
 }
