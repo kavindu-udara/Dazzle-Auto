@@ -768,7 +768,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                 String grnID = GrnNumberField.getText();
                 String productId = String.valueOf(GRNViewTable.getValueAt(i, 0));
                 String qty = String.valueOf(GRNViewTable.getValueAt(i, 3));
-                String sellingPrice = String.valueOf(GRNViewTable.getValueAt(i, 5));
+                String buyingPrice = String.valueOf(GRNViewTable.getValueAt(i, 4));
 
                 Integer stockId = productStockIds.get(productId);
 
@@ -777,7 +777,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                         GrnItemsModel grnItemsModel = new GrnItemsModel();
                         grnItemsModel.setGrnId(grnID);
                         grnItemsModel.setQty(Double.parseDouble(qty));
-                        grnItemsModel.setPrice(Double.parseDouble(sellingPrice));
+                        grnItemsModel.setPrice(Double.parseDouble(buyingPrice));
                         grnItemsModel.setStockId(stockId);
 
                         ResultSet resultSet = new GrnItemsController().store(grnItemsModel);

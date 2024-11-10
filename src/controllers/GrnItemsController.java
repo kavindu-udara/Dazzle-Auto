@@ -5,7 +5,9 @@
 package controllers;
 
 import includes.MySqlConnection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import models.GrnItemsModel;
 
 /**
@@ -15,6 +17,7 @@ import models.GrnItemsModel;
 public class GrnItemsController {
 
     private final String tableName = "grn_items";
+    private final String tableName2 = "grn";
 
     public ResultSet show() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
@@ -51,5 +54,41 @@ public class GrnItemsController {
 
     public ResultSet delete(int id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
+    }
+
+    public ResultSet getMonthlyTotal(int month, int year) throws SQLException, Exception {
+        String query = "SELECT SUM(" + tableName + ".price) AS total_income FROM `" + tableName2 + "` "
+                + "INNER JOIN `" + tableName + "` ON `" + tableName2 + "`.id = `" + tableName + "`.grn_id "
+                + "WHERE MONTH(" + tableName2 + ".date) = ? AND YEAR(" + tableName2 + ".date) = ?";
+
+        try {
+            MySqlConnection.createConnection();
+            PreparedStatement stmt = MySqlConnection.connection.prepareStatement(query);
+            stmt.setInt(1, month);
+            stmt.setInt(2, year);
+            return stmt.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public ResultSet getYearlyTotal(int year) throws SQLException, Exception {
+        String query = "SELECT SUM(" + tableName + ".price) AS total_income "
+                + "FROM `" + tableName2 + "` "
+                + "INNER JOIN `" + tableName + "` ON `" + tableName2 + "`.id = `" + tableName + "`.grn_id "
+                + "WHERE YEAR(" + tableName2 + ".date) = ?";
+
+        try {
+            MySqlConnection.createConnection();
+            PreparedStatement stmt = MySqlConnection.connection.prepareStatement(query);
+            stmt.setInt(1, year);
+            return stmt.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 }
