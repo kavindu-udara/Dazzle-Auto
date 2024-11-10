@@ -4,6 +4,7 @@
  */
 package views.financeAndHr;
 
+import controllers.GrnItemsController;
 import controllers.ServiceInvoiceController;
 import controllers.ShopInoviceController;
 import includes.LoggerConfig;
@@ -26,47 +27,43 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     public IncomeTaxCalculator() {
         initComponents();
         setDocumentFilters();
-        loadStationIncome();
-        loadShopIncome();
+        MethodCalling();
 
         monthComboBox.setEnabled(false);
-
         ServiceStationIncomeField.setEditable(false);
+        GrossIncomeField.setEditable(false);
         ShopIncomeField.setEditable(false);
         EmployeeSalaryField.setEditable(false);
         SupplierPaymentField.setEditable(false);
         TaxableIncomeField.setEditable(false);
         TaxRateField.setEditable(false);
         FinalTaxField.setEditable(false);
-
-        String[] months = {
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        };
-
-        for (String month : months) {
-            monthComboBox.addItem(month);
-        }
-
+        TotalExpencesField.setEditable(false);
+        
+         TaxRateField.setText("30%");
     }
 
     private void setDocumentFilters() {
-        ((AbstractDocument) ServiceStationIncomeField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
-        ((AbstractDocument) ShopIncomeField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
-        ((AbstractDocument) EmployeeSalaryField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
-        ((AbstractDocument) SupplierPaymentField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        
         ((AbstractDocument) BillsField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
         ((AbstractDocument) OtherField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
-        ((AbstractDocument) TaxableIncomeField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
-        ((AbstractDocument) TaxRateField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
-        ((AbstractDocument) FinalTaxField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
 
+    }
+
+    public void MethodCalling() {
+        loadStationIncome();
+        loadShopIncome();
+        calculateGrossIncome();
+        loadSupplierPayments();
+        totalExpences();
+        taxableIncome();
+        FinalTaxCalculation();
     }
 
     private void loadShopIncome() {
         try {
-            int month = monthComboBox.getSelectedIndex() + 1; 
-            int year = java.time.Year.now().getValue(); 
+            int month = monthComboBox.getSelectedIndex() + 1;
+            int year = java.time.Year.now().getValue();
 
             ShopInoviceController shopInvoiceController = new ShopInoviceController();
             ResultSet resultSet = null;
@@ -78,10 +75,8 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
             }
 
             if (resultSet != null && resultSet.next()) {
-                int totalIncome = resultSet.getInt("total_income");
-                ShopIncomeField.setText(String.valueOf(totalIncome));
-                //double totalIncome = resultSet.getDouble("total_income");
-                //ShopIncomeField.setText(String.format("%.2f", totalIncome)); 
+                double totalIncome = resultSet.getDouble("total_income");
+                ShopIncomeField.setText(String.format("%.2f", totalIncome));
             }
 
         } catch (Exception e) {
@@ -105,8 +100,8 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
             }
 
             if (resultSet != null && resultSet.next()) {
-                int totalIncome = resultSet.getInt("total_income");
-                ServiceStationIncomeField.setText(String.valueOf(totalIncome));
+                double totalIncome = resultSet.getDouble("total_income");
+                ServiceStationIncomeField.setText(String.format("%.2f", totalIncome));
 
             }
 
@@ -116,6 +111,102 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         }
     }
 
+    private double grossIncome = 0;
+    private double totalExpences = 0;
+    private double taxableIncome = 0;
+    private double FinalTax = 0;
+
+    private void calculateGrossIncome() {
+        grossIncome = 0;
+
+        String service = ServiceStationIncomeField.getText().isEmpty() ? "0" : ServiceStationIncomeField.getText();
+        String shop = ShopIncomeField.getText().isEmpty() ? "0" : ShopIncomeField.getText();
+
+        try {
+            double incomeCal = Double.parseDouble(service) + Double.parseDouble(shop);
+            grossIncome += incomeCal;
+
+            GrossIncomeField.setText(String.format("%.2f", grossIncome));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadSupplierPayments() {
+        try {
+            int month = monthComboBox.getSelectedIndex() + 1;
+            int year = java.time.Year.now().getValue();
+
+            GrnItemsController grnItemsController = new GrnItemsController();
+            ResultSet resultSet = null;
+
+            if (monthlyRadioButton.isSelected()) {
+                resultSet = grnItemsController.getMonthlyTotal(month, year);
+            } else if (yearlyRadioButton.isSelected()) {
+                resultSet = grnItemsController.getYearlyTotal(year);
+            }
+
+            if (resultSet != null && resultSet.next()) {
+                double totalIncome = resultSet.getDouble("total_income");
+                SupplierPaymentField.setText(String.format("%.2f", totalIncome));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error loading supplier Payments: " + e.getMessage());
+        }
+    }
+
+    private void totalExpences() {
+        totalExpences = 0;
+
+        String salary = EmployeeSalaryField.getText().isEmpty() ? "0" : EmployeeSalaryField.getText();
+        String supplierPayments = SupplierPaymentField.getText().isEmpty() ? "0" : SupplierPaymentField.getText();
+        String bills = BillsField.getText().isEmpty() ? "0" : BillsField.getText();
+        String other = OtherField.getText().isEmpty() ? "0" : OtherField.getText();
+
+        try {
+            double expencesCal = Double.parseDouble(salary) + Double.parseDouble(supplierPayments)+ Double.parseDouble(bills)+ Double.parseDouble(other);
+            totalExpences += expencesCal;
+
+            TotalExpencesField.setText(String.format("%.2f", totalExpences));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void taxableIncome() {
+        taxableIncome = 0;
+
+        String grossIncome = GrossIncomeField.getText().isEmpty() ? "0" : GrossIncomeField.getText();
+        String toatalExpences = TotalExpencesField.getText().isEmpty() ? "0" : TotalExpencesField.getText();
+        
+        try {
+            double TaxableIncomeCal = Double.parseDouble(grossIncome) -Double.parseDouble(toatalExpences);
+            taxableIncome += TaxableIncomeCal;
+
+            TaxableIncomeField.setText(String.format("%.2f", taxableIncome));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void FinalTaxCalculation() {
+        FinalTax = 0;
+
+        String taxableIncome = TaxableIncomeField.getText().isEmpty() ? "0" : TaxableIncomeField.getText();
+        
+        
+        try {
+            double finalTaxCal = Double.parseDouble(taxableIncome) * 0.3 ;
+            FinalTax += finalTaxCal;
+
+            FinalTaxField.setText(String.format("%.2f", FinalTax));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -151,6 +242,11 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         EmployeeSalaryField = new javax.swing.JTextField();
         SupplierPaymentField = new javax.swing.JTextField();
         BillsField = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        GrossIncomeField = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        TotalExpencesField = new javax.swing.JTextField();
+        jSeparator2 = new javax.swing.JSeparator();
 
         setMinimumSize(new java.awt.Dimension(1089, 579));
         setPreferredSize(new java.awt.Dimension(1089, 579));
@@ -179,6 +275,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         });
 
         monthComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        monthComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
         monthComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 monthComboBoxActionPerformed(evt);
@@ -190,26 +287,26 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(87, 87, 87)
+                .addContainerGap(737, Short.MAX_VALUE)
                 .addComponent(yearlyRadioButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(monthlyRadioButton)
-                .addGap(42, 42, 42)
+                .addGap(18, 18, 18)
                 .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(650, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
+                .addContainerGap(11, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(yearlyRadioButton)
                     .addComponent(monthlyRadioButton)
                     .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28))
+                .addGap(16, 16, 16))
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1090, -1));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1090, 70));
 
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel3.setText("other");
@@ -217,19 +314,19 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
 
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel4.setText("Expences");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel7.setText("Gross Income");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, -1, 20));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, -1, 20));
 
         jLabel8.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel8.setText("Service Station Income");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, -1, 20));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, -1, 20));
 
         jLabel9.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel9.setText("Spare Parts Shop Income");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 210, -1, 20));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 180, -1, 20));
 
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel10.setText("Employee Salaries");
@@ -256,11 +353,18 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 
+        TaxableIncomeField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        TaxableIncomeField.setForeground(new java.awt.Color(0, 204, 0));
         TaxableIncomeField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TaxableIncomeFieldActionPerformed(evt);
             }
         });
+
+        TaxRateField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        TaxRateField.setForeground(new java.awt.Color(153, 153, 153));
+
+        FinalTaxField.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
 
         jButton1.setBackground(new java.awt.Color(33, 43, 108));
         jButton1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -319,26 +423,65 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(FinalTaxField, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(65, 65, 65))
         );
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 100, 480, 480));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 70, 480, 510));
+
+        OtherField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
+        OtherField.setForeground(new java.awt.Color(255, 0, 0));
+        OtherField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                OtherFieldKeyReleased(evt);
+            }
+        });
         jPanel1.add(OtherField, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 460, 240, 30));
 
         ServiceStationIncomeField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
         ServiceStationIncomeField.setForeground(new java.awt.Color(33, 43, 108));
-        jPanel1.add(ServiceStationIncomeField, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 160, 240, 30));
+        jPanel1.add(ServiceStationIncomeField, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 130, 240, 30));
 
         ShopIncomeField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
         ShopIncomeField.setForeground(new java.awt.Color(33, 43, 108));
-        jPanel1.add(ShopIncomeField, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 210, 240, 30));
+        jPanel1.add(ShopIncomeField, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 180, 240, 30));
+
+        EmployeeSalaryField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
+        EmployeeSalaryField.setForeground(new java.awt.Color(255, 0, 0));
         jPanel1.add(EmployeeSalaryField, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 310, 240, 30));
+
+        SupplierPaymentField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
+        SupplierPaymentField.setForeground(new java.awt.Color(255, 0, 0));
         jPanel1.add(SupplierPaymentField, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 360, 240, 30));
+
+        BillsField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
+        BillsField.setForeground(new java.awt.Color(255, 0, 0));
+        BillsField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                BillsFieldKeyReleased(evt);
+            }
+        });
         jPanel1.add(BillsField, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 410, 240, 30));
+
+        jLabel13.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel13.setText("Gross Income");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, -1, 20));
+
+        GrossIncomeField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
+        GrossIncomeField.setForeground(new java.awt.Color(33, 43, 108));
+        jPanel1.add(GrossIncomeField, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 230, 240, 30));
+
+        jLabel14.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel14.setText("Total Expences");
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 520, -1, 20));
+
+        TotalExpencesField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
+        TotalExpencesField.setForeground(new java.awt.Color(255, 0, 0));
+        jPanel1.add(TotalExpencesField, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 510, 240, 30));
+        jPanel1.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -359,34 +502,49 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     private void monthlyRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthlyRadioButtonActionPerformed
         // TODO add your handling code here:
         monthComboBox.setEnabled(true);
-        loadStationIncome();
-        loadShopIncome();
+        MethodCalling();
     }//GEN-LAST:event_monthlyRadioButtonActionPerformed
 
     private void yearlyRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearlyRadioButtonActionPerformed
         // TODO add your handling code here:
         monthComboBox.setEnabled(false);
-        loadStationIncome();
-        loadShopIncome();
+        MethodCalling();
     }//GEN-LAST:event_yearlyRadioButtonActionPerformed
 
     private void monthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthComboBoxActionPerformed
         // TODO add your handling code here:
-        loadStationIncome();
-        loadShopIncome();
+        MethodCalling();
+        
     }//GEN-LAST:event_monthComboBoxActionPerformed
+
+    private void BillsFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BillsFieldKeyReleased
+        // TODO add your handling code here:
+        totalExpences();
+        taxableIncome();
+        FinalTaxCalculation();
+        
+    }//GEN-LAST:event_BillsFieldKeyReleased
+
+    private void OtherFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_OtherFieldKeyReleased
+        // TODO add your handling code here:
+        totalExpences();
+         taxableIncome();
+         FinalTaxCalculation();
+    }//GEN-LAST:event_OtherFieldKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField BillsField;
     private javax.swing.JTextField EmployeeSalaryField;
     private javax.swing.JTextField FinalTaxField;
+    private javax.swing.JTextField GrossIncomeField;
     private javax.swing.JTextField OtherField;
     private javax.swing.JTextField ServiceStationIncomeField;
     private javax.swing.JTextField ShopIncomeField;
     private javax.swing.JTextField SupplierPaymentField;
     private javax.swing.JTextField TaxRateField;
     private javax.swing.JTextField TaxableIncomeField;
+    private javax.swing.JTextField TotalExpencesField;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -394,6 +552,8 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -405,6 +565,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField jTextField9;
     private javax.swing.JComboBox<String> monthComboBox;
     private javax.swing.JRadioButton monthlyRadioButton;
