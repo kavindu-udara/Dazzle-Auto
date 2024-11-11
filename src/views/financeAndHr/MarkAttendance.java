@@ -110,14 +110,10 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
 //                    logger.severe("NotFoundException : " + ex.getMessage());
                 }
                 if (result != null) {
-
-                    JOptionPane.showMessageDialog(null, "User found : " + result.getText());
-
                     String jsonstring = result.getText();
                     Gson gson = new Gson();
                     java.lang.reflect.Type type = new TypeToken<Map<String, String>>() {
                     }.getType();
-
                     resultMap = gson.fromJson(jsonstring, type);
 
                     if (action != "") {
@@ -165,6 +161,8 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
                         ResultSet checkInResultSet = new EmployeeAttendanceController().updateCheckInByUserId(currentTime, employeeResultSet.getString("id"), dateId);
                         JOptionPane.showMessageDialog(null, "mark attendance success");
                         actionMethod.run();
+                        stopwebcam();
+                        dispose();
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
