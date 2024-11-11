@@ -49,7 +49,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
     ByteArrayOutputStream out = null;
     String empId;
 
-    String empImgPath;
+    String empImgPath = "src/resources/DashboardIcons/account-60.png";
     File tempFile;
 
     public EmployeeFullDetailsPanel(Dashboard dashboard, String empID) {
