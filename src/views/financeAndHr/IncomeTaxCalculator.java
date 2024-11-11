@@ -5,6 +5,7 @@
 package views.financeAndHr;
 
 import controllers.GrnItemsController;
+import controllers.SalaryController;
 import controllers.ServiceInvoiceController;
 import controllers.ShopInoviceController;
 import includes.LoggerConfig;
@@ -58,6 +59,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         totalExpences();
         taxableIncome();
         FinalTaxCalculation();
+        loadSalaries();
 
     }
 
@@ -133,6 +135,32 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         }
     }
 
+     private void loadSalaries() {
+        try {
+            int month = monthComboBox.getSelectedIndex() + 1;
+            int year = java.time.Year.now().getValue();
+
+            SalaryController salaryController = new SalaryController();
+            ResultSet resultSet = null;
+
+            if (monthlyRadioButton.isSelected()) {
+                resultSet = salaryController.getMonthlyTotal(month, year);
+            } else if (yearlyRadioButton.isSelected()) {
+                resultSet = salaryController.getYearlyTotal(year);
+            }
+
+            if (resultSet != null && resultSet.next()) {
+                double totalSalary = resultSet.getDouble("total_salary");
+                EmployeeSalaryField.setText(String.format("%.2f", totalSalary));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error loading Salary Payments: " + e.getMessage());
+        }
+    }
+     
     private void loadSupplierPayments() {
         try {
             int month = monthComboBox.getSelectedIndex() + 1;
