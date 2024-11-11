@@ -39,12 +39,12 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         TaxRateField.setEditable(false);
         FinalTaxField.setEditable(false);
         TotalExpencesField.setEditable(false);
-        
-         TaxRateField.setText("30%");
+
+        TaxRateField.setText("30%");
     }
 
     private void setDocumentFilters() {
-        
+
         ((AbstractDocument) BillsField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
         ((AbstractDocument) OtherField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
 
@@ -58,6 +58,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         totalExpences();
         taxableIncome();
         FinalTaxCalculation();
+
     }
 
     private void loadShopIncome() {
@@ -167,7 +168,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         String other = OtherField.getText().isEmpty() ? "0" : OtherField.getText();
 
         try {
-            double expencesCal = Double.parseDouble(salary) + Double.parseDouble(supplierPayments)+ Double.parseDouble(bills)+ Double.parseDouble(other);
+            double expencesCal = Double.parseDouble(salary) + Double.parseDouble(supplierPayments) + Double.parseDouble(bills) + Double.parseDouble(other);
             totalExpences += expencesCal;
 
             TotalExpencesField.setText(String.format("%.2f", totalExpences));
@@ -175,38 +176,46 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-    
+
     private void taxableIncome() {
         taxableIncome = 0;
 
         String grossIncome = GrossIncomeField.getText().isEmpty() ? "0" : GrossIncomeField.getText();
         String toatalExpences = TotalExpencesField.getText().isEmpty() ? "0" : TotalExpencesField.getText();
-        
+
         try {
-            double TaxableIncomeCal = Double.parseDouble(grossIncome) -Double.parseDouble(toatalExpences);
+            double TaxableIncomeCal = Double.parseDouble(grossIncome) - Double.parseDouble(toatalExpences);
             taxableIncome += TaxableIncomeCal;
 
-            TaxableIncomeField.setText(String.format("%.2f", taxableIncome));
+            if (taxableIncome < 0) {
+                TaxableIncomeField.setText(String.valueOf("Insuficiant Income"));
+            } else {
+                TaxableIncomeField.setText(String.format("%.2f", taxableIncome));
+            }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
     }
-    
+
     private void FinalTaxCalculation() {
         FinalTax = 0;
 
-        String taxableIncome = TaxableIncomeField.getText().isEmpty() ? "0" : TaxableIncomeField.getText();
-        
-        
-        try {
-            double finalTaxCal = Double.parseDouble(taxableIncome) * 0.3 ;
-            FinalTax += finalTaxCal;
+        FinalTaxField.setText("");
+        if (!TaxableIncomeField.getText().equals("Insuficiant Income")) {
+            String taxableIncome = TaxableIncomeField.getText().isEmpty() ? "0" : TaxableIncomeField.getText();
 
-            FinalTaxField.setText(String.format("%.2f", FinalTax));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+            try {
+                double finalTaxCal = Double.parseDouble(taxableIncome) * 0.3;
+                FinalTax += finalTaxCal;
+
+                FinalTaxField.setText(String.format("%.2f", FinalTax));
+
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -514,7 +523,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     private void monthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthComboBoxActionPerformed
         // TODO add your handling code here:
         MethodCalling();
-        
+
     }//GEN-LAST:event_monthComboBoxActionPerformed
 
     private void BillsFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BillsFieldKeyReleased
@@ -522,14 +531,14 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         totalExpences();
         taxableIncome();
         FinalTaxCalculation();
-        
+
     }//GEN-LAST:event_BillsFieldKeyReleased
 
     private void OtherFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_OtherFieldKeyReleased
         // TODO add your handling code here:
         totalExpences();
-         taxableIncome();
-         FinalTaxCalculation();
+        taxableIncome();
+        FinalTaxCalculation();
     }//GEN-LAST:event_OtherFieldKeyReleased
 
 
