@@ -125,9 +125,26 @@ public class StaffJPanel extends javax.swing.JPanel {
             }
 
             ResultSet employeeResultSet = MySqlConnection.executeSearch(query);
+            ResultSet resultSet2 = new StatusController().search("");
+            ResultSet resultSet1 = new EmployeeTypeController().search("");
 
             DefaultTableModel model = (DefaultTableModel) employeeViewTable.getModel();
             model.setRowCount(0);
+
+            HashMap<Integer, String> employeeTypeMap = new HashMap<>();
+            HashMap<Integer, String> statusMap = new HashMap<>();
+
+            while (resultSet1.next()) {
+                int employeeTypeId = resultSet1.getInt("id");
+                String employeeTypeName = resultSet1.getString("type");
+                employeeTypeMap.put(employeeTypeId, employeeTypeName);
+            }
+
+            while (resultSet2.next()) {
+                int statusId = resultSet2.getInt("id");
+                String statusName = resultSet2.getString("status");
+                statusMap.put(statusId, statusName);
+            }
 
             while (employeeResultSet.next()) {
                 String employeeId = employeeResultSet.getString("id");
@@ -136,9 +153,14 @@ public class StaffJPanel extends javax.swing.JPanel {
                 String lastName = employeeResultSet.getString("last_name");
                 String email = employeeResultSet.getString("email");
                 String mobile = employeeResultSet.getString("mobile");
-                String registeredDate = employeeResultSet.getString("registered_date");
 
-                model.addRow(new Object[]{employeeId, nic, firstName, lastName, email, mobile, registeredDate});
+                int employeeTypeId = employeeResultSet.getInt("employee_type_id");
+                int statusId = employeeResultSet.getInt("status_id");
+
+                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
+                String employeeTypeName = employeeTypeMap.getOrDefault(employeeTypeId, "Unknown Type");
+
+                model.addRow(new Object[]{employeeId, nic, firstName, lastName, email, mobile, employeeTypeName, statusName});
             }
 
             employeeViewTable.revalidate();
@@ -194,7 +216,7 @@ public class StaffJPanel extends javax.swing.JPanel {
                 vector.add(employeeResultSet.getString("last_name"));
                 vector.add(employeeResultSet.getString("email"));
                 vector.add(employeeResultSet.getString("mobile"));
-                vector.add(employeeResultSet.getString("registered_date"));
+                //vector.add(employeeResultSet.getString("registered_date"));
 
                 int employeeTypeId = employeeResultSet.getInt("employee_type_id");
                 int statusId = employeeResultSet.getInt("status_id");
@@ -259,7 +281,7 @@ public class StaffJPanel extends javax.swing.JPanel {
                 String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
                 String employeeTypeName = employeeTypeMap.getOrDefault(employeeTypeId, "Unknown Type");
 
-                model.addRow(new Object[]{id, fname, lname, email, mobile, nic, registeredDate, employeeTypeName, statusName});
+                model.addRow(new Object[]{id, nic, fname, lname, email, mobile, employeeTypeName, statusName});
             }
 
         } catch (Exception ex) {
@@ -292,7 +314,7 @@ public class StaffJPanel extends javax.swing.JPanel {
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 8; i++) {
             employeeViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
@@ -346,11 +368,11 @@ public class StaffJPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Employee ID ", "NIC", "First Name ", "Last Name ", "Email ", "Mobile", "Registered date ", "Employee Type", "Status"
+                "Employee ID", "NIC", "First Name ", "Last Name ", "Email ", "Mobile", "Employee Type", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -363,11 +385,11 @@ public class StaffJPanel extends javax.swing.JPanel {
         employeeViewTable.setRowHeight(30);
         employeeViewTable.getTableHeader().setReorderingAllowed(false);
         employeeViewTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                employeeViewTableMouseReleased(evt);
-            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 employeeViewTableMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                employeeViewTableMouseReleased(evt);
             }
         });
         jScrollPane2.setViewportView(employeeViewTable);
@@ -520,8 +542,8 @@ public class StaffJPanel extends javax.swing.JPanel {
             String lastName = String.valueOf(employeeViewTable.getValueAt(row, 3));
             String email = String.valueOf(employeeViewTable.getValueAt(row, 4));
             String mobile = String.valueOf(employeeViewTable.getValueAt(row, 5));
-            String employeeType = String.valueOf(employeeViewTable.getValueAt(row, 7));
-            String employeeStatus = String.valueOf(employeeViewTable.getValueAt(row, 8));
+            String employeeType = String.valueOf(employeeViewTable.getValueAt(row, 6));
+            String employeeStatus = String.valueOf(employeeViewTable.getValueAt(row, 7));
 
             if (From.equals("Selecter")) {
 
