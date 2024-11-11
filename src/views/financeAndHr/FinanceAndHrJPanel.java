@@ -22,7 +22,7 @@ public class FinanceAndHrJPanel extends javax.swing.JPanel {
         SwingUtilities.updateComponentTreeUI(this);
         
         IncomeTaxCalculator incomeTax = new IncomeTaxCalculator();
-        EmployeeSalaryTab.add(incomeTax, BorderLayout.CENTER);
+        IncomeTaxTab.add(incomeTax, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
     }
 
@@ -61,18 +61,7 @@ public class FinanceAndHrJPanel extends javax.swing.JPanel {
         EmployeeSalaryTab.getAccessibleContext().setAccessibleName("");
 
         IncomeTaxTab.setBackground(new java.awt.Color(51, 0, 51));
-
-        javax.swing.GroupLayout IncomeTaxTabLayout = new javax.swing.GroupLayout(IncomeTaxTab);
-        IncomeTaxTab.setLayout(IncomeTaxTabLayout);
-        IncomeTaxTabLayout.setHorizontalGroup(
-            IncomeTaxTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1089, Short.MAX_VALUE)
-        );
-        IncomeTaxTabLayout.setVerticalGroup(
-            IncomeTaxTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 579, Short.MAX_VALUE)
-        );
-
+        IncomeTaxTab.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("Income Tax Calculator", null, IncomeTaxTab, "");
         IncomeTaxTab.getAccessibleContext().setAccessibleName("");
 

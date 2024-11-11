@@ -338,7 +338,6 @@ public class EmployeeAttendance extends javax.swing.JPanel {
                         new EmployeeAttendanceController().storeWithNulls(employeeAttendanceModel);
                     }
                     
-                    JOptionPane.showMessageDialog(null, "stored attendance");
                     isRowsCreted();
                     loadTableData();
                 } catch (Exception e) {
