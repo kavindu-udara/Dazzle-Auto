@@ -147,7 +147,7 @@ public class AppointmnetPanel extends javax.swing.JPanel {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.warning("Error while loadVehicleTypes : " + e.getMessage());
+            logger.warning("Error while loadAppointmentStatus() : " + e.getMessage());
         }
 
     }
@@ -285,6 +285,11 @@ public class AppointmnetPanel extends javax.swing.JPanel {
         });
 
         jDateTextField.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 18)); // NOI18N
+        jDateTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jDateTextFieldMouseExited(evt);
+            }
+        });
         jDateTextField.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jDateTextFieldPropertyChange(evt);
@@ -431,7 +436,6 @@ public class AppointmnetPanel extends javax.swing.JPanel {
         if (datePicker1.isDateSelected()) {
             loadAppointments();
         }
-
     }//GEN-LAST:event_jDateTextFieldPropertyChange
 
     private void jAppointmentTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jAppointmentTableMouseClicked
@@ -447,6 +451,10 @@ public class AppointmnetPanel extends javax.swing.JPanel {
             new AppointmentSuccessDialog(null, true, appointmentNumber, vehicleNumber, serviceName, serviceDate, note).setVisible(true);
         }
     }//GEN-LAST:event_jAppointmentTableMouseClicked
+
+    private void jDateTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateTextFieldMouseExited
+        loadAppointments();
+    }//GEN-LAST:event_jDateTextFieldMouseExited
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
