@@ -5,7 +5,7 @@
 package views.financeAndHr;
 
 import controllers.GrnItemsController;
-import controllers.SalaryController;
+import controllers.EmployeeSalaryController;
 import controllers.ServiceInvoiceController;
 import controllers.ShopInoviceController;
 import includes.LoggerConfig;
@@ -140,7 +140,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
             int month = monthComboBox.getSelectedIndex() + 1;
             int year = java.time.Year.now().getValue();
 
-            SalaryController salaryController = new SalaryController();
+            EmployeeSalaryController salaryController = new EmployeeSalaryController();
             ResultSet resultSet = null;
 
             if (monthlyRadioButton.isSelected()) {

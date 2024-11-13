@@ -12,7 +12,6 @@ import javax.swing.SwingUtilities;
  * @author Dinuka
  */
 public class FinanceAndHrJPanel extends javax.swing.JPanel {
-
     
     public FinanceAndHrJPanel() {
         initComponents();
@@ -23,6 +22,10 @@ public class FinanceAndHrJPanel extends javax.swing.JPanel {
         
         IncomeTaxCalculator incomeTax = new IncomeTaxCalculator();
         IncomeTaxTab.add(incomeTax, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
+        
+        EmployeeSalaryPanel employeeSalaryPanel = new EmployeeSalaryPanel();
+        EmployeeSalaryTab.add(employeeSalaryPanel);
         SwingUtilities.updateComponentTreeUI(this);
     }
 
