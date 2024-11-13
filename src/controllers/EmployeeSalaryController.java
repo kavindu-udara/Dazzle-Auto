@@ -14,7 +14,7 @@ import models.SalaryModel;
  *
  * @author Dumindu
  */
-public class SalaryController {
+public class EmployeeSalaryController {
     private final String tableName = "employee_salary";
 
     public ResultSet show() throws Exception {
@@ -23,6 +23,10 @@ public class SalaryController {
 
     public ResultSet show(int id) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
+    }
+    
+    public ResultSet showByMonthRange(String startMonth, String endMonth) throws Exception{
+        return MySqlConnection.executeSearch("SELECT * FROM `"+tableName+"` WHERE `date` >= '"+startMonth+"' AND `date` < '"+endMonth+"' ");
     }
 
     public ResultSet store(SalaryModel salaryModel) throws Exception {

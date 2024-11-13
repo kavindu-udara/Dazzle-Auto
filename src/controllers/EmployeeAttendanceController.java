@@ -23,7 +23,7 @@ public class EmployeeAttendanceController {
     public ResultSet show(int id) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
-    
+
     public ResultSet showByDateId(int dateId) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `attendance_date_id`='" + dateId + "'");
     }
@@ -31,9 +31,13 @@ public class EmployeeAttendanceController {
     public ResultSet show(String id, String time) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + id + "' AND `checkin`='" + time + "' OR `checkout`='" + time + "' ");
     }
-    
-    public ResultSet showByDateIdAndEmpId(String empId, int dateId) throws Exception{
+
+    public ResultSet showByDateIdAndEmpId(String empId, int dateId) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + empId + "' AND `attendance_date_id`='" + dateId + "'");
+    }
+
+    public ResultSet showByDateAndStatus(String employeeId, int dateId, int statusId) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + employeeId + "' AND `attendance_date_id`='" + dateId + "' AND `attendance_status_id`='" + statusId + "' ");
     }
 
     public ResultSet storeWithNulls(EmployeeAttendance employeeAttendanceModel) throws Exception {
@@ -48,13 +52,13 @@ public class EmployeeAttendanceController {
                 + "`checkin`='" + checkIn + "', `attendance_status_id`='1' "
                 + "WHERE `employee_id`='" + UserId + "' AND `attendance_date_id`='" + dateId + "' ");
     }
-    
+
     public ResultSet updateCheckOutByUserId(String checkIn, String UserId, int dateId) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
                 + "`checkout`='" + checkIn + "' "
                 + "WHERE `employee_id`='" + UserId + "' AND `attendance_date_id`='" + dateId + "' ");
     }
-    
+
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
                 + "`employee_id` LIKE '%" + searchText + "%' OR "

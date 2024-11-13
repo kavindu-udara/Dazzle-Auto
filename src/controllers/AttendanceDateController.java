@@ -13,7 +13,7 @@ import models.AttendanceDateModel;
  * @author kavindu
  */
 public class AttendanceDateController {
-    
+
     private final String tableName = "attendance_date";
 
     public ResultSet show() throws Exception {
@@ -28,8 +28,12 @@ public class AttendanceDateController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `date`='" + date + "'");
     }
 
+    public ResultSet showByMonthRange(String startDate, String finishDate) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `date` >= '" + startDate + "' AND `date` < '" + finishDate + "'");
+    }
+
     public ResultSet store(AttendanceDateModel model) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`date`) VALUES ("
-                + "'" + model.getDate()+ "') ");
+                + "'" + model.getDate() + "') ");
     }
 }
