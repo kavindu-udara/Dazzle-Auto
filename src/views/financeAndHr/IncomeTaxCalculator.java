@@ -16,6 +16,7 @@ import javax.management.StringValueExp;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
+import raven.datetime.component.date.DatePicker;
 
 /**
  *
@@ -31,17 +32,29 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         MethodCalling();
 
         monthComboBox.setEnabled(false);
+        jYearChooser1.setEnabled(false);
+        
         ServiceStationIncomeField.setEditable(false);
+        ServiceStationIncomeField.setFocusable(false);
         GrossIncomeField.setEditable(false);
+        GrossIncomeField.setFocusable(false);
         ShopIncomeField.setEditable(false);
+        ShopIncomeField.setFocusable(false);
         EmployeeSalaryField.setEditable(false);
+        EmployeeSalaryField.setFocusable(false);
         SupplierPaymentField.setEditable(false);
+        SupplierPaymentField.setFocusable(false);
         TaxableIncomeField.setEditable(false);
+        TaxableIncomeField.setFocusable(false);
         TaxRateField.setEditable(false);
+        TaxRateField.setFocusable(false);
         FinalTaxField.setEditable(false);
+        FinalTaxField.setFocusable(false);
         TotalExpencesField.setEditable(false);
+        TotalExpencesField.setFocusable(false);
 
         TaxRateField.setText("30%");
+
     }
 
     private void setDocumentFilters() {
@@ -60,13 +73,14 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         taxableIncome();
         FinalTaxCalculation();
         loadSalaries();
+        totalExpences();
 
     }
 
     private void loadShopIncome() {
         try {
             int month = monthComboBox.getSelectedIndex() + 1;
-            int year = java.time.Year.now().getValue();
+            int year = jYearChooser1.getYear();
 
             ShopInoviceController shopInvoiceController = new ShopInoviceController();
             ResultSet resultSet = null;
@@ -91,7 +105,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     private void loadStationIncome() {
         try {
             int month = monthComboBox.getSelectedIndex() + 1;
-            int year = java.time.Year.now().getValue();
+            int year = jYearChooser1.getYear();
 
             ServiceInvoiceController serviceInvoiceController = new ServiceInvoiceController();
             ResultSet resultSet = null;
@@ -135,10 +149,11 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         }
     }
 
-     private void loadSalaries() {
+    private void loadSalaries() {
+        
         try {
             int month = monthComboBox.getSelectedIndex() + 1;
-            int year = java.time.Year.now().getValue();
+            int year = jYearChooser1.getYear();
 
             EmployeeSalaryController salaryController = new EmployeeSalaryController();
             ResultSet resultSet = null;
@@ -155,16 +170,18 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
 
             }
 
+           
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error loading Salary Payments: " + e.getMessage());
         }
+         
     }
-     
+
     private void loadSupplierPayments() {
         try {
             int month = monthComboBox.getSelectedIndex() + 1;
-            int year = java.time.Year.now().getValue();
+            int year = jYearChooser1.getYear();
 
             GrnItemsController grnItemsController = new GrnItemsController();
             ResultSet resultSet = null;
@@ -188,6 +205,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     }
 
     private void totalExpences() {
+        
         totalExpences = 0;
 
         String salary = EmployeeSalaryField.getText().isEmpty() ? "0" : EmployeeSalaryField.getText();
@@ -196,12 +214,14 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         String other = OtherField.getText().isEmpty() ? "0" : OtherField.getText();
 
         try {
-            double expencesCal = Double.parseDouble(salary) + Double.parseDouble(supplierPayments) + Double.parseDouble(bills) + Double.parseDouble(other);
-            totalExpences += expencesCal;
+            double expencesCal = Double.parseDouble(salary)+ Double.parseDouble(supplierPayments)
+                    + Double.parseDouble(bills) + Double.parseDouble(other);
 
+            totalExpences += expencesCal;
             TotalExpencesField.setText(String.format("%.2f", totalExpences));
         } catch (NumberFormatException e) {
             e.printStackTrace();
+
         }
     }
 
@@ -255,6 +275,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         yearlyRadioButton = new javax.swing.JRadioButton();
         monthlyRadioButton = new javax.swing.JRadioButton();
         monthComboBox = new javax.swing.JComboBox<>();
+        jYearChooser1 = new com.toedter.calendar.JYearChooser();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -319,14 +340,33 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
             }
         });
 
+        jYearChooser1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jYearChooser1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jYearChooser1MouseClicked(evt);
+            }
+        });
+        jYearChooser1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jYearChooser1PropertyChange(evt);
+            }
+        });
+        jYearChooser1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jYearChooser1KeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(737, Short.MAX_VALUE)
+                .addContainerGap(631, Short.MAX_VALUE)
                 .addComponent(yearlyRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jYearChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
                 .addComponent(monthlyRadioButton)
                 .addGap(18, 18, 18)
                 .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -334,12 +374,14 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(yearlyRadioButton)
-                    .addComponent(monthlyRadioButton)
-                    .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jYearChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(yearlyRadioButton)
+                        .addComponent(monthlyRadioButton)
+                        .addComponent(monthComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(16, 16, 16))
         );
 
@@ -539,12 +581,14 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     private void monthlyRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthlyRadioButtonActionPerformed
         // TODO add your handling code here:
         monthComboBox.setEnabled(true);
+        jYearChooser1.setEnabled(false);
         MethodCalling();
     }//GEN-LAST:event_monthlyRadioButtonActionPerformed
 
     private void yearlyRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearlyRadioButtonActionPerformed
         // TODO add your handling code here:
         monthComboBox.setEnabled(false);
+        jYearChooser1.setEnabled(true);
         MethodCalling();
     }//GEN-LAST:event_yearlyRadioButtonActionPerformed
 
@@ -568,6 +612,21 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         taxableIncome();
         FinalTaxCalculation();
     }//GEN-LAST:event_OtherFieldKeyReleased
+
+    private void jYearChooser1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jYearChooser1MouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jYearChooser1MouseClicked
+
+    private void jYearChooser1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jYearChooser1KeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jYearChooser1KeyPressed
+
+    private void jYearChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jYearChooser1PropertyChange
+        // TODO add your handling code here:
+        MethodCalling();
+    }//GEN-LAST:event_jYearChooser1PropertyChange
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -604,6 +663,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField jTextField9;
+    private com.toedter.calendar.JYearChooser jYearChooser1;
     private javax.swing.JComboBox<String> monthComboBox;
     private javax.swing.JRadioButton monthlyRadioButton;
     private javax.swing.JRadioButton yearlyRadioButton;
