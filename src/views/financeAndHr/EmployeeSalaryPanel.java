@@ -21,6 +21,7 @@ import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.text.AbstractDocument;
 import models.SalaryModel;
 
@@ -33,6 +34,8 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private static final HashMap<String, String> monthHashMap = new HashMap<>();
     private static final Logger logger = LoggerConfig.getLogger();
 
+    private EmployeeSalaryPanel employeeSalaryPanel = this;
+
     /**
      * Creates new form EmployeeSalaryPanel
      */
@@ -40,33 +43,12 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         initComponents();
         setDocumentFilters();
         loadMonthsComboBox();
-        loadEmployees();
         loadSalaryTable();
     }
 
     private void setDocumentFilters() {
-        ((AbstractDocument) precentageField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) precentageField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
         ((AbstractDocument) bonusField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
-    }
-
-    private void loadEmployees() {
-        DefaultTableModel tableModel = (DefaultTableModel) employeesTable.getModel();
-        try (ResultSet resultSet = new EmployeeController().show()) {
-            tableModel.setRowCount(0);
-            while (resultSet.next()) {
-                Vector vector = new Vector();
-                vector.add(resultSet.getString("id"));
-                vector.add(resultSet.getString("nic"));
-                vector.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
-                vector.add(resultSet.getString("email"));
-                vector.add(resultSet.getString("mobile"));
-
-                tableModel.addRow(vector);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.severe("Error while loading employee : " + e.getMessage());
-        }
     }
 
     private void loadMonthsComboBox() {
@@ -109,12 +91,11 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         addButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         salaryTable = new javax.swing.JTable();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        employeesTable = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         bonusField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         allowedLeavesCountLabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jLabel1.setText("Select a month : ");
 
@@ -185,7 +166,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -193,29 +174,6 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(salaryTable);
-
-        employeesTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Id", "nic", "name", "email", "mobile"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        employeesTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                employeesTableMouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(employeesTable);
 
         jLabel4.setText("Bonus");
 
@@ -235,6 +193,13 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
         allowedLeavesCountLabel.setText("0");
 
+        jButton1.setText("Select Employee");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -242,7 +207,6 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,10 +220,12 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                                         .addComponent(jLabel3)
                                         .addGap(18, 18, 18)
                                         .addComponent(employeeNameLabel))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(monthsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jLabel1)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(monthsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(36, 36, 36)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6)
@@ -302,12 +268,11 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(allowedLeavesCountLabel))
+                    .addComponent(allowedLeavesCountLabel)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -347,8 +312,8 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(employeeIdLabel))
-                .addGap(24, 24, 24)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -405,40 +370,30 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_basicSalaryFieldActionPerformed
 
-    private void employeesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeesTableMouseClicked
-        // TODO add your handling code here:
-        setEmployeeData();
-    }//GEN-LAST:event_employeesTableMouseClicked
+    public void setEmployeeData(String employeeId) {
+        try (ResultSet resultSet = new EmployeeController().show(employeeId)) {
+            if (resultSet.next()) {
+                employeeNameLabel.setText(resultSet.getString("first_name"));
+                employeeIdLabel.setText(employeeId);
 
-    private void setEmployeeData() {
-        int row = employeesTable.getSelectedRow();
-        if (row > 0) {
-            String employeeId = String.valueOf(employeesTable.getValueAt(row, 0));
-
-            try (ResultSet resultSet = new EmployeeController().show(employeeId)) {
-                if (resultSet.next()) {
-                    employeeNameLabel.setText(resultSet.getString("first_name"));
-                    employeeIdLabel.setText(employeeId);
-
-                    // leaves count process
-                    loadBasicSalary(resultSet.getInt("employee_type_id"));
-                    int leavesForMonth = getLeavesForMonth(resultSet.getInt("employee_type_id"));
-                    if (leavesForMonth != 0) {
-                        int leavesCount = getLeavesCount(employeeId);
-                        int finalLeavesCount = leavesForMonth - leavesCount;
-                        if (finalLeavesCount < 0) {
-                            leavesCountValueLabel.setText(String.valueOf(finalLeavesCount * -1));
-                        } else {
-                            leavesCountValueLabel.setText("0");
-                        }
-                        precentageField.setText("0");
-                        loadPresentageSalary();
+                // leaves count process
+                loadBasicSalary(resultSet.getInt("employee_type_id"));
+                int leavesForMonth = getLeavesForMonth(resultSet.getInt("employee_type_id"));
+                if (leavesForMonth != 0) {
+                    int leavesCount = getLeavesCount(employeeId);
+                    int finalLeavesCount = leavesForMonth - leavesCount;
+                    if (finalLeavesCount < 0) {
+                        leavesCountValueLabel.setText(String.valueOf(finalLeavesCount * -1));
+                    } else {
+                        leavesCountValueLabel.setText("0");
                     }
+                    precentageField.setText("0");
+                    loadPresentageSalary();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                logger.severe("Error while setting employee : " + e.getMessage());
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while setting employee : " + e.getMessage());
         }
     }
 
@@ -503,7 +458,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private void monthsComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthsComboBoxActionPerformed
         // TODO add your handling code here:
         loadSalaryTable();
-        setEmployeeData();
+//        setEmployeeData();
     }//GEN-LAST:event_monthsComboBoxActionPerformed
 
     private void precentageFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precentageFieldKeyReleased
@@ -529,6 +484,12 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Please select a employee first");
         }
     }//GEN-LAST:event_bonusFieldKeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new EmployeeSelectorDialog(null, true, employeeSalaryPanel).setVisible(true);
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void loadPresentageSalary() {
         Double basicSalary = Double.parseDouble(basicSalaryField.getText());
@@ -603,7 +564,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private javax.swing.JTextField bonusField;
     private javax.swing.JLabel employeeIdLabel;
     private javax.swing.JLabel employeeNameLabel;
-    private javax.swing.JTable employeesTable;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -616,7 +577,6 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel leavesCountValueLabel;
     private javax.swing.JTextField leavesPriceField;
     private javax.swing.JComboBox<String> monthsComboBox;
