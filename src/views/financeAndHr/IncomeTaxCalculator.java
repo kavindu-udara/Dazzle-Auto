@@ -32,15 +32,26 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         MethodCalling();
 
         monthComboBox.setEnabled(false);
+        jYearChooser1.setEnabled(false);
+        
         ServiceStationIncomeField.setEditable(false);
+        ServiceStationIncomeField.setFocusable(false);
         GrossIncomeField.setEditable(false);
+        GrossIncomeField.setFocusable(false);
         ShopIncomeField.setEditable(false);
+        ShopIncomeField.setFocusable(false);
         EmployeeSalaryField.setEditable(false);
+        EmployeeSalaryField.setFocusable(false);
         SupplierPaymentField.setEditable(false);
+        SupplierPaymentField.setFocusable(false);
         TaxableIncomeField.setEditable(false);
+        TaxableIncomeField.setFocusable(false);
         TaxRateField.setEditable(false);
+        TaxRateField.setFocusable(false);
         FinalTaxField.setEditable(false);
+        FinalTaxField.setFocusable(false);
         TotalExpencesField.setEditable(false);
+        TotalExpencesField.setFocusable(false);
 
         TaxRateField.setText("30%");
 
