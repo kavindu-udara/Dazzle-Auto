@@ -9,14 +9,19 @@ import controllers.EmployeeAttendanceController;
 import controllers.EmployeeController;
 import controllers.EmployeeSalaryController;
 import controllers.EmployeeTypeController;
+import includes.LoggerConfig;
+import includes.OnlyDoubleDocumentFilter;
+import includes.OnlyNumbersDocumentFilter;
 import includes.TimestampsGenerator;
 import javax.swing.table.DefaultTableModel;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
 import models.SalaryModel;
 
 /**
@@ -26,15 +31,22 @@ import models.SalaryModel;
 public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
     private static final HashMap<String, String> monthHashMap = new HashMap<>();
+    private static final Logger logger = LoggerConfig.getLogger();
 
     /**
      * Creates new form EmployeeSalaryPanel
      */
     public EmployeeSalaryPanel() {
         initComponents();
+        setDocumentFilters();
         loadMonthsComboBox();
         loadEmployees();
         loadSalaryTable();
+    }
+
+    private void setDocumentFilters() {
+        ((AbstractDocument) precentageField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) bonusField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
     }
 
     private void loadEmployees() {
@@ -52,7 +64,8 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 tableModel.addRow(vector);
             }
         } catch (Exception e) {
-            //
+            e.printStackTrace();
+            logger.severe("Error while loading employee : " + e.getMessage());
         }
     }
 
@@ -98,6 +111,8 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         salaryTable = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         employeesTable = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        bonusField = new javax.swing.JTextField();
 
         jLabel1.setText("Select a month : ");
 
@@ -200,6 +215,15 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         });
         jScrollPane2.setViewportView(employeesTable);
 
+        jLabel4.setText("Bonus");
+
+        bonusField.setText("0");
+        bonusField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bonusFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -251,7 +275,12 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                                             .addComponent(leavesPriceField)
                                             .addComponent(totalPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(41, 41, 41)
-                                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(bonusField)))))
                         .addGap(0, 597, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -277,17 +306,24 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                             .addComponent(jLabel10)
                             .addComponent(basicSalaryField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(addButton))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(precentageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel11)
-                            .addComponent(leavesPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12)
-                            .addComponent(totalPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel8)
+                                    .addComponent(precentageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel11)
+                                    .addComponent(leavesPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel12)
+                                    .addComponent(totalPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(bonusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -320,6 +356,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                     loadSalaryTable();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    logger.severe("Error while adding employee Salary : " + e.getMessage());
                 }
             }
         } else {
@@ -340,6 +377,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while showing employee salary : " + e.getMessage());
         }
         return false;
     }
@@ -380,6 +418,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                logger.severe("Error while setting employee : " + e.getMessage());
             }
         }
     }
@@ -391,6 +430,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading employee basic Salary : " + e.getMessage());
         }
     }
 
@@ -401,6 +441,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading employee type leaves : " + e.getMessage());
         }
         return 0;
     }
@@ -415,6 +456,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while getting leaves count : " + e.getMessage());
         }
         return leavesCount;
     }
@@ -426,6 +468,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while getting employee attendance status : " + e.getMessage());
         }
         return false;
     }
@@ -445,6 +488,10 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         loadPresentageSalary();
     }//GEN-LAST:event_precentageFieldKeyReleased
 
+    private void bonusFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bonusFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bonusFieldActionPerformed
+
     private void loadPresentageSalary() {
         Double basicSalary = Double.parseDouble(basicSalaryField.getText());
         int leaves = Integer.parseInt(leavesCountValueLabel.getText());
@@ -463,7 +510,14 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         Double basicSalary = Double.parseDouble(basicSalaryField.getText());
         Double leavesPrice = Double.parseDouble(leavesPriceField.getText());
 
-        totalPriceField.setText(String.valueOf(basicSalary - leavesPrice));
+        Double bonus = 0.0;
+        if (!bonusField.getText().isEmpty()) {
+            bonus = Double.parseDouble(bonusField.getText());
+        }
+
+        Double totalPrice = (basicSalary - leavesPrice) + bonus;
+
+        totalPriceField.setText(String.valueOf(totalPrice));
     }
 
     private String getStartMonth() {
@@ -500,6 +554,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while loading employee Salary : " + e.getMessage());
         }
 
     }
@@ -508,6 +563,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JTextField basicSalaryField;
+    private javax.swing.JTextField bonusField;
     private javax.swing.JLabel employeeIdLabel;
     private javax.swing.JLabel employeeNameLabel;
     private javax.swing.JTable employeesTable;
@@ -517,6 +573,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
