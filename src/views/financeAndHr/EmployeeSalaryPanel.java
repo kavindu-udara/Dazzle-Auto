@@ -52,11 +52,14 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     }
 
     private void loadMonthsComboBox() {
+        int monthNumber = Integer.parseInt(TimestampsGenerator.getTodayDate().split("-")[1]);
         String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         Vector vector = new Vector();
         for (int i = 0; i < months.length; i++) {
             monthHashMap.put(months[i], String.valueOf(i + 1));
-            vector.add(months[i]);
+            if (monthNumber == i + 1) {
+                vector.add(months[i]);
+            }
         }
         DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
         monthsComboBox.setModel(comboBoxModel);
