@@ -113,6 +113,8 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         employeesTable = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         bonusField = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        allowedLeavesCountLabel = new javax.swing.JLabel();
 
         jLabel1.setText("Select a month : ");
 
@@ -223,6 +225,15 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 bonusFieldActionPerformed(evt);
             }
         });
+        bonusField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                bonusFieldKeyReleased(evt);
+            }
+        });
+
+        jLabel5.setText("Allowed Leaves Count");
+
+        allowedLeavesCountLabel.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -252,36 +263,40 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                                 .addGap(36, 36, 36)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6)
-                                    .addComponent(jLabel8))
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel5))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(leavesCountValueLabel)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(precentageField, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel9)))
-                                .addGap(47, 47, 47)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel10)
-                                        .addGap(44, 44, 44)
-                                        .addComponent(basicSalaryField))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel12)
-                                            .addComponent(jLabel11))
-                                        .addGap(12, 12, 12)
+                                            .addComponent(leavesCountValueLabel)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(precentageField, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel9)))
+                                        .addGap(47, 47, 47)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(leavesPriceField)
-                                            .addComponent(totalPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(41, 41, 41)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(bonusField)))))
-                        .addGap(0, 597, Short.MAX_VALUE)))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel10)
+                                                .addGap(44, 44, 44)
+                                                .addComponent(basicSalaryField))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel12)
+                                                    .addComponent(jLabel11))
+                                                .addGap(12, 12, 12)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(leavesPriceField)
+                                                    .addComponent(totalPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGap(41, 41, 41)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel4)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(bonusField))))
+                                    .addComponent(allowedLeavesCountLabel))))
+                        .addGap(0, 560, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -289,7 +304,11 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(allowedLeavesCountLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -426,7 +445,11 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private void loadBasicSalary(int typeId) {
         try (ResultSet resultSet = new EmployeeTypeController().show(typeId)) {
             if (resultSet.next()) {
+                allowedLeavesCountLabel.setText(resultSet.getString("leaves_for_month"));
                 basicSalaryField.setText(resultSet.getString("basic_salary"));
+            } else {
+                allowedLeavesCountLabel.setText("0");
+                basicSalaryField.setText("0");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -485,12 +508,27 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
     private void precentageFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precentageFieldKeyReleased
         // TODO add your handling code here:
-        loadPresentageSalary();
+        if (!employeeIdLabel.getText().equals("ID value label")) {
+            loadPresentageSalary();
+        } else {
+            precentageField.setText("0");
+            JOptionPane.showMessageDialog(null, "Please select a employee first");
+        }
     }//GEN-LAST:event_precentageFieldKeyReleased
 
     private void bonusFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bonusFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_bonusFieldActionPerformed
+
+    private void bonusFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bonusFieldKeyReleased
+        // TODO add your handling code here:
+        if (!employeeIdLabel.getText().equals("ID value label")) {
+            loadPresentageSalary();
+        } else {
+            bonusField.setText("0");
+            JOptionPane.showMessageDialog(null, "Please select a employee first");
+        }
+    }//GEN-LAST:event_bonusFieldKeyReleased
 
     private void loadPresentageSalary() {
         Double basicSalary = Double.parseDouble(basicSalaryField.getText());
@@ -549,19 +587,18 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 vector.add(resultSet.getString("date"));
                 vector.add(resultSet.getString("salary"));
                 vector.add(resultSet.getString("employee_id"));
-
                 tableModel.addRow(vector);
             }
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while loading employee Salary : " + e.getMessage());
         }
-
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
+    private javax.swing.JLabel allowedLeavesCountLabel;
     private javax.swing.JTextField basicSalaryField;
     private javax.swing.JTextField bonusField;
     private javax.swing.JLabel employeeIdLabel;
@@ -574,6 +611,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
