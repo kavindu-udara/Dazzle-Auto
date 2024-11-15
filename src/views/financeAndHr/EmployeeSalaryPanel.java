@@ -13,15 +13,25 @@ import includes.LoggerConfig;
 import includes.OnlyDoubleDocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
 import includes.TimestampsGenerator;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import javax.swing.table.DefaultTableModel;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
 import models.SalaryModel;
 
@@ -44,6 +54,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         setDocumentFilters();
         loadMonthsComboBox();
         loadSalaryTable();
+        salaryTableRender();
     }
 
     private void setDocumentFilters() {
@@ -76,10 +87,6 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         monthsComboBox = new javax.swing.JComboBox<>();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        employeeIdLabel = new javax.swing.JLabel();
-        employeeNameLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         leavesCountValueLabel = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -98,10 +105,25 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         bonusField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         allowedLeavesCountLabel = new javax.swing.JLabel();
+        ClearAllBtn = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        employeeNameLabel = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        employeeIdLabel = new javax.swing.JLabel();
+        employeeType = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel1.setText("Select a month : ");
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 132, -1, 30));
 
+        monthsComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         monthsComboBox.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 monthsComboBoxMouseClicked(evt);
@@ -112,60 +134,81 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 monthsComboBoxActionPerformed(evt);
             }
         });
+        add(monthsComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 160, 120, 30));
 
-        jLabel2.setText("Employee Id");
+        jLabel6.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel6.setText("Leaves Taken : ");
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
 
-        jLabel3.setText("Employee name");
-
-        employeeIdLabel.setText("ID value label");
-
-        employeeNameLabel.setText("Name value label");
-
-        jLabel6.setText("Leaves Count : ");
-
+        leavesCountValueLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         leavesCountValueLabel.setText("0");
+        add(leavesCountValueLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, -1, -1));
 
+        jLabel8.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel8.setText("Precentage");
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
 
+        precentageField.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         precentageField.setText("0");
         precentageField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 precentageFieldKeyReleased(evt);
             }
         });
+        add(precentageField, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 57, -1));
 
+        jLabel9.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel9.setText("%");
+        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, -1, -1));
 
-        jLabel10.setText("Salary");
+        jLabel10.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel10.setText("Salary :");
+        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 80, -1, -1));
 
         basicSalaryField.setEditable(false);
+        basicSalaryField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
         basicSalaryField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 basicSalaryFieldActionPerformed(evt);
             }
         });
+        add(basicSalaryField, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 80, 150, 30));
 
-        jLabel11.setText("Leaves price");
+        jLabel11.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel11.setText("Cut For Leaves :");
+        add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, -1, -1));
 
         leavesPriceField.setEditable(false);
+        leavesPriceField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
+        add(leavesPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 120, 150, 30));
 
-        jLabel12.setText("Total");
+        jLabel12.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel12.setText("Final Salary ");
+        add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 80, 120, 30));
 
         totalPriceField.setEditable(false);
+        totalPriceField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
+        totalPriceField.setForeground(new java.awt.Color(255, 153, 0));
+        add(totalPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 110, 230, 30));
 
-        addButton.setText("Add");
+        addButton.setBackground(new java.awt.Color(33, 43, 108));
+        addButton.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        addButton.setForeground(new java.awt.Color(255, 255, 255));
+        addButton.setText("ADD");
+        addButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addButtonActionPerformed(evt);
             }
         });
+        add(addButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 150, 110, 40));
 
         salaryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "date", "salary", "employee_id"
+                "ID", "Date", "Salary", "Employee ID"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -178,8 +221,13 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(salaryTable);
 
-        jLabel4.setText("Bonus");
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 208, 1070, 360));
 
+        jLabel4.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel4.setText("Bonus :");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 160, -1, -1));
+
+        bonusField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
         bonusField.setText("0");
         bonusField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -191,136 +239,102 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 bonusFieldKeyReleased(evt);
             }
         });
+        add(bonusField, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 160, 150, 30));
 
-        jLabel5.setText("Allowed Leaves Count");
+        jLabel5.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel5.setText("Allowed Leaves Count :");
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 187, -1));
 
+        allowedLeavesCountLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         allowedLeavesCountLabel.setText("0");
+        add(allowedLeavesCountLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, -1, -1));
 
+        ClearAllBtn.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        ClearAllBtn.setForeground(new java.awt.Color(255, 0, 0));
+        ClearAllBtn.setText("CLEAR ALL");
+        ClearAllBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        ClearAllBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ClearAllBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ClearAllBtnActionPerformed(evt);
+            }
+        });
+        add(ClearAllBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 150, 110, 40));
+
+        jPanel1.setBackground(new java.awt.Color(252, 235, 202));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 153, 0));
         jButton1.setText("Select Employee");
+        jButton1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 204), 1, true));
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 10, 180, 40));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(41, 41, 41)
-                                .addComponent(employeeIdLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(employeeNameLabel))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(jLabel1)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(monthsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(36, 36, 36)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(leavesCountValueLabel)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(precentageField, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel9)))
-                                        .addGap(47, 47, 47)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel10)
-                                                .addGap(44, 44, 44)
-                                                .addComponent(basicSalaryField))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel12)
-                                                    .addComponent(jLabel11))
-                                                .addGap(12, 12, 12)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(leavesPriceField)
-                                                    .addComponent(totalPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addGap(41, 41, 41)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel4)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(bonusField))))
-                                    .addComponent(allowedLeavesCountLabel))))
-                        .addGap(0, 560, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(allowedLeavesCountLabel)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(monthsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(employeeNameLabel)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(leavesCountValueLabel)
-                            .addComponent(jLabel10)
-                            .addComponent(basicSalaryField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(addButton))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel8)
-                                    .addComponent(precentageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel11)
-                                    .addComponent(leavesPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12)
-                                    .addComponent(totalPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(bonusField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(employeeIdLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        jLabel3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel3.setText("Employee name :");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        employeeNameLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        employeeNameLabel.setForeground(new java.awt.Color(0, 0, 204));
+        employeeNameLabel.setText("Name value label");
+        jPanel1.add(employeeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel2.setText("Employee Id :");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, -1, -1));
+
+        employeeIdLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        employeeIdLabel.setForeground(new java.awt.Color(0, 0, 204));
+        employeeIdLabel.setText("ID value label");
+        jPanel1.add(employeeIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, -1));
+
+        employeeType.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        employeeType.setForeground(new java.awt.Color(0, 0, 204));
+        employeeType.setText("Employee Type");
+        jPanel1.add(employeeType, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
+
+        jLabel7.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel7.setText("Employee Type :");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 20, -1, -1));
+
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1120, 60));
     }// </editor-fold>//GEN-END:initComponents
 
+    public void salaryTableRender() {
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        JTableHeader tableHeader = salaryTable.getTableHeader();
+
+        tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Font headerFont = new Font("Verdana", Font.BOLD, 14);
+                label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
+                label.setFont(headerFont);
+                label.setBackground(new Color(33,43,108)); // Optional: Set header background color
+                label.setForeground(Color.WHITE); // Optional: Set header text color
+                label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+                return label;
+            }
+        });
+
+        tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
+
+        for (int i = 0; i < 4; i++) {
+            salaryTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+    
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
         if (!employeeIdLabel.getText().equals("ID value label")) {
@@ -378,6 +392,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             if (resultSet.next()) {
                 employeeNameLabel.setText(resultSet.getString("first_name"));
                 employeeIdLabel.setText(employeeId);
+                
 
                 // leaves count process
                 loadBasicSalary(resultSet.getInt("employee_type_id"));
@@ -494,6 +509,10 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void ClearAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearAllBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ClearAllBtnActionPerformed
+
     private void loadPresentageSalary() {
         Double basicSalary = Double.parseDouble(basicSalaryField.getText());
         int leaves = Integer.parseInt(leavesCountValueLabel.getText());
@@ -561,12 +580,14 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ClearAllBtn;
     private javax.swing.JButton addButton;
     private javax.swing.JLabel allowedLeavesCountLabel;
     private javax.swing.JTextField basicSalaryField;
     private javax.swing.JTextField bonusField;
     private javax.swing.JLabel employeeIdLabel;
     private javax.swing.JLabel employeeNameLabel;
+    private javax.swing.JLabel employeeType;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -577,8 +598,10 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel leavesCountValueLabel;
     private javax.swing.JTextField leavesPriceField;
