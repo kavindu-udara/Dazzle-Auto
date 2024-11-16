@@ -66,14 +66,17 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         int monthNumber = Integer.parseInt(TimestampsGenerator.getTodayDate().split("-")[1]);
         String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         Vector vector = new Vector();
+        String todayMonth = "January";
         for (int i = 0; i < months.length; i++) {
             monthHashMap.put(months[i], String.valueOf(i + 1));
+            vector.add(months[i]);
             if (monthNumber == i + 1) {
-                vector.add(months[i]);
+                todayMonth = months[i];
             }
         }
         DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
         monthsComboBox.setModel(comboBoxModel);
+        monthsComboBox.setSelectedItem(todayMonth);
     }
 
     /**
@@ -112,7 +115,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         employeeNameLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         employeeIdLabel = new javax.swing.JLabel();
-        employeeType = new javax.swing.JLabel();
+        employeeTypeLabel = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -294,10 +297,10 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         employeeIdLabel.setText("ID value label");
         jPanel1.add(employeeIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, -1));
 
-        employeeType.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        employeeType.setForeground(new java.awt.Color(0, 0, 204));
-        employeeType.setText("Employee Type");
-        jPanel1.add(employeeType, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
+        employeeTypeLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        employeeTypeLabel.setForeground(new java.awt.Color(0, 0, 204));
+        employeeTypeLabel.setText("Employee Type");
+        jPanel1.add(employeeTypeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 20, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel7.setText("Employee Type :");
@@ -321,7 +324,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 Font headerFont = new Font("Verdana", Font.BOLD, 14);
                 label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
                 label.setFont(headerFont);
-                label.setBackground(new Color(33,43,108)); // Optional: Set header background color
+                label.setBackground(new Color(33, 43, 108)); // Optional: Set header background color
                 label.setForeground(Color.WHITE); // Optional: Set header text color
                 label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
                 return label;
@@ -334,7 +337,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             salaryTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-    
+
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
         if (!employeeIdLabel.getText().equals("ID value label")) {
@@ -392,7 +395,6 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             if (resultSet.next()) {
                 employeeNameLabel.setText(resultSet.getString("first_name"));
                 employeeIdLabel.setText(employeeId);
-                
 
                 // leaves count process
                 loadBasicSalary(resultSet.getInt("employee_type_id"));
@@ -420,6 +422,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             if (resultSet.next()) {
                 allowedLeavesCountLabel.setText(resultSet.getString("leaves_for_month"));
                 basicSalaryField.setText(resultSet.getString("basic_salary"));
+                employeeTypeLabel.setText(resultSet.getString("type"));
             } else {
                 allowedLeavesCountLabel.setText("0");
                 basicSalaryField.setText("0");
@@ -511,6 +514,9 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
     private void ClearAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearAllBtnActionPerformed
         // TODO add your handling code here:
+        bonusField.setText("0");
+        precentageField.setText("0");
+        loadPresentageSalary();
     }//GEN-LAST:event_ClearAllBtnActionPerformed
 
     private void loadPresentageSalary() {
@@ -587,7 +593,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private javax.swing.JTextField bonusField;
     private javax.swing.JLabel employeeIdLabel;
     private javax.swing.JLabel employeeNameLabel;
-    private javax.swing.JLabel employeeType;
+    private javax.swing.JLabel employeeTypeLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
