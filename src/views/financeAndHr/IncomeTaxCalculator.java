@@ -80,7 +80,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         taxableIncome();
         FinalTaxCalculation();
         loadSalaries();
-        totalExpences();
+       
 
     }
 
@@ -341,6 +341,11 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
 
         monthComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         monthComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }));
+        monthComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                monthComboBoxItemStateChanged(evt);
+            }
+        });
         monthComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 monthComboBoxActionPerformed(evt);
@@ -612,9 +617,6 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
 
     private void monthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthComboBoxActionPerformed
         // TODO add your handling code here:
-        MethodCalling();
-        
-
 
     }//GEN-LAST:event_monthComboBoxActionPerformed
 
@@ -691,6 +693,11 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
 
         reset();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void monthComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_monthComboBoxItemStateChanged
+        // TODO add your handling code here:
+        MethodCalling();
+    }//GEN-LAST:event_monthComboBoxItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
