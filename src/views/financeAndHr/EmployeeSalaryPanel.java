@@ -206,6 +206,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         });
         add(addButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 150, 110, 40));
 
+        salaryTable.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         salaryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -222,6 +223,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        salaryTable.setRowHeight(25);
         jScrollPane1.setViewportView(salaryTable);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 208, 1070, 360));

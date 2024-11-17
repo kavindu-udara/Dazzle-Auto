@@ -10,13 +10,20 @@ import controllers.ServiceInvoiceController;
 import controllers.ShopInoviceController;
 import includes.LoggerConfig;
 import includes.OnlyNumbersDocumentFilter;
+import java.io.File;
+import java.io.InputStream;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Logger;
-import javax.management.StringValueExp;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
-import raven.datetime.component.date.DatePicker;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
+
 
 /**
  *
@@ -340,7 +347,6 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
             }
         });
 
-        jYearChooser1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jYearChooser1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jYearChooser1MouseClicked(evt);
@@ -388,7 +394,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1090, 70));
 
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        jLabel3.setText("other");
+        jLabel3.setText("Other");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 470, -1, 20));
 
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -448,12 +454,22 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         jButton1.setBackground(new java.awt.Color(33, 43, 108));
         jButton1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("PRINT");
+        jButton1.setText("PRINT ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 0, 0));
         jButton2.setText("CLEAR ALL");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -583,6 +599,8 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         monthComboBox.setEnabled(true);
         jYearChooser1.setEnabled(false);
         MethodCalling();
+        FinalTaxCalculation();
+
     }//GEN-LAST:event_monthlyRadioButtonActionPerformed
 
     private void yearlyRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearlyRadioButtonActionPerformed
@@ -595,6 +613,8 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     private void monthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthComboBoxActionPerformed
         // TODO add your handling code here:
         MethodCalling();
+        
+
 
     }//GEN-LAST:event_monthComboBoxActionPerformed
 
@@ -627,6 +647,50 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         // TODO add your handling code here:
         MethodCalling();
     }//GEN-LAST:event_jYearChooser1PropertyChange
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        reset();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        //Report  
+        try {
+            String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
+            String imgPath = "";
+            
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/IncomeTax.jasper");
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+            imgPath = img.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("img", imgPath);
+            params.put("date", dateTime);
+            params.put("stationIncome", ServiceStationIncomeField.getText());
+            params.put("shopIncome", ShopIncomeField.getText());
+            params.put("grossIncome", GrossIncomeField.getText());
+            params.put("employeeSalary", EmployeeSalaryField.getText());
+            params.put("supplierPayments", SupplierPaymentField.getText());
+            params.put("bills", BillsField.getText());
+            params.put("other", OtherField.getText());
+            params.put("totalExpences", TotalExpencesField.getText());
+            params.put("taxableIncome", TaxableIncomeField.getText());
+            params.put("taxRate", TaxRateField.getText());
+            params.put("finalTax", FinalTaxField.getText());
+
+
+            //JRTableModelDataSource dataSource = new JRTableModelDataSource(GRNViewTable.getModel());
+
+            JasperPrint report = JasperFillManager.fillReport(s, params);
+            JasperViewer.viewReport(report, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while grn printing : " + e.getMessage());
+        }
+
+        reset();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -668,4 +732,17 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     private javax.swing.JRadioButton monthlyRadioButton;
     private javax.swing.JRadioButton yearlyRadioButton;
     // End of variables declaration//GEN-END:variables
+
+    private void reset() {
+        ServiceStationIncomeField.setText("");
+        GrossIncomeField.setText("");
+        ShopIncomeField.setText("");
+        EmployeeSalaryField.setText("");
+        SupplierPaymentField.setText("");
+        TaxableIncomeField.setText("");
+        TaxRateField.setText("");
+        FinalTaxField.setText("");
+        TotalExpencesField.setText("");
+       
+    }
 }
