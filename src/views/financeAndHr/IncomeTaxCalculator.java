@@ -750,6 +750,8 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         TaxRateField.setText("");
         FinalTaxField.setText("");
         TotalExpencesField.setText("");
+        BillsField.setText("");
+        OtherField.setText("");
        
     }
 }
