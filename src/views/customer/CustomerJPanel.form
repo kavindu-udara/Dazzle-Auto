@@ -150,7 +150,7 @@
                         <Column editable="false" title="ID" type="java.lang.Object"/>
                         <Column editable="false" title="First Name" type="java.lang.Object"/>
                         <Column editable="false" title="Last Name " type="java.lang.Object"/>
-                        <Column editable="true" title="Mobile " type="java.lang.Object"/>
+                        <Column editable="false" title="Mobile " type="java.lang.Object"/>
                         <Column editable="false" title="Registered Date " type="java.lang.Object"/>
                       </Table>
                     </Property>
