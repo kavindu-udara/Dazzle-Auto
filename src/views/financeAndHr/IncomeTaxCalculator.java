@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRTableModelDataSource;
@@ -659,16 +660,18 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         
         //Report  
         try {
-            String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
+            String dateTime = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             String imgPath = "";
             
-            InputStream s = this.getClass().getResourceAsStream("/resources/reports/IncomeTax.jasper");
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/IncomeeTax.jasper");
             String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
             imgPath = img.replace("\\", "/");
 
             HashMap<String, Object> params = new HashMap<>();
             params.put("img", imgPath);
-            params.put("date", dateTime);
+            //params.put("date", dateTime);
+            params.put("year", String.valueOf(jYearChooser1.getYear()));
+            params.put("date", monthComboBox.getSelectedItem());
             params.put("stationIncome", ServiceStationIncomeField.getText());
             params.put("shopIncome", ShopIncomeField.getText());
             params.put("grossIncome", GrossIncomeField.getText());
@@ -681,17 +684,16 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
             params.put("taxRate", TaxRateField.getText());
             params.put("finalTax", FinalTaxField.getText());
 
-
-            //JRTableModelDataSource dataSource = new JRTableModelDataSource(GRNViewTable.getModel());
-
-            JasperPrint report = JasperFillManager.fillReport(s, params);
+            JREmptyDataSource dataSource = new JREmptyDataSource();
+                    
+            JasperPrint report = JasperFillManager.fillReport(s, params,dataSource);
             JasperViewer.viewReport(report, false);
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while grn printing : " + e.getMessage());
         }
 
-        reset();
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void monthComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_monthComboBoxItemStateChanged
