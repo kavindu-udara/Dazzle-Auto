@@ -522,29 +522,13 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jLoginAccessMenuItemActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int showConfirm = JOptionPane.showConfirmDialog(this, "Do You Want To LogOut ?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        int showConfirm = JOptionPane.showConfirmDialog(this, "Do You Want To Log Out ?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
         if (showConfirm == JOptionPane.YES_OPTION) {
             this.dispose();
             new LoginChooser().setVisible(true);
         }
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
-//    /**
-//     * @param args the command line arguments
-//     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        IntelliJTheme.setup(Dashboard.class.getResourceAsStream(
-//                "/resources/themes/arc-theme.theme.json"));
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new Dashboard().setVisible(true);
-//            }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel HeaderPanel;

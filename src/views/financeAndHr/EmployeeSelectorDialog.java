@@ -31,13 +31,16 @@ public class EmployeeSelectorDialog extends javax.swing.JDialog {
     private EmployeeSalaryPanel salaryPanel;
     private static final Logger logger = LoggerConfig.getLogger();
 
+    private String action;
+
     /**
      * Creates new form EmployeeSelectorDialog
      */
-    public EmployeeSelectorDialog(java.awt.Frame parent, boolean modal, EmployeeSalaryPanel salaryPanel) {
+    public EmployeeSelectorDialog(java.awt.Frame parent, boolean modal, EmployeeSalaryPanel salaryPanel, String action) {
         super(parent, modal);
         initComponents();
         this.salaryPanel = salaryPanel;
+        this.action = action;
         setLocationRelativeTo(null);
         loadEmployees();
         employeeTableRender();
@@ -62,7 +65,8 @@ public class EmployeeSelectorDialog extends javax.swing.JDialog {
             logger.severe("Error while loading employee : " + e.getMessage());
         }
     }
- public void employeeTableRender() {
+
+    public void employeeTableRender() {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -77,7 +81,7 @@ public class EmployeeSelectorDialog extends javax.swing.JDialog {
                 Font headerFont = new Font("Verdana", Font.BOLD, 14);
                 label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
                 label.setFont(headerFont);
-                label.setBackground(new Color(255,153,0)); // Optional: Set header background color
+                label.setBackground(new Color(255, 153, 0)); // Optional: Set header background color
                 label.setForeground(Color.WHITE); // Optional: Set header text color
                 label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
                 return label;
@@ -90,6 +94,7 @@ public class EmployeeSelectorDialog extends javax.swing.JDialog {
             employeeTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -149,55 +154,18 @@ public class EmployeeSelectorDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
 
         int row = employeeTable.getSelectedRow();
+        String id =String.valueOf(employeeTable.getValueAt(row, 0));
         if (row > 0) {
-            String employeeId = String.valueOf(employeeTable.getValueAt(row, 0));
-            salaryPanel.setEmployeeData(employeeId);
-            dispose();
+            if (action.equals("manual attendance")) {
+                new ManualAttendanceMarker(null, true, id).setVisible(true);
+            } else {
+                String employeeId = id;
+                salaryPanel.setEmployeeData(employeeId);
+                dispose();
+            }
         }
 
     }//GEN-LAST:event_employeeTableMouseClicked
-
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(EmployeeSelectorDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(EmployeeSelectorDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(EmployeeSelectorDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(EmployeeSelectorDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the dialog */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                EmployeeSelectorDialog dialog = new EmployeeSelectorDialog(new javax.swing.JFrame(), true);
-//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    @Override
-//                    public void windowClosing(java.awt.event.WindowEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//                dialog.setVisible(true);
-//            }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable employeeTable;

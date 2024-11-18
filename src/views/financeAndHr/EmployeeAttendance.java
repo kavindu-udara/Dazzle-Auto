@@ -74,6 +74,7 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         checkOutButton = new javax.swing.JButton();
         Date = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(1089, 579));
         setPreferredSize(new java.awt.Dimension(1089, 579));
@@ -154,15 +155,28 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         Date.setText("Today :");
         jPanel1.add(Date, new org.netbeans.lib.awtextra.AbsoluteConstraints(736, 40, -1, -1));
 
+        jButton1.setText("Mark Manuallry");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1090, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(311, 311, 311)
+                .addComponent(jButton1)
+                .addContainerGap(664, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(jButton1)
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1090, -1));
@@ -209,7 +223,6 @@ public class EmployeeAttendance extends javax.swing.JPanel {
     }
     private void attendanceTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_attendanceTableMouseClicked
 
-        
         //
     }//GEN-LAST:event_attendanceTableMouseClicked
 
@@ -237,6 +250,11 @@ public class EmployeeAttendance extends javax.swing.JPanel {
             loadTableData();
         }).setVisible(true);
     }//GEN-LAST:event_checkOutButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new EmployeeSelectorDialog(null, true, null, "manual attendance").setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void loadTableData() {
         DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
@@ -338,7 +356,7 @@ public class EmployeeAttendance extends javax.swing.JPanel {
 
                         new EmployeeAttendanceController().storeWithNulls(employeeAttendanceModel);
                     }
-                    
+
                     isRowsCreted();
                     loadTableData();
                 } catch (Exception e) {
@@ -355,6 +373,7 @@ public class EmployeeAttendance extends javax.swing.JPanel {
     private javax.swing.JTable attendanceTable;
     private javax.swing.JButton checkInButton;
     private javax.swing.JButton checkOutButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
