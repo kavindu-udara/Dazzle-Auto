@@ -510,7 +510,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new EmployeeSelectorDialog(null, true, employeeSalaryPanel).setVisible(true);
+        new EmployeeSelectorDialog(null, true, employeeSalaryPanel, "Salary").setVisible(true);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
