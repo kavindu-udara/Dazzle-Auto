@@ -269,7 +269,6 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         DefaultTableModel model = (DefaultTableModel) attendanceTable.getModel();
         model.setRowCount(0);
         try {
-            System.out.println(todayDateId);
             ResultSet attendanceResultSet = new EmployeeAttendanceController().showByDateId(todayDateId);
             while (attendanceResultSet.next()) {
                 Vector<String> vector = new Vector<>();
