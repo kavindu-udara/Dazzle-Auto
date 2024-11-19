@@ -70,11 +70,11 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         attendanceTable = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
         todayDateLabel = new javax.swing.JLabel();
-        checkInButton = new javax.swing.JButton();
-        checkOutButton = new javax.swing.JButton();
         Date = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        checkOutButton = new javax.swing.JButton();
+        checkInButton = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(1089, 579));
         setPreferredSize(new java.awt.Dimension(1089, 579));
@@ -127,17 +127,20 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         todayDateLabel.setText("Today Date");
         jPanel1.add(todayDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(801, 40, -1, -1));
 
-        checkInButton.setBackground(new java.awt.Color(33, 43, 108));
-        checkInButton.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        checkInButton.setForeground(new java.awt.Color(255, 255, 255));
-        checkInButton.setText("CHECK IN");
-        checkInButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        checkInButton.addActionListener(new java.awt.event.ActionListener() {
+        Date.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        Date.setText("Today :");
+        jPanel1.add(Date, new org.netbeans.lib.awtextra.AbsoluteConstraints(736, 40, -1, -1));
+
+        jButton1.setBackground(new java.awt.Color(243, 193, 109));
+        jButton1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jButton1.setText("MARK MANUALLY ");
+        jButton1.setActionCommand("MARK MANUALLY ");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkInButtonActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(checkInButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 31, 131, 44));
 
         checkOutButton.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         checkOutButton.setForeground(new java.awt.Color(33, 43, 108));
@@ -149,16 +152,15 @@ public class EmployeeAttendance extends javax.swing.JPanel {
                 checkOutButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(checkOutButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(176, 30, 123, 44));
 
-        Date.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        Date.setText("Today :");
-        jPanel1.add(Date, new org.netbeans.lib.awtextra.AbsoluteConstraints(736, 40, -1, -1));
-
-        jButton1.setText("Mark Manuallry");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        checkInButton.setBackground(new java.awt.Color(33, 43, 108));
+        checkInButton.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        checkInButton.setForeground(new java.awt.Color(255, 255, 255));
+        checkInButton.setText("CHECK IN");
+        checkInButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        checkInButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                checkInButtonActionPerformed(evt);
             }
         });
 
@@ -167,16 +169,23 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(311, 311, 311)
+                .addGap(23, 23, 23)
+                .addComponent(checkInButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(checkOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
                 .addComponent(jButton1)
-                .addContainerGap(664, Short.MAX_VALUE))
+                .addContainerGap(600, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(jButton1)
-                .addContainerGap(43, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(27, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkInButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24))
         );
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1090, -1));
