@@ -27,6 +27,7 @@ public class FinanceAndHrJPanel extends javax.swing.JPanel {
         EmployeeSalaryPanel employeeSalaryPanel = new EmployeeSalaryPanel();
         EmployeeSalaryTab.add(employeeSalaryPanel);
         SwingUtilities.updateComponentTreeUI(this);
+        
     }
 
     /**
