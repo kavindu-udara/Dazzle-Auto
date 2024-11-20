@@ -52,7 +52,7 @@ public class FinanceAndHrJPanel extends javax.swing.JPanel {
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jTabbedPane1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
 
         EmloyeeAttendanceTab.setBackground(new java.awt.Color(0, 51, 51));
