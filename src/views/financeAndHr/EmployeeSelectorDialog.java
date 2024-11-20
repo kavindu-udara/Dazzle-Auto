@@ -32,15 +32,17 @@ public class EmployeeSelectorDialog extends javax.swing.JDialog {
     private static final Logger logger = LoggerConfig.getLogger();
 
     private String action;
+    private Runnable actionMethod;
 
     /**
      * Creates new form EmployeeSelectorDialog
      */
-    public EmployeeSelectorDialog(java.awt.Frame parent, boolean modal, EmployeeSalaryPanel salaryPanel, String action) {
+    public EmployeeSelectorDialog(java.awt.Frame parent, boolean modal, EmployeeSalaryPanel salaryPanel, String action, Runnable actionMethod) {
         super(parent, modal);
         initComponents();
         this.salaryPanel = salaryPanel;
         this.action = action;
+        this.actionMethod = actionMethod;
         setLocationRelativeTo(null);
         loadEmployees();
         employeeTableRender();
@@ -154,10 +156,10 @@ public class EmployeeSelectorDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
 
         int row = employeeTable.getSelectedRow();
-        String id =String.valueOf(employeeTable.getValueAt(row, 0));
+        String id = String.valueOf(employeeTable.getValueAt(row, 0));
         if (row > 0) {
             if (action.equals("manual attendance")) {
-                new ManualAttendanceMarker(null, true, id).setVisible(true);
+                new ManualAttendanceMarker(null, true, id, actionMethod).setVisible(true);
             } else {
                 String employeeId = id;
                 salaryPanel.setEmployeeData(employeeId);

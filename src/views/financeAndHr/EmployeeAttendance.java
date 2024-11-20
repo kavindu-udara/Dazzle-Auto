@@ -262,7 +262,9 @@ public class EmployeeAttendance extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new EmployeeSelectorDialog(null, true, null, "manual attendance").setVisible(true);
+        new EmployeeSelectorDialog(null, true, null, "manual attendance", () -> {
+            loadTableData();
+        }).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void loadTableData() {
