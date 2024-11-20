@@ -114,7 +114,7 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -428,7 +428,7 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
 
             ResultSet resultSet;
 
-            if (searchText.equals("Select")) {
+            if (searchText.equals("All")) {
                 resultSet = new SupplierController().searchAll();
             } else {
 
