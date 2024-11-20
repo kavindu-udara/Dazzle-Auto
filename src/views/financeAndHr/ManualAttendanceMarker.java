@@ -17,21 +17,23 @@ import javax.swing.JOptionPane;
  * @author kavindu
  */
 public class ManualAttendanceMarker extends javax.swing.JDialog {
-    
+
     private String action = "";
-    
+
     private String todayDate = TimestampsGenerator.getTodayDate();
     private String employeeId;
+    private Runnable actionMethod;
 
     /**
      * Creates new form ManualAttendanceMarker
      */
-    public ManualAttendanceMarker(java.awt.Frame parent, boolean modal, String employeeId) {
+    public ManualAttendanceMarker(java.awt.Frame parent, boolean modal, String employeeId, Runnable actionMethod) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.action = action;
         this.employeeId = employeeId;
+        this.actionMethod = actionMethod;
     }
 
     /**
@@ -104,11 +106,11 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
     private ResultSet getAttendanceDateResultSet() throws Exception {
         return new AttendanceDateController().show(todayDate);
     }
-    
+
     private ResultSet getEmployerResultSet(String id) throws Exception {
         return new EmployeeController().show(id);
     }
-    
+
     private void checkInEmployer() {
         int dateId = 0;
         try {
@@ -121,7 +123,7 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         String currentTime = TimestampsGenerator.getCurrentTime();
         if (dateId != 0) {
             try {
@@ -130,6 +132,7 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
                     try {
                         ResultSet checkInResultSet = new EmployeeAttendanceController().updateCheckInByUserId(currentTime, employeeResultSet.getString("id"), dateId);
                         JOptionPane.showMessageDialog(null, "mark attendance success");
+                        actionMethod.run();
                         dispose();
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -142,7 +145,7 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
             }
         }
     }
-    
+
     private void checkOutEmployer() {
         int dateId = 0;
         try {
@@ -155,7 +158,7 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         String currentTime = TimestampsGenerator.getCurrentTime();
         if (dateId != 0) {
             try {
@@ -167,6 +170,7 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
                             try {
                                 ResultSet checkInResultSet = new EmployeeAttendanceController().updateCheckOutByUserId(currentTime, employeeResultSet.getString("id"), dateId);
                                 JOptionPane.showMessageDialog(null, "mark attendance success");
+                                actionMethod.run();
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }

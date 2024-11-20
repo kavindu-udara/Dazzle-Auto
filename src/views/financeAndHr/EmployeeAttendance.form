@@ -208,7 +208,6 @@
                   <Font name="Roboto" size="14" style="1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="MARK MANUALLY "/>
-                <Property name="actionCommand" type="java.lang.String" value="MARK MANUALLY "/>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                   <Color id="Hand Cursor"/>
                 </Property>
