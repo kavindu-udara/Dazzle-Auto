@@ -523,17 +523,19 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_ClearAllBtnActionPerformed
 
     private void loadPresentageSalary() {
-        Double basicSalary = Double.parseDouble(basicSalaryField.getText());
-        int leaves = Integer.parseInt(leavesCountValueLabel.getText());
-        Double presentage = 0.0;
-        if (!precentageField.getText().isEmpty()) {
-            presentage = Double.parseDouble(precentageField.getText());
+        if (Integer.parseInt(leavesCountValueLabel.getText()) > Integer.parseInt(allowedLeavesCountLabel.getText())) {
 
+            Double basicSalary = Double.parseDouble(basicSalaryField.getText());
+            int leaves = Integer.parseInt(leavesCountValueLabel.getText());
+            Double presentage = 0.0;
+            if (!precentageField.getText().isEmpty()) {
+                presentage = Double.parseDouble(precentageField.getText());
+            }
+            Double leaveSalary = (basicSalary * presentage) / 100;
+            leavesPriceField.setText(String.valueOf(leaves * leaveSalary));
+
+            loadTotalSalary();
         }
-        Double leaveSalary = (basicSalary * presentage) / 100;
-        leavesPriceField.setText(String.valueOf(leaves * leaveSalary));
-
-        loadTotalSalary();
     }
 
     private void loadTotalSalary() {
