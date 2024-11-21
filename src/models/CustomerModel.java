@@ -15,6 +15,7 @@ public class CustomerModel {
     private String lastName;
     private String mobile;
     private String registeredDate;
+    private String email;
 
     /**
      * @return the id
@@ -84,6 +85,17 @@ public class CustomerModel {
      */
     public void setRegisteredDate(String registeredDate) {
         this.registeredDate = registeredDate;
+    }
+    
+     public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }
