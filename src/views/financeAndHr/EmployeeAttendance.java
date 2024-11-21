@@ -131,10 +131,9 @@ public class EmployeeAttendance extends javax.swing.JPanel {
         Date.setText("Today :");
         jPanel1.add(Date, new org.netbeans.lib.awtextra.AbsoluteConstraints(736, 40, -1, -1));
 
-        jButton1.setBackground(new java.awt.Color(243, 193, 109));
+        jButton1.setBackground(new java.awt.Color(229, 229, 229));
         jButton1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jButton1.setText("MARK MANUALLY ");
-        jButton1.setActionCommand("MARK MANUALLY ");
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,7 +225,7 @@ public class EmployeeAttendance extends javax.swing.JPanel {
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             attendanceTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }

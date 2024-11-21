@@ -46,6 +46,7 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
 
     private static Logger logger = LoggerConfig.getLogger();
     private static HashMap<String, String> StatusMap = new HashMap<>();
+    private static HashMap<String, String> SupIdMap = new HashMap<>();
     Dashboard dashboard = null;
 
     public SuppliersReportPanel(Dashboard dashboard) {
@@ -53,9 +54,9 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
         loadsupplier();
         SupplierTableRender();
         loadStatusToSortBtn();
+        loadSupIdToSortBtn();
         this.dashboard = dashboard;
 
-        search_box.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Supplier Name / Id / Mobile or Email");
     }
 
     @SuppressWarnings("unchecked")
@@ -71,11 +72,12 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
         SupplierViewTable = new javax.swing.JTable();
         viewReportb = new javax.swing.JButton();
         printReportb = new javax.swing.JButton();
-        search_box = new javax.swing.JTextField();
         StatusSortBtn = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        SupIdSort = new javax.swing.JComboBox<>();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -114,7 +116,7 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -152,16 +154,6 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
         });
         jPanel1.add(printReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 550, -1, -1));
 
-        search_box.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        search_box.setFocusCycleRoot(true);
-        search_box.setSelectionColor(new java.awt.Color(214, 132, 13));
-        search_box.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                search_boxKeyReleased(evt);
-            }
-        });
-        jPanel1.add(search_box, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 300, 40));
-
         StatusSortBtn.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         StatusSortBtn.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -187,6 +179,23 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel8.setText("Number Of Suppliers  :");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 560, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel9.setText("Supplier ID");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 70, -1, -1));
+
+        SupIdSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        SupIdSort.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                SupIdSortItemStateChanged(evt);
+            }
+        });
+        SupIdSort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SupIdSortActionPerformed(evt);
+            }
+        });
+        jPanel1.add(SupIdSort, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 60, 140, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -227,6 +236,26 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while loading employee types : " + e.getMessage());
+        }
+    }
+
+    private void loadSupIdToSortBtn() {
+        try {
+            ResultSet resultSet = new SupplierController().show();
+
+            Vector<String> vector = new Vector<>();
+            vector.add("All");
+
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(vector);
+            SupIdSort.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading supplier IDs: " + e.getMessage());
         }
     }
 
@@ -273,42 +302,6 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
             logger.severe("Error while loading supplier : " + e.getMessage());
         }
 
-    }
-
-    private void fetchUser(String searchText) throws Exception {
-        DefaultTableModel model = (DefaultTableModel) SupplierViewTable.getModel();
-        model.setRowCount(0);
-
-        try {
-            ResultSet resultSet = new SupplierController().search(searchText);
-            ResultSet resultSet2 = new StatusController().search("");
-
-            HashMap<Integer, String> statusMap = new HashMap<>();
-
-            while (resultSet2.next()) {
-                int statusId = resultSet2.getInt("id");
-                String statusName = resultSet2.getString("status");
-                statusMap.put(statusId, statusName);
-            }
-
-            int row = 0;
-            while (resultSet.next()) {
-                row++;
-                String id = resultSet.getString("id");
-                String fname = resultSet.getString("first_name");
-                String lname = resultSet.getString("last_name");
-                String email = resultSet.getString("email");
-                String mobile = resultSet.getString("mobile");
-                int statusId = resultSet.getInt("status_id");
-                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
-                model.addRow(new Object[]{id, fname, lname, email, mobile, statusName});
-            }
-
-            jLabel5.setText(String.valueOf(row));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.severe("Error while fetching supplier : " + ex.getMessage());
-        }
     }
 
     public void SupplierTableRender() {
@@ -358,6 +351,7 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
             HashMap<String, Object> params = new HashMap<>();
             params.put("img", headerImg);
             params.put("status", String.valueOf(StatusSortBtn.getSelectedItem()));
+            params.put("supId", String.valueOf(SupIdSort.getSelectedItem()));
             params.put("count", jLabel5.getText());
             params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
             params.put("reportDate", dateTime);
@@ -400,16 +394,6 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_printReportbActionPerformed
 
-    private void search_boxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search_boxKeyReleased
-        // TODO add your handling code here:
-        try {
-            fetchUser(search_box.getText().toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.severe("Error while search Suppliers : " + ex.getMessage());
-        }
-    }//GEN-LAST:event_search_boxKeyReleased
-
     private void StatusSortBtnItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_StatusSortBtnItemStateChanged
         // TODO add your handling code here:
 
@@ -421,6 +405,17 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
         SortStatus(selectedStatus);
     }//GEN-LAST:event_StatusSortBtnActionPerformed
 
+    private void SupIdSortItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SupIdSortItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SupIdSortItemStateChanged
+
+    private void SupIdSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SupIdSortActionPerformed
+        // TODO add your handling code here:
+        String selectedSupId = SupIdSort.getSelectedItem().toString();
+        SortSupId(selectedSupId);
+        
+    }//GEN-LAST:event_SupIdSortActionPerformed
+
     private void SortStatus(String searchText) {
         try {
             DefaultTableModel model = (DefaultTableModel) SupplierViewTable.getModel();
@@ -428,7 +423,7 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
 
             ResultSet resultSet;
 
-            if (searchText.equals("Select")) {
+            if (searchText.equals("All")) {
                 resultSet = new SupplierController().searchAll();
             } else {
 
@@ -475,20 +470,76 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
         }
     }
 
+    private void SortSupId(String searchText) {
+        try {
+            DefaultTableModel model = (DefaultTableModel) SupplierViewTable.getModel();
+            model.setRowCount(0);
+
+            ResultSet resultSet;
+
+            if (searchText.equals("All")) {
+                resultSet = new SupplierController().searchAll();
+            } else {
+
+                ResultSet supIdResultSet = new SupplierController().search(searchText);
+                String supId = null;
+                if (supIdResultSet.next()) {
+                    supId = supIdResultSet.getString("id");
+                }
+
+                if (supId != null) {
+                    resultSet = new SupplierController().getSuppliersBySupId(supId);
+
+                } else {
+                    model.setRowCount(0);
+                    return;
+                }
+            }
+
+            HashMap<Integer, String> statusMap = new HashMap<>();
+            ResultSet allStatuses = new StatusController().search("");
+            while (allStatuses.next()) {
+                int id = allStatuses.getInt("id");
+                String name = allStatuses.getString("status");
+                statusMap.put(id, name);
+            }
+
+            int row = 0;
+            while (resultSet.next()) {
+                row++;
+                String id = resultSet.getString("id");
+                String fname = resultSet.getString("first_name");
+                String lname = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String mobile = resultSet.getString("mobile");
+                int statusId = resultSet.getInt("status_id");
+
+                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
+
+                model.addRow(new Object[]{id, fname, lname, email, mobile, statusName});
+            }
+
+            jLabel5.setText(String.valueOf(row));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> StatusSortBtn;
+    private javax.swing.JComboBox<String> SupIdSort;
     private javax.swing.JTable SupplierViewTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JButton printReportb;
-    private javax.swing.JTextField search_box;
     private javax.swing.JButton viewReportb;
     // End of variables declaration//GEN-END:variables
 }

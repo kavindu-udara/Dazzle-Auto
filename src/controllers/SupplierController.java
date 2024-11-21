@@ -65,6 +65,11 @@ public class SupplierController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `status_id` = " + statusId);
     }
 
+   public ResultSet getSuppliersBySupId(String supId) throws Exception {
+    return MySqlConnection.executeSearch(
+        "SELECT * FROM `" + tableName + "` WHERE `id` = '" + supId + "'"
+    );
+}
     public ResultSet searchAll() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }

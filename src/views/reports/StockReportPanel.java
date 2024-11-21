@@ -8,12 +8,13 @@ import controllers.ProductBrandController;
 import controllers.ProductController;
 import controllers.StockController;
 import includes.LoggerConfig;
-import includes.MySqlConnection;
+import includes.OnlyNumbersDocumentFilter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -30,6 +32,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.text.AbstractDocument;
 import models.LoginModel;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -52,8 +55,9 @@ public class StockReportPanel extends javax.swing.JPanel {
 
     public StockReportPanel(Dashboard dashboard) {
         initComponents();
-        loadStockItems();
+        LoadStock();
         StockTableRender();
+        setDocumentFilters();
         this.dashboard = dashboard;
     }
 
@@ -74,6 +78,14 @@ public class StockReportPanel extends javax.swing.JPanel {
         PriceTo = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        QtyFrom = new javax.swing.JFormattedTextField();
+        QtyTo = new javax.swing.JFormattedTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        Brand_chooser = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -165,7 +177,7 @@ public class StockReportPanel extends javax.swing.JPanel {
                 PriceFromKeyReleased(evt);
             }
         });
-        jPanel1.add(PriceFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 152, 31));
+        jPanel1.add(PriceFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 152, 31));
 
         PriceTo.setForeground(new java.awt.Color(0, 0, 204));
         PriceTo.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
@@ -174,15 +186,68 @@ public class StockReportPanel extends javax.swing.JPanel {
                 PriceToKeyReleased(evt);
             }
         });
-        jPanel1.add(PriceTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 80, 152, 31));
+        jPanel1.add(PriceTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, 152, 31));
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel2.setText("To");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 80, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel3.setText("Price From");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, -1, -1));
+
+        QtyFrom.setForeground(new java.awt.Color(0, 0, 204));
+        QtyFrom.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
+        QtyFrom.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                QtyFromKeyReleased(evt);
+            }
+        });
+        jPanel1.add(QtyFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 80, 90, 31));
+
+        QtyTo.setForeground(new java.awt.Color(0, 0, 204));
+        QtyTo.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
+        QtyTo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                QtyToKeyReleased(evt);
+            }
+        });
+        jPanel1.add(QtyTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 80, 90, 31));
+
+        jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel4.setText("To");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 60, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(37, 142, 1));
+        jLabel5.setText("00");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 560, -1, -1));
+
+        Brand_chooser.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        Brand_chooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Brand_chooser.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                Brand_chooserItemStateChanged(evt);
+            }
+        });
+        Brand_chooser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Brand_chooserActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Brand_chooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 70, 110, 40));
+
+        jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel7.setText("Number of Products :");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 560, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel8.setText("Brand");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 80, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel6.setText("Quantity");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 80, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -209,8 +274,15 @@ public class StockReportPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_StockTableMouseClicked
 
+    private void setDocumentFilters() {
+        ((AbstractDocument) PriceFrom.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) PriceTo.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) QtyFrom.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) QtyTo.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+
+    }
+
     public void loadStockItems() {
-        
         try {
             String query = "SELECT stock.id, stock.product_id, product.name AS product_name, "
                     + "product_brand.name AS brand_name, stock.qty, stock.price "
@@ -218,15 +290,36 @@ public class StockReportPanel extends javax.swing.JPanel {
                     + "INNER JOIN `product` ON `stock`.`product_id` = `product`.`id` "
                     + "INNER JOIN `product_brand` ON `product_brand`.`id` = `product`.`brand_id` ";
 
+            String whereClause = "";
+            String selectedBrand = Brand_chooser.getSelectedItem() != null ? String.valueOf(Brand_chooser.getSelectedItem()) : "All";
+
             double min_price = PriceFrom.getText().isEmpty() ? 0 : Double.parseDouble(PriceFrom.getText());
             double max_price = PriceTo.getText().isEmpty() ? 0 : Double.parseDouble(PriceTo.getText());
 
+            int FromQty = QtyFrom.getText().isEmpty() ? 0 : Integer.parseInt(QtyFrom.getText());
+            int ToQty = QtyTo.getText().isEmpty() ? 0 : Integer.parseInt(QtyTo.getText());
+
+            if (!selectedBrand.equals("All")) {
+                whereClause += "product_brand.name = '" + selectedBrand + "' ";
+            }
+
             if (min_price > 0 && max_price == 0) {
-                query += "WHERE `stock`.`price` > " + min_price;
+                whereClause += (!whereClause.isEmpty() ? "AND " : "") + "`stock`.`price` > " + min_price + " ";
             } else if (min_price == 0 && max_price > 0) {
-                query += "WHERE `stock`.`price` < " + max_price;
+                whereClause += (!whereClause.isEmpty() ? "AND " : "") + "`stock`.`price` < " + max_price + " ";
             } else if (min_price > 0 && max_price > 0) {
-                query += "WHERE `stock`.`price` > " + min_price + " AND `stock`.`price` < " + max_price;
+                whereClause += (!whereClause.isEmpty() ? "AND " : "") + "`stock`.`price` > " + min_price + " AND `stock`.`price` < " + max_price + " ";
+            }
+
+            if (FromQty > 0 && FromQty == 0) {
+                whereClause += (!whereClause.isEmpty() ? "AND " : "") + "`stock`.`qty` > " + FromQty + " ";
+            } else if (FromQty == 0 && ToQty > 0) {
+                whereClause += (!whereClause.isEmpty() ? "AND " : "") + "`stock`.`qty` < " + ToQty + " ";
+            } else if (FromQty > 0 && ToQty > 0) {
+                whereClause += (!whereClause.isEmpty() ? "AND " : "") + "`stock`.`qty` > " + FromQty + " AND `stock`.`qty` < " + ToQty + "";
+            }
+            if (!whereClause.isEmpty()) {
+                query += "WHERE " + whereClause;
             }
 
             ResultSet resultSet = new StockController().customQuery(query);
@@ -234,7 +327,9 @@ public class StockReportPanel extends javax.swing.JPanel {
             DefaultTableModel dtm = (DefaultTableModel) StockTable.getModel();
             dtm.setRowCount(0);
 
+            int row = 0;
             while (resultSet.next()) {
+                row++;
                 Vector<String> vector = new Vector<>();
                 vector.add(resultSet.getString("id"));
                 vector.add(resultSet.getString("product_id"));
@@ -244,12 +339,11 @@ public class StockReportPanel extends javax.swing.JPanel {
                 vector.add(resultSet.getString("price"));
                 dtm.addRow(vector);
             }
+            jLabel5.setText(String.valueOf(row));
         } catch (Exception e) {
             e.printStackTrace();
             logger.warning("Error while loading stock items: " + e.getMessage());
-
         }
-        
     }
 
     private void StockTableRender() {
@@ -281,6 +375,70 @@ public class StockReportPanel extends javax.swing.JPanel {
         }
     }
 
+    private static HashMap<String, String> BrandMap = new HashMap<>();
+
+    //load brands to sort button
+    private void loadBrands() {
+
+        try {
+            ResultSet resultSet = new ProductBrandController().show();
+
+            Vector<String> vector = new Vector<>();
+            vector.add("All");
+
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("name"));
+                BrandMap.put(resultSet.getString("name"), resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
+            Brand_chooser.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loding brands to sort button in Shop Items : " + e.getMessage());
+        }
+    }
+
+    private void fetchBrands(String selectedBrand) {
+        DefaultTableModel model = (DefaultTableModel) StockTable.getModel();
+        model.setRowCount(0);
+
+        try {
+            String query = "SELECT stock.id, stock.product_id, product.name AS product_name, "
+                    + "product_brand.name AS brand_name, stock.qty, stock.price "
+                    + "FROM `stock` "
+                    + "INNER JOIN `product` ON `stock`.`product_id` = `product`.`id` "
+                    + "INNER JOIN `product_brand` ON `product_brand`.`id` = `product`.`brand_id` ";
+
+            if (!selectedBrand.equals("All")) {
+                query += "WHERE product_brand.name = '" + selectedBrand + "'";
+            }
+
+            ResultSet resultSet = new StockController().customQuery(query);
+
+            int row = 0;
+            while (resultSet.next()) {
+                row++;
+                String id = resultSet.getString("id");
+                String productId = resultSet.getString("product_id");
+                String productName = resultSet.getString("product_name");
+                String brandName = resultSet.getString("brand_name");
+                int qty = resultSet.getInt("qty");
+                double price = resultSet.getDouble("price");
+
+                model.addRow(new Object[]{id, productId, productName, brandName, qty, price});
+            }
+
+            jLabel5.setText(String.valueOf(row));
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.severe("Error while fetching brands: " + ex.getMessage());
+        }
+        loadStockItems();
+    }
+
     public JasperPrint makeReport() {
 
         String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
@@ -294,6 +452,7 @@ public class StockReportPanel extends javax.swing.JPanel {
 
             HashMap<String, Object> params = new HashMap<>();
             params.put("img", headerImg);
+            params.put("status", String.valueOf(Brand_chooser.getSelectedItem()));
             params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
             params.put("reportDate", dateTime);
 
@@ -306,6 +465,17 @@ public class StockReportPanel extends javax.swing.JPanel {
                 params.put("toPrice", String.valueOf(PriceTo.getText()));
             } else {
                 params.put("toPrice", "0.00");
+            }
+
+            if (!QtyFrom.getText().isEmpty()) {
+                params.put("qtyFrom", String.valueOf(QtyFrom.getText()));
+            } else {
+                params.put("qtyFrom", "0");
+            }
+            if (!QtyTo.getText().isEmpty()) {
+                params.put("qtyTo", String.valueOf(QtyTo.getText()));
+            } else {
+                params.put("qtyTo", "0");
             }
 
             JRTableModelDataSource dataSource = new JRTableModelDataSource(StockTable.getModel());
@@ -327,7 +497,7 @@ public class StockReportPanel extends javax.swing.JPanel {
             JasperPrint report = makeReport();
             JasperViewer.viewReport(report, false);
 
-            logger.info("Appointments Report Viewed By : " + LoginModel.getEmployeeId());
+            logger.info("Stock Report Viewed By : " + LoginModel.getEmployeeId());
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while viewReportbActionPerformed : " + e.getMessage());
@@ -339,7 +509,7 @@ public class StockReportPanel extends javax.swing.JPanel {
             JasperPrint report = makeReport();
             JasperPrintManager.printReport(report, false);
 
-            logger.info("Appointments Report Printed By : " + LoginModel.getEmployeeId());
+            logger.info("Stock Report Printed By : " + LoginModel.getEmployeeId());
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while printReportbActionPerformed : " + e.getMessage());
@@ -356,15 +526,69 @@ public class StockReportPanel extends javax.swing.JPanel {
         loadStockItems();
     }//GEN-LAST:event_PriceToKeyReleased
 
+    private void QtyFromKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_QtyFromKeyReleased
+        // TODO add your handling code here:
+        loadStockItems();
+    }//GEN-LAST:event_QtyFromKeyReleased
+
+    private void QtyToKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_QtyToKeyReleased
+        // TODO add your handling code here:
+        loadStockItems();
+    }//GEN-LAST:event_QtyToKeyReleased
+
+    private void Brand_chooserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_Brand_chooserItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            String selectedBrand = String.valueOf(Brand_chooser.getSelectedItem());
+
+            try {
+                if (selectedBrand.equals("All")) {
+                    reloadTable();
+                } else {
+                    fetchBrands(selectedBrand);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                logger.severe("Error while sorting brands: " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_Brand_chooserItemStateChanged
+
+    public void reloadTable() {
+        loadStockItems();
+        loadBrands();
+    }
+
+    private void LoadStock() {
+        try {
+            loadBrands();
+            loadStockItems();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warning("Error during LoadStock initialization: " + e.getMessage());
+        }
+    }
+    private void Brand_chooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Brand_chooserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Brand_chooserActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> Brand_chooser;
     private javax.swing.JFormattedTextField PriceFrom;
     private javax.swing.JFormattedTextField PriceTo;
+    private javax.swing.JFormattedTextField QtyFrom;
+    private javax.swing.JFormattedTextField QtyTo;
     private javax.swing.JTable StockTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
