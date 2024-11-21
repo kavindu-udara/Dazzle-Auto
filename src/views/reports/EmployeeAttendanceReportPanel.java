@@ -32,11 +32,11 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author Dinuka
  */
 public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
-    
+
     private static Logger logger = LoggerConfig.getLogger();
-    
+
     Dashboard dashboard = null;
-    
+
     public EmployeeAttendanceReportPanel(Dashboard dashboard) {
         initComponents();
         this.dashboard = dashboard;
@@ -57,10 +57,10 @@ public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
                     try {
                         ResultSet attendanceResultSet = new EmployeeAttendanceController().showByDateId(attendanceDateResultSet.getInt("id"));
                         while (attendanceResultSet.next()) {
-                            
+
                             Vector vector = new Vector();
                             vector.add(attendanceResultSet.getString("id"));
-                            
+
                             try {
                                 ResultSet employeeResultSet = getEmployeeResultSet(attendanceResultSet.getString("employee_id"));
                                 if (employeeResultSet.next()) {
@@ -72,21 +72,21 @@ public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
                                 ex3.printStackTrace();
                                 logger.severe("Error while getting employee : " + ex3.getMessage());
                             }
-                            
+
                             if (attendanceResultSet.getString("checkin") != null) {
                                 vector.add(attendanceResultSet.getString("checkin"));
                             } else {
                                 vector.add("-");
                             }
-                            
+
                             if (attendanceResultSet.getString("checkout") != null) {
                                 vector.add(attendanceResultSet.getString("checkout"));
                             } else {
                                 vector.add("-");
                             }
-                            
+
                             vector.add(attendanceDateResultSet.getString("date"));
-                            
+
                             try {
                                 ResultSet statusResultSet = getStatusResultSet(attendanceResultSet.getInt("attendance_status_id"));
                                 if (statusResultSet.next()) {
@@ -96,14 +96,14 @@ public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
                                 ex2.printStackTrace();
                                 logger.severe("Error while getting employee attendance status : " + ex2.getMessage());
                             }
-                            
+
                             if (attendanceResultSet.getString("checkin") != null && attendanceResultSet.getString("checkout") != null) {
                                 int workingHrs = Integer.parseInt(attendanceResultSet.getString("checkout").split(":")[0]) - Integer.parseInt(attendanceResultSet.getString("checkin").split(":")[0]);
                                 vector.add(String.valueOf(workingHrs));
                             } else {
                                 vector.add("-");
                             }
-                            
+
                             tableModel.addRow(vector);
                         }
                         attendanceTable.setModel(tableModel);
@@ -118,45 +118,45 @@ public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
             }
         }
     }
-    
+
     private ResultSet getDateResultSet(String date) throws Exception {
         return new AttendanceDateController().show(date);
     }
-    
+
     private ResultSet getStatusResultSet(int id) throws Exception {
         return new AttendanceStatusController().show(id);
     }
-    
+
     private ResultSet getEmployeeResultSet(String id) throws Exception {
         return new EmployeeController().show(id);
     }
-    
+
     public JasperPrint makeReport() {
 
         String headerImg;
         try {
             InputStream s = this.getClass().getResourceAsStream("/resources/reports/DazzleAutoEmployeeAttendaceReport.jasper");
             String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
-            
+
             headerImg = img.replace("\\", "/");
-            
+
             HashMap<String, Object> params = new HashMap<>();
             params.put("imageParam", headerImg);
             params.put("timeParam", String.valueOf(TimestampsGenerator.getFormattedDateTime()));
-            
+
             JRTableModelDataSource dataSource = new JRTableModelDataSource(attendanceTable.getModel());
-            
+
             JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
-            
+
             return report;
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while makeReport() : " + e.getMessage());
         }
         return null;
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -170,7 +170,7 @@ public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         attendanceTable = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        printReportButton = new javax.swing.JButton();
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
 
         datePicker1.addAncestorListener(new javax.swing.event.AncestorListener() {
@@ -230,10 +230,10 @@ public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(attendanceTable);
 
-        jButton2.setText("Print Report");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        printReportButton.setText("Print Report");
+        printReportButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                printReportButtonActionPerformed(evt);
             }
         });
 
@@ -278,7 +278,7 @@ public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 983, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jButton2)
+                                .addComponent(printReportButton)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1025, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -298,7 +298,7 @@ public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
-                .addComponent(jButton2)
+                .addComponent(printReportButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
         );
@@ -321,12 +321,12 @@ public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         dashboard.jReportPanel.remove(this);
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
-        
+
         dashboard.reportsJPanel = new ReportsJPanel(dashboard);
         dashboard.jReportPanel.add(dashboard.reportsJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }//GEN-LAST:event_jButton1ActionPerformed
-    
+
 
     private void jFormattedTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFormattedTextField1KeyReleased
         // TODO add your handling code here:
@@ -339,7 +339,6 @@ public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
 
     private void datePicker1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_datePicker1MouseClicked
         // TODO add your handling code here:
-        loadTableData();
     }//GEN-LAST:event_datePicker1MouseClicked
 
     private void jFormattedTextField1InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jFormattedTextField1InputMethodTextChanged
@@ -351,24 +350,23 @@ public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
         loadTableData();
     }//GEN-LAST:event_jFormattedTextField1PropertyChange
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void printReportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printReportButtonActionPerformed
         // TODO add your handling code here:
         try {
             JasperPrint report = makeReport();
             JasperViewer.viewReport(report, false);
-            logger.info("Appointments Report Viewed By : " + LoginModel.getEmployeeId());
+            logger.info("attendance Report Viewed By : " + LoginModel.getEmployeeId());
         } catch (Exception e) {
             e.printStackTrace();
-            logger.severe("Error while viewReportbActionPerformed : " + e.getMessage());
+            logger.severe("Error while view Report : " + e.getMessage());
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_printReportButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable attendanceTable;
     private raven.datetime.component.date.DatePicker datePicker1;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -376,5 +374,6 @@ public class EmployeeAttendanceReportPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JButton printReportButton;
     // End of variables declaration//GEN-END:variables
 }

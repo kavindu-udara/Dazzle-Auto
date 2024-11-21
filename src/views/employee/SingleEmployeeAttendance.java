@@ -1,0 +1,281 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
+ */
+package views.employee;
+
+import controllers.AttendanceDateController;
+import controllers.AttendanceStatusController;
+import controllers.EmployeeAttendanceController;
+import controllers.EmployeeController;
+import includes.LoggerConfig;
+import includes.TimestampsGenerator;
+import java.io.File;
+import java.io.InputStream;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Vector;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+import models.LoginModel;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
+
+/**
+ *
+ * @author kavindu
+ */
+public class SingleEmployeeAttendance extends javax.swing.JDialog {
+
+    private String empId;
+    private static Logger logger = LoggerConfig.getLogger();
+
+    /**
+     * Creates new form SingleEmployeeAttendance
+     */
+    public SingleEmployeeAttendance(java.awt.Frame parent, boolean modal, String empId) {
+        super(parent, modal);
+        initComponents();
+        this.empId = empId;
+        loadTableData();
+    }
+
+    private void loadTableData() {
+        employeeIdValueLabel.setText(empId);
+        DefaultTableModel tableModel = (DefaultTableModel) attendanceTable.getModel();
+        tableModel.setRowCount(0);
+
+        try {
+
+            ResultSet attendanceResultSet = new EmployeeAttendanceController().showByEmployeeId(empId);
+
+            while (attendanceResultSet.next()) {
+
+                Vector vector = new Vector();
+                vector.add(attendanceResultSet.getString("id"));
+
+                try {
+                    ResultSet employeeResultSet = getEmployeeResultSet(attendanceResultSet.getString("employee_id"));
+                    if (employeeResultSet.next()) {
+                        employeeNameValueLabel.setText(employeeResultSet.getString("first_name") + " " + employeeResultSet.getString("last_name"));
+                    } else {
+                        vector.add("-");
+                    }
+                } catch (Exception ex3) {
+                    ex3.printStackTrace();
+                    logger.severe("Error while getting employee : " + ex3.getMessage());
+                }
+
+                if (attendanceResultSet.getString("checkin") != null) {
+                    vector.add(attendanceResultSet.getString("checkin"));
+                } else {
+                    vector.add("-");
+                }
+
+                if (attendanceResultSet.getString("checkout") != null) {
+                    vector.add(attendanceResultSet.getString("checkout"));
+                } else {
+                    vector.add("-");
+                }
+
+                try {
+                    ResultSet dateResultSet = getDateResultSet(attendanceResultSet.getInt("attendance_date_id"));
+                    if (dateResultSet.next()) {
+                        vector.add(dateResultSet.getString("date"));
+                    } else {
+                        vector.add("-");
+                    }
+                } catch (Exception ex4) {
+                    ex4.printStackTrace();
+                    logger.severe("Error while loading attendance date : " + ex4.getMessage());
+                }
+
+                try {
+                    ResultSet statusResultSet = getStatusResultSet(attendanceResultSet.getInt("attendance_status_id"));
+                    if (statusResultSet.next()) {
+                        vector.add(statusResultSet.getString("status"));
+                    }
+                } catch (Exception ex2) {
+                    ex2.printStackTrace();
+                    logger.severe("Error while getting employee attendance status : " + ex2.getMessage());
+                }
+
+                if (attendanceResultSet.getString("checkin") != null && attendanceResultSet.getString("checkout") != null) {
+                    int workingHrs = Integer.parseInt(attendanceResultSet.getString("checkout").split(":")[0]) - Integer.parseInt(attendanceResultSet.getString("checkin").split(":")[0]);
+                    vector.add(String.valueOf(workingHrs));
+                } else {
+                    vector.add("-");
+                }
+                tableModel.addRow(vector);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        attendanceTable.setModel(tableModel);
+    }
+
+    private ResultSet getEmployeeResultSet(String id) throws Exception {
+        return new EmployeeController().show(id);
+    }
+
+    private ResultSet getDateResultSet(int id) throws Exception {
+        return new AttendanceDateController().show(id);
+    }
+
+    private ResultSet getStatusResultSet(int id) throws Exception {
+        return new AttendanceStatusController().show(id);
+    }
+
+    public JasperPrint makeReport() {
+
+        String headerImg;
+        try {
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/DazzleAutoSingleEmployeeAttendaceReport.jasper");
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+
+            headerImg = img.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("imageParam", headerImg);
+            params.put("timeStampParam", String.valueOf(TimestampsGenerator.getFormattedDateTime()));
+            params.put("employeeIdParm", empId);
+            params.put("EmployeeNameParam", String.valueOf(employeeNameValueLabel.getText()));
+
+            JRTableModelDataSource dataSource = new JRTableModelDataSource(attendanceTable.getModel());
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+
+            return report;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while makeReport() : " + e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        attendanceTable = new javax.swing.JTable();
+        employeeIdValueLabel = new javax.swing.JLabel();
+        employeeNameValueLabel = new javax.swing.JLabel();
+        printButton = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Employee Attendance");
+        setResizable(false);
+
+        jLabel1.setText("Employee Name");
+
+        jLabel2.setText("Employee Id");
+
+        attendanceTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Checkin", "Checkout", "Date", "Status", "working Hrs"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(attendanceTable);
+
+        employeeIdValueLabel.setText("employeeIdValueLabel");
+
+        employeeNameValueLabel.setText("employeeNameValueLabel");
+
+        printButton.setText("print");
+        printButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(employeeNameValueLabel)
+                            .addComponent(employeeIdValueLabel))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(printButton)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(employeeIdValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(employeeNameValueLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(printButton)
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
+        // TODO add your handling code here:
+        try {
+            JasperPrint report = makeReport();
+            JasperViewer.viewReport(report, false);
+            logger.info("Attendance Report Viewed By : " + LoginModel.getEmployeeId());
+            dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while view Report : " + e.getMessage());
+        }
+    }//GEN-LAST:event_printButtonActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable attendanceTable;
+    private javax.swing.JLabel employeeIdValueLabel;
+    private javax.swing.JLabel employeeNameValueLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton printButton;
+    // End of variables declaration//GEN-END:variables
+}

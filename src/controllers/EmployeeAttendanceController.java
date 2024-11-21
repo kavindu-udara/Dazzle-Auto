@@ -40,6 +40,10 @@ public class EmployeeAttendanceController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + employeeId + "' AND `attendance_date_id`='" + dateId + "' AND `attendance_status_id`='" + statusId + "' ");
     }
 
+    public ResultSet showByEmployeeId(String employeeId) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + employeeId + "' ");
+    }
+
     public ResultSet storeWithNulls(EmployeeAttendance employeeAttendanceModel) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`employee_id`, `attendance_date_id`, `attendance_status_id`) VALUES "
                 + "('" + employeeAttendanceModel.getEmployeeId() + "', "
