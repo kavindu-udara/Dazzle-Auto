@@ -18,6 +18,8 @@ public class ServiceInvoiceModel {
     private double paidAmount;
     private double balance;
     private String date;
+    private String odometer;
+    private String next_service;
 
     /**
      * @return the id
@@ -104,6 +106,20 @@ public class ServiceInvoiceModel {
     }
 
     /**
+     * @return the balance
+     */
+    public double getBalance() {
+        return balance;
+    }
+
+    /**
+     * @param balance the balance to set
+     */
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    /**
      * @return the date
      */
     public String getDate() {
@@ -118,17 +134,31 @@ public class ServiceInvoiceModel {
     }
 
     /**
-     * @return the balance
+     * @return the odometer
      */
-    public double getBalance() {
-        return balance;
+    public String getOdometer() {
+        return odometer;
     }
 
     /**
-     * @param balance the balance to set
+     * @param odometer the odometer to set
      */
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public void setOdometer(String odometer) {
+        this.odometer = odometer;
+    }
+
+    /**
+     * @return the next_service
+     */
+    public String getNext_service() {
+        return next_service;
+    }
+
+    /**
+     * @param next_service the next_service to set
+     */
+    public void setNext_service(String next_service) {
+        this.next_service = next_service;
     }
 
 }

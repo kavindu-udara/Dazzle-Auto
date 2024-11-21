@@ -24,6 +24,10 @@ public class VehicleTypeController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
+    public ResultSet show(String name) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `name`='" + name + "'");
+    }
+
     public ResultSet store(VehicleTypeModel vehicleTypeModel) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`name`) VALUES "
                 + "('" + vehicleTypeModel.getName() + "') ");
