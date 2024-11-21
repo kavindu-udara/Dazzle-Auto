@@ -6,10 +6,13 @@ package views.reports;
 
 import controllers.AppointmentController;
 import controllers.CustomerController;
+import controllers.EmployeeAttendanceController;
 import controllers.EmployeeController;
 import controllers.GrnController;
 import controllers.ProductController;
+import controllers.ServiceInvoiceController;
 import controllers.ServicesController;
+import controllers.ShopInoviceController;
 import controllers.StockController;
 import controllers.SupplierController;
 import controllers.VehicleController;
@@ -70,18 +73,24 @@ public class ReportsJPanel extends javax.swing.JPanel {
                         openVehiclesReport();
                     } else if (reportName.equals("Customer Report")) {
                         openCustomersReport();
-                    }else if (reportName.equals("Appointment Report")) {
+                    } else if (reportName.equals("Appointment Report")) {
                         openAppointmentReport();
-                    }else if (reportName.equals("Our Services Report")) {
+                    } else if (reportName.equals("Our Services Report")) {
                         openOurServicesReport();
-                    }else if (reportName.equals("Products Report")) {
+                    } else if (reportName.equals("Products Report")) {
                         openProductsReport();
-                    }else if (reportName.equals("Suppliers Report")) {
+                    } else if (reportName.equals("Suppliers Report")) {
                         openSuppliersReport();
-                    }else if (reportName.equals("Stock Report")) {
+                    } else if (reportName.equals("Stock Report")) {
                         openStockReport();
-                    }else if (reportName.equals("GRN Report")) {
+                    } else if (reportName.equals("GRN Report")) {
                         openGRNReport();
+                    } else if (reportName.equals("Service Station Income Report")) {
+                        openServiceStationIncomeReport();
+                    } else if (reportName.equals("Shop Income Report")) {
+                        openShopIncomeReport();
+                    } else if (reportName.equals("Employee Attendance Report")) {
+                        openEmployeeAttendanceReport();
                     }
                 }
 
@@ -194,6 +203,30 @@ public class ReportsJPanel extends javax.swing.JPanel {
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }
 
+    private void openServiceStationIncomeReport() {
+        removeThisPanel();
+
+        ServiceStationIncomePanel serviceStationIncomePanel = new ServiceStationIncomePanel(dashboard);
+        dashboard.jReportPanel.add(serviceStationIncomePanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
+    private void openShopIncomeReport() {
+        removeThisPanel();
+
+        ShopIncomePanel shopIncomePanel = new ShopIncomePanel(dashboard);
+        dashboard.jReportPanel.add(shopIncomePanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
+    private void openEmployeeAttendanceReport() {
+        removeThisPanel();
+
+        EmployeeAttendanceReportPanel employeeAttendancePanel = new EmployeeAttendanceReportPanel(dashboard);
+        dashboard.jReportPanel.add(employeeAttendancePanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
     public void loadReports() {
         int Count = 0;
 
@@ -271,6 +304,30 @@ public class ReportsJPanel extends javax.swing.JPanel {
             addNewReport("GRN Report", Count);
             Count = 0;
 
+            //Service Station Income Report
+            ResultSet ServiceInvoiceshow = new ServiceInvoiceController().show();
+            while (ServiceInvoiceshow.next()) {
+                Count++;
+            }
+            addNewReport("Service Station Income Report", Count);
+            Count = 0;
+
+            //Shop Income Report
+            ResultSet ShopInoviceshow = new ShopInoviceController().show();
+            while (ShopInoviceshow.next()) {
+                Count++;
+            }
+            addNewReport("Shop Income Report", Count);
+            Count = 0;
+
+            //Employee Attendance Report
+            ResultSet EmployeeAttendanceshow = new EmployeeAttendanceController().show();
+            while (EmployeeAttendanceshow.next()) {
+                Count++;
+            }
+            addNewReport("Employee Attendance Report", Count);
+            Count = 0;
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while loadReports() : " + e.getMessage());
@@ -341,6 +398,8 @@ public class ReportsJPanel extends javax.swing.JPanel {
         jReportsTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jReportsTable);
         if (jReportsTable.getColumnModel().getColumnCount() > 0) {
+            jReportsTable.getColumnModel().getColumn(1).setPreferredWidth(300);
+            jReportsTable.getColumnModel().getColumn(1).setMaxWidth(250);
             jReportsTable.getColumnModel().getColumn(2).setPreferredWidth(300);
             jReportsTable.getColumnModel().getColumn(2).setMaxWidth(250);
         }
@@ -356,12 +415,11 @@ public class ReportsJPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1065, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 989, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(59, Short.MAX_VALUE))))
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1065, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 996, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -371,8 +429,8 @@ public class ReportsJPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addGap(2, 2, 2)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 

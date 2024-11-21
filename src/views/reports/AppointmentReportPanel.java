@@ -195,12 +195,12 @@ public class AppointmentReportPanel extends javax.swing.JPanel {
 
             if (fromdatePicker.isDateSelected()) {
                 params.put("fromDate", String.valueOf(fromdatePicker.getSelectedDate()));
-            }else{
+            } else {
                 params.put("fromDate", "--/--/----");
             }
             if (todatePicker.isDateSelected()) {
                 params.put("toDate", String.valueOf(todatePicker.getSelectedDate()));
-            }else{
+            } else {
                 params.put("toDate", "--/--/----");
             }
 
