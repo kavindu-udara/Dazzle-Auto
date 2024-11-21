@@ -88,11 +88,11 @@ public class EmployeeAttendance extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Employee ID ", "Name", "Check In", "Check Out"
+                "Employee ID ", "Name", "Check In", "Check Out", "Status", "Working Hrs"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -287,6 +287,27 @@ public class EmployeeAttendance extends javax.swing.JPanel {
                 }
                 vector.add(attendanceResultSet.getString("checkin"));
                 vector.add(attendanceResultSet.getString("checkout"));
+
+                // status
+                try {
+                    ResultSet statusResultSet = new AttendanceStatusController().show(attendanceResultSet.getInt("attendance_status_id"));
+                    if (statusResultSet.next()) {
+                        vector.add(statusResultSet.getString("status"));
+                    } else {
+                        vector.add("");
+                    }
+                } catch (Exception ex2) {
+                    ex2.printStackTrace();
+                    logger.severe("Error while showing status  : " + ex2.getMessage());
+                }
+
+                if (attendanceResultSet.getString("checkin") != null && attendanceResultSet.getString("checkout") != null) {
+                    int workingHrs = Integer.parseInt(attendanceResultSet.getString("checkout").split(":")[0]) - Integer.parseInt(attendanceResultSet.getString("checkin").split(":")[0]);
+                    vector.add(String.valueOf(workingHrs));
+                } else {
+                    vector.add("");
+                }
+
                 model.addRow(vector);
             }
         } catch (Exception e) {

@@ -6,6 +6,7 @@ package views.financeAndHr;
 
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamPicker;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.zxing.BinaryBitmap;
@@ -58,6 +59,8 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
     private String todayDate = TimestampsGenerator.getTodayDate();
 
     private Runnable actionMethod;
+    
+    private WebcamPicker picker = null;
 
     /**
      * Creates new form MarkAttendance
@@ -75,12 +78,10 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
     }
 
     private void updateTime() {
-
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("HH:mm:ss");
         lbltime2.setText(simpleDateFormat.format(new Date()));
         lbltime3.setText(simpleDateFormat2.format(new Date()));
-
     }
 
     Map<String, String> resultMap = new HashMap<String, String>();
@@ -329,6 +330,7 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
 
     private void initwebcam() {
 
+        
         webcam = webcam.getDefault();
 
         if (webcam != null) {
