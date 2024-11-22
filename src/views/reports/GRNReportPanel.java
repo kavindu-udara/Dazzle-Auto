@@ -154,7 +154,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(GRNViewTable);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 1050, 360));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 1030, 360));
 
         jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel8.setText("Number Of Products :");
@@ -176,7 +176,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 viewReportbActionPerformed(evt);
             }
         });
-        jPanel1.add(viewReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 550, -1, -1));
+        jPanel1.add(viewReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 550, -1, -1));
 
         printReportb.setBackground(new java.awt.Color(0, 102, 0));
         printReportb.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
@@ -189,7 +189,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 printReportbActionPerformed(evt);
             }
         });
-        jPanel1.add(printReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 550, -1, -1));
+        jPanel1.add(printReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 550, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel3.setText("Price From");
@@ -219,7 +219,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
 
         jLabel6.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel6.setText("Quantity");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 60, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 60, -1, -1));
 
         QtyFrom.setForeground(new java.awt.Color(0, 0, 204));
         QtyFrom.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
@@ -228,11 +228,11 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 QtyFromKeyReleased(evt);
             }
         });
-        jPanel1.add(QtyFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 80, 110, 31));
+        jPanel1.add(QtyFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 80, 110, 31));
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel2.setText("To");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 60, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 60, -1, -1));
 
         QtyTo.setForeground(new java.awt.Color(0, 0, 204));
         QtyTo.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
@@ -241,11 +241,11 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 QtyToKeyReleased(evt);
             }
         });
-        jPanel1.add(QtyTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 80, 100, 31));
+        jPanel1.add(QtyTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 80, 100, 31));
 
         jLabel9.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel9.setText("Supplier");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 130, -1, -1));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 130, -1, -1));
 
         SupplierChooser.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         SupplierChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -259,7 +259,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 SupplierChooserActionPerformed(evt);
             }
         });
-        jPanel1.add(SupplierChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 130, 110, 30));
+        jPanel1.add(SupplierChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 130, 110, 30));
 
         jLabel10.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel10.setText("Employee");
