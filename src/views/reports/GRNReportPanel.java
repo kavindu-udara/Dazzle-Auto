@@ -11,6 +11,7 @@ import controllers.StockController;
 import controllers.SupplierController;
 import includes.LoggerConfig;
 import includes.MySqlConnection;
+import includes.OnlyNumbersDocumentFilter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -34,6 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.text.AbstractDocument;
 import models.LoginModel;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -61,7 +63,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
         LoadGrn();
         loadSuppliersToComboBox();
         loadEmployeesToComboBox();
-
+        setDocumentFilters();
         this.dashboard = dashboard;
     }
 
@@ -332,6 +334,14 @@ public class GRNReportPanel extends javax.swing.JPanel {
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void setDocumentFilters() {
+        ((AbstractDocument) PriceFrom.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) PriceTo.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) QtyFrom.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) QtyTo.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+
+    }
+
     public void GRNTableRender() {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -461,17 +471,40 @@ public class GRNReportPanel extends javax.swing.JPanel {
 
         String headerImg;
         try {
-            InputStream s = this.getClass().getResourceAsStream("/resources/reports/ProductReport.jasper");
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/GRNReport.jasper");
             String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
 
             headerImg = img.replace("\\", "/");
 
             HashMap<String, Object> params = new HashMap<>();
             params.put("img", headerImg);
-            //params.put("status", String.valueOf(Brand_chooser.getSelectedItem()));
+            params.put("supplier", String.valueOf(SupplierChooser.getSelectedItem()));
+            params.put("sortedEmployee", String.valueOf(EmployeeChooser.getSelectedItem()));
             params.put("count", jLabel5.getText());
             params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
             params.put("reportDate", dateTime);
+
+            if (!PriceFrom.getText().isEmpty()) {
+                params.put("fromPrice", String.valueOf(PriceFrom.getText()));
+            } else {
+                params.put("fromPrice", "0.00");
+            }
+            if (!PriceTo.getText().isEmpty()) {
+                params.put("toPrice", String.valueOf(PriceTo.getText()));
+            } else {
+                params.put("toPrice", "0.00");
+            }
+
+            if (!QtyFrom.getText().isEmpty()) {
+                params.put("qtyFrom", String.valueOf(QtyFrom.getText()));
+            } else {
+                params.put("qtyFrom", "0");
+            }
+            if (!QtyTo.getText().isEmpty()) {
+                params.put("qtyTo", String.valueOf(QtyTo.getText()));
+            } else {
+                params.put("qtyTo", "0");
+            }
 
             JRTableModelDataSource dataSource = new JRTableModelDataSource(GRNViewTable.getModel());
 
@@ -598,7 +631,6 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 }
             }
 
-            
             if (whereClause.length() > 0) {
                 query += " WHERE " + whereClause.toString();
             }

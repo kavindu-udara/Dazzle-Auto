@@ -235,7 +235,7 @@ public class StockReportPanel extends javax.swing.JPanel {
                 Brand_chooserActionPerformed(evt);
             }
         });
-        jPanel1.add(Brand_chooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 70, 110, 40));
+        jPanel1.add(Brand_chooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 80, 110, 30));
 
         jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel7.setText("Number of Products :");
