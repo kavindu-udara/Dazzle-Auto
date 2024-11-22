@@ -280,7 +280,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
         jPanel1.add(EmployeeChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 110, 30));
 
         jLabel7.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel7.setText("Appointments From :");
+        jLabel7.setText("GRN Records From :");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, -1));
 
         jFromDateField.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 18)); // NOI18N
