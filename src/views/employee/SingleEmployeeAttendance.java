@@ -10,13 +10,23 @@ import controllers.EmployeeAttendanceController;
 import controllers.EmployeeController;
 import includes.LoggerConfig;
 import includes.TimestampsGenerator;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import models.LoginModel;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -40,6 +50,7 @@ public class SingleEmployeeAttendance extends javax.swing.JDialog {
         initComponents();
         this.empId = empId;
         loadTableData();
+        SingleEmployeeTableRender();
     }
 
     private void loadTableData() {
@@ -173,13 +184,18 @@ public class SingleEmployeeAttendance extends javax.swing.JDialog {
         employeeIdValueLabel = new javax.swing.JLabel();
         employeeNameValueLabel = new javax.swing.JLabel();
         printButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Employee Attendance");
+        setMinimumSize(new java.awt.Dimension(736, 534));
         setResizable(false);
 
+        jLabel1.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel1.setText("Employee Name");
 
+        jLabel2.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel2.setText("Employee Id");
 
         attendanceTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -187,7 +203,7 @@ public class SingleEmployeeAttendance extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID", "Checkin", "Checkout", "Date", "Status", "working Hrs"
+                "ID", "Checkin", "Checkout", "Date", "Status", "Working Hrs"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -200,60 +216,113 @@ public class SingleEmployeeAttendance extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(attendanceTable);
 
+        employeeIdValueLabel.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         employeeIdValueLabel.setText("employeeIdValueLabel");
 
+        employeeNameValueLabel.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         employeeNameValueLabel.setText("employeeNameValueLabel");
 
-        printButton.setText("print");
+        printButton.setBackground(new java.awt.Color(0, 102, 0));
+        printButton.setFont(new java.awt.Font("Courier New", 1, 18)); // NOI18N
+        printButton.setForeground(new java.awt.Color(255, 255, 255));
+        printButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/print-30.png"))); // NOI18N
+        printButton.setText("PRINT");
         printButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 printButtonActionPerformed(evt);
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel3.setText(":");
+
+        jLabel4.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel4.setText(":");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel2)
+                        .addGap(64, 64, 64)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGap(33, 33, 33)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(employeeIdValueLabel))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel1)
+                        .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(employeeNameValueLabel)
-                            .addComponent(employeeIdValueLabel))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(printButton)))
-                .addContainerGap())
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addComponent(employeeNameValueLabel))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(590, 590, 590)
+                        .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
+                    .addComponent(jLabel3)
                     .addComponent(employeeIdValueLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(employeeNameValueLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(printButton)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(employeeNameValueLabel)
+                    .addComponent(jLabel4))
+                .addGap(17, 17, 17)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+ 
+    private void SingleEmployeeTableRender() {
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        JTableHeader tableHeader = attendanceTable.getTableHeader();
+
+        tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Font headerFont = new Font("Verdana", Font.BOLD, 14);
+                label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
+                label.setFont(headerFont);
+                label.setBackground(new Color(5, 15, 76)); // Optional: Set header background color
+                label.setForeground(Color.WHITE); // Optional: Set header text color
+                label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+                return label;
+            }
+        });
+
+        tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
+
+        for (int i = 0; i < 6; i++) {
+            attendanceTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
         // TODO add your handling code here:
@@ -275,6 +344,8 @@ public class SingleEmployeeAttendance extends javax.swing.JDialog {
     private javax.swing.JLabel employeeNameValueLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton printButton;
     // End of variables declaration//GEN-END:variables
