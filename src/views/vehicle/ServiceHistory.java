@@ -95,7 +95,7 @@ public class ServiceHistory extends javax.swing.JFrame {
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
@@ -160,6 +160,8 @@ public class ServiceHistory extends javax.swing.JFrame {
                 vector.add(resultSet.getString("id"));
                 vector.add(resultSet.getString("date"));
                 vector.add(resultSet.getString("total"));
+                vector.add(resultSet.getString("odometer"));
+                vector.add(resultSet.getString("next_service"));
 
                 dtm.addRow(vector);
             }
@@ -326,11 +328,11 @@ public class ServiceHistory extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Invoice ID", "Date", "Total Charge"
+                "Invoice ID", "Date", "Total Charge", "Odometer(Km)", "Next Service(Km)"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -454,7 +456,7 @@ public class ServiceHistory extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(printReportb, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                    .addComponent(printReportb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(viewReportb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
@@ -534,10 +536,5 @@ public class ServiceHistory extends javax.swing.JFrame {
     private javax.swing.JLabel jVehicleNumberLabel;
     private javax.swing.JButton printReportb;
     private javax.swing.JButton viewReportb;
-    private javax.swing.JButton viewReportb1;
-    private javax.swing.JButton viewReportb2;
-    private javax.swing.JButton viewReportb3;
-    private javax.swing.JButton viewReportb4;
-    private javax.swing.JButton viewReportb5;
     // End of variables declaration//GEN-END:variables
 }
