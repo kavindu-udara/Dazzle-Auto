@@ -28,7 +28,7 @@ public class ServiceInvoiceController {
 
     public ResultSet store(ServiceInvoiceModel serviceInvoiceModel) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`,`vehicle_number`, `date`, `total`, "
-                + "`paid_amount`, `balance`, `payment_method_id`, `employee_id`) VALUES ("
+                + "`paid_amount`, `balance`, `payment_method_id`, `employee_id`, `odometer`, `next_service`) VALUES ("
                 + "'" + serviceInvoiceModel.getId() + "',"
                 + "'" + serviceInvoiceModel.getVehicleNumber() + "', "
                 + "'" + serviceInvoiceModel.getDate() + "', "
@@ -36,7 +36,9 @@ public class ServiceInvoiceController {
                 + "'" + serviceInvoiceModel.getPaidAmount() + "', "
                 + "'" + serviceInvoiceModel.getBalance() + "', "
                 + "'" + serviceInvoiceModel.getPaymentMethodId() + "', "
-                + "'" + serviceInvoiceModel.getEmployeeId() + "') ");
+                + "'" + serviceInvoiceModel.getEmployeeId() + "',"
+                + "'" + serviceInvoiceModel.getOdometer() + "',"
+                + "'" + serviceInvoiceModel.getNext_service() + "') ");
     }
 
     public ResultSet update(ServiceInvoiceModel serviceInvoiceModel) throws Exception {
