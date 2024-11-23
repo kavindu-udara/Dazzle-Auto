@@ -27,23 +27,23 @@ public class CustomerController {
 
     public ResultSet store(CustomerModel customerModel) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`first_name`, `last_name`, `mobile`, `registered_date`,`email`) VALUES "
-               
-                 + "('" + customerModel.getFirstName() + "', "
-            + "'" + customerModel.getLastName() + "', "
-            + "'" + customerModel.getMobile() + "', "
-            + "'" + TimestampsGenerator.getFormattedDateTime() + "', "
-            + "'" + customerModel.getEmail() + "') ");
-                
-    }
+                + "('" + customerModel.getFirstName() + "', "
+                + "'" + customerModel.getLastName() + "', "
+                + "'" + customerModel.getMobile() + "', "
+                + "'" + TimestampsGenerator.getFormattedDateTime() + "', "
+                + "'" + customerModel.getEmail() + "') ");
 
+    }
 public ResultSet update(CustomerModel customerModel) throws Exception {
     return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
             + "`first_name`='" + customerModel.getFirstName() + "', "
             + "`last_name`='" + customerModel.getLastName() + "', "
             + "`mobile`='" + customerModel.getMobile() + "', "
-            + "`registered_date`='" + customerModel.getRegisteredDate() + "' "
+            + "`registered_date`='" + customerModel.getRegisteredDate() + "', "
+            + "`email`='" + customerModel.getEmail() + "' "
             + "WHERE `id`='" + customerModel.getId() + "' ");
 }
+
 
 
     public ResultSet search(String searchText) throws Exception {
@@ -51,7 +51,8 @@ public ResultSet update(CustomerModel customerModel) throws Exception {
                 + "`first_name` LIKE '%" + searchText + "%' OR "
                 + "`last_name` LIKE '%" + searchText + "%' OR "
                 + "`mobile` LIKE '%" + searchText + "%' OR "
-                + "`registered_date` LIKE '%" + searchText + "%'");
+                + "`registered_date` LIKE '%" + searchText + "%' OR "
+                + "`email` LIKE '%" + searchText + "%'");
     }
 
     public ResultSet delete(int id) throws Exception {
