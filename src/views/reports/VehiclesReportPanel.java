@@ -176,7 +176,6 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
         String headerImg;
         try {
 
-            //          String imgPath = "";
             InputStream s = this.getClass().getResourceAsStream("/resources/reports/vehicleReport3.jasper");
             String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
 
@@ -187,7 +186,6 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
             params.put("Sort_By", String.valueOf(jComboBox2.getSelectedItem()));
             params.put("vehicle_type", jComboBox1.getSelectedItem());
 
-            //           JREmptyDataSource dataSource = new JREmptyDataSource();
             JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
 
             JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
