@@ -11,6 +11,7 @@ import controllers.StockController;
 import controllers.SupplierController;
 import includes.LoggerConfig;
 import includes.MySqlConnection;
+import includes.OnlyNumbersDocumentFilter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -34,6 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.text.AbstractDocument;
 import models.LoginModel;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -61,7 +63,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
         LoadGrn();
         loadSuppliersToComboBox();
         loadEmployeesToComboBox();
-
+        setDocumentFilters();
         this.dashboard = dashboard;
     }
 
@@ -152,7 +154,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(GRNViewTable);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 1050, 360));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 1030, 360));
 
         jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel8.setText("Number Of Products :");
@@ -174,7 +176,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 viewReportbActionPerformed(evt);
             }
         });
-        jPanel1.add(viewReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 550, -1, -1));
+        jPanel1.add(viewReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 550, -1, -1));
 
         printReportb.setBackground(new java.awt.Color(0, 102, 0));
         printReportb.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
@@ -187,7 +189,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 printReportbActionPerformed(evt);
             }
         });
-        jPanel1.add(printReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 550, -1, -1));
+        jPanel1.add(printReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 550, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel3.setText("Price From");
@@ -217,7 +219,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
 
         jLabel6.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel6.setText("Quantity");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 60, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 60, -1, -1));
 
         QtyFrom.setForeground(new java.awt.Color(0, 0, 204));
         QtyFrom.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
@@ -226,11 +228,11 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 QtyFromKeyReleased(evt);
             }
         });
-        jPanel1.add(QtyFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 80, 110, 31));
+        jPanel1.add(QtyFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 80, 110, 31));
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel2.setText("To");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 60, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 60, -1, -1));
 
         QtyTo.setForeground(new java.awt.Color(0, 0, 204));
         QtyTo.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
@@ -239,11 +241,11 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 QtyToKeyReleased(evt);
             }
         });
-        jPanel1.add(QtyTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 80, 100, 31));
+        jPanel1.add(QtyTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 80, 100, 31));
 
         jLabel9.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel9.setText("Supplier");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 130, -1, -1));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 130, -1, -1));
 
         SupplierChooser.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         SupplierChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -257,7 +259,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 SupplierChooserActionPerformed(evt);
             }
         });
-        jPanel1.add(SupplierChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 130, 110, 30));
+        jPanel1.add(SupplierChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 130, 110, 30));
 
         jLabel10.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel10.setText("Employee");
@@ -278,7 +280,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
         jPanel1.add(EmployeeChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 110, 30));
 
         jLabel7.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel7.setText("Appointments From :");
+        jLabel7.setText("GRN Records From :");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, -1));
 
         jFromDateField.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 18)); // NOI18N
@@ -331,6 +333,14 @@ public class GRNReportPanel extends javax.swing.JPanel {
         dashboard.jReportPanel.add(dashboard.reportsJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void setDocumentFilters() {
+        ((AbstractDocument) PriceFrom.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) PriceTo.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) QtyFrom.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) QtyTo.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+
+    }
 
     public void GRNTableRender() {
 
@@ -461,17 +471,40 @@ public class GRNReportPanel extends javax.swing.JPanel {
 
         String headerImg;
         try {
-            InputStream s = this.getClass().getResourceAsStream("/resources/reports/ProductReport.jasper");
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/GRNReport.jasper");
             String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
 
             headerImg = img.replace("\\", "/");
 
             HashMap<String, Object> params = new HashMap<>();
             params.put("img", headerImg);
-            //params.put("status", String.valueOf(Brand_chooser.getSelectedItem()));
+            params.put("supplier", String.valueOf(SupplierChooser.getSelectedItem()));
+            params.put("sortedEmployee", String.valueOf(EmployeeChooser.getSelectedItem()));
             params.put("count", jLabel5.getText());
             params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
             params.put("reportDate", dateTime);
+
+            if (!PriceFrom.getText().isEmpty()) {
+                params.put("fromPrice", String.valueOf(PriceFrom.getText()));
+            } else {
+                params.put("fromPrice", "0.00");
+            }
+            if (!PriceTo.getText().isEmpty()) {
+                params.put("toPrice", String.valueOf(PriceTo.getText()));
+            } else {
+                params.put("toPrice", "0.00");
+            }
+
+            if (!QtyFrom.getText().isEmpty()) {
+                params.put("qtyFrom", String.valueOf(QtyFrom.getText()));
+            } else {
+                params.put("qtyFrom", "0");
+            }
+            if (!QtyTo.getText().isEmpty()) {
+                params.put("qtyTo", String.valueOf(QtyTo.getText()));
+            } else {
+                params.put("qtyTo", "0");
+            }
 
             JRTableModelDataSource dataSource = new JRTableModelDataSource(GRNViewTable.getModel());
 
@@ -598,7 +631,6 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 }
             }
 
-            
             if (whereClause.length() > 0) {
                 query += " WHERE " + whereClause.toString();
             }
