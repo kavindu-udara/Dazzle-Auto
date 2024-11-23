@@ -314,7 +314,7 @@ public class ShopIncomePanel extends javax.swing.JPanel {
 
         String headerImg;
         try {
-            InputStream s = this.getClass().getResourceAsStream("/resources/reports/shoppay111.jasper");
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/ShopPayment.jasper");
             String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
 
             headerImg = img.replace("\\", "/");
