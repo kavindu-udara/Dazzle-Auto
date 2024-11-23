@@ -467,7 +467,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
     private void employee_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_reset_btnActionPerformed
 
-        reset();
+      setEmployeeData();
 
     }//GEN-LAST:event_employee_reset_btnActionPerformed
 
