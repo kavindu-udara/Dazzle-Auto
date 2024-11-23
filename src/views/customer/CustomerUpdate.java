@@ -13,11 +13,13 @@ import includes.RegexValidator;
 import java.awt.Frame;
 import models.CustomerModel;
 import controllers.CustomerController;
+import controllers.StatusController;
 import includes.LoggerConfig;
 import includes.OnlyLettersDocumentFilter;
 import includes.TimestampsGenerator;
 import java.util.logging.Logger;
 import javax.print.attribute.DateTimeSyntax;
+import java.sql.ResultSet;
 
 /**
  *
@@ -26,7 +28,7 @@ import javax.print.attribute.DateTimeSyntax;
 public class CustomerUpdate extends java.awt.Dialog {
 
     private static final Logger logger = LoggerConfig.getLogger();
-    
+
     private CustomerModel customerModel;
 
     /**
@@ -42,6 +44,14 @@ public class CustomerUpdate extends java.awt.Dialog {
         customer_firstname.setText(customerModel.getFirstName());
         customer_lastname.setText(customerModel.getLastName());
         customer_mobile.setText(customerModel.getMobile());
+
+    }
+
+    private void setcustomerData() {
+        customer_firstname.setText(customerModel.getFirstName());
+        customer_lastname.setText(customerModel.getLastName());
+        customer_mobile.setText(customerModel.getMobile());
+        customer_email.setText(customerModel.getEmail());
 
     }
 
@@ -69,6 +79,8 @@ public class CustomerUpdate extends java.awt.Dialog {
         customer_mobile = new javax.swing.JTextField();
         customer_register_btn = new javax.swing.JButton();
         customer_reset_btn = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        customer_email = new javax.swing.JTextField();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -114,13 +126,30 @@ public class CustomerUpdate extends java.awt.Dialog {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel5.setText("Email");
+
+        customer_email.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customer_emailActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(135, 135, 135)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(68, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(customer_email, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(customer_register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -138,10 +167,6 @@ public class CustomerUpdate extends java.awt.Dialog {
                             .addComponent(customer_firstname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(customer_lastname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(66, 66, 66))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(135, 135, 135)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,11 +185,15 @@ public class CustomerUpdate extends java.awt.Dialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(customer_mobile, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addGap(41, 41, 41)
+                .addGap(20, 20, 20)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(customer_email, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(customer_register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(customer_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -195,6 +224,7 @@ public class CustomerUpdate extends java.awt.Dialog {
         String firstName = customer_firstname.getText();
         String lastName = customer_lastname.getText();
         String mobile = customer_mobile.getText();
+        String email = customer_email.getText();
 
         if (firstName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -205,7 +235,10 @@ public class CustomerUpdate extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!RegexValidator.isValidSlPhone(mobile)) {
             JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
-
+        } else if (email.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your email", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (!RegexValidator.isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
 
             try {
@@ -213,6 +246,7 @@ public class CustomerUpdate extends java.awt.Dialog {
                 customerModel.setFirstName(firstName);
                 customerModel.setLastName(lastName);
                 customerModel.setMobile(mobile);
+                customerModel.setEmail(email);
 
                 String registerDateTime = TimestampsGenerator.getFormattedDateTime();
                 customerModel.setRegisteredDate(registerDateTime);
@@ -223,7 +257,7 @@ public class CustomerUpdate extends java.awt.Dialog {
                 reset();
             } catch (Exception e) {
                 e.printStackTrace();
-                logger.severe("Error while updating customer : "+e.getMessage());
+                logger.severe("Error while updating customer : " + e.getMessage());
             }
 
         }
@@ -235,9 +269,13 @@ public class CustomerUpdate extends java.awt.Dialog {
     }//GEN-LAST:event_customer_mobileActionPerformed
 
     private void customer_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customer_reset_btnActionPerformed
+        setcustomerData();
 
-        reset();
     }//GEN-LAST:event_customer_reset_btnActionPerformed
+
+    private void customer_emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customer_emailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customer_emailActionPerformed
 
     private void reset() {
 
@@ -248,6 +286,7 @@ public class CustomerUpdate extends java.awt.Dialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField customer_email;
     private javax.swing.JTextField customer_firstname;
     private javax.swing.JTextField customer_lastname;
     private javax.swing.JTextField customer_mobile;
@@ -256,6 +295,7 @@ public class CustomerUpdate extends java.awt.Dialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
