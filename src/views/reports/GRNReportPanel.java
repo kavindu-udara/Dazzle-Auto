@@ -64,6 +64,10 @@ public class GRNReportPanel extends javax.swing.JPanel {
         loadSuppliersToComboBox();
         loadEmployeesToComboBox();
         setDocumentFilters();
+        
+        FromDate.setEditor(jFromDateField);
+        ToDate.setEditor(jToDateField);
+
         this.dashboard = dashboard;
     }
 
@@ -71,6 +75,8 @@ public class GRNReportPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        FromDate = new raven.datetime.component.date.DatePicker();
+        ToDate = new raven.datetime.component.date.DatePicker();
         jPanel1 = new javax.swing.JPanel();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator1 = new javax.swing.JSeparator();
@@ -154,7 +160,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(GRNViewTable);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 1030, 360));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 1030, 350));
 
         jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel8.setText("Number Of Products :");
@@ -705,12 +711,14 @@ public class GRNReportPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> EmployeeChooser;
+    private raven.datetime.component.date.DatePicker FromDate;
     private javax.swing.JTable GRNViewTable;
     private javax.swing.JFormattedTextField PriceFrom;
     private javax.swing.JFormattedTextField PriceTo;
     private javax.swing.JFormattedTextField QtyFrom;
     private javax.swing.JFormattedTextField QtyTo;
     private javax.swing.JComboBox<String> SupplierChooser;
+    private raven.datetime.component.date.DatePicker ToDate;
     private javax.swing.JButton jButton1;
     private javax.swing.JFormattedTextField jFromDateField;
     private javax.swing.JLabel jLabel1;

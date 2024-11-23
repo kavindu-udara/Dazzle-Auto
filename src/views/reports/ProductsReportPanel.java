@@ -268,11 +268,12 @@ public class ProductsReportPanel extends javax.swing.JPanel {
                 row++;
                 String id = resultSet.getString("id");
                 String name = resultSet.getString("name");
+                String BrandID = resultSet.getString("brand_id");
                 int BrandId = resultSet.getInt("brand_id");
 
                 String BrandName = BrandMap.getOrDefault(BrandId, "Unknown Brand");
 
-                model.addRow(new Object[]{id, name, BrandId, BrandName});
+                model.addRow(new Object[]{id, name, BrandID, BrandName});
             }
 
             jLabel5.setText(String.valueOf(row));
