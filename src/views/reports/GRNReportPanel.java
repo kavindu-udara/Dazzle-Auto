@@ -484,12 +484,32 @@ public class GRNReportPanel extends javax.swing.JPanel {
 
             HashMap<String, Object> params = new HashMap<>();
             params.put("img", headerImg);
-            params.put("supplier", String.valueOf(SupplierChooser.getSelectedItem()));
-            params.put("sortedEmployee", String.valueOf(EmployeeChooser.getSelectedItem()));
             params.put("count", jLabel5.getText());
             params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
             params.put("reportDate", dateTime);
 
+            if (SupplierChooser.getSelectedItem().equals("All")){
+                params.put("supplier","---");
+            }else{
+                params.put("supplier", String.valueOf(SupplierChooser.getSelectedItem()));
+            }
+            if (EmployeeChooser.getSelectedItem().equals("All")){
+                params.put("sortedEmployee","---");
+            }else{
+                params.put("sortedEmployee", String.valueOf(EmployeeChooser.getSelectedItem()));
+            }
+            
+             if (FromDate.isDateSelected()) {
+                params.put("fromDate", String.valueOf(FromDate.getSelectedDate()));
+            } else {
+                params.put("fromDate", "--/--/----");
+            }
+            if (ToDate.isDateSelected()) {
+                params.put("toDate", String.valueOf(ToDate.getSelectedDate()));
+            } else {
+                params.put("toDate", "--/--/----");
+            }
+            
             if (!PriceFrom.getText().isEmpty()) {
                 params.put("fromPrice", String.valueOf(PriceFrom.getText()));
             } else {
@@ -603,6 +623,17 @@ public class GRNReportPanel extends javax.swing.JPanel {
                 whereClause.append("grn.employee_id = '").append(employee).append("' ");
             }
 
+            String fromDate = "";
+            String toDate = "";
+            if (FromDate.isDateSelected()) {
+                fromDate = String.valueOf(FromDate.getSelectedDate());
+                query += " AND `grn`.`date` > '" + fromDate + "'";
+            }
+            if (ToDate.isDateSelected()) {
+                toDate = String.valueOf(ToDate.getSelectedDate());
+                query += " AND `grn`.`date` < '" + toDate + "'";
+            }
+            
             // Price range filter
             double minPrice = PriceFrom.getText().isEmpty() ? 0 : Double.parseDouble(PriceFrom.getText());
             double maxPrice = PriceTo.getText().isEmpty() ? 0 : Double.parseDouble(PriceTo.getText());
@@ -686,23 +717,23 @@ public class GRNReportPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_EmployeeChooserActionPerformed
 
     private void jFromDateFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jFromDateFieldMouseExited
-        loadtoGrnTable();
+        SortTable();
     }//GEN-LAST:event_jFromDateFieldMouseExited
 
     private void jFromDateFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jFromDateFieldPropertyChange
-//        if (fromdatePicker.isDateSelected()) {
-//            loadtoGrnTable();
-//        }
+        if (FromDate.isDateSelected()) {
+            SortTable();
+        }
     }//GEN-LAST:event_jFromDateFieldPropertyChange
 
     private void jToDateFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToDateFieldMouseExited
-        loadtoGrnTable();
+        SortTable();
     }//GEN-LAST:event_jToDateFieldMouseExited
 
     private void jToDateFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jToDateFieldPropertyChange
-//        if (todatePicker.isDateSelected()) {
-//            loadtoGrnTable();
-//        }
+        if (ToDate.isDateSelected()) {
+            SortTable();
+        }
     }//GEN-LAST:event_jToDateFieldPropertyChange
 
     public void reloadTable() {

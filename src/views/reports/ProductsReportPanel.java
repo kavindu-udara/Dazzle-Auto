@@ -7,11 +7,13 @@ package views.reports;
 import controllers.ProductBrandController;
 import controllers.ProductController;
 import includes.LoggerConfig;
+import includes.MySqlConnection;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
@@ -30,7 +32,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import models.LoginModel;
-import models.ProductModel;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
@@ -73,6 +74,8 @@ public class ProductsReportPanel extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         Brand_chooser = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
+        SortComboBox = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -181,6 +184,24 @@ public class ProductsReportPanel extends javax.swing.JPanel {
         jLabel8.setText("Number Of Products :");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 560, -1, -1));
 
+        SortComboBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        SortComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product Name A-Z", "Product Name Z-A", "Brand Name A-Z", "Brand Name Z-A", " " }));
+        SortComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                SortComboBoxItemStateChanged(evt);
+            }
+        });
+        SortComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SortComboBoxActionPerformed(evt);
+            }
+        });
+        jPanel1.add(SortComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 210, 40));
+
+        jLabel9.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel9.setText("Sort By :");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -247,42 +268,6 @@ public class ProductsReportPanel extends javax.swing.JPanel {
 
     }
 
-    private void fetchBrands(String searchText) throws Exception {
-        DefaultTableModel model = (DefaultTableModel) ProductTable.getModel();
-        model.setRowCount(0);
-
-        try {
-            ResultSet resultSet = new ProductController().searchBrand(searchText);;
-            ResultSet resultSet1 = new ProductBrandController().search("");
-
-            HashMap<Integer, String> BrandMap = new HashMap<>();
-
-            while (resultSet1.next()) {
-                int BrandId = resultSet1.getInt("id");
-                String BrandName = resultSet1.getString("name");
-                BrandMap.put(BrandId, BrandName);
-            }
-
-            int row = 0;
-            while (resultSet.next()) {
-                row++;
-                String id = resultSet.getString("id");
-                String name = resultSet.getString("name");
-                String BrandID = resultSet.getString("brand_id");
-                int BrandId = resultSet.getInt("brand_id");
-
-                String BrandName = BrandMap.getOrDefault(BrandId, "Unknown Brand");
-
-                model.addRow(new Object[]{id, name, BrandID, BrandName});
-            }
-
-            jLabel5.setText(String.valueOf(row));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.severe("Error while searching Items  : " + ex.getMessage());
-        }
-    }
-
     public void ProductTableRender() {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -344,7 +329,7 @@ public class ProductsReportPanel extends javax.swing.JPanel {
 
     private void ProductTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProductTableMouseClicked
         // TODO add your handling code here:
-     
+
     }//GEN-LAST:event_ProductTableMouseClicked
 
     public JasperPrint makeReport() {
@@ -361,6 +346,7 @@ public class ProductsReportPanel extends javax.swing.JPanel {
             HashMap<String, Object> params = new HashMap<>();
             params.put("img", headerImg);
             params.put("status", String.valueOf(Brand_chooser.getSelectedItem()));
+            params.put("sort", String.valueOf(SortComboBox.getSelectedItem()));
             params.put("count", jLabel5.getText());
             params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
             params.put("reportDate", dateTime);
@@ -404,32 +390,80 @@ public class ProductsReportPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_printReportbActionPerformed
 
     private void Brand_chooserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_Brand_chooserItemStateChanged
-        // TODO add your handling code here:
-        try {
-            fetchBrands(Brand_chooser.getSelectedItem().toString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.severe("Error while sorting brands  : " + ex.getMessage());
-        }
-        String BrandName = String.valueOf(Brand_chooser.getSelectedItem());
-        if (BrandName.equals("All")) {
-            reloadTable();
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            filterAndSortByBrand();
         }
     }//GEN-LAST:event_Brand_chooserItemStateChanged
 
     private void Brand_chooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Brand_chooserActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Brand_chooserActionPerformed
+    private void filterAndSortByBrand() {
+
+        try {
+            String selectedBrand = String.valueOf(Brand_chooser.getSelectedItem());
+            String sortOption = String.valueOf(SortComboBox.getSelectedItem());
+
+            String query = "SELECT * FROM product INNER JOIN product_brand ON product.brand_id = product_brand.id";
+
+            if (!selectedBrand.equals("All")) {
+                query += " WHERE product_brand.name = '" + selectedBrand + "'";
+            }
+
+            if (sortOption.contains("Product Name A-Z")) {
+                query += " ORDER BY product.name ASC";
+            } else if (sortOption.contains("Product Name Z-A")) {
+                query += " ORDER BY product.name DESC";
+            } else if (sortOption.contains("Brand Name A-Z")) {
+                query += " ORDER BY product_brand.name ASC";
+            } else if (sortOption.contains("Brand Name Z-A")) {
+                query += " ORDER BY product_brand.name DESC";
+            }
+
+            ResultSet productResultSet = MySqlConnection.executeSearch(query);
+            DefaultTableModel model = (DefaultTableModel) ProductTable.getModel();
+            model.setRowCount(0);
+
+            int row = 0;
+            while (productResultSet.next()) {
+                row++;
+                String id = productResultSet.getString("id");
+                String name = productResultSet.getString("name");
+                String brandId = productResultSet.getString("brand_id");
+                String brandName = productResultSet.getString("product_brand.name");
+
+                model.addRow(new Object[]{id, name, brandId, brandName});
+            }
+            jLabel5.setText(String.valueOf(row));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while filtering and sorting products: " + e.getMessage());
+        }
+    }
+
+    private void SortComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SortComboBoxItemStateChanged
+
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            filterAndSortByBrand();
+        }
+    }//GEN-LAST:event_SortComboBoxItemStateChanged
+
+    private void SortComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SortComboBoxActionPerformed
+        //
+    }//GEN-LAST:event_SortComboBoxActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> Brand_chooser;
     private javax.swing.JTable ProductTable;
+    private javax.swing.JComboBox<String> SortComboBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
