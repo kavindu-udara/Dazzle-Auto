@@ -173,6 +173,11 @@ public class Shop_PaymentJPanel extends javax.swing.JPanel {
         jScrollPane2.setViewportView(jPaidInvoiceTable);
 
         jInvoiceSerachField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        jInvoiceSerachField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jInvoiceSerachFieldActionPerformed(evt);
+            }
+        });
         jInvoiceSerachField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jInvoiceSerachFieldKeyReleased(evt);
@@ -259,6 +264,10 @@ public class Shop_PaymentJPanel extends javax.swing.JPanel {
             SwingUtilities.updateComponentTreeUI(this);
         }
     }//GEN-LAST:event_jPaidInvoiceTableMouseClicked
+
+    private void jInvoiceSerachFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInvoiceSerachFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jInvoiceSerachFieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
