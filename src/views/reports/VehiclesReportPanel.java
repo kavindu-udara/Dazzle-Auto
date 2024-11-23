@@ -8,13 +8,34 @@ import controllers.VehicleTypeController;
 import includes.LoggerConfig;
 import includes.MySqlConnection;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.io.File;
+import java.io.InputStream;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import models.LoginModel;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 import views.dashboard.Dashboard;
 
 /**
@@ -31,9 +52,39 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
 
     public VehiclesReportPanel(Dashboard dashboard) {
         initComponents();
+        VehicleTableRender();
         loadVehicleTypes();
         loadVehicles();
         this.dashboard = dashboard;
+    }
+
+    private void VehicleTableRender() {
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        JTableHeader tableHeader = jTable1.getTableHeader();
+
+        tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Font headerFont = new Font("Verdana", Font.BOLD, 14);
+                label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
+                label.setFont(headerFont);
+                label.setBackground(new Color(5, 15, 76)); // Optional: Set header background color
+                label.setForeground(Color.WHITE); // Optional: Set header text color
+                label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+                return label;
+            }
+        });
+
+        tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
+
+        for (int i = 0; i < 5; i++) {
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
     }
 
     public void loadVehicles() {
@@ -118,6 +169,38 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
 
     }
 
+    //Report 
+    public JasperPrint makeReport() {
+        String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
+
+        String headerImg;
+        try {
+
+            //          String imgPath = "";
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/vehicleReport3.jasper");
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+
+            headerImg = img.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("image", headerImg);
+            params.put("Sort_By", String.valueOf(jComboBox2.getSelectedItem()));
+            params.put("vehicle_type", jComboBox1.getSelectedItem());
+
+            //           JREmptyDataSource dataSource = new JREmptyDataSource();
+            JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+
+            return report;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while makeReport() : " + e.getMessage());
+        }
+        return null;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -179,6 +262,7 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
             }
         });
 
+        jTable1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -189,7 +273,17 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
             new String [] {
                 "Vehicle Number", "Owner", "Brand", "Model", "Vehicle Type"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.setRowHeight(30);
+        jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
 
         jButton2.setBackground(new java.awt.Color(51, 51, 51));
@@ -197,6 +291,11 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/analyze-30.png"))); // NOI18N
         jButton2.setText("Save Report");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(0, 102, 0));
         jButton3.setFont(new java.awt.Font("Microsoft YaHei UI Light", 1, 18)); // NOI18N
@@ -292,6 +391,15 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        try {
+            JasperPrint report = makeReport();
+            JasperPrintManager.printReport(report, false);
+
+            logger.info("Vehicle Report Printed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while jButton3ActionPerformed : " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -306,6 +414,20 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
 
 
     }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        try {
+            JasperPrint report = makeReport();
+            JasperViewer.viewReport(report, false);
+
+            logger.info("Vehicle Report Viewed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while jButton2ActionPerformed : " + e.getMessage());
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
