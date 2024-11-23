@@ -213,7 +213,6 @@ public class EmployeeUpdate extends java.awt.Dialog {
         employee_status = new javax.swing.JLabel();
         emp_status = new javax.swing.JComboBox<>();
 
-        setPreferredSize(new java.awt.Dimension(479, 750));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
@@ -258,19 +257,19 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
         jLabel7.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel7.setText("Mobile");
-        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 470, -1, -1));
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 180, -1, -1));
 
         employee_mobile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 employee_mobileActionPerformed(evt);
             }
         });
-        jPanel3.add(employee_mobile, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 460, 196, 34));
+        jPanel3.add(employee_mobile, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 170, 196, 34));
 
         jLabel6.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel6.setText("Nic");
-        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 420, -1, -1));
-        jPanel3.add(employee_nic, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 410, 196, 34));
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 130, -1, -1));
+        jPanel3.add(employee_nic, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 120, 196, 34));
 
         employee_update_btn.setBackground(new java.awt.Color(33, 43, 108));
         employee_update_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -281,7 +280,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employee_update_btnActionPerformed(evt);
             }
         });
-        jPanel3.add(employee_update_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 640, 148, 40));
+        jPanel3.add(employee_update_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 350, 148, 40));
 
         employee_reset_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         employee_reset_btn.setForeground(new java.awt.Color(255, 0, 0));
@@ -292,35 +291,35 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employee_reset_btnActionPerformed(evt);
             }
         });
-        jPanel3.add(employee_reset_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 640, 150, 40));
+        jPanel3.add(employee_reset_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 350, 150, 40));
 
         jLabel8.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel8.setText("Employee Type");
-        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 520, -1, -1));
+        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 230, -1, -1));
 
         employee_type.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 employee_typeActionPerformed(evt);
             }
         });
-        jPanel3.add(employee_type, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 510, 196, 35));
+        jPanel3.add(employee_type, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 220, 196, 35));
 
         employee_status.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         employee_status.setText("Status");
-        jPanel3.add(employee_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 580, -1, -1));
+        jPanel3.add(employee_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 290, -1, -1));
 
         emp_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select" }));
-        jPanel3.add(emp_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 570, 196, 37));
+        jPanel3.add(emp_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 280, 196, 37));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
