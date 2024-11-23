@@ -283,7 +283,7 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
 
         String headerImg;
         try {
-            InputStream s = this.getClass().getResourceAsStream("/resources/reports/OS222.jasper");
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/OurService.jasper");
             String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
 
             headerImg = img.replace("\\", "/");
