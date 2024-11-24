@@ -10,9 +10,16 @@ import includes.LoggerConfig;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
+import java.io.File;
+import java.io.InputStream;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -23,7 +30,19 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import models.CustomerModel;
+import models.LoginModel;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
+import views.customer.CustomerJPanel;
+import views.customer.CustomerSelector;
+import views.customer.CustomerUpdate;
 import views.dashboard.Dashboard;
+import views.vehicle.VehicleRegistration;
+import views.vehicle.VehicleUpdate;
 
 /**
  *
@@ -34,13 +53,41 @@ public class CustomersReportPanel extends javax.swing.JPanel {
     private static Logger logger = LoggerConfig.getLogger();
 
     Dashboard dashboard = null;
+    private CustomerJPanel customerJPanel;
+    CustomerSelector CustomerSelecterFrame = null;
+
+    VehicleRegistration vehicleRegistration = null;
+    VehicleUpdate VehicleUpdate = null;
+    String From = "";
+    String BaseDialog = "";
 
     public CustomersReportPanel(Dashboard dashboard) {
         initComponents();
-        this.dashboard = dashboard;
         loadCustomer();
         jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/Mobile");
-        customerViewTableRender();
+        customerViewReportTableRender();
+        this.dashboard = dashboard;
+
+    }
+    //constructor for selector
+
+    public CustomersReportPanel(Dialog parentDialog, CustomerSelector customerSelector, String baseDialog) {
+        this.CustomerSelecterFrame = customerSelector;
+        this.From = "Selecter";
+        this.BaseDialog = baseDialog;
+
+        if (BaseDialog.equals("vehicleRegistration")) {
+            this.vehicleRegistration = (VehicleRegistration) parentDialog;
+        } else if (BaseDialog.equals("vehicleUpdate")) {
+            this.VehicleUpdate = (VehicleUpdate) parentDialog;
+        }
+
+        initComponents();
+
+        loadCustomer();
+        jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/Mobile");
+        customerViewReportTableRender();
+
     }
 
     private void loadCustomer() {
@@ -96,7 +143,7 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         }
     }
 
-    public void customerViewTableRender() {
+    public void customerViewReportTableRender() {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -123,6 +170,36 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         for (int i = 0; i < 5; i++) {
             jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
+    }
+        public JasperPrint makeReport() {
+
+        String headerImg;
+        try {
+
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/customerReport.jasper");
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+
+            headerImg = img.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("image", headerImg);
+            
+              if (!jTextField1.getText().isEmpty()) {
+                params.put("findCustomer", String.valueOf(jTextField1.getText()));
+            } else {
+                params.put("findCustomer", "All");
+            }
+            JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+
+            return report;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while makeReport() : " + e.getMessage());
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")
@@ -203,6 +280,11 @@ public class CustomersReportPanel extends javax.swing.JPanel {
             }
         });
         jTable1.setRowHeight(30);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setResizable(false);
@@ -228,6 +310,11 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/print-30.png"))); // NOI18N
         jButton3.setText("Print Report");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -251,8 +338,9 @@ public class CustomersReportPanel extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jButton3)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton3)
+                            .addGap(12, 12, 12)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1042, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -319,8 +407,8 @@ public class CustomersReportPanel extends javax.swing.JPanel {
 
     private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
         // TODO add your handling code here:
-               try {
-            fetchUser(null);
+        try {
+            fetchUser(jTextField1.getText().toString());
         } catch (Exception e) {
             e.printStackTrace();
             logger.warning("Error while jTextField1KeyReleased : " + e.getMessage());
@@ -329,7 +417,73 @@ public class CustomersReportPanel extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        
+        try {
+            JasperPrint report = makeReport();
+            JasperViewer.viewReport(report, false);
+
+            logger.info("Stock Report Viewed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while viewReportbActionPerformed : " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        int row = jTable1.getSelectedRow();
+
+        int customerId = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
+        String firstName = String.valueOf(jTable1.getValueAt(row, 1));
+        String lastName = String.valueOf(jTable1.getValueAt(row, 2));
+        String mobile = String.valueOf(jTable1.getValueAt(row, 3));
+
+        if (From.equals("Selecter")) {
+
+            if (BaseDialog.equals("vehicleRegistration")) {
+                vehicleRegistration.setCustomerDetails(String.valueOf(customerId), firstName, lastName);
+            } else if (BaseDialog.equals("vehicleUpdate")) {
+                VehicleUpdate.setCustomerDetails(String.valueOf(customerId), firstName, lastName);
+            }
+            CustomerSelecterFrame.dispose();
+        }
+
+        if (evt.getClickCount() == 2 && row != -1) {
+
+            CustomerModel customerModel = new CustomerModel();
+            customerModel.setId(customerId);
+            customerModel.setFirstName(firstName);
+            customerModel.setLastName(lastName);
+
+            customerModel.setMobile(mobile);
+
+            try {
+                Frame CustomerJPanel = null;
+                CustomerUpdate customerUpdate = new CustomerUpdate(CustomerJPanel, true, customerModel);
+                customerUpdate.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.warning("Error while opening customer update dialog : " + e.getMessage());
+            }
+
+            loadCustomer();
+        }
+
+
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+                try {
+            JasperPrint report = makeReport();
+            JasperPrintManager.printReport(report, false);
+
+            logger.info("Vehicle Report Printed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while jButton3ActionPerformed : " + e.getMessage());
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
