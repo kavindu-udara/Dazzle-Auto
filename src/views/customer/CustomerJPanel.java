@@ -96,6 +96,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
                 vector.add(customerResultSet.getString("first_name"));
                 vector.add(customerResultSet.getString("last_name"));
                 vector.add(customerResultSet.getString("mobile"));
+                vector.add(customerResultSet.getString("email"));
                 vector.add(customerResultSet.getString("registered_date"));
 
                 model.addRow(vector);
@@ -120,10 +121,10 @@ public class CustomerJPanel extends javax.swing.JPanel {
                 String fname = resultSet.getString("first_name");
                 String lname = resultSet.getString("last_name");
                 String mobile = resultSet.getString("mobile");
-
+                String email = resultSet.getString("email");
                 String registeredDate = resultSet.getString("registered_date");
 
-                model.addRow(new Object[]{id, fname, lname, mobile, registeredDate});
+                model.addRow(new Object[]{id, fname, lname, mobile, email, registeredDate});
             }
 
         } catch (Exception ex) {
@@ -205,11 +206,11 @@ public class CustomerJPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "First Name", "Last Name ", "Mobile ", "Registered Date "
+                "ID", "First Name", "Last Name ", "Mobile ", "Email", "Registered Date "
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -335,6 +336,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
         String firstName = String.valueOf(customerViewTable.getValueAt(row, 1));
         String lastName = String.valueOf(customerViewTable.getValueAt(row, 2));
         String mobile = String.valueOf(customerViewTable.getValueAt(row, 3));
+        String email = String.valueOf(customerViewTable.getValueAt(row, 4));
 
         if (From.equals("Selecter")) {
 
@@ -352,8 +354,8 @@ public class CustomerJPanel extends javax.swing.JPanel {
             customerModel.setId(customerId);
             customerModel.setFirstName(firstName);
             customerModel.setLastName(lastName);
-
             customerModel.setMobile(mobile);
+            customerModel.setEmail(email);
 
             try {
                 Frame CustomerJPanel = null;
