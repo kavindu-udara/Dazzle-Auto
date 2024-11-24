@@ -4,10 +4,28 @@
  */
 package views.reports;
 
+import controllers.EmployeeController;
+import controllers.EmployeeImageController;
+import controllers.EmployeeTypeController;
+import controllers.StatusController;
 import includes.LoggerConfig;
+import includes.MySqlConnection;
+import includes.TimestampsGenerator;
 import java.awt.BorderLayout;
+import java.awt.event.ItemEvent;
+import java.io.File;
+import java.io.InputStream;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import models.LoginModel;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 import views.dashboard.Dashboard;
 
 /**
@@ -23,6 +41,229 @@ public class EmployeeReportPanel extends javax.swing.JPanel {
     public EmployeeReportPanel(Dashboard dashboard) {
         initComponents();
         this.dashboard = dashboard;
+        loadEmployees();
+    }
+
+    private void sortEmployees() {
+        try {
+            String query = "SELECT * FROM employee";
+
+            String searchText = employeeFindField.getText().trim();
+            if (!searchText.isEmpty()) {
+                query += " WHERE `first_name` LIKE '%" + searchText + "%' OR "
+                        + "`last_name` LIKE '%" + searchText + "%' OR "
+                        + "`email` LIKE '%" + searchText + "%' OR "
+                        + "`mobile` LIKE '%" + searchText + "%'";
+            }
+
+            // Sorting logic
+            String sort = String.valueOf(jSortComboBox.getSelectedItem());
+
+            // Append sorting conditions to the query
+            if (sort.contains("First Name A-Z")) {
+                query += " ORDER BY `first_name` ASC";
+            } else if (sort.contains("First Name Z-A")) {
+                query += " ORDER BY `first_name` DESC";
+            } else if (sort.contains("Last Name A-Z")) {
+                query += " ORDER BY `last_name` ASC";
+            } else if (sort.contains("Last Name Z-A")) {
+                query += " ORDER BY `last_name` DESC";
+            } else if (sort.contains("Registered Date Oldest")) {
+                query += " ORDER BY `registered_date` ASC";
+            } else if (sort.contains("Registered Date Newest")) {
+                query += " ORDER BY `registered_date` DESC";
+            }
+
+            ResultSet employeeResultSet = MySqlConnection.executeSearch(query);
+            ResultSet resultSet2 = new StatusController().search("");
+            ResultSet resultSet1 = new EmployeeTypeController().search("");
+
+            DefaultTableModel model = (DefaultTableModel) employeeViewTable.getModel();
+            model.setRowCount(0);
+
+            HashMap<Integer, String> employeeTypeMap = new HashMap<>();
+            HashMap<Integer, String> statusMap = new HashMap<>();
+
+            while (resultSet1.next()) {
+                int employeeTypeId = resultSet1.getInt("id");
+                String employeeTypeName = resultSet1.getString("type");
+                employeeTypeMap.put(employeeTypeId, employeeTypeName);
+            }
+
+            while (resultSet2.next()) {
+                int statusId = resultSet2.getInt("id");
+                String statusName = resultSet2.getString("status");
+                statusMap.put(statusId, statusName);
+            }
+
+            while (employeeResultSet.next()) {
+                String employeeId = employeeResultSet.getString("id");
+                String nic = employeeResultSet.getString("nic");
+                String firstName = employeeResultSet.getString("first_name");
+                String lastName = employeeResultSet.getString("last_name");
+                String email = employeeResultSet.getString("email");
+                String mobile = employeeResultSet.getString("mobile");
+
+                int employeeTypeId = employeeResultSet.getInt("employee_type_id");
+                int statusId = employeeResultSet.getInt("status_id");
+
+                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
+                String employeeTypeName = employeeTypeMap.getOrDefault(employeeTypeId, "Unknown Type");
+
+                model.addRow(new Object[]{employeeId, nic, firstName, lastName, email, mobile, employeeTypeName, statusName});
+            }
+
+            employeeViewTable.revalidate();
+            employeeViewTable.repaint();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading employees: " + e.getMessage());
+        }
+    }
+
+    private void loadEmployees() {
+        try {
+
+            ResultSet employeeResultSet = new EmployeeController().show();
+            ResultSet employeeTypeResultSet = new EmployeeTypeController().show();
+            ResultSet statusResultSet = new StatusController().show();
+            ResultSet employeeImageResultSet = new EmployeeImageController().show();
+
+            HashMap<Integer, String> employeeTypeMap = new HashMap<>();
+            HashMap<Integer, String> statusMap = new HashMap<>();
+            HashMap<String, String> imagePathMap = new HashMap<>();
+
+            while (employeeTypeResultSet.next()) {
+                int employeeTypeId = employeeTypeResultSet.getInt("id");
+                String employeeTypeName = employeeTypeResultSet.getString("type");
+                employeeTypeMap.put(employeeTypeId, employeeTypeName);
+            }
+
+            while (statusResultSet.next()) {
+                int statusId = statusResultSet.getInt("id");
+                String statusName = statusResultSet.getString("status");
+                statusMap.put(statusId, statusName);
+            }
+
+            while (employeeImageResultSet.next()) {
+                String employeeId = employeeImageResultSet.getString("employee_id");
+                String imagePath = employeeImageResultSet.getString("path");
+                imagePathMap.put(employeeId, imagePath);
+            }
+
+            DefaultTableModel model = (DefaultTableModel) employeeViewTable.getModel();
+            model.setRowCount(0);
+
+            while (employeeResultSet.next()) {
+                Vector<String> vector = new Vector<>();
+
+                String employeeId = employeeResultSet.getString("id");
+                vector.add(employeeId);
+                vector.add(employeeResultSet.getString("nic"));
+
+                vector.add(employeeResultSet.getString("first_name"));
+                vector.add(employeeResultSet.getString("last_name"));
+                vector.add(employeeResultSet.getString("email"));
+                vector.add(employeeResultSet.getString("mobile"));
+                //vector.add(employeeResultSet.getString("registered_date"));
+
+                int employeeTypeId = employeeResultSet.getInt("employee_type_id");
+                int statusId = employeeResultSet.getInt("status_id");
+
+                String employeeTypeName = employeeTypeMap.getOrDefault(employeeTypeId, "Unknown Employee Type");
+                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
+
+                vector.add(employeeTypeName);
+                vector.add(statusName);
+                String imagePath = imagePathMap.get(employeeId);
+                if (imagePath == null || imagePath.trim().isEmpty()) {
+                    imagePath = "No Image";
+                }
+                vector.add(imagePath);
+                model.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading Employee : " + e.getMessage());
+        }
+
+    }
+
+    private void fetchUser(String searchText) throws Exception {
+        DefaultTableModel model = (DefaultTableModel) employeeViewTable.getModel();
+        model.setRowCount(0);
+
+        try {
+            ResultSet resultSet = new EmployeeController().search(searchText);
+            ResultSet resultSet2 = new StatusController().search("");
+            ResultSet resultSet1 = new EmployeeTypeController().search("");
+
+            HashMap<Integer, String> employeeTypeMap = new HashMap<>();
+            HashMap<Integer, String> statusMap = new HashMap<>();
+
+            while (resultSet1.next()) {
+                int employeeTypeId = resultSet1.getInt("id");
+                String employeeTypeName = resultSet1.getString("type");
+                employeeTypeMap.put(employeeTypeId, employeeTypeName);
+            }
+
+            while (resultSet2.next()) {
+                int statusId = resultSet2.getInt("id");
+                String statusName = resultSet2.getString("status");
+                statusMap.put(statusId, statusName);
+            }
+
+            while (resultSet.next()) {
+                String id = resultSet.getString("id");
+                String fname = resultSet.getString("first_name");
+                String lname = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String mobile = resultSet.getString("mobile");
+                String nic = resultSet.getString("nic");
+
+                String registeredDate = resultSet.getString("registered_date");
+                int employeeTypeId = resultSet.getInt("employee_type_id");
+
+                int statusId = resultSet.getInt("status_id");
+
+                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
+                String employeeTypeName = employeeTypeMap.getOrDefault(employeeTypeId, "Unknown Type");
+
+                model.addRow(new Object[]{id, nic, fname, lname, email, mobile, employeeTypeName, statusName});
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.severe("Error while fetching Employee : " + ex.getMessage());
+        }
+    }
+
+    public JasperPrint makeReport() {
+
+        String headerImg;
+        try {
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/DazzleAutoEmployeeReport.jasper");
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+
+            headerImg = img.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("imageParam", headerImg);
+            params.put("timestampParam", String.valueOf(TimestampsGenerator.getFormattedDateTime()));
+
+            JRTableModelDataSource dataSource = new JRTableModelDataSource(employeeViewTable.getModel());
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+
+            return report;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while makeReport() : " + e.getMessage());
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")
@@ -34,6 +275,13 @@ public class EmployeeReportPanel extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        employeeFindField = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jSortComboBox = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        employeeViewTable = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -57,6 +305,76 @@ public class EmployeeReportPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        jLabel3.setText("Find Employee :");
+
+        employeeFindField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        employeeFindField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                employeeFindFieldActionPerformed(evt);
+            }
+        });
+        employeeFindField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                employeeFindFieldKeyReleased(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel7.setText("Sort By :");
+
+        jSortComboBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jSortComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "First Name A-Z", "First Name Z-A", "Last Name A-Z", "Last Name Z-A", "Registered Date Oldest", "Registered Date Newest" }));
+        jSortComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jSortComboBoxItemStateChanged(evt);
+            }
+        });
+        jSortComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSortComboBoxActionPerformed(evt);
+            }
+        });
+
+        employeeViewTable.setFont(new java.awt.Font("Roboto", 1, 15)); // NOI18N
+        employeeViewTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Employee ID", "NIC", "First Name ", "Last Name ", "Email ", "Mobile", "Employee Type", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        employeeViewTable.setToolTipText("Right Click Employee to view Profile");
+        employeeViewTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        employeeViewTable.setFocusable(false);
+        employeeViewTable.setRowHeight(30);
+        employeeViewTable.getTableHeader().setReorderingAllowed(false);
+        employeeViewTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                employeeViewTableMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                employeeViewTableMouseReleased(evt);
+            }
+        });
+        jScrollPane2.setViewportView(employeeViewTable);
+
+        jButton2.setText("Print");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -64,13 +382,32 @@ public class EmployeeReportPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1065, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 974, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1065, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 974, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(employeeFindField, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel7)
+                        .addGap(2, 2, 2)
+                        .addComponent(jSortComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addGap(94, 94, 94))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,9 +419,19 @@ public class EmployeeReportPanel extends javax.swing.JPanel {
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(1, 1, 1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(employeeFindField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSortComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jSeparator2, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(jSeparator2)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -103,17 +450,70 @@ public class EmployeeReportPanel extends javax.swing.JPanel {
         dashboard.jReportPanel.remove(this);
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
 
-        dashboard.reportsJPanel  = new ReportsJPanel(dashboard);
+        dashboard.reportsJPanel = new ReportsJPanel(dashboard);
         dashboard.jReportPanel.add(dashboard.reportsJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
+    private void employeeFindFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeFindFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_employeeFindFieldActionPerformed
+
+    private void employeeFindFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_employeeFindFieldKeyReleased
+
+        try {
+            fetchUser(employeeFindField.getText().toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.severe("Error while employeeFindFieldKeyReleased : " + ex.getMessage());
+        }
+    }//GEN-LAST:event_employeeFindFieldKeyReleased
+
+    private void jSortComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jSortComboBoxItemStateChanged
+
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            sortEmployees();
+        }
+    }//GEN-LAST:event_jSortComboBoxItemStateChanged
+
+    private void jSortComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSortComboBoxActionPerformed
+        //
+    }//GEN-LAST:event_jSortComboBoxActionPerformed
+
+    private void employeeViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeViewTableMouseClicked
+//
+    }//GEN-LAST:event_employeeViewTableMouseClicked
+
+    private void employeeViewTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeViewTableMouseReleased
+
+    }//GEN-LAST:event_employeeViewTableMouseReleased
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        try {
+            JasperPrint report = makeReport();
+            JasperViewer.viewReport(report, false);
+            logger.info("Employee Report Viewed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while view Report : " + e.getMessage());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField employeeFindField;
+    private javax.swing.JTable employeeViewTable;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JComboBox<String> jSortComboBox;
     // End of variables declaration//GEN-END:variables
 }
