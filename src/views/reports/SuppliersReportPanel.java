@@ -4,15 +4,16 @@
  */
 package views.reports;
 
-import com.formdev.flatlaf.FlatClientProperties;
 import controllers.StatusController;
 import controllers.SupplierController;
 import includes.LoggerConfig;
+import includes.MySqlConnection;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
@@ -54,7 +55,7 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
         loadsupplier();
         SupplierTableRender();
         loadStatusToSortBtn();
-        loadSupIdToSortBtn();
+
         this.dashboard = dashboard;
 
     }
@@ -77,7 +78,7 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        SupIdSort = new javax.swing.JComboBox<>();
+        SortComboBox = new javax.swing.JComboBox<>();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -181,21 +182,22 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 560, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jLabel9.setText("Supplier ID");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 70, -1, -1));
+        jLabel9.setText("Sort By :");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
 
-        SupIdSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        SupIdSort.addItemListener(new java.awt.event.ItemListener() {
+        SortComboBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        SortComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "First Name A-Z", "First Name Z-A", "Last Name A-Z", "Last Name Z-A", " ", " " }));
+        SortComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                SupIdSortItemStateChanged(evt);
+                SortComboBoxItemStateChanged(evt);
             }
         });
-        SupIdSort.addActionListener(new java.awt.event.ActionListener() {
+        SortComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SupIdSortActionPerformed(evt);
+                SortComboBoxActionPerformed(evt);
             }
         });
-        jPanel1.add(SupIdSort, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 60, 140, 40));
+        jPanel1.add(SortComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 60, 170, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -236,26 +238,6 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while loading employee types : " + e.getMessage());
-        }
-    }
-
-    private void loadSupIdToSortBtn() {
-        try {
-            ResultSet resultSet = new SupplierController().show();
-
-            Vector<String> vector = new Vector<>();
-            vector.add("All");
-
-            while (resultSet.next()) {
-                vector.add(resultSet.getString("id"));
-            }
-
-            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(vector);
-            SupIdSort.setModel(model);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.severe("Error while loading supplier IDs: " + e.getMessage());
         }
     }
 
@@ -351,7 +333,7 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
             HashMap<String, Object> params = new HashMap<>();
             params.put("img", headerImg);
             params.put("status", String.valueOf(StatusSortBtn.getSelectedItem()));
-            params.put("supId", String.valueOf(SupIdSort.getSelectedItem()));
+            params.put("sort", String.valueOf(SortComboBox.getSelectedItem()));
             params.put("count", jLabel5.getText());
             params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
             params.put("reportDate", dateTime);
@@ -396,138 +378,100 @@ public class SuppliersReportPanel extends javax.swing.JPanel {
 
     private void StatusSortBtnItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_StatusSortBtnItemStateChanged
         // TODO add your handling code here:
-
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            SortSuppliersWithStatus();
+        }
     }//GEN-LAST:event_StatusSortBtnItemStateChanged
 
     private void StatusSortBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StatusSortBtnActionPerformed
-        // TODO add your handling code here:
-        String selectedStatus = StatusSortBtn.getSelectedItem().toString();
-        SortStatus(selectedStatus);
+
     }//GEN-LAST:event_StatusSortBtnActionPerformed
 
-    private void SupIdSortItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SupIdSortItemStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SupIdSortItemStateChanged
+    private void SortComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SortComboBoxItemStateChanged
 
-    private void SupIdSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SupIdSortActionPerformed
-        // TODO add your handling code here:
-        String selectedSupId = SupIdSort.getSelectedItem().toString();
-        SortSupId(selectedSupId);
-        
-    }//GEN-LAST:event_SupIdSortActionPerformed
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            SortSuppliersWithStatus();
+        }
+    }//GEN-LAST:event_SortComboBoxItemStateChanged
 
-    private void SortStatus(String searchText) {
+    private void SortComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SortComboBoxActionPerformed
+        //
+    }//GEN-LAST:event_SortComboBoxActionPerformed
+
+    private void SortSuppliersWithStatus() {
         try {
-            DefaultTableModel model = (DefaultTableModel) SupplierViewTable.getModel();
-            model.setRowCount(0);
+            String query = "SELECT * FROM supplier";
+            boolean hasCondition = false;
 
-            ResultSet resultSet;
-
-            if (searchText.equals("All")) {
-                resultSet = new SupplierController().searchAll();
-            } else {
-
-                ResultSet statusResultSet = new StatusController().search(searchText);
+            String selectedStatus = String.valueOf(StatusSortBtn.getSelectedItem());
+            if (!selectedStatus.equals("All")) {
+                ResultSet statusResultSet = new StatusController().search(selectedStatus);
                 int statusId = -1;
                 if (statusResultSet.next()) {
                     statusId = statusResultSet.getInt("id");
                 }
 
                 if (statusId != -1) {
-                    resultSet = new SupplierController().getSuppliersByStatusId(statusId);
-                } else {
-                    model.setRowCount(0);
-                    return;
+                    query += " WHERE `status_id` = " + statusId;
+                    hasCondition = true;
                 }
             }
 
+            String sortOrder = String.valueOf(SortComboBox.getSelectedItem());
+            if (sortOrder.contains("First Name A-Z")) {
+                query += (hasCondition ? " AND" : " WHERE") + " `first_name` IS NOT NULL";
+                query += " ORDER BY `first_name` ASC";
+            } else if (sortOrder.contains("First Name Z-A")) {
+                query += (hasCondition ? " AND" : " WHERE") + " `first_name` IS NOT NULL";
+                query += " ORDER BY `first_name` DESC";
+            } else if (sortOrder.contains("Last Name A-Z")) {
+                query += (hasCondition ? " AND" : " WHERE") + " `last_name` IS NOT NULL";
+                query += " ORDER BY `last_name` ASC";
+            } else if (sortOrder.contains("Last Name Z-A")) {
+                query += (hasCondition ? " AND" : " WHERE") + " `last_name` IS NOT NULL";
+                query += " ORDER BY `last_name` DESC";
+            }
+
+            ResultSet supplierResultSet = MySqlConnection.executeSearch(query);
+            ResultSet statusResultSet = new StatusController().show();
+
             HashMap<Integer, String> statusMap = new HashMap<>();
-            ResultSet allStatuses = new StatusController().search("");
-            while (allStatuses.next()) {
-                int id = allStatuses.getInt("id");
-                String name = allStatuses.getString("status");
+            while (statusResultSet.next()) {
+                int id = statusResultSet.getInt("id");
+                String name = statusResultSet.getString("status");
                 statusMap.put(id, name);
             }
-
-            int row = 0;
-            while (resultSet.next()) {
-                row++;
-                String id = resultSet.getString("id");
-                String fname = resultSet.getString("first_name");
-                String lname = resultSet.getString("last_name");
-                String email = resultSet.getString("email");
-                String mobile = resultSet.getString("mobile");
-                int statusId = resultSet.getInt("status_id");
-
-                String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
-
-                model.addRow(new Object[]{id, fname, lname, email, mobile, statusName});
-            }
-
-            jLabel5.setText(String.valueOf(row));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void SortSupId(String searchText) {
-        try {
             DefaultTableModel model = (DefaultTableModel) SupplierViewTable.getModel();
             model.setRowCount(0);
 
-            ResultSet resultSet;
-
-            if (searchText.equals("All")) {
-                resultSet = new SupplierController().searchAll();
-            } else {
-
-                ResultSet supIdResultSet = new SupplierController().search(searchText);
-                String supId = null;
-                if (supIdResultSet.next()) {
-                    supId = supIdResultSet.getString("id");
-                }
-
-                if (supId != null) {
-                    resultSet = new SupplierController().getSuppliersBySupId(supId);
-
-                } else {
-                    model.setRowCount(0);
-                    return;
-                }
-            }
-
-            HashMap<Integer, String> statusMap = new HashMap<>();
-            ResultSet allStatuses = new StatusController().search("");
-            while (allStatuses.next()) {
-                int id = allStatuses.getInt("id");
-                String name = allStatuses.getString("status");
-                statusMap.put(id, name);
-            }
-
             int row = 0;
-            while (resultSet.next()) {
+            while (supplierResultSet.next()) {
                 row++;
-                String id = resultSet.getString("id");
-                String fname = resultSet.getString("first_name");
-                String lname = resultSet.getString("last_name");
-                String email = resultSet.getString("email");
-                String mobile = resultSet.getString("mobile");
-                int statusId = resultSet.getInt("status_id");
-
+                String id = supplierResultSet.getString("id");
+                String fname = supplierResultSet.getString("first_name");
+                String lname = supplierResultSet.getString("last_name");
+                String email = supplierResultSet.getString("email");
+                String mobile = supplierResultSet.getString("mobile");
+                int statusId = supplierResultSet.getInt("status_id");
                 String statusName = statusMap.getOrDefault(statusId, "Unknown Status");
 
                 model.addRow(new Object[]{id, fname, lname, email, mobile, statusName});
             }
 
             jLabel5.setText(String.valueOf(row));
+            SupplierViewTable.revalidate();
+            SupplierViewTable.repaint();
+
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while sorting and filtering suppliers: " + e.getMessage());
         }
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> SortComboBox;
     private javax.swing.JComboBox<String> StatusSortBtn;
-    private javax.swing.JComboBox<String> SupIdSort;
     private javax.swing.JTable SupplierViewTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

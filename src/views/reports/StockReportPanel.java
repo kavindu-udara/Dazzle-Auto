@@ -8,6 +8,7 @@ import controllers.ProductBrandController;
 import controllers.ProductController;
 import controllers.StockController;
 import includes.LoggerConfig;
+import includes.MySqlConnection;
 import includes.OnlyNumbersDocumentFilter;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -86,6 +87,8 @@ public class StockReportPanel extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        SortComboBox = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -186,11 +189,11 @@ public class StockReportPanel extends javax.swing.JPanel {
                 PriceToKeyReleased(evt);
             }
         });
-        jPanel1.add(PriceTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, 152, 31));
+        jPanel1.add(PriceTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, 152, 31));
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel2.setText("To");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 80, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 60, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel3.setText("Price From");
@@ -203,7 +206,7 @@ public class StockReportPanel extends javax.swing.JPanel {
                 QtyFromKeyReleased(evt);
             }
         });
-        jPanel1.add(QtyFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 80, 90, 31));
+        jPanel1.add(QtyFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 80, 90, 31));
 
         QtyTo.setForeground(new java.awt.Color(0, 0, 204));
         QtyTo.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
@@ -216,7 +219,7 @@ public class StockReportPanel extends javax.swing.JPanel {
 
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel4.setText("To");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 60, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(37, 142, 1));
@@ -235,7 +238,7 @@ public class StockReportPanel extends javax.swing.JPanel {
                 Brand_chooserActionPerformed(evt);
             }
         });
-        jPanel1.add(Brand_chooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 80, 110, 30));
+        jPanel1.add(Brand_chooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 80, 110, 30));
 
         jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel7.setText("Number of Products :");
@@ -243,11 +246,29 @@ public class StockReportPanel extends javax.swing.JPanel {
 
         jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel8.setText("Brand");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 80, -1, -1));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 60, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel6.setText("Quantity");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 80, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 60, -1, -1));
+
+        SortComboBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        SortComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product Name A-Z", "Product Name Z-A", "Brand Name A-Z", "Brand Name Z-A", " " }));
+        SortComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                SortComboBoxItemStateChanged(evt);
+            }
+        });
+        SortComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SortComboBoxActionPerformed(evt);
+            }
+        });
+        jPanel1.add(SortComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 70, 200, 40));
+
+        jLabel9.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel9.setText("Sort By :");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 80, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -322,6 +343,18 @@ public class StockReportPanel extends javax.swing.JPanel {
                 query += "WHERE " + whereClause;
             }
 
+             String sort = String.valueOf(SortComboBox.getSelectedItem());
+
+            if (sort.contains("Product Name A-Z")) {
+                query += " ORDER BY `product`.`name` ASC";
+            } else if (sort.contains("Product Name Z-A")) {
+                query += " ORDER BY `product`.`name` DESC";
+            } else if (sort.contains("Brand Name A-Z")) {
+                query += " ORDER BY `product_brand`.`name` ASC";
+            } else if (sort.contains("Brand Name Z-A")) {
+                query += " ORDER BY `product_brand`.`name` DESC";
+            }
+            
             ResultSet resultSet = new StockController().customQuery(query);
 
             DefaultTableModel dtm = (DefaultTableModel) StockTable.getModel();
@@ -453,6 +486,7 @@ public class StockReportPanel extends javax.swing.JPanel {
             HashMap<String, Object> params = new HashMap<>();
             params.put("img", headerImg);
             params.put("status", String.valueOf(Brand_chooser.getSelectedItem()));
+            params.put("sort", String.valueOf(SortComboBox.getSelectedItem()));
             params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
             params.put("reportDate", dateTime);
 
@@ -572,6 +606,17 @@ public class StockReportPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_Brand_chooserActionPerformed
 
+    private void SortComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SortComboBoxItemStateChanged
+
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            loadStockItems();
+        }
+    }//GEN-LAST:event_SortComboBoxItemStateChanged
+
+    private void SortComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SortComboBoxActionPerformed
+        //
+    }//GEN-LAST:event_SortComboBoxActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> Brand_chooser;
@@ -579,6 +624,7 @@ public class StockReportPanel extends javax.swing.JPanel {
     private javax.swing.JFormattedTextField PriceTo;
     private javax.swing.JFormattedTextField QtyFrom;
     private javax.swing.JFormattedTextField QtyTo;
+    private javax.swing.JComboBox<String> SortComboBox;
     private javax.swing.JTable StockTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -589,6 +635,7 @@ public class StockReportPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
