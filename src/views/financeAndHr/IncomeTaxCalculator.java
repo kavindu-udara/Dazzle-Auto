@@ -109,31 +109,33 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         }
     }
 
-    private void loadStationIncome() {
-        try {
-            int month = monthComboBox.getSelectedIndex() + 1;
-            int year = jYearChooser1.getYear();
+ private void loadStationIncome() {
+    try {
+        int month = monthComboBox.getSelectedIndex() + 1;
+        int year = jYearChooser1.getYear();
 
-            ServiceInvoiceController serviceInvoiceController = new ServiceInvoiceController();
-            ResultSet resultSet = null;
+        ServiceInvoiceController serviceInvoiceController = new ServiceInvoiceController();
+        ResultSet resultSet = null;
 
-            if (monthlyRadioButton.isSelected()) {
-                resultSet = serviceInvoiceController.getMonthlyTotal(month, year);
-            } else if (yearlyRadioButton.isSelected()) {
-                resultSet = serviceInvoiceController.getYearlyTotal(year);
-            }
-
-            if (resultSet != null && resultSet.next()) {
-                double totalIncome = resultSet.getDouble("total_income");
-                ServiceStationIncomeField.setText(String.format("%.2f", totalIncome));
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error loading station income: " + e.getMessage());
+        if (monthlyRadioButton.isSelected()) {
+            // Pass month and year as integers (without quotes)
+            resultSet = serviceInvoiceController.getMonthlyTotal(month, year);
+        } else if (yearlyRadioButton.isSelected()) {
+            resultSet = serviceInvoiceController.getYearlyTotal(year);
         }
+
+        if (resultSet != null && resultSet.next()) {
+            double totalIncome = resultSet.getDouble("total_income");
+            ServiceStationIncomeField.setText(String.format("%.2f", totalIncome));
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error loading station income: " + e.getMessage());
     }
+}
+
+
 
     private double grossIncome = 0;
     private double totalExpences = 0;

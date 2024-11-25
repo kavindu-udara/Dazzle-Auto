@@ -59,13 +59,13 @@ public class GrnItemsController {
     public ResultSet getMonthlyTotal(int month, int year) throws SQLException, Exception {
         return MySqlConnection.executeSearch("SELECT SUM(" + tableName + ".price) AS total_income FROM `" + tableName2 + "` "
                 + "INNER JOIN `" + tableName + "` ON `" + tableName2 + "`.id = `" + tableName + "`.grn_id "
-                + "WHERE MONTH(" + tableName2 + ".date) = `" + month + "` AND YEAR(" + tableName2 + ".date) = `" + year + "` ");
+                + "WHERE MONTH(" + tableName2 + ".date) = '" + month + "' AND YEAR(" + tableName2 + ".date) = '" + year + "' ");
     }
 
     public ResultSet getYearlyTotal(int year) throws SQLException, Exception {
         return MySqlConnection.executeSearch("SELECT SUM(" + tableName + ".price) AS total_income "
                 + "FROM `" + tableName2 + "` "
                 + "INNER JOIN `" + tableName + "` ON `" + tableName2 + "`.id = `" + tableName + "`.grn_id "
-                + "WHERE YEAR(" + tableName2 + ".date) = `" + year + "`");
+                + "WHERE YEAR(" + tableName2 + ".date) = '" + year + "'");
     }
 }
