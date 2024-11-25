@@ -346,7 +346,7 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         this.dispose();
-        new Settings(null, true).setVisible(true);
+        new Settings(null, true, "jLoginAccessMenu").setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jEmployeeSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEmployeeSelectButtonActionPerformed
@@ -432,7 +432,7 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
                 logger.info("Login Access Updated For LoginID : " + loginID);
 
                 this.dispose();
-                new Settings(null, true).setVisible(true);
+                new Settings(null, true, "jLoginAccessMenu").setVisible(true);
 
                 reset();
 

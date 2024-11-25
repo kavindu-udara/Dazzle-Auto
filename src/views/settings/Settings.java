@@ -6,6 +6,7 @@ package views.settings;
 
 import java.awt.BorderLayout;
 import javax.swing.SwingUtilities;
+import views.database.DBManagePanel;
 import views.vehicle.VehiclesJPanel;
 
 /**
@@ -16,25 +17,35 @@ public class Settings extends javax.swing.JDialog {
 
     Settings settings = this;
 
-    public Settings(java.awt.Frame parent, boolean modal) {
+    public Settings(java.awt.Frame parent, boolean modal, String clickedPath) {
         super(parent, modal);
         initComponents();
         addJPanels();
+
+        if (clickedPath.equals("jLoginAccessMenu")) {
+            jTabbedPane1.setSelectedIndex(0);
+        } else if (clickedPath.equals("jDatabaseMenuItem")) {
+            jTabbedPane1.setSelectedIndex(1);
+        }
     }
 
-
-    private void addJPanels(){
+    private void addJPanels() {
         LoginAccessJPanel loginAccessJPanel = new LoginAccessJPanel(this);
         loginAccessTab.add(loginAccessJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
+
+        DBManagePanel dBManagePanel = new DBManagePanel();
+        dbBackupTab.add(dBManagePanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         loginAccessTab = new javax.swing.JPanel();
+        dbBackupTab = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Settings");
@@ -46,6 +57,10 @@ public class Settings extends javax.swing.JDialog {
         loginAccessTab.setMinimumSize(new java.awt.Dimension(853, 575));
         loginAccessTab.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("Login Access    ", loginAccessTab);
+
+        dbBackupTab.setBackground(new java.awt.Color(255, 255, 255));
+        dbBackupTab.setLayout(new java.awt.BorderLayout());
+        jTabbedPane1.addTab("Dump Database", dbBackupTab);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -62,49 +77,9 @@ public class Settings extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Settings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Settings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Settings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Settings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Settings dialog = new Settings(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel dbBackupTab;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel loginAccessTab;
     // End of variables declaration//GEN-END:variables
