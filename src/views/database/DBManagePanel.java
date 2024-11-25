@@ -4,11 +4,23 @@
  */
 package views.database;
 
+import includes.LoggerConfig;
+import includes.MySqlConnection;
+import includes.TimestampsGenerator;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author E
  */
 public class DBManagePanel extends javax.swing.JPanel {
+
+    private static final Logger logger = LoggerConfig.getLogger();
 
     /**
      * Creates new form DBManagePanel
@@ -26,19 +38,16 @@ public class DBManagePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        outPathField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(853, 575));
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        jLabel1.setText("Path");
-
-        jTextField1.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        outPathField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
 
         jButton1.setBackground(new java.awt.Color(68, 68, 73));
         jButton1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -59,12 +68,20 @@ public class DBManagePanel extends javax.swing.JPanel {
         jButton2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 153), 1, true));
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton2.setFocusPainted(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setBackground(new java.awt.Color(242, 242, 255));
         jLabel2.setFont(new java.awt.Font("Courier New", 1, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Backup Database");
         jLabel2.setOpaque(true);
+
+        jLabel3.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel3.setText("Sql File Path");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -73,15 +90,13 @@ public class DBManagePanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(76, 76, 76)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(outPathField, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(71, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -89,28 +104,88 @@ public class DBManagePanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addGap(3, 3, 3)
+                .addGap(14, 14, 14)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(outPathField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(377, Short.MAX_VALUE))
+                .addContainerGap(364, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+
+        String date = TimestampsGenerator.getTodayDate();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("SQL", "sql"));
+        fileChooser.setSelectedFile(new java.io.File("DB_backup" + date + ".sql"));
+        int result = fileChooser.showSaveDialog(null);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = fileChooser.getSelectedFile().getPath();
+            outPathField.setText(path);
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        if (outPathField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Output Path is Required !");
+        } else {
+            try {
+
+                // Read serialized database connection information
+                FileInputStream fileInputStream = new FileInputStream("dbinfo.ser");
+                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+                MySqlConnection mySqlConnection = (MySqlConnection) objectInputStream.readObject();
+                objectInputStream.close();
+
+                // Define backup file path
+                String path = outPathField.getText();
+
+                // Create ProcessBuilder with correct mysqldump arguments
+                ProcessBuilder processBuilder = new ProcessBuilder(
+                        "mysqldump",
+                        "-u" + mySqlConnection.USERNAME,
+                        "-p" + mySqlConnection.PASSWORD,
+                        "-P" + mySqlConnection.PORT,
+                        "--add-drop-database",
+                        "-B", mySqlConnection.DBNAME,
+                        "-r", path
+                );
+
+                // Start the process
+                Process process = processBuilder.start();
+
+                // Wait for the process to complete
+                int exitCode = process.waitFor();
+                if (exitCode == 0) {
+                    JOptionPane.showMessageDialog(null, "Backup successful: " + path);
+                    logger.info("Backup Created : " + path);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Backup Failed with exit code: " + exitCode);
+                    logger.severe("Backup Failed with exit code : " + exitCode);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField outPathField;
     // End of variables declaration//GEN-END:variables
 }
