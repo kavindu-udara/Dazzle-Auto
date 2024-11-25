@@ -135,6 +135,7 @@ public class Dashboard extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         jLoginAccessMenuItem = new javax.swing.JMenuItem();
+        jDatabaseMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DASHBOARD");
@@ -423,6 +424,16 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jMenu3.add(jLoginAccessMenuItem);
 
+        jDatabaseMenuItem.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jDatabaseMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/database-20.png"))); // NOI18N
+        jDatabaseMenuItem.setText("Manage Database");
+        jDatabaseMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jDatabaseMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jDatabaseMenuItem);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -518,7 +529,7 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jVehiclesButtonActionPerformed
 
     private void jLoginAccessMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginAccessMenuItemActionPerformed
-        new Settings(this, true).setVisible(true);
+        new Settings(this, true, "jLoginAccessMenu").setVisible(true);
     }//GEN-LAST:event_jLoginAccessMenuItemActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -528,6 +539,10 @@ public class Dashboard extends javax.swing.JFrame {
             new LoginChooser().setVisible(true);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jDatabaseMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDatabaseMenuItemActionPerformed
+        new Settings(this, true, "jDatabaseMenuItem").setVisible(true);
+    }//GEN-LAST:event_jDatabaseMenuItemActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -541,6 +556,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jCustomerPanel;
     private javax.swing.JButton jDashboardButton1;
     private javax.swing.JPanel jDashboardPanel;
+    private javax.swing.JMenuItem jDatabaseMenuItem;
     private javax.swing.JLabel jEmployeeNameLabel;
     private javax.swing.JLabel jEmployeeRoleLabel;
     private javax.swing.JButton jFinanceButton;
