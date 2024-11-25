@@ -208,9 +208,9 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
             params.put("IdBack", idBack);
             params.put("empImg", empImg);
             params.put("qr", qr);
-            
+
             params.put("employeeID", empId);
-            params.put("issuedBy", LoginModel.getFirstName()+" "+LoginModel.getLastName());
+            params.put("issuedBy", LoginModel.getFirstName() + " " + LoginModel.getLastName());
             params.put("nic", nicLabel.getText());
             params.put("fullName", nameLabel.getText());
             params.put("email", emailLabel.getText());
@@ -506,6 +506,9 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         try {
             JasperPrint report = makeReport();
             JasperViewer.viewReport(report, false);
+            if (tempFile != null) {
+                tempFile.deleteOnExit();
+            }
 
             logger.info("Employee : " + empId + ", Profile Viewed By : " + LoginModel.getEmployeeId());
         } catch (Exception e) {
@@ -518,6 +521,9 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         try {
             JasperPrint report = makeReport();
             JasperPrintManager.printReport(report, false);
+            if (tempFile != null) {
+                tempFile.deleteOnExit();
+            }
 
             logger.info("Employee : " + empId + ", Profile Printed By : " + LoginModel.getEmployeeId());
         } catch (Exception e) {
