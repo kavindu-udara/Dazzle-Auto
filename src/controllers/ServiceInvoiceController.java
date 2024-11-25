@@ -65,10 +65,10 @@ public class ServiceInvoiceController {
     }
 
     public ResultSet getMonthlyTotal(int month, int year) throws SQLException, Exception {
-        return MySqlConnection.executeSearch("SELECT SUM(total) AS total_income FROM `" + tableName + "` WHERE MONTH(date) = `" + month + "` AND YEAR(date) = `" + year + "`");
+        return MySqlConnection.executeSearch("SELECT SUM(total) AS total_income FROM `" + tableName + "` WHERE MONTH(date) = '" + month + "' AND YEAR(date) = '" + year + "'");
     }
 
     public ResultSet getYearlyTotal(int year) throws SQLException, Exception {
-        return MySqlConnection.executeSearch("SELECT SUM(total) AS total_income FROM `" + tableName + "` WHERE YEAR(date) = `" + year + "`");
+        return MySqlConnection.executeSearch("SELECT SUM(total) AS total_income FROM `" + tableName + "` WHERE YEAR(date) = '" + year + "'");
     }
 }
