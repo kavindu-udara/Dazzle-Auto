@@ -4,6 +4,7 @@
  */
 package views;
 
+import includes.MySqlConnection;
 import java.awt.Toolkit;
 
 /**
@@ -29,6 +30,9 @@ public class SplashWindow extends javax.swing.JFrame {
             public void run() {
                 for (int i = 0; i <= 130; i++) {
                     ProgressBar.setValue(i);
+                    if (i == 50) {
+                        new MySqlConnection().setupConnection();
+                    }
                     try {
                         Thread.sleep(10);
                     } catch (Exception e) {

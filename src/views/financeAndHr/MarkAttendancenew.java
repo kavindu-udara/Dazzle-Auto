@@ -402,7 +402,7 @@ public class MarkAttendancenew extends javax.swing.JFrame implements Runnable, T
 
         try {
 
-            MySqlConnection.createConnection(); // Ensure the connection is created
+            MySqlConnection.setupConnection();// Ensure the connection is created
             Connection connection = MySqlConnection.connection; // Access the static connection variable directly
 
 //            Connection connection = MySqlConnection.getCon();
@@ -519,7 +519,7 @@ public class MarkAttendancenew extends javax.swing.JFrame implements Runnable, T
         String popUpMessage = null;
         Color color = null;
 
-        MySqlConnection.createConnection(); // Ensure the connection is created
+        MySqlConnection.setupConnection();// Ensure the connection is created
         Connection connection = MySqlConnection.connection; // Access the static connection variable directly
 
 //        Connection con = connectionprovider.getCon();

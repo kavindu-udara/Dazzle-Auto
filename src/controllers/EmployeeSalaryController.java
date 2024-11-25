@@ -5,7 +5,6 @@
 package controllers;
 
 import includes.MySqlConnection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import models.SalaryModel;
@@ -15,6 +14,7 @@ import models.SalaryModel;
  * @author Dumindu
  */
 public class EmployeeSalaryController {
+
     private final String tableName = "employee_salary";
 
     public ResultSet show() throws Exception {
@@ -24,17 +24,17 @@ public class EmployeeSalaryController {
     public ResultSet show(int id) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
-    
-    public ResultSet showByMonthRange(String startMonth, String endMonth) throws Exception{
-        return MySqlConnection.executeSearch("SELECT * FROM `"+tableName+"` WHERE `date` >= '"+startMonth+"' AND `date` < '"+endMonth+"' ");
+
+    public ResultSet showByMonthRange(String startMonth, String endMonth) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `date` >= '" + startMonth + "' AND `date` < '" + endMonth + "' ");
     }
 
     public ResultSet store(SalaryModel salaryModel) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`,`date`, `salary`, `employee_id`) VALUES ("
                 + "'" + salaryModel.getId() + "',"
-                + "'" + salaryModel.getDate()+ "', "
-                + "'" + salaryModel.getSalary()+ "', "
-                + "'" + salaryModel.getEmployeeId()+ "') ");
+                + "'" + salaryModel.getDate() + "', "
+                + "'" + salaryModel.getSalary() + "', "
+                + "'" + salaryModel.getEmployeeId() + "') ");
     }
 
     public ResultSet update(SalaryModel salaryModel) throws Exception {
@@ -57,33 +57,10 @@ public class EmployeeSalaryController {
     }
 
     public ResultSet getMonthlyTotal(int month, int year) throws SQLException, Exception {
-        String query = "SELECT SUM(salary) AS total_salary FROM `" + tableName + "` WHERE MONTH(date) = ? AND YEAR(date) = ?";
-
-        try {
-            MySqlConnection.createConnection();
-            PreparedStatement stmt = MySqlConnection.connection.prepareStatement(query);
-            stmt.setInt(1, month);
-            stmt.setInt(2, year);
-            return stmt.executeQuery();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }
+        return MySqlConnection.executeSearch("SELECT SUM(salary) AS total_salary FROM `" + tableName + "` WHERE MONTH(date) = `" + month + "` AND YEAR(date) =`" + year + "` ");
     }
 
     public ResultSet getYearlyTotal(int year) throws SQLException, Exception {
-        String query = "SELECT SUM(salary) AS total_salary FROM `" + tableName + "` WHERE YEAR(date) = ?";
-
-        try {
-            MySqlConnection.createConnection();
-            PreparedStatement stmt = MySqlConnection.connection.prepareStatement(query);
-            stmt.setInt(1, year);
-            return stmt.executeQuery();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }
+        return MySqlConnection.executeSearch("SELECT SUM(salary) AS total_salary FROM `" + tableName + "` WHERE YEAR(date) = `" + year + "` ");
     }
 }

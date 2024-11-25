@@ -57,38 +57,15 @@ public class GrnItemsController {
     }
 
     public ResultSet getMonthlyTotal(int month, int year) throws SQLException, Exception {
-        String query = "SELECT SUM(" + tableName + ".price) AS total_income FROM `" + tableName2 + "` "
+        return MySqlConnection.executeSearch("SELECT SUM(" + tableName + ".price) AS total_income FROM `" + tableName2 + "` "
                 + "INNER JOIN `" + tableName + "` ON `" + tableName2 + "`.id = `" + tableName + "`.grn_id "
-                + "WHERE MONTH(" + tableName2 + ".date) = ? AND YEAR(" + tableName2 + ".date) = ?";
-
-        try {
-            MySqlConnection.createConnection();
-            PreparedStatement stmt = MySqlConnection.connection.prepareStatement(query);
-            stmt.setInt(1, month);
-            stmt.setInt(2, year);
-            return stmt.executeQuery();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }
+                + "WHERE MONTH(" + tableName2 + ".date) = `" + month + "` AND YEAR(" + tableName2 + ".date) = `" + year + "` ");
     }
 
     public ResultSet getYearlyTotal(int year) throws SQLException, Exception {
-        String query = "SELECT SUM(" + tableName + ".price) AS total_income "
+        return MySqlConnection.executeSearch("SELECT SUM(" + tableName + ".price) AS total_income "
                 + "FROM `" + tableName2 + "` "
                 + "INNER JOIN `" + tableName + "` ON `" + tableName2 + "`.id = `" + tableName + "`.grn_id "
-                + "WHERE YEAR(" + tableName2 + ".date) = ?";
-
-        try {
-            MySqlConnection.createConnection();
-            PreparedStatement stmt = MySqlConnection.connection.prepareStatement(query);
-            stmt.setInt(1, year);
-            return stmt.executeQuery();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw e;
-        }
+                + "WHERE YEAR(" + tableName2 + ".date) = `" + year + "`");
     }
 }
