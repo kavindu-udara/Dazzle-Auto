@@ -6,12 +6,14 @@ package views.database;
 
 import includes.LoggerConfig;
 import includes.MySqlConnection;
+import includes.OnlyNumbersDocumentFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
 
 /**
  *
@@ -29,6 +31,11 @@ public class CreateConnectionDialog extends javax.swing.JDialog {
     public CreateConnectionDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setDocumentFilters();
+    }
+
+    private void setDocumentFilters() {
+        ((AbstractDocument) portField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
     }
 
     /**
@@ -139,23 +146,27 @@ public class CreateConnectionDialog extends javax.swing.JDialog {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
 
-        String host = hostTextField.getText();
-        String port = portField.getText();
-        String dbname = dbNameField.getText();
-        String username = usernameField.getText();
-        String password = String.valueOf(passwordField.getPassword());
+        String host = hostTextField.getText().trim();
+        String port = portField.getText().trim();
+        String dbname = dbNameField.getText().trim();
+        String username = usernameField.getText().trim();
+        String password = String.valueOf(passwordField.getPassword()).trim();
 
-        mySqlConnection.testConnection("jdbc:mysql://" + host + ":" + port + "/" + dbname + "", username, password, () -> connectionSuccessCallback(), () -> connectionFailedCallback());
+        if (host.isEmpty() || port.isEmpty() || dbname.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "All Fields are required");
+        } else {
+            mySqlConnection.testConnection("jdbc:mysql://" + host + ":" + port + "/" + dbname + "", username, password, () -> connectionSuccessCallback(), () -> connectionFailedCallback());
+        }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void connectionSuccessCallback() {
 
-        mySqlConnection.HOST = hostTextField.getText();
-        mySqlConnection.PORT = portField.getText();
-        mySqlConnection.DBNAME = dbNameField.getText();
-        mySqlConnection.USERNAME = usernameField.getText();
-        mySqlConnection.PASSWORD = String.valueOf(passwordField.getPassword());
+        mySqlConnection.HOST = hostTextField.getText().trim();
+        mySqlConnection.PORT = portField.getText().trim();
+        mySqlConnection.DBNAME = dbNameField.getText().trim();
+        mySqlConnection.USERNAME = usernameField.getText().trim();
+        mySqlConnection.PASSWORD = String.valueOf(passwordField.getPassword()).trim();
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream("dbinfo.ser");
@@ -164,7 +175,6 @@ public class CreateConnectionDialog extends javax.swing.JDialog {
             objectOutputStream.close();
 
             mySqlConnection.setupConnection();
-            System.out.println("connection created");
             dispose();
         } catch (Exception e) {
             logger.severe("Error while write dbinfo.ser : " + e.getMessage());
