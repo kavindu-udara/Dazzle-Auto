@@ -30,6 +30,7 @@ import javax.swing.JFileChooser;
 import models.EmployeeImageModel;
 import models.EmployeeModel;
 import java.util.logging.Logger;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -467,7 +468,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
     private void employee_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_reset_btnActionPerformed
 
-      setEmployeeData();
+        setEmployeeData();
 
     }//GEN-LAST:event_employee_reset_btnActionPerformed
 
@@ -482,6 +483,8 @@ public class EmployeeUpdate extends java.awt.Dialog {
     private void employee_imageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_imageMouseClicked
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("JPG", "jpg"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("PNG", "png"));
         int result = fileChooser.showOpenDialog(this);
 
         if (result == JFileChooser.APPROVE_OPTION) {
