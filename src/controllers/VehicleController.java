@@ -20,6 +20,13 @@ public class VehicleController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
 
+    public ResultSet showDataForChart() throws Exception {
+        return MySqlConnection.executeSearch("SELECT `vehicle_type`.`name`, COUNT(`vehicle`.`vehicle_number`) AS numofvehicles "
+                + "FROM `vehicle` "
+                + "INNER JOIN vehicle_type ON vehicle.vehicle_type_id=vehicle_type.id "
+                + "GROUP BY `vehicle_type`.`name`");
+    }
+
     public ResultSet show(String number) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `vehicle_number`='" + number + "'");
     }
