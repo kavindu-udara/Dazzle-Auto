@@ -422,7 +422,7 @@ public class VehicleRegistration extends java.awt.Dialog {
         if (vehicleNumberValue.isEmpty()) {
             showWarningMessage("Please enter your Vehicle Number");
         } else if (!RegexValidator.isValidVehicleNumber(vehicleNumberValue)) {
-            showWarningMessage("Wrong Vehicle Number type");
+            showWarningMessage("Wrong Vehicle Number ! (CAA-0000/000-0000)");
         } else if (vehicleType.equals("Select")) {
             showWarningMessage("Please select a Vehicle Type");
         } else if (vehicleBrand.equals("Select")) {

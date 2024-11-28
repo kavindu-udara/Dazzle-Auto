@@ -57,7 +57,8 @@ public class ServiceInvoiceController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` "
                 + "INNER JOIN payment_method ON service_invoice.payment_method_id=payment_method.id "
                 + "INNER JOIN employee ON service_invoice.employee_id=employee.id WHERE "
-                + "`vehicle_number` LIKE '%" + searchText + "%' OR `service_invoice`.`id` LIKE '%" + searchText + "%' ");
+                + "`vehicle_number` LIKE '%" + searchText + "%' OR `service_invoice`.`id` LIKE '%" + searchText + "%' "
+                + "ORDER BY `service_invoice`.`date` DESC ");
     }
 
     public ResultSet delete(int id) throws Exception {

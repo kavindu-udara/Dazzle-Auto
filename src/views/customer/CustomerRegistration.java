@@ -282,6 +282,7 @@ public class CustomerRegistration extends java.awt.Dialog {
         customer_firstname.setText("");
         customer_lastname.setText("");
         customer_mobile.setText("");
+        customer_email.setText("");
 
     }
 
