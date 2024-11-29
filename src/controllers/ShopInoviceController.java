@@ -53,7 +53,7 @@ public class ShopInoviceController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` "
                 + "INNER JOIN payment_method ON shop_invoice.payment_method_id=payment_method.id "
                 + "INNER JOIN employee ON shop_invoice.employee_id=employee.id "
-                + "WHERE `shop_invoice`.`id`LIKE'%" + searchText + "%'");
+                + "WHERE `shop_invoice`.`id`LIKE'%" + searchText + "%' ORDER BY `shop_invoice`.`date` DESC ");
     }
 
     public ResultSet delete(int id) throws Exception {
