@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[1300, 609]"/>
@@ -163,7 +163,7 @@
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                           <Group type="102" attributes="0">
                                               <Component id="jPanel7" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <EmptySpace type="separate" max="-2" attributes="0"/>
                                               <Component id="jPanel12" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <Component id="jPanel10" max="32767" attributes="0"/>
@@ -187,7 +187,7 @@
                 <Container class="javax.swing.JPanel" name="cardPanel4">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="cc" red="66" type="rgb"/>
+                      <Color blue="14" green="af" red="61" type="rgb"/>
                     </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[255, 114]"/>
@@ -201,7 +201,7 @@
                     <Component class="javax.swing.JLabel" name="jLabel5">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="47" green="cf" red="8b" type="rgb"/>
+                          <Color blue="18" green="b9" red="69" type="rgb"/>
                         </Property>
                         <Property name="horizontalAlignment" type="int" value="0"/>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
@@ -218,7 +218,7 @@
                     <Component class="javax.swing.JLabel" name="jLabel6">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="47" green="cf" red="8b" type="rgb"/>
+                          <Color blue="18" green="b9" red="69" type="rgb"/>
                         </Property>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="18" style="1"/>
@@ -231,11 +231,11 @@
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                          <AbsoluteConstraints x="0" y="10" width="260" height="30"/>
+                          <AbsoluteConstraints x="0" y="10" width="250" height="30"/>
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel7">
+                    <Component class="javax.swing.JLabel" name="monthlyIncomeLabel">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="24" style="1"/>
@@ -257,7 +257,7 @@
                 <Container class="javax.swing.JPanel" name="cardPanel1">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="99" red="66" type="rgb"/>
+                      <Color blue="ef" green="7f" red="46" type="rgb"/>
                     </Property>
                   </Properties>
 
@@ -268,11 +268,11 @@
                     <Component class="javax.swing.JLabel" name="jLabel11">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="fc" green="a3" red="77" type="rgb"/>
+                          <Color blue="ff" green="89" red="4f" type="rgb"/>
                         </Property>
                         <Property name="horizontalAlignment" type="int" value="0"/>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/resources/DashboardIcons/employees-64.png"/>
+                          <Image iconType="3" name="/resources/DashboardIcons/icons8-payment-64.png"/>
                         </Property>
                         <Property name="opaque" type="boolean" value="true"/>
                       </Properties>
@@ -285,7 +285,7 @@
                     <Component class="javax.swing.JLabel" name="jLabel1">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="fc" green="a3" red="77" type="rgb"/>
+                          <Color blue="ff" green="89" red="4f" type="rgb"/>
                         </Property>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="18" style="1"/>
@@ -293,7 +293,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="   Today Staff"/>
+                        <Property name="text" type="java.lang.String" value="   Monthly Payments"/>
                         <Property name="opaque" type="boolean" value="true"/>
                       </Properties>
                       <Constraints>
@@ -302,7 +302,7 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel12">
+                    <Component class="javax.swing.JLabel" name="paymentLabel">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="24" style="1"/>
@@ -352,15 +352,23 @@
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel52" min="-2" pref="22" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel14" pref="89" max="32767" attributes="0"/>
-                                  <Component id="jScrollPane3" pref="0" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane3" min="-2" pref="89" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="25" pref="25" max="-2" attributes="0"/>
+                                      <Component id="jLabel14" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="jLabel13" pref="87" max="32767" attributes="0"/>
-                                  <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jScrollPane2" min="-2" pref="87" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                                      <Component id="jLabel13" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -380,32 +388,34 @@
                       </Properties>
                     </Component>
                     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+                      <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder roundedCorners="true">
+                              <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                      </Properties>
                       <AuxValues>
                         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                       </AuxValues>
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTable" name="jTable1">
+                        <Component class="javax.swing.JTable" name="lowStockTable">
                           <Properties>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                              <Color blue="f2" green="f2" red="f2" type="rgb"/>
+                              <Color blue="ff" green="f8" red="f2" type="rgb"/>
                             </Property>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                              <Font name="Roboto" size="14" style="1"/>
+                              <Font name="Yu Gothic UI Semibold" size="14" style="1"/>
                             </Property>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="2" rowCount="3">
-                                <Column editable="true" title="Product" type="java.lang.Object">
-                                  <Data value="reg rdgbdrv"/>
-                                  <Data value="fvsdvfsdf"/>
-                                  <Data value="erevrerv"/>
-                                </Column>
-                                <Column editable="true" title="Qty" type="java.lang.Object">
-                                  <Data value="343"/>
-                                  <Data value="343"/>
-                                  <Data value="9090"/>
-                                </Column>
+                              <Table columnCount="3" rowCount="0">
+                                <Column editable="false" title="Product" type="java.lang.Object"/>
+                                <Column editable="false" title="Price" type="java.lang.Object"/>
+                                <Column editable="false" title="Qty" type="java.lang.Object"/>
                               </Table>
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -415,51 +425,62 @@
                                   <Editor/>
                                   <Renderer/>
                                 </Column>
-                                <Column maxWidth="100" minWidth="-1" prefWidth="150" resizable="true">
+                                <Column maxWidth="90" minWidth="-1" prefWidth="150" resizable="true">
+                                  <Title/>
+                                  <Editor/>
+                                  <Renderer/>
+                                </Column>
+                                <Column maxWidth="60" minWidth="-1" prefWidth="150" resizable="true">
                                   <Title/>
                                   <Editor/>
                                   <Renderer/>
                                 </Column>
                               </TableColumnModel>
                             </Property>
+                            <Property name="enabled" type="boolean" value="false"/>
                             <Property name="focusable" type="boolean" value="false"/>
                             <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
+                            <Property name="rowHeight" type="int" value="19"/>
+                            <Property name="showHorizontalLines" type="boolean" value="true"/>
+                            <Property name="showVerticalLines" type="boolean" value="true"/>
                             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                              <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                             </Property>
                           </Properties>
                         </Component>
                       </SubComponents>
                     </Container>
                     <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+                      <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder roundedCorners="true">
+                              <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                      </Properties>
                       <AuxValues>
                         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                       </AuxValues>
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTable" name="jTable2">
+                        <Component class="javax.swing.JTable" name="highStockTable">
                           <Properties>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                              <Color blue="f2" green="f2" red="f2" type="rgb"/>
+                              <Color blue="ff" green="f8" red="f2" type="rgb"/>
                             </Property>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                              <Font name="Roboto" size="14" style="1"/>
+                              <Font name="Yu Gothic UI Semibold" size="14" style="1"/>
                             </Property>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="2" rowCount="3">
-                                <Column editable="true" title="Product" type="java.lang.Object">
-                                  <Data value="reg rdgbdrv"/>
-                                  <Data value="fvsdvfsdf"/>
-                                  <Data value="erevrerv"/>
-                                </Column>
-                                <Column editable="true" title="Qty" type="java.lang.Object">
-                                  <Data value="343"/>
-                                  <Data value="343"/>
-                                  <Data value="909"/>
-                                </Column>
+                              <Table columnCount="3" rowCount="0">
+                                <Column editable="false" title="Product" type="java.lang.Object"/>
+                                <Column editable="false" title="Price" type="java.lang.Object"/>
+                                <Column editable="false" title="Qty" type="java.lang.Object"/>
                               </Table>
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -469,19 +490,28 @@
                                   <Editor/>
                                   <Renderer/>
                                 </Column>
-                                <Column maxWidth="100" minWidth="-1" prefWidth="150" resizable="true">
+                                <Column maxWidth="90" minWidth="-1" prefWidth="150" resizable="true">
+                                  <Title/>
+                                  <Editor/>
+                                  <Renderer/>
+                                </Column>
+                                <Column maxWidth="60" minWidth="-1" prefWidth="150" resizable="true">
                                   <Title/>
                                   <Editor/>
                                   <Renderer/>
                                 </Column>
                               </TableColumnModel>
                             </Property>
+                            <Property name="enabled" type="boolean" value="false"/>
                             <Property name="focusable" type="boolean" value="false"/>
                             <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
+                            <Property name="rowHeight" type="int" value="19"/>
+                            <Property name="showHorizontalLines" type="boolean" value="true"/>
+                            <Property name="showVerticalLines" type="boolean" value="true"/>
                             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                              <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                             </Property>
                           </Properties>
                         </Component>
@@ -524,7 +554,7 @@
                 <Container class="javax.swing.JPanel" name="cardPanel3">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="b" green="b2" red="ea" type="rgb"/>
+                      <Color blue="6" green="aa" red="e1" type="rgb"/>
                     </Property>
                   </Properties>
 
@@ -535,7 +565,7 @@
                     <Component class="javax.swing.JLabel" name="jLabel8">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="4e" green="bb" red="ef" type="rgb"/>
+                          <Color blue="3a" green="b0" red="ea" type="rgb"/>
                         </Property>
                         <Property name="horizontalAlignment" type="int" value="0"/>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
@@ -552,7 +582,7 @@
                     <Component class="javax.swing.JLabel" name="jLabel3">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="4e" green="bb" red="ef" type="rgb"/>
+                          <Color blue="3a" green="b0" red="ea" type="rgb"/>
                         </Property>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="18" style="1"/>
@@ -565,11 +595,11 @@
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                          <AbsoluteConstraints x="-4" y="8" width="270" height="30"/>
+                          <AbsoluteConstraints x="-4" y="8" width="250" height="30"/>
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel9">
+                    <Component class="javax.swing.JLabel" name="dailyIncomeLabel">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="24" style="1"/>
@@ -591,7 +621,7 @@
                 <Container class="javax.swing.JPanel" name="cardPanel2">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="61" red="b1" type="rgb"/>
+                      <Color blue="ff" green="4c" red="a6" type="rgb"/>
                     </Property>
                   </Properties>
 
@@ -602,11 +632,11 @@
                     <Component class="javax.swing.JLabel" name="jLabel10">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="75" red="bb" type="rgb"/>
+                          <Color blue="ff" green="5d" red="ad" type="rgb"/>
                         </Property>
                         <Property name="horizontalAlignment" type="int" value="0"/>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/resources/DashboardIcons/work-64.png"/>
+                          <Image iconType="3" name="/resources/DashboardIcons/sales-64.png"/>
                         </Property>
                         <Property name="opaque" type="boolean" value="true"/>
                       </Properties>
@@ -619,7 +649,7 @@
                     <Component class="javax.swing.JLabel" name="jLabel2">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="75" red="bb" type="rgb"/>
+                          <Color blue="ff" green="5d" red="ad" type="rgb"/>
                         </Property>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="18" style="1"/>
@@ -627,16 +657,16 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="   Today Works"/>
+                        <Property name="text" type="java.lang.String" value="   Today Sales"/>
                         <Property name="opaque" type="boolean" value="true"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                          <AbsoluteConstraints x="-4" y="8" width="270" height="30"/>
+                          <AbsoluteConstraints x="-4" y="8" width="260" height="30"/>
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel22">
+                    <Component class="javax.swing.JLabel" name="salesLabel">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="24" style="1"/>
@@ -668,7 +698,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel24" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="productLabel" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jLabel23" alignment="0" pref="238" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -681,7 +711,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel24" min="-2" max="-2" attributes="0"/>
+                              <Component id="productLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace pref="12" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -700,7 +730,7 @@
                         <Property name="text" type="java.lang.String" value="Products Count"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel24">
+                    <Component class="javax.swing.JLabel" name="productLabel">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="48" style="1"/>
@@ -727,7 +757,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel25" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="suppliersLabel" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jLabel26" alignment="0" pref="238" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -740,14 +770,14 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel26" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel25" min="-2" max="-2" attributes="0"/>
+                              <Component id="suppliersLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="jLabel25">
+                    <Component class="javax.swing.JLabel" name="suppliersLabel">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="48" style="1"/>
@@ -783,7 +813,7 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                               <Component id="jLabel35" min="-2" pref="231" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
@@ -1019,7 +1049,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel27" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="brandsLabel" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jLabel28" alignment="0" pref="238" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -1032,14 +1062,14 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel28" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel27" min="-2" max="-2" attributes="0"/>
+                              <Component id="brandsLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace pref="12" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="jLabel27">
+                    <Component class="javax.swing.JLabel" name="brandsLabel">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="48" style="1"/>
@@ -1076,13 +1106,13 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="34" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel29" min="-2" pref="126" max="-2" attributes="0"/>
                                   <Component id="jLabel31" min="-2" pref="97" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel30" min="-2" pref="118" max="-2" attributes="0"/>
+                              <Component id="grnLabel" min="-2" pref="118" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -1092,20 +1122,20 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel30" pref="0" max="32767" attributes="0"/>
+                                  <Component id="grnLabel" pref="0" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Component id="jLabel29" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                       <Component id="jLabel31" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="35" max="32767" attributes="0"/>
+                              <EmptySpace pref="29" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="jLabel30">
+                    <Component class="javax.swing.JLabel" name="grnLabel">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="48" style="1"/>
@@ -1152,58 +1182,30 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jLabel51" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jLabel50" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jLabel49" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jLabel48" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabel32" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      <Component id="jLabel33" min="-2" pref="126" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jScrollPane6" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabel33" min="-2" pref="135" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jLabel34" min="-2" pref="97" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel33" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel34" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                              <Component id="jLabel32" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                              <Component id="jLabel48" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                              <Component id="jLabel50" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                              <Component id="jLabel49" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                              <Component id="jLabel51" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jScrollPane6" min="-2" pref="153" max="-2" attributes="0"/>
+                              <EmptySpace pref="8" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1217,7 +1219,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="85" green="43" red="0" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Top Suppliers"/>
+                        <Property name="text" type="java.lang.String" value=" Top Suppliers"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel34">
@@ -1231,46 +1233,54 @@
                         <Property name="text" type="java.lang.String" value="This Month"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel32">
+                    <Container class="javax.swing.JScrollPane" name="jScrollPane6">
                       <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Roboto" size="16" style="1"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
+                            </LineBorder>
+                          </Border>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Supplier 01"/>
+                        <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
+                        <Property name="verticalScrollBarPolicy" type="int" value="21"/>
                       </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel48">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Roboto" size="16" style="1"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Supplier 01"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel49">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Roboto" size="16" style="1"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Supplier 01"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel50">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Roboto" size="16" style="1"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Supplier 01"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel51">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Roboto" size="16" style="1"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Supplier 01"/>
-                      </Properties>
-                    </Component>
+                      <AuxValues>
+                        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                      </AuxValues>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                      <SubComponents>
+                        <Component class="javax.swing.JList" name="topSuppliersList">
+                          <Properties>
+                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                                <LineBorder>
+                                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
+                                </LineBorder>
+                              </Border>
+                            </Property>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Roboto" size="16" style="1"/>
+                            </Property>
+                            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                              <StringArray count="5">
+                                <StringItem index="0" value="Item 1"/>
+                                <StringItem index="1" value="Item 2"/>
+                                <StringItem index="2" value="Item 3"/>
+                                <StringItem index="3" value="Item 4"/>
+                                <StringItem index="4" value="Item 5"/>
+                              </StringArray>
+                            </Property>
+                            <Property name="fixedCellHeight" type="int" value="30"/>
+                            <Property name="focusable" type="boolean" value="false"/>
+                          </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                          </AuxValues>
+                        </Component>
+                      </SubComponents>
+                    </Container>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="jPanel4">
@@ -1325,43 +1335,34 @@
                       </Properties>
                     </Component>
                     <Container class="javax.swing.JScrollPane" name="jScrollPane5">
+                      <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder roundedCorners="true">
+                              <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                      </Properties>
                       <AuxValues>
                         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                       </AuxValues>
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTable" name="jTable4">
+                        <Component class="javax.swing.JTable" name="bestSellingTable">
                           <Properties>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                              <Color blue="f2" green="f2" red="f2" type="rgb"/>
+                              <Color blue="ff" green="f8" red="f2" type="rgb"/>
                             </Property>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                              <Font name="Roboto" size="14" style="1"/>
+                              <Font name="Yu Gothic UI Semibold" size="14" style="1"/>
                             </Property>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="3" rowCount="5">
-                                <Column editable="true" title="Product" type="java.lang.Object">
-                                  <Data value="reg rdgbdrv"/>
-                                  <Data value="fvsdvfsdf"/>
-                                  <Data value="erevrerv"/>
-                                  <Data value="wewew"/>
-                                  <Data value=" dsdsd"/>
-                                </Column>
-                                <Column editable="true" title="Sold" type="java.lang.Object">
-                                  <Data value="343"/>
-                                  <Data value="343"/>
-                                  <Data value="909"/>
-                                  <Data value="2323"/>
-                                  <Data value="2332"/>
-                                </Column>
-                                <Column editable="true" title="Left In Stock" type="java.lang.Object">
-                                  <Data value="3434"/>
-                                  <Data value="4334"/>
-                                  <Data value="343"/>
-                                  <Data value="323"/>
-                                  <Data value="2323"/>
-                                </Column>
+                              <Table columnCount="3" rowCount="0">
+                                <Column editable="true" title="Product" type="java.lang.Object"/>
+                                <Column editable="true" title="Sold" type="java.lang.Object"/>
+                                <Column editable="true" title="Left In Stock" type="java.lang.Object"/>
                               </Table>
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -1376,18 +1377,21 @@
                                   <Editor/>
                                   <Renderer/>
                                 </Column>
-                                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                <Column maxWidth="100" minWidth="-1" prefWidth="150" resizable="true">
                                   <Title/>
                                   <Editor/>
                                   <Renderer/>
                                 </Column>
                               </TableColumnModel>
                             </Property>
+                            <Property name="enabled" type="boolean" value="false"/>
                             <Property name="focusable" type="boolean" value="false"/>
                             <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
                             <Property name="rowHeight" type="int" value="30"/>
+                            <Property name="showHorizontalLines" type="boolean" value="true"/>
+                            <Property name="showVerticalLines" type="boolean" value="true"/>
                             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                               <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                             </Property>

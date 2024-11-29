@@ -509,6 +509,9 @@ public class ShopDashboard extends javax.swing.JFrame {
             shop_DashboardPanel = new shop_DashboardJPanel();
             jDashboardPanel.add(shop_DashboardPanel, BorderLayout.CENTER);
             SwingUtilities.updateComponentTreeUI(this);
+            shop_DashboardPanel.reload();
+        } else {
+            shop_DashboardPanel.reload();
         }
     }//GEN-LAST:event_jDashboardbtnMouseClicked
 

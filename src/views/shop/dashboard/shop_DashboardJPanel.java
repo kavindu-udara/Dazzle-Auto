@@ -5,6 +5,30 @@
 package views.shop.dashboard;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import includes.LoggerConfig;
+import includes.MySqlConnection;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Vector;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -12,10 +36,288 @@ import com.formdev.flatlaf.FlatClientProperties;
  */
 public class shop_DashboardJPanel extends javax.swing.JPanel {
 
+    private static final Logger logger = LoggerConfig.getLogger();
+
     public shop_DashboardJPanel() {
         initComponents();
-
         roundPanels();
+        reload();
+    }
+
+    public void reload() {
+        setDailyIncome();
+        setMonthlyIncome();
+        setMonthlyPayment();
+        setTodaySales();
+        setRegisteredProducts();
+        setRegisteredSuppliers();
+        setRegisteredBrands();
+        setMonthlyGrns();
+        setTopSuppliers();
+        stockOverview();
+        bestSellings();
+
+    }
+
+    public void bestSellings() {
+        TableRender();
+
+        // Format the current date to "YYYY-MM"
+        String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM")); //WHERE `shop_invoice`.`date` LIKE '%" + month + "%'
+
+        try {
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT `product`.`name` AS `product`, SUM(shop_invoice_items.qty) AS `sell_qty`, SUM(stock.qty) AS `stock_qty` "
+                    + "FROM shop_invoice INNER JOIN shop_invoice_items ON shop_invoice_items.shop_invoice_id=shop_invoice.id "
+                    + "INNER JOIN stock ON shop_invoice_items.stock_id=stock.id "
+                    + "INNER JOIN product ON stock.product_id=product.id  "
+                    + "GROUP BY `product` ORDER BY `sell_qty` DESC LIMIT 5 ");
+
+            DefaultTableModel dtm = (DefaultTableModel) bestSellingTable.getModel();
+            dtm.setRowCount(0);
+
+            int row = 0;
+            while (resultSet.next()) {
+                row++;
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("product"));
+                vector.add(resultSet.getString("sell_qty"));
+                vector.add(resultSet.getString("stock_qty"));
+
+                dtm.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading bestSellings() : " + e.getMessage());
+        }
+
+    }
+
+    public void stockOverview() {
+        TableRender();
+
+        try {
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT `product`.`name`, `stock`.`price`, `stock`.`qty` FROM stock "
+                    + "INNER JOIN product ON stock.product_id=product.id "
+                    + "ORDER BY `stock`.`qty` DESC LIMIT 3  ");
+
+            DefaultTableModel dtm = (DefaultTableModel) highStockTable.getModel();
+            dtm.setRowCount(0);
+
+            int row = 0;
+            while (resultSet.next()) {
+                row++;
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("name"));
+                vector.add(resultSet.getString("price"));
+                vector.add(resultSet.getString("qty"));
+
+                dtm.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading stockOverview() : " + e.getMessage());
+        }
+
+        try {
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT `product`.`name`, `stock`.`price`, `stock`.`qty` FROM stock "
+                    + "INNER JOIN product ON stock.product_id=product.id "
+                    + "ORDER BY `stock`.`qty` ASC LIMIT 3  ");
+
+            DefaultTableModel dtm = (DefaultTableModel) lowStockTable.getModel();
+            dtm.setRowCount(0);
+
+            int row = 0;
+            while (resultSet.next()) {
+                row++;
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("name"));
+                vector.add(resultSet.getString("price"));
+                vector.add(resultSet.getString("qty"));
+
+                dtm.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading stockOverview() : " + e.getMessage());
+        }
+    }
+
+    public void setTopSuppliers() {
+        ArrayList<String> supplierArry = new ArrayList<>();
+
+        try {
+            // Format the current date to "YYYY-MM"
+            String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
+
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT CONCAT(supplier.first_name,' ', supplier.last_name) AS `fullname`,COUNT(grn.id) AS `grn_count`,`supplier_id` "
+                    + "FROM grn INNER JOIN supplier ON grn.supplier_id=supplier.id WHERE `grn`.`date` LIKE '%" + month + "%' "
+                    + "GROUP BY `supplier_id` ORDER BY `grn_count` DESC ");
+
+            int row = 1;
+            while (resultSet.next()) {
+                supplierArry.add(row + ". " + resultSet.getString("fullname"));
+                row++;
+            }
+
+            DefaultListModel<String> suppliermodel = new DefaultListModel<>();
+
+            for (String supplliers : supplierArry) {
+                suppliermodel.addElement(supplliers);
+            }
+
+            topSuppliersList.setModel(suppliermodel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while setTopSuppliers() : " + e.getMessage());
+        }
+    }
+
+    public void setMonthlyGrns() {
+        try {
+            // Format the current date to "YYYY-MM"
+            String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
+
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT COUNT(`id`) AS `grn_count` FROM `grn` WHERE `date` LIKE '%" + month + "%' ");
+
+            String grn_count = "0";
+            if (resultSet.next()) {
+                grn_count = resultSet.getString("grn_count");
+            }
+            grnLabel.setText(grn_count);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while setMonthlyGrns() : " + e.getMessage());
+        }
+    }
+
+    public void setRegisteredBrands() {
+        try {
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT COUNT(`id`) AS `brand_count` FROM `product_brand` ");
+
+            int brand_count = 0;
+            if (resultSet.next()) {
+                brand_count = resultSet.getInt("brand_count");
+            }
+            brandsLabel.setText(String.valueOf(brand_count));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while setRegisteredBrands() : " + e.getMessage());
+        }
+    }
+
+    public void setRegisteredSuppliers() {
+        try {
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT COUNT(`id`) AS `sup_count` FROM `supplier` ");
+
+            int sup_count = 0;
+            if (resultSet.next()) {
+                sup_count = resultSet.getInt("sup_count");
+            }
+            suppliersLabel.setText(String.valueOf(sup_count));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while setRegisteredSuppliers() : " + e.getMessage());
+        }
+    }
+
+    public void setRegisteredProducts() {
+        try {
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT COUNT(`id`) AS `pcount` FROM `product` ");
+
+            int pcount = 0;
+            if (resultSet.next()) {
+                pcount = resultSet.getInt("pcount");
+            }
+            productLabel.setText(String.valueOf(pcount));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while setRegisteredProducts() : " + e.getMessage());
+        }
+    }
+
+    public void setMonthlyIncome() {
+        try {
+            // Format the current date to "YYYY-MM"
+            String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
+
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT SUM(`total`) AS `total` FROM `shop_invoice` WHERE `date` LIKE '%" + month + "%'");
+
+            String total = "0";
+            if (resultSet.next()) {
+                total = resultSet.getString("total");
+                if (total == null) {
+                    total = " 0.00";
+                }
+            }
+            monthlyIncomeLabel.setText("Rs." + total);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while setMonthlyIncome() : " + e.getMessage());
+        }
+    }
+
+    public void setDailyIncome() {
+        try {
+            // Format the current date to "YYYY-MM"
+            String day = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT SUM(`total`) AS `total` FROM `shop_invoice` WHERE `date` LIKE '%" + day + "%' ");
+
+            String total = "0";
+            if (resultSet.next()) {
+                total = resultSet.getString("total");
+                if (total == null) {
+                    total = " 0.00";
+                }
+            }
+            dailyIncomeLabel.setText("Rs." + total);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while setDailyIncome() : " + e.getMessage());
+        }
+    }
+
+    public void setMonthlyPayment() {
+        try {
+            // Format the current date to "YYYY-MM"
+            String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
+
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT SUM(`paid_amount`) AS `total` FROM `grn` WHERE `date` LIKE '%" + month + "%' ");
+
+            String total = "0";
+            if (resultSet.next()) {
+                total = resultSet.getString("total");
+                if (total == null) {
+                    total = " 0.00";
+                }
+            }
+            paymentLabel.setText("Rs." + total);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while setMonthlyPayment() : " + e.getMessage());
+        }
+    }
+
+    public void setTodaySales() {
+        try {
+            // Format the current date to "YYYY-MM"
+            String day = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT SUM(shop_invoice_items.qty) AS `sales` FROM shop_invoice INNER JOIN shop_invoice_items ON shop_invoice_items.shop_invoice_id=shop_invoice.id WHERE `shop_invoice`.`date` LIKE '%" + day + "%'");
+
+            int sales = 0;
+            if (resultSet.next()) {
+                sales = resultSet.getInt("sales");
+            }
+            salesLabel.setText(String.valueOf(sales));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while setTodaySales() : " + e.getMessage());
+        }
     }
 
     public void roundPanels() {
@@ -46,32 +348,32 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
         cardPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        monthlyIncomeLabel = new javax.swing.JLabel();
         cardPanel1 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        paymentLabel = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel52 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        lowStockTable = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        highStockTable = new javax.swing.JTable();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         cardPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        dailyIncomeLabel = new javax.swing.JLabel();
         cardPanel2 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
+        salesLabel = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
+        productLabel = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
-        jLabel25 = new javax.swing.JLabel();
+        suppliersLabel = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jLabel35 = new javax.swing.JLabel();
@@ -89,24 +391,21 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
         jLabel46 = new javax.swing.JLabel();
         jLabel47 = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
-        jLabel27 = new javax.swing.JLabel();
+        brandsLabel = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
-        jLabel30 = new javax.swing.JLabel();
+        grnLabel = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
-        jLabel32 = new javax.swing.JLabel();
-        jLabel48 = new javax.swing.JLabel();
-        jLabel49 = new javax.swing.JLabel();
-        jLabel50 = new javax.swing.JLabel();
-        jLabel51 = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        topSuppliersList = new javax.swing.JList<>();
         jPanel4 = new javax.swing.JPanel();
         jLabel53 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        bestSellingTable = new javax.swing.JTable();
         jLabel54 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1300, 609));
@@ -125,56 +424,56 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(241, 239, 236));
 
-        cardPanel4.setBackground(new java.awt.Color(102, 204, 0));
+        cardPanel4.setBackground(new java.awt.Color(97, 175, 20));
         cardPanel4.setPreferredSize(new java.awt.Dimension(255, 114));
         cardPanel4.setLayout(null);
 
-        jLabel5.setBackground(new java.awt.Color(139, 207, 71));
+        jLabel5.setBackground(new java.awt.Color(105, 185, 24));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/income-64.png"))); // NOI18N
         jLabel5.setOpaque(true);
         cardPanel4.add(jLabel5);
         jLabel5.setBounds(160, 0, 78, 90);
 
-        jLabel6.setBackground(new java.awt.Color(139, 207, 71));
+        jLabel6.setBackground(new java.awt.Color(105, 185, 24));
         jLabel6.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("   Monthly Income");
         jLabel6.setOpaque(true);
         cardPanel4.add(jLabel6);
-        jLabel6.setBounds(0, 10, 260, 30);
+        jLabel6.setBounds(0, 10, 250, 30);
 
-        jLabel7.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Rs. 1540000");
-        cardPanel4.add(jLabel7);
-        jLabel7.setBounds(6, 44, 159, 30);
+        monthlyIncomeLabel.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        monthlyIncomeLabel.setForeground(new java.awt.Color(255, 255, 255));
+        monthlyIncomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        monthlyIncomeLabel.setText("Rs. 1540000");
+        cardPanel4.add(monthlyIncomeLabel);
+        monthlyIncomeLabel.setBounds(6, 44, 159, 30);
 
-        cardPanel1.setBackground(new java.awt.Color(102, 153, 255));
+        cardPanel1.setBackground(new java.awt.Color(70, 127, 239));
         cardPanel1.setLayout(null);
 
-        jLabel11.setBackground(new java.awt.Color(119, 163, 252));
+        jLabel11.setBackground(new java.awt.Color(79, 137, 255));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/employees-64.png"))); // NOI18N
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/icons8-payment-64.png"))); // NOI18N
         jLabel11.setOpaque(true);
         cardPanel1.add(jLabel11);
         jLabel11.setBounds(160, -6, 78, 90);
 
-        jLabel1.setBackground(new java.awt.Color(119, 163, 252));
+        jLabel1.setBackground(new java.awt.Color(79, 137, 255));
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("   Today Staff");
+        jLabel1.setText("   Monthly Payments");
         jLabel1.setOpaque(true);
         cardPanel1.add(jLabel1);
         jLabel1.setBounds(-4, 8, 270, 30);
 
-        jLabel12.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("10");
-        cardPanel1.add(jLabel12);
-        jLabel12.setBounds(6, 44, 159, 30);
+        paymentLabel.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        paymentLabel.setForeground(new java.awt.Color(255, 255, 255));
+        paymentLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        paymentLabel.setText("10");
+        cardPanel1.add(paymentLabel);
+        paymentLabel.setBounds(6, 44, 159, 30);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -182,44 +481,74 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
         jLabel52.setForeground(new java.awt.Color(0, 67, 133));
         jLabel52.setText("Stock Overview");
 
-        jTable1.setBackground(new java.awt.Color(242, 242, 242));
-        jTable1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jScrollPane2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+
+        lowStockTable.setBackground(new java.awt.Color(242, 248, 255));
+        lowStockTable.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 14)); // NOI18N
+        lowStockTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"reg rdgbdrv", "343"},
-                {"fvsdvfsdf", "343"},
-                {"erevrerv", "9090"}
+
             },
             new String [] {
-                "Product", "Qty"
+                "Product", "Price", "Qty"
             }
-        ));
-        jTable1.setFocusable(false);
-        jTable1.setGridColor(new java.awt.Color(255, 255, 255));
-        jScrollPane2.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
-            jTable1.getColumnModel().getColumn(1).setMaxWidth(100);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        lowStockTable.setEnabled(false);
+        lowStockTable.setFocusable(false);
+        lowStockTable.setGridColor(new java.awt.Color(255, 255, 255));
+        lowStockTable.setRowHeight(19);
+        lowStockTable.setShowHorizontalLines(true);
+        lowStockTable.setShowVerticalLines(true);
+        lowStockTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(lowStockTable);
+        if (lowStockTable.getColumnModel().getColumnCount() > 0) {
+            lowStockTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+            lowStockTable.getColumnModel().getColumn(1).setMaxWidth(90);
+            lowStockTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+            lowStockTable.getColumnModel().getColumn(2).setMaxWidth(60);
         }
 
-        jTable2.setBackground(new java.awt.Color(242, 242, 242));
-        jTable2.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jScrollPane3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+
+        highStockTable.setBackground(new java.awt.Color(242, 248, 255));
+        highStockTable.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 14)); // NOI18N
+        highStockTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"reg rdgbdrv", "343"},
-                {"fvsdvfsdf", "343"},
-                {"erevrerv", "909"}
+
             },
             new String [] {
-                "Product", "Qty"
+                "Product", "Price", "Qty"
             }
-        ));
-        jTable2.setFocusable(false);
-        jTable2.setGridColor(new java.awt.Color(255, 255, 255));
-        jScrollPane3.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(1).setPreferredWidth(150);
-            jTable2.getColumnModel().getColumn(1).setMaxWidth(100);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        highStockTable.setEnabled(false);
+        highStockTable.setFocusable(false);
+        highStockTable.setGridColor(new java.awt.Color(255, 255, 255));
+        highStockTable.setRowHeight(19);
+        highStockTable.setShowHorizontalLines(true);
+        highStockTable.setShowVerticalLines(true);
+        highStockTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(highStockTable);
+        if (highStockTable.getColumnModel().getColumnCount() > 0) {
+            highStockTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+            highStockTable.getColumnModel().getColumn(1).setMaxWidth(90);
+            highStockTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+            highStockTable.getColumnModel().getColumn(2).setMaxWidth(60);
         }
 
         jLabel13.setBackground(new java.awt.Color(255, 234, 234));
@@ -257,66 +586,71 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
-        cardPanel3.setBackground(new java.awt.Color(234, 178, 11));
+        cardPanel3.setBackground(new java.awt.Color(225, 170, 6));
         cardPanel3.setLayout(null);
 
-        jLabel8.setBackground(new java.awt.Color(239, 187, 78));
+        jLabel8.setBackground(new java.awt.Color(234, 176, 58));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/day-64.png"))); // NOI18N
         jLabel8.setOpaque(true);
         cardPanel3.add(jLabel8);
         jLabel8.setBounds(160, 0, 78, 90);
 
-        jLabel3.setBackground(new java.awt.Color(239, 187, 78));
+        jLabel3.setBackground(new java.awt.Color(234, 176, 58));
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("   Today Income");
         jLabel3.setOpaque(true);
         cardPanel3.add(jLabel3);
-        jLabel3.setBounds(-4, 8, 270, 30);
+        jLabel3.setBounds(-4, 8, 250, 30);
 
-        jLabel9.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Rs. 154000");
-        cardPanel3.add(jLabel9);
-        jLabel9.setBounds(6, 44, 159, 30);
+        dailyIncomeLabel.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        dailyIncomeLabel.setForeground(new java.awt.Color(255, 255, 255));
+        dailyIncomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        dailyIncomeLabel.setText("Rs. 154000");
+        cardPanel3.add(dailyIncomeLabel);
+        dailyIncomeLabel.setBounds(6, 44, 159, 30);
 
-        cardPanel2.setBackground(new java.awt.Color(177, 97, 255));
+        cardPanel2.setBackground(new java.awt.Color(166, 76, 255));
         cardPanel2.setLayout(null);
 
-        jLabel10.setBackground(new java.awt.Color(187, 117, 255));
+        jLabel10.setBackground(new java.awt.Color(173, 93, 255));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/work-64.png"))); // NOI18N
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/sales-64.png"))); // NOI18N
         jLabel10.setOpaque(true);
         cardPanel2.add(jLabel10);
         jLabel10.setBounds(160, 0, 78, 90);
 
-        jLabel2.setBackground(new java.awt.Color(187, 117, 255));
+        jLabel2.setBackground(new java.awt.Color(173, 93, 255));
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("   Today Works");
+        jLabel2.setText("   Today Sales");
         jLabel2.setOpaque(true);
         cardPanel2.add(jLabel2);
-        jLabel2.setBounds(-4, 8, 270, 30);
+        jLabel2.setBounds(-4, 8, 260, 30);
 
-        jLabel22.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
-        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setText("30");
-        cardPanel2.add(jLabel22);
-        jLabel22.setBounds(6, 44, 159, 30);
+        salesLabel.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        salesLabel.setForeground(new java.awt.Color(255, 255, 255));
+        salesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        salesLabel.setText("30");
+        cardPanel2.add(salesLabel);
+        salesLabel.setBounds(6, 44, 159, 30);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -325,10 +659,10 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
         jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel23.setText("Products Count");
 
-        jLabel24.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(0, 60, 151));
-        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel24.setText("00");
+        productLabel.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
+        productLabel.setForeground(new java.awt.Color(0, 60, 151));
+        productLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        productLabel.setText("00");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -337,7 +671,7 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(productLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -347,16 +681,16 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel24)
+                .addComponent(productLabel)
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel25.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
-        jLabel25.setForeground(new java.awt.Color(0, 60, 151));
-        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel25.setText("00");
+        suppliersLabel.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
+        suppliersLabel.setForeground(new java.awt.Color(0, 60, 151));
+        suppliersLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        suppliersLabel.setText("00");
 
         jLabel26.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(0, 67, 133));
@@ -370,7 +704,7 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(suppliersLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -380,7 +714,7 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel26)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel25)
+                .addComponent(suppliersLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -514,10 +848,10 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
 
         jPanel11.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel27.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
-        jLabel27.setForeground(new java.awt.Color(0, 60, 151));
-        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel27.setText("00");
+        brandsLabel.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
+        brandsLabel.setForeground(new java.awt.Color(0, 60, 151));
+        brandsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        brandsLabel.setText("00");
 
         jLabel28.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(0, 67, 133));
@@ -531,7 +865,7 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(brandsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -541,16 +875,16 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel28)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel27)
+                .addComponent(brandsLabel)
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel30.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
-        jLabel30.setForeground(new java.awt.Color(0, 60, 151));
-        jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel30.setText("000");
+        grnLabel.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
+        grnLabel.setForeground(new java.awt.Color(0, 60, 151));
+        grnLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        grnLabel.setText("000");
 
         jLabel29.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(0, 67, 133));
@@ -565,12 +899,12 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(34, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(grnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
         jPanel7Layout.setVerticalGroup(
@@ -578,86 +912,63 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(grnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel29)
                         .addGap(0, 0, 0)
                         .addComponent(jLabel31)))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jPanel12.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel33.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(0, 67, 133));
-        jLabel33.setText("Top Suppliers");
+        jLabel33.setText(" Top Suppliers");
 
         jLabel34.setFont(new java.awt.Font("Roboto", 1, 15)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(182, 182, 182));
         jLabel34.setText("This Month");
 
-        jLabel32.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel32.setText("Supplier 01");
+        jScrollPane6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jScrollPane6.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane6.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jLabel48.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel48.setText("Supplier 01");
-
-        jLabel49.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel49.setText("Supplier 01");
-
-        jLabel50.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel50.setText("Supplier 01");
-
-        jLabel51.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel51.setText("Supplier 01");
+        topSuppliersList.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        topSuppliersList.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        topSuppliersList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        topSuppliersList.setFixedCellHeight(30);
+        topSuppliersList.setFocusable(false);
+        jScrollPane6.setViewportView(topSuppliersList);
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel51, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel50, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel49, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel48, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+                .addGap(27, 27, 27)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane6)
                     .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43))))
+                        .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(14, 14, 14)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel33)
                     .addComponent(jLabel34))
-                .addGap(20, 20, 20)
-                .addComponent(jLabel32)
-                .addGap(10, 10, 10)
-                .addComponent(jLabel48)
-                .addGap(10, 10, 10)
-                .addComponent(jLabel50)
-                .addGap(10, 10, 10)
-                .addComponent(jLabel49)
-                .addGap(10, 10, 10)
-                .addComponent(jLabel51)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -666,28 +977,31 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
         jLabel53.setForeground(new java.awt.Color(0, 67, 133));
         jLabel53.setText("Best Sellings");
 
-        jTable4.setBackground(new java.awt.Color(242, 242, 242));
-        jTable4.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        jScrollPane5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+
+        bestSellingTable.setBackground(new java.awt.Color(242, 248, 255));
+        bestSellingTable.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 14)); // NOI18N
+        bestSellingTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"reg rdgbdrv", "343", "3434"},
-                {"fvsdvfsdf", "343", "4334"},
-                {"erevrerv", "909", "343"},
-                {"wewew", "2323", "323"},
-                {" dsdsd", "2332", "2323"}
+
             },
             new String [] {
                 "Product", "Sold", "Left In Stock"
             }
         ));
-        jTable4.setFocusable(false);
-        jTable4.setGridColor(new java.awt.Color(255, 255, 255));
-        jTable4.setRowHeight(30);
-        jTable4.getTableHeader().setReorderingAllowed(false);
-        jScrollPane5.setViewportView(jTable4);
-        if (jTable4.getColumnModel().getColumnCount() > 0) {
-            jTable4.getColumnModel().getColumn(1).setPreferredWidth(150);
-            jTable4.getColumnModel().getColumn(1).setMaxWidth(100);
+        bestSellingTable.setEnabled(false);
+        bestSellingTable.setFocusable(false);
+        bestSellingTable.setGridColor(new java.awt.Color(255, 255, 255));
+        bestSellingTable.setRowHeight(30);
+        bestSellingTable.setShowHorizontalLines(true);
+        bestSellingTable.setShowVerticalLines(true);
+        bestSellingTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane5.setViewportView(bestSellingTable);
+        if (bestSellingTable.getColumnModel().getColumnCount() > 0) {
+            bestSellingTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+            bestSellingTable.getColumnModel().getColumn(1).setMaxWidth(100);
+            bestSellingTable.getColumnModel().getColumn(2).setPreferredWidth(150);
+            bestSellingTable.getColumnModel().getColumn(2).setMaxWidth(100);
         }
 
         jLabel54.setFont(new java.awt.Font("Roboto", 1, 15)); // NOI18N
@@ -781,7 +1095,7 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(jPanel2Layout.createSequentialGroup()
                                     .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGap(18, 18, 18)
                                     .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -824,29 +1138,27 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable bestSellingTable;
+    private javax.swing.JLabel brandsLabel;
     private javax.swing.JPanel cardPanel1;
     private javax.swing.JPanel cardPanel2;
     private javax.swing.JPanel cardPanel3;
     private javax.swing.JPanel cardPanel4;
+    private javax.swing.JLabel dailyIncomeLabel;
+    private javax.swing.JLabel grnLabel;
+    private javax.swing.JTable highStockTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
@@ -863,18 +1175,12 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel47;
-    private javax.swing.JLabel jLabel48;
-    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel50;
-    private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -890,8 +1196,148 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable4;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JTable lowStockTable;
+    private javax.swing.JLabel monthlyIncomeLabel;
+    private javax.swing.JLabel paymentLabel;
+    private javax.swing.JLabel productLabel;
+    private javax.swing.JLabel salesLabel;
+    private javax.swing.JLabel suppliersLabel;
+    private javax.swing.JList<String> topSuppliersList;
     // End of variables declaration//GEN-END:variables
+
+    private void TableRender() {
+
+        //highStockTable
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        JTableHeader tableHeader = highStockTable.getTableHeader();
+
+        tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Font headerFont = new Font("Verdana", Font.BOLD, 12);
+                label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
+                label.setFont(headerFont);
+                label.setBackground(new Color(0, 60, 151)); // Optional: Set header background color
+                label.setForeground(Color.WHITE); // Optional: Set header text color
+                label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+                return label;
+            }
+        });
+
+        tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 25));
+
+        for (int i = 0; i < 3; i++) {
+            highStockTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        //highStockTable
+        JTableHeader tableHeader2 = lowStockTable.getTableHeader();
+        tableHeader2.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Font headerFont = new Font("Verdana", Font.BOLD, 12);
+                label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
+                label.setFont(headerFont);
+                label.setBackground(new Color(0, 60, 151)); // Optional: Set header background color
+                label.setForeground(Color.WHITE); // Optional: Set header text color
+                label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+                return label;
+            }
+        });
+        tableHeader2.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 25));
+
+        for (int i = 0; i < 3; i++) {
+            lowStockTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        // bestSellingTable customization
+        JTableHeader tableHeader3 = bestSellingTable.getTableHeader();
+
+        // Customize table header
+        tableHeader3.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Font headerFont = new Font("Verdana", Font.BOLD, 12);
+                label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
+                label.setFont(headerFont);
+                label.setBackground(new Color(0, 60, 151)); // Optional: Set header background color
+                label.setForeground(Color.WHITE); // Optional: Set header text color
+                label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+                return label;
+            }
+        });
+
+        // Set the preferred size for the table header
+        tableHeader3.setPreferredSize(new Dimension(tableHeader3.getPreferredSize().width, 25));
+
+        // Center alignment renderer for other columns
+        DefaultTableCellRenderer centerRenderer2 = new DefaultTableCellRenderer();
+        centerRenderer2.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Apply center alignment to all columns
+        for (int i = 0; i < 3; i++) {
+            bestSellingTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer2);
+        }
+
+        // Custom renderer for a single column (e.g., the second column, index 1)
+        TableCellRenderer customColumnRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                // Customize background and foreground colors for this column
+                if (!isSelected) {
+//                    label.setBackground(new Color(150, 230, 140));
+                    label.setForeground(new Color(0, 128, 6)); // Text color
+                } else {
+                    label.setBackground(table.getSelectionBackground()); // Keep selection color
+                    label.setForeground(table.getSelectionForeground());
+                }
+
+                label.setFont(new Font("Roboto", Font.BOLD, 16));
+                label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+
+                return label;
+            }
+        };
+
+        // Apply the custom renderer to a specific column (e.g., column index 1)
+        bestSellingTable.getColumnModel().getColumn(1).setCellRenderer(customColumnRenderer);
+
+    }
+
+    // Custom Renderer Class
+    static class CustomColumnRenderer extends DefaultTableCellRenderer {
+
+        private final Color backgroundColor;
+
+        public CustomColumnRenderer(Color backgroundColor) {
+            this.backgroundColor = backgroundColor;
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(
+                JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            // Set custom background color only if not selected
+            if (!isSelected) {
+                c.setBackground(backgroundColor);
+            } else {
+                c.setBackground(table.getSelectionBackground());
+            }
+            return c;
+        }
+    }
+
 }
