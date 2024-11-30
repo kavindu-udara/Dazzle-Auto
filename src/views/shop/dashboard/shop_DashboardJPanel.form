@@ -150,33 +150,35 @@
                               <Component id="cardPanel3" alignment="0" max="32767" attributes="0"/>
                               <Component id="cardPanel4" alignment="0" min="-2" pref="85" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jPanel6" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jPanel11" max="32767" attributes="0"/>
-                                      <Component id="jPanel8" alignment="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="228" max="-2" attributes="0"/>
+                                  <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <Component id="jPanel7" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="jPanel12" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="jPanel6" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="jPanel11" max="32767" attributes="0"/>
+                                              <Component id="jPanel8" alignment="0" max="32767" attributes="0"/>
                                           </Group>
-                                          <Component id="jPanel10" max="32767" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <Component id="jPanel7" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                  <Component id="jPanel12" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Component id="jPanel10" max="32767" attributes="0"/>
+                                          </Group>
                                       </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="107" max="-2" attributes="0"/>
-                                          <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="494" max="32767" attributes="0"/>
+                          <EmptySpace pref="486" max="32767" attributes="0"/>
                           <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
                       </Group>
@@ -813,10 +815,14 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                               <Component id="jLabel35" min="-2" pref="231" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="chart" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -825,6 +831,8 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                               <Component id="jLabel35" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="chart" min="-2" pref="286" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -842,6 +850,8 @@
                         <Property name="horizontalAlignment" type="int" value="2"/>
                         <Property name="text" type="java.lang.String" value="Issued Invoices"/>
                       </Properties>
+                    </Component>
+                    <Component class="views.components.charts.com.raven.chart.Chart" name="chart">
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1205,7 +1215,7 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jScrollPane6" min="-2" pref="153" max="-2" attributes="0"/>
-                              <EmptySpace pref="8" max="32767" attributes="0"/>
+                              <EmptySpace pref="35" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1316,8 +1326,8 @@
                                   <Component id="jLabel54" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jScrollPane5" pref="182" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jScrollPane5" pref="190" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
