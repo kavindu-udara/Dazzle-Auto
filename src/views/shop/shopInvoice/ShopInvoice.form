@@ -139,7 +139,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane1" min="-2" pref="226" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="jLabel8" min="-2" pref="67" max="-2" attributes="0"/>
+                              <Component id="jLabel8" min="-2" pref="96" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jStockIDField" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -335,7 +335,7 @@
                   <Color blue="33" green="0" red="0" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="Stock :"/>
+                <Property name="text" type="java.lang.String" value="Stock ID :"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jStockIDField">

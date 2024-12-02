@@ -454,12 +454,15 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jStaffButtonActionPerformed
 
     private void jDashboardButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDashboardButton1ActionPerformed
+            
         jTabbedPane1.setSelectedIndex(0);
 
         if (dashboardMainPanel == null) {
             dashboardPanel = new DashboardPanel();
             jDashboardPanel.add(dashboardPanel, BorderLayout.CENTER);
             SwingUtilities.updateComponentTreeUI(this);
+        }else{
+            dashboardPanel.reload();
         }
     }//GEN-LAST:event_jDashboardButton1ActionPerformed
 
