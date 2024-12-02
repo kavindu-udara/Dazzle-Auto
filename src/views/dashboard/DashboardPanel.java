@@ -65,6 +65,7 @@ public class DashboardPanel extends javax.swing.JPanel {
             ResultSet resultSet = MySqlConnection.executeSearch("SELECT DATE_FORMAT(`date`, '%Y-%m-%d') AS `inv_date`, COUNT(id) AS `count` "
                     + "FROM service_invoice GROUP BY `inv_date` ORDER BY `inv_date` ASC LIMIT 6 ");
 
+            chart.model.clear();
             while (resultSet.next()) {
                 String inv_date = resultSet.getString("inv_date");
                 int count = resultSet.getInt("count");
@@ -745,7 +746,7 @@ public class DashboardPanel extends javax.swing.JPanel {
         jPanel5.add(jScrollPane1);
         jScrollPane1.setBounds(120, 40, 130, 170);
         jPanel5.add(pieChart1);
-        pieChart1.setBounds(260, 0, 250, 220);
+        pieChart1.setBounds(270, 0, 240, 220);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -788,13 +789,13 @@ public class DashboardPanel extends javax.swing.JPanel {
         jLabel28.setText("Most Serviced Vehicles");
 
         typeLabel1.setFont(new java.awt.Font("Roboto", 1, 15)); // NOI18N
-        typeLabel1.setText("type1");
+        typeLabel1.setText("Type 1");
 
         typeLabel3.setFont(new java.awt.Font("Roboto", 1, 15)); // NOI18N
-        typeLabel3.setText("type1");
+        typeLabel3.setText("Type 3");
 
         typeLabel2.setFont(new java.awt.Font("Roboto", 1, 15)); // NOI18N
-        typeLabel2.setText("type1");
+        typeLabel2.setText("Type 2");
 
         jProgressBar1.setBackground(new java.awt.Color(255, 255, 255));
         jProgressBar1.setForeground(new java.awt.Color(255, 153, 0));
@@ -956,19 +957,23 @@ public class DashboardPanel extends javax.swing.JPanel {
         jLabel35.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel35.setText("Issued Invoices");
 
+        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
@@ -977,10 +982,12 @@ public class DashboardPanel extends javax.swing.JPanel {
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

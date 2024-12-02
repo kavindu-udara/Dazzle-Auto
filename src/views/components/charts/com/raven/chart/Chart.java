@@ -10,8 +10,8 @@ import views.components.charts.com.raven.charts.blankchart.SeriesSize;
 
 public class Chart extends javax.swing.JPanel {
 
-    private List<ModelLegend> legends = new ArrayList<>();
-    private List<ModelChart> model = new ArrayList<>();
+    public List<ModelLegend> legends = new ArrayList<>();
+    public List<ModelChart> model = new ArrayList<>();
     private final int seriesSize = 25;
     private final int seriesSpace = 6;
 
@@ -40,7 +40,11 @@ public class Chart extends javax.swing.JPanel {
 
     public void addLegend(String name, Color color) {
         ModelLegend data = new ModelLegend(name, color);
+        legends.clear();
         legends.add(data);
+        jPanel1.removeAll();
+        jPanel1.repaint();
+        jPanel1.revalidate();
         jPanel1.add(new LegendItem(data));
         jPanel1.repaint();
         jPanel1.revalidate();
