@@ -5,6 +5,7 @@
 package views;
 
 import includes.MySqlConnection;
+import includes.Mailer;
 import java.awt.Toolkit;
 
 /**
