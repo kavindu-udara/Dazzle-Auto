@@ -74,7 +74,7 @@ public class DashboardPanel extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while setIssuedInvoices() : " + e.getMessage());
-        }      
+        }
     }
 
     public void setTopCustomers() {
@@ -153,17 +153,25 @@ public class DashboardPanel extends javax.swing.JPanel {
                 countArry.add(resultSet.getInt("vcount"));
             }
 
-            typeLabel1.setText(typeArry.get(0));
-            typeLabel2.setText(typeArry.get(1));
-            typeLabel3.setText(typeArry.get(2));
+            int arrySize = typeArry.size();
 
-            countLabel1.setText(String.valueOf(countArry.get(0)));
-            countLabel2.setText(String.valueOf(countArry.get(1)));
-            countLabel3.setText(String.valueOf(countArry.get(2)));
+            if (arrySize >= 1) {
+                jProgressBar1.setValue(countArry.get(0));
+                typeLabel1.setText(typeArry.get(0));
+                countLabel1.setText(String.valueOf(countArry.get(0)));
+            }
 
-            jProgressBar1.setValue(countArry.get(0));
-            jProgressBar2.setValue(countArry.get(1));
-            jProgressBar3.setValue(countArry.get(2));
+            if (arrySize >= 2) {
+                jProgressBar2.setValue(countArry.get(1));
+                typeLabel2.setText(typeArry.get(1));
+                countLabel2.setText(String.valueOf(countArry.get(1)));
+            }
+
+            if (arrySize >= 3) {
+                jProgressBar3.setValue(countArry.get(2));
+                typeLabel3.setText(typeArry.get(2));
+                countLabel3.setText(String.valueOf(countArry.get(2)));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
