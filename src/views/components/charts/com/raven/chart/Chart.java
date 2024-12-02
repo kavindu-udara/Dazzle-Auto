@@ -1,12 +1,12 @@
 package views.components.charts.com.raven.chart;
 
-import com.raven.chart.blankchart.BlankPlotChart;
-import com.raven.chart.blankchart.BlankPlotChatRender;
-import com.raven.chart.blankchart.SeriesSize;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
+import views.components.charts.com.raven.charts.blankchart.BlankPlotChart;
+import views.components.charts.com.raven.charts.blankchart.BlankPlotChatRender;
+import views.components.charts.com.raven.charts.blankchart.SeriesSize;
 
 public class Chart extends javax.swing.JPanel {
 
@@ -17,7 +17,7 @@ public class Chart extends javax.swing.JPanel {
 
     public Chart() {
         initComponents();
-        blankPlotChart.setBlankPlotChatRender(new BlankPlotChatRender() {
+        blankPlotChart1.setBlankPlotChatRender(new BlankPlotChatRender() {
             @Override
             public String getLabelText(int index) {
                 return model.get(index).getLabel();
@@ -48,10 +48,10 @@ public class Chart extends javax.swing.JPanel {
 
     public void addData(ModelChart data) {
         model.add(data);
-        blankPlotChart.setLabelCount(model.size());
+        blankPlotChart1.setLabelCount(model.size());
         double max = data.getMaxValues();
-        if (max > blankPlotChart.getMaxValues()) {
-            blankPlotChart.setMaxValues(max);
+        if (max > blankPlotChart1.getMaxValues()) {
+            blankPlotChart1.setMaxValues(max);
         }
     }
 
@@ -59,8 +59,8 @@ public class Chart extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        blankPlotChart = new com.raven.chart.blankchart.BlankPlotChart();
         jPanel1 = new javax.swing.JPanel();
+        blankPlotChart1 = new views.components.charts.com.raven.charts.blankchart.BlankPlotChart();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(477, 353));
@@ -72,21 +72,21 @@ public class Chart extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(blankPlotChart, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
+            .addComponent(blankPlotChart1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(blankPlotChart, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(blankPlotChart1, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.chart.blankchart.BlankPlotChart blankPlotChart;
+    private views.components.charts.com.raven.charts.blankchart.BlankPlotChart blankPlotChart1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

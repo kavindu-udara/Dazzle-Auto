@@ -21,8 +21,8 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="ibColor" min="-2" pref="26" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="ibColor" min="-2" pref="23" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               <Component id="ibName" min="-2" pref="104" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -53,12 +53,9 @@
         <Property name="text" type="java.lang.String" value="Name"/>
       </Properties>
     </Component>
-    <Component class="com.raven.chart.LabelColor" name="ibColor">
+    <Component class="views.components.charts.com.raven.chart.LabelColor" name="ibColor">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="cc" green="0" red="0" type="rgb"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="cc" green="0" red="0" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="labelColor1"/>

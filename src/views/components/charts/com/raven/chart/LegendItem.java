@@ -14,7 +14,7 @@ public class LegendItem extends javax.swing.JPanel {
     private void initComponents() {
 
         ibName = new javax.swing.JLabel();
-        ibColor = new com.raven.chart.LabelColor();
+        ibColor = new views.components.charts.com.raven.chart.LabelColor();
 
         setOpaque(false);
 
@@ -23,7 +23,6 @@ public class LegendItem extends javax.swing.JPanel {
         ibName.setText("Name");
 
         ibColor.setBackground(new java.awt.Color(0, 0, 204));
-        ibColor.setForeground(new java.awt.Color(0, 0, 204));
         ibColor.setText("labelColor1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -32,8 +31,8 @@ public class LegendItem extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ibColor, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ibColor, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(ibName, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -50,7 +49,7 @@ public class LegendItem extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.chart.LabelColor ibColor;
+    private views.components.charts.com.raven.chart.LabelColor ibColor;
     private javax.swing.JLabel ibName;
     // End of variables declaration//GEN-END:variables
 }
