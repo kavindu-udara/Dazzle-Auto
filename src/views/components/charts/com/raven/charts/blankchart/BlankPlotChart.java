@@ -163,8 +163,8 @@ public class BlankPlotChart extends JComponent {
             double height = getHeight() - insets.top - insets.bottom - textHeight;
             double space = width / labelCount;
             double locationX = insets.left + textWidth + spaceText;
-            for (int i = 0; i < labelCount; i++) {                
-                    blankPlotChatRender.renderSeries(this, g2, getRectangle(i, height, space, locationX, insets.top), i);
+            for (int i = 0; i < labelCount; i++) {
+                blankPlotChatRender.renderSeries(this, g2, getRectangle(i, height, space, locationX, insets.top), i);
             }
         }
     }
@@ -200,7 +200,7 @@ public class BlankPlotChart extends JComponent {
 
     public SeriesSize getRectangle(int index, double height, double space, double startX, double startY) {
         double x = startX + space * index;
-        SeriesSize size = new SeriesSize(x, startY+1, space, height);
+        SeriesSize size = new SeriesSize(x, startY + 1, space, height);
         return size;
     }
 

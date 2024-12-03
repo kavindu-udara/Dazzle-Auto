@@ -68,6 +68,7 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
             ResultSet resultSet = MySqlConnection.executeSearch("SELECT DATE_FORMAT(`date`, '%Y-%m-%d') AS `inv_date`, COUNT(id) AS `count` "
                     + "FROM `shop_invoice` GROUP BY `inv_date` ORDER BY `inv_date` ASC LIMIT 6 ");
 
+            chart.model.clear();
             while (resultSet.next()) {
                 String inv_date = resultSet.getString("inv_date");
                 int count = resultSet.getInt("count");
