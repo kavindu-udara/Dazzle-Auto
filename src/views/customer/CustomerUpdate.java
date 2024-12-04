@@ -13,13 +13,11 @@ import includes.RegexValidator;
 import java.awt.Frame;
 import models.CustomerModel;
 import controllers.CustomerController;
-import controllers.StatusController;
 import includes.LoggerConfig;
 import includes.OnlyLettersDocumentFilter;
 import includes.TimestampsGenerator;
+import java.awt.Toolkit;
 import java.util.logging.Logger;
-import javax.print.attribute.DateTimeSyntax;
-import java.sql.ResultSet;
 
 /**
  *
@@ -37,6 +35,7 @@ public class CustomerUpdate extends java.awt.Dialog {
     public CustomerUpdate(Frame parent, boolean modal, CustomerModel customerModel) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
         setDocumentFilters();
 
         this.customerModel = customerModel;

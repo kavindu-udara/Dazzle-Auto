@@ -17,6 +17,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
@@ -64,6 +65,7 @@ public class MainInvoice extends javax.swing.JFrame {
         this.paymentsPanel = parent;
 
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
 
         setDocumentFilters();
         invoiceTableRender();

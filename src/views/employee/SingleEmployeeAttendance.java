@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
@@ -48,6 +49,8 @@ public class SingleEmployeeAttendance extends javax.swing.JDialog {
     public SingleEmployeeAttendance(java.awt.Frame parent, boolean modal, String empId) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
+        
         this.empId = empId;
         loadTableData();
         SingleEmployeeTableRender();
@@ -214,6 +217,7 @@ public class SingleEmployeeAttendance extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        attendanceTable.setFocusable(false);
         jScrollPane1.setViewportView(attendanceTable);
 
         employeeIdValueLabel.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N

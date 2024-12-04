@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
@@ -61,6 +62,7 @@ public class ShopInvoice extends javax.swing.JFrame {
 
     public ShopInvoice(Shop_PaymentJPanel shop_PaymentJPanel) {
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
 
         this.ShopPaymentJPanel = shop_PaymentJPanel;
 
