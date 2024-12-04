@@ -12,6 +12,7 @@ import includes.LoggerConfig;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
@@ -49,6 +50,7 @@ public class ShopDashboard extends javax.swing.JFrame {
     public ShopDashboard(LoginModel loginModel) {
         this.loginModel = loginModel;
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
 
         roundPanels();
         dateTime();

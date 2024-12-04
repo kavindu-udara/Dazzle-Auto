@@ -6,9 +6,8 @@ package views.customer;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog;
-import java.awt.Frame;
+import java.awt.Toolkit;
 import javax.swing.SwingUtilities;
-import views.vehicle.VehiclesJPanel;
 
 /**
  *
@@ -25,6 +24,7 @@ public class CustomerSelector extends javax.swing.JDialog {
         this.BaseDialogName = parentDialogName;
         
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
         
         CustomerJPanel customerJPanel = new CustomerJPanel(ParentDialog, this,BaseDialogName);
         jPanel1.add(customerJPanel, BorderLayout.CENTER);

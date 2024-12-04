@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -40,6 +41,7 @@ public class EmployeeSelectorDialog extends javax.swing.JDialog {
     public EmployeeSelectorDialog(java.awt.Frame parent, boolean modal, EmployeeSalaryPanel salaryPanel, String action, Runnable actionMethod) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
         this.salaryPanel = salaryPanel;
         this.action = action;
         this.actionMethod = actionMethod;

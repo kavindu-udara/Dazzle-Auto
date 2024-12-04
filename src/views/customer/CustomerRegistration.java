@@ -15,6 +15,7 @@ import controllers.CustomerController;
 import includes.LoggerConfig;
 import includes.OnlyLettersDocumentFilter;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.util.logging.Logger;
 import models.CustomerModel;
 
@@ -34,6 +35,7 @@ public class CustomerRegistration extends java.awt.Dialog {
     public CustomerRegistration(Frame parent, boolean modal, CustomerJPanel customerJPanel) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
         setDocumentFilters();
 
 //        this.customerJPanel = customerJPanel;

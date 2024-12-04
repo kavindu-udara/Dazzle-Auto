@@ -6,6 +6,7 @@ package views.employee;
 
 import java.awt.BorderLayout;
 import java.awt.Dialog;
+import java.awt.Toolkit;
 import javax.swing.SwingUtilities;
 
 
@@ -23,7 +24,7 @@ public class EmployeeSelector extends javax.swing.JDialog {
         this.parentFrame = parent;
         this.BaseFrame = parentFrameName;
         initComponents();
-        
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
         
         StaffJPanel staffJPanel = new StaffJPanel(parentFrame, this, BaseFrame);
         jPanel1.add(staffJPanel, BorderLayout.CENTER);
