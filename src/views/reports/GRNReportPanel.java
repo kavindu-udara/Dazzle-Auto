@@ -106,6 +106,7 @@ public class GRNReportPanel extends javax.swing.JPanel {
         jToDateField = new javax.swing.JFormattedTextField();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
+        setPreferredSize(new java.awt.Dimension(1100, 610));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
