@@ -37,6 +37,7 @@ public class SplashWindow extends javax.swing.JFrame {
                     }
                     if (i == 70) {
                         LoadingText.setText("Setting Up Coonection..");
+                        //new Mailer().sendMail("dumindusankalpa137@gmail.com", "hello", "this is a test for email sending in dazzle auto software");
                     }
                     if (i == 90) {
                         LoadingText.setText("Almost There..");

@@ -84,11 +84,11 @@ public class SignIn extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel3.setText("Username");
         jPanel2.add(jLabel3);
-        jLabel3.setBounds(40, 201, 81, 22);
+        jLabel3.setBounds(33, 201, 90, 22);
 
         EmailField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jPanel2.add(EmailField);
-        EmailField.setBounds(139, 192, 217, 39);
+        EmailField.setBounds(130, 190, 217, 39);
 
         PasswordField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         PasswordField.addActionListener(new java.awt.event.ActionListener() {
@@ -97,12 +97,12 @@ public class SignIn extends javax.swing.JFrame {
             }
         });
         jPanel2.add(PasswordField);
-        PasswordField.setBounds(140, 250, 180, 40);
+        PasswordField.setBounds(130, 250, 180, 40);
 
         jLabel4.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel4.setText("Password");
         jPanel2.add(jLabel4);
-        jLabel4.setBounds(42, 256, 79, 22);
+        jLabel4.setBounds(41, 256, 80, 22);
 
         SignInButton.setBackground(new java.awt.Color(5, 15, 76));
         SignInButton.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
@@ -116,7 +116,7 @@ public class SignIn extends javax.swing.JFrame {
             }
         });
         jPanel2.add(SignInButton);
-        SignInButton.setBounds(139, 319, 220, 50);
+        SignInButton.setBounds(130, 320, 220, 50);
 
         jButton2.setBackground(new java.awt.Color(5, 15, 76));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/eye.png"))); // NOI18N
@@ -137,7 +137,7 @@ public class SignIn extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jButton2);
-        jButton2.setBounds(310, 250, 50, 40);
+        jButton2.setBounds(300, 250, 50, 40);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
