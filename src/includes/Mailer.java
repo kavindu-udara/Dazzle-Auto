@@ -5,10 +5,11 @@
 package includes;
 
 import java.util.Properties;
-import jakarta.mail.*;
-import jakarta.mail.internet.*;
+import javax.mail.*;
+import javax.mail.internet.*;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import java.io.File;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
@@ -36,7 +37,18 @@ public class Mailer {
         properties.put("mail.smtp.port", port);
     }
 
-    public void sendMail(String recipientEmail, String subject, String body) {
+    /**
+     * Sends an email with given recipient email, subject, body, and attachment
+     * path. If the attachment path is null, the email is sent without
+     * attachment.
+     *
+     * @param recipientEmail the email address of the recipient
+     * @param subject the subject of the email
+     * @param body the body of the email
+     * @param attachmentPath the path to the attachment file, or null if no
+     * attachment is needed
+     */
+    public void sendMail(String recipientEmail, String subject, String body, String attachmentPath) {
 
         if (host != null && username != null && password != null && dotenv.get("MAILER_PORT") != null) {
             // Create a session
@@ -53,18 +65,35 @@ public class Mailer {
                 message.setFrom(new InternetAddress(username)); // From address
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail)); // To address
                 message.setSubject(subject); // Subject
-                message.setText(body); // Email body
+
+                // Create Message Body
+                BodyPart messageBodyPart = new MimeBodyPart();
+                messageBodyPart.setText(body);
+
+                Multipart multipart = new MimeMultipart();
+                multipart.addBodyPart(messageBodyPart);
+
+                if (attachmentPath != null) {
+                    MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+                    attachmentBodyPart.attachFile(new File(attachmentPath));
+
+                    multipart.addBodyPart(attachmentBodyPart);
+                }
+
+                message.setContent(multipart);
 
                 // Send the message
                 Transport.send(message);
                 logger.info("Email Sended : " + recipientEmail + ", Subject : " + subject + ", Body : " + body);
                 JOptionPane.showMessageDialog(null, "Email sent successfully!");
-            } catch (MessagingException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-                logger.info("Email Send Failed : " + recipientEmail + ", Subject : " + subject + ", Body : " + body + ", Error : " + e.getMessage());
+                logger.info("Email Send Failed : " + recipientEmail + ", Subject : " + subject + ", Body : " + body
+                        + ", Error : " + e.getMessage());
                 JOptionPane.showMessageDialog(null, "Failed to send email: " + e.getMessage());
             }
-        };
+        }
+        ;
 
     }
 
