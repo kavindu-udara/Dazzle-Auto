@@ -225,7 +225,7 @@ public class EmployeeAttendance extends javax.swing.JPanel {
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             attendanceTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }

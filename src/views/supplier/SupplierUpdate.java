@@ -108,6 +108,7 @@ public class SupplierUpdate extends java.awt.Dialog {
         jLabel8 = new javax.swing.JLabel();
         sup_status = new javax.swing.JComboBox<>();
 
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);

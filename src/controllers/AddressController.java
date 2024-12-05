@@ -25,9 +25,18 @@ public class AddressController {
     }
 
     public ResultSet store(AddressModel addressModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`employee_id`, `supplier_id`, `lane1`, `lane2`, `city`, `postalcode`) VALUES "
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`employee_id`, `supplier_id`, `lane1`, `lane2`, `city_id`, `postalcode`) VALUES "
                 + "('" + addressModel.getEmployeeId() + "', "
                 + "'" + addressModel.getSupplierId() + "', "
+                + "'" + addressModel.getLane1() + "', "
+                + "'" + addressModel.getLane2() + "', "
+                + "'" + addressModel.getCity() + "', "
+                + "'" + addressModel.getPostalCode() + "') ");
+    }
+    
+    public ResultSet storeSupplierAddress(AddressModel addressModel) throws Exception {
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`supplier_id`, `lane1`, `lane2`, `city_id`, `postalcode`) VALUES "
+                + "('" + addressModel.getSupplierId() + "', "
                 + "'" + addressModel.getLane1() + "', "
                 + "'" + addressModel.getLane2() + "', "
                 + "'" + addressModel.getCity() + "', "
