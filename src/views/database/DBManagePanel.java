@@ -5,6 +5,7 @@
 package views.database;
 
 import includes.LoggerConfig;
+import includes.Mailer;
 import includes.MySqlConnection;
 import includes.TimestampsGenerator;
 import java.io.FileInputStream;
@@ -172,7 +173,7 @@ public class DBManagePanel extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(null, "Backup Failed with exit code: " + exitCode);
                     logger.severe("Backup Failed with exit code : " + exitCode);
                 }
-
+                              
             } catch (Exception e) {
                 e.printStackTrace();
             }

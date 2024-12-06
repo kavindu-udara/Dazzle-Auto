@@ -33,8 +33,11 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import jnafilechooser.api.JnaFileChooser;
 import models.AddressModel;
 import models.EmployeeImageModel;
+import raven.toast.Notifications;
+import views.dashboard.Dashboard;
 
 /**
  *
@@ -54,6 +57,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
         setDocumentFilters();
         loadTypes();
         loadCity();
+        Notifications.getInstance().setJFrame(null);
 
         this.staffJPanel = staffJPanel;
     }
@@ -409,11 +413,12 @@ public class EmployeeRegistration extends java.awt.Dialog {
     BufferedImage originalImage = null;
     File selectedFile = null;
     private void employee_imageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_imageMouseClicked
-        // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(this);
 
-        if (result == JFileChooser.APPROVE_OPTION) {
+        JnaFileChooser fileChooser = new JnaFileChooser();
+        fileChooser.addFilter("PNG JPG AND JPEG", "png", "jpg", "jpeg");
+        boolean result = fileChooser.showOpenDialog(this);
+
+        if (result) {
 
             selectedFile = fileChooser.getSelectedFile();
             try {
@@ -442,6 +447,11 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 ex.printStackTrace();
                 logger.severe("Error while reading selected image : " + ex.getMessage());
             }
+        } else {
+            Notifications.getInstance().show(
+                    Notifications.Type.ERROR,
+                    Notifications.Location.TOP_RIGHT,
+                    "File Not Selected !");
         }
     }//GEN-LAST:event_employee_imageMouseClicked
 
@@ -451,100 +461,100 @@ public class EmployeeRegistration extends java.awt.Dialog {
     }//GEN-LAST:event_employee_reset_btnActionPerformed
 
     private void employee_register_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_register_btnActionPerformed
-String firstName = employee_firstname.getText();
-String lastName = employee_lastname.getText();
-String nic = employee_nic.getText();
-String email = employee_email.getText();
-String mobile = employee_mobile.getText();
-String employeeType = String.valueOf(employee_type.getSelectedItem());
-String lane1 = Lane1Field.getText();
-String lane2 = lane2Field.getText();
-String postalCode = PostalCodeField.getText();
-String cityName = String.valueOf(cityComboBox.getSelectedItem());
+        String firstName = employee_firstname.getText();
+        String lastName = employee_lastname.getText();
+        String nic = employee_nic.getText();
+        String email = employee_email.getText();
+        String mobile = employee_mobile.getText();
+        String employeeType = String.valueOf(employee_type.getSelectedItem());
+        String lane1 = Lane1Field.getText();
+        String lane2 = lane2Field.getText();
+        String postalCode = PostalCodeField.getText();
+        String cityName = String.valueOf(cityComboBox.getSelectedItem());
 
-if (firstName.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
-} else if (lastName.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Please enter your last name", "Warning", JOptionPane.WARNING_MESSAGE);
-} else if (email.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Please enter your email", "Warning", JOptionPane.WARNING_MESSAGE);
-} else if (!RegexValidator.isValidEmail(email)) {
-    JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
-} else if (nic.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Please enter your NIC", "Warning", JOptionPane.WARNING_MESSAGE);
-} else if (!RegexValidator.isValidSlNic(nic) && !RegexValidator.isValidSlNewNic(nic)) {
-    JOptionPane.showMessageDialog(this, "Invalid NIC Number", "Warning", JOptionPane.WARNING_MESSAGE);
-} else if (mobile.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Please enter your mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
-} else if (!RegexValidator.isValidSlPhone(mobile)) {
-    JOptionPane.showMessageDialog(this, "Invalid mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
-} else if (employeeType.equals("Select")) {
-    JOptionPane.showMessageDialog(this, "Please select an employee type", "Warning", JOptionPane.WARNING_MESSAGE);
-} else {
-    try {
-        String generatedId = IDGenarator.employeeID();
+        if (firstName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (lastName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your last name", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (email.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your email", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (!RegexValidator.isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (nic.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your NIC", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (!RegexValidator.isValidSlNic(nic) && !RegexValidator.isValidSlNewNic(nic)) {
+            JOptionPane.showMessageDialog(this, "Invalid NIC Number", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (mobile.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter your mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (!RegexValidator.isValidSlPhone(mobile)) {
+            JOptionPane.showMessageDialog(this, "Invalid mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (employeeType.equals("Select")) {
+            JOptionPane.showMessageDialog(this, "Please select an employee type", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                String generatedId = IDGenarator.employeeID();
 
-        EmployeeModel employeeModel = new EmployeeModel();
-        AddressModel addressModel = new AddressModel();
+                EmployeeModel employeeModel = new EmployeeModel();
+                AddressModel addressModel = new AddressModel();
 
-        employeeModel.setId(generatedId);
-        employeeModel.setFirstName(firstName);
-        employeeModel.setLastName(lastName);
-        employeeModel.setEmail(email);
-        employeeModel.setNic(nic);
-        employeeModel.setMobile(mobile);
+                employeeModel.setId(generatedId);
+                employeeModel.setFirstName(firstName);
+                employeeModel.setLastName(lastName);
+                employeeModel.setEmail(email);
+                employeeModel.setNic(nic);
+                employeeModel.setMobile(mobile);
 
-        // Map employee type ID
-        employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
-        employeeModel.setStatusId(1);
+                // Map employee type ID
+                employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
+                employeeModel.setStatusId(1);
 
-        // Set registration date
-        String registerDateTime = TimestampsGenerator.getFormattedDateTime();
-        employeeModel.setRegisteredDate(registerDateTime);
+                // Set registration date
+                String registerDateTime = TimestampsGenerator.getFormattedDateTime();
+                employeeModel.setRegisteredDate(registerDateTime);
 
-        addressModel.setLane1(lane1);
-        addressModel.setLane2(lane2);
-        addressModel.setPostalCode(postalCode);
+                addressModel.setLane1(lane1);
+                addressModel.setLane2(lane2);
+                addressModel.setPostalCode(postalCode);
 
-        // Map city ID
-        if (!CityMap.containsValue(cityName)) {
-            JOptionPane.showMessageDialog(this, "City not found", "Warning", JOptionPane.WARNING_MESSAGE);
-            return;
+                // Map city ID
+                if (!CityMap.containsValue(cityName)) {
+                    JOptionPane.showMessageDialog(this, "City not found", "Warning", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                int cityId = CityMap.entrySet().stream()
+                        .filter(entry -> entry.getValue().equals(cityName))
+                        .map(Map.Entry::getKey)
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException("City not found"));
+
+                addressModel.setCity(cityName);
+
+                // Store employee and address
+                ResultSet resultSet = new EmployeeController().store(employeeModel);
+                ResultSet resultSet2 = new AddressController().storeSupplierAddress(addressModel);
+
+                // Save image
+                String imagePath = saveImage(generatedId + nic + firstName + lastName);
+                if (imagePath != null) {
+                    EmployeeImageModel employeeImageModel = new EmployeeImageModel();
+                    employeeImageModel.setPath(imagePath);
+                    employeeImageModel.setEmployeeId(generatedId);
+
+                    new EmployeeImageController().store(employeeImageModel);
+                }
+
+                JOptionPane.showMessageDialog(this, "Employee Registration Successful");
+
+                // Reload view table
+                staffJPanel.reloadTable();
+
+                reset();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                logger.severe("Error while storing employee: " + e.getMessage());
+            }
         }
-        int cityId = CityMap.entrySet().stream()
-            .filter(entry -> entry.getValue().equals(cityName))
-            .map(Map.Entry::getKey)
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("City not found"));
-        
-        addressModel.setCity(cityName);
-
-        // Store employee and address
-        ResultSet resultSet = new EmployeeController().store(employeeModel);
-        ResultSet resultSet2 = new AddressController().storeSupplierAddress(addressModel);
-
-        // Save image
-        String imagePath = saveImage(generatedId + nic + firstName + lastName);
-        if (imagePath != null) {
-            EmployeeImageModel employeeImageModel = new EmployeeImageModel();
-            employeeImageModel.setPath(imagePath);
-            employeeImageModel.setEmployeeId(generatedId);
-
-            new EmployeeImageController().store(employeeImageModel);
-        }
-
-        JOptionPane.showMessageDialog(this, "Employee Registration Successful");
-
-        // Reload view table
-        staffJPanel.reloadTable();
-
-        reset();
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        logger.severe("Error while storing employee: " + e.getMessage());
-    }
-}
 
 
     }//GEN-LAST:event_employee_register_btnActionPerformed

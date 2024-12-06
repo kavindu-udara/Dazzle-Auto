@@ -6,6 +6,7 @@ package views;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.IntelliJTheme;
+import includes.Mailer;
 import java.awt.Color;
 import java.awt.Toolkit;
 import views.shop.dashboard.ShopDashboard;

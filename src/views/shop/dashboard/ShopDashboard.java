@@ -563,6 +563,8 @@ public class ShopDashboard extends javax.swing.JFrame {
             jStockPanel.add(shop_StockJPanel, BorderLayout.CENTER);
             SwingUtilities.updateComponentTreeUI(this);
         }
+
+        shop_StockJPanel.StockTableRender();
     }//GEN-LAST:event_jStockbtnMouseClicked
 
     private void jGRNbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGRNbtnMouseClicked

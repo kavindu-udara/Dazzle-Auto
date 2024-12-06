@@ -54,22 +54,17 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
     public Shop_StockJPanel(Frame parentFrame, JStockSelector stockSelector, String BaseFrame) {
         initComponents();
         StockTableRender();
-        sortby();
-        searchByPrice();
 
         this.StockSelectorFrame = stockSelector;
         this.From = "Selecter";
         this.BaseFrame = BaseFrame;
-        
+
         if (BaseFrame.equals("ShopInvoice")) {
             this.shopInvoice = (ShopInvoice) parentFrame;
         }
     }
 
     public void StockTableRender() {
-
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
         JTableHeader tableHeader = StockViewTable.getTableHeader();
 
@@ -91,8 +86,11 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
         for (int i = 0; i < 6; i++) {
-            StockViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            StockViewTable.getColumnModel().getColumn(i).setCellRenderer(new QuantityRenderer(4));
         }
+
+        sortby();
+        searchByPrice();
     }
     //sort by option
 
@@ -316,6 +314,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        StockViewTable.setFocusable(false);
         StockViewTable.setRowHeight(30);
         StockViewTable.getTableHeader().setReorderingAllowed(false);
         StockViewTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -387,7 +386,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         if (isFinded) {
             String sort = String.valueOf(jComboBox1.getSelectedItem());
             String orderBy = "ORDER BY";
-           if (sort.equals("Product ID A-Z")) {
+            if (sort.equals("Product ID A-Z")) {
                 orderBy = " ORDER BY`product`.`id` ASC";
             } else if (sort.equals("Product ID Z-A")) {
                 orderBy = " ORDER BY `product`.`id` DESC";
@@ -432,10 +431,10 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_StockViewTableMouseClicked
 
-        private void resetPricePanel() {
-            PriceFrom.setText("");
-            PriceTo.setText("");
-        }
+    private void resetPricePanel() {
+        PriceFrom.setText("");
+        PriceTo.setText("");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton PriceFindBtn2;
