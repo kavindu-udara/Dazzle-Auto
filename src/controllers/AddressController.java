@@ -33,25 +33,16 @@ public class AddressController {
                 + "'" + addressModel.getCity() + "', "
                 + "'" + addressModel.getPostalCode() + "') ");
     }
+
     
-    public ResultSet storeSupplierAddress(AddressModel addressModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`supplier_id`, `lane1`, `lane2`, `city_id`, `postalcode`) VALUES "
-                + "('" + addressModel.getSupplierId() + "', "
-                + "'" + addressModel.getLane1() + "', "
-                + "'" + addressModel.getLane2() + "', "
-                + "'" + addressModel.getCity() + "', "
-                + "'" + addressModel.getPostalCode() + "') ");
-    }
 
     public ResultSet update(AddressModel addressModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
-                + "`employee_id`='" + addressModel.getEmployeeId() + "', "
-                + "`supplier_id`='" + addressModel.getSupplierId() + "',"
-                + "`lane1`='" + addressModel.getLane1() + "', "
+                + "`employee_id`=null, "
+                +"`lane1`='" + addressModel.getLane1() + "', "
                 + "`lane2`='" + addressModel.getLane2() + "', "
-                + "`city`='" + addressModel.getCity() + "', "
-                + "`postalcode`='" + addressModel.getPostalCode() + "'  "
-                + "WHERE `id`='" + addressModel.getId() + "' ");
+                + "`city_id`='" + addressModel.getCity() + "' "
+                + "WHERE `supplier_id`='" + addressModel.getSupId() + "' ");
     }
 
     public ResultSet search(String searchText) throws Exception {
@@ -67,4 +58,25 @@ public class AddressController {
     public ResultSet delete(int id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
+
+    public String retrieveAddressId(String supplierId) throws Exception {
+        ResultSet resultSet = MySqlConnection.executeSearch(
+                "SELECT `supplier_id` FROM `" + tableName + "` WHERE `supplier_id` = '" + supplierId + "'");
+        if (resultSet.next()) {
+            return resultSet.getString("supplier_id");
+        }
+        return null; 
+    }
+    
+    public ResultSet create(AddressModel addressModel) throws Exception {
+    return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "` (`supplier_id`, `lane1`, `lane2`, `city_id`) VALUES ("
+            + (addressModel.getSupId() == null ? "" : "'" + addressModel.getSupId() + "'") + ", "
+            + (addressModel.getLane1() == null ? "" : "'" + addressModel.getLane1() + "'") + ", "
+            + (addressModel.getLane2() == null ? "" : "'" + addressModel.getLane2() + "'") + ", "
+            + (addressModel.getCity() == null ? "" : "'" + addressModel.getCity() + "'") + ")");
 }
+
+    
+}
+
+

@@ -6,6 +6,7 @@ package views.supplier;
 
 import views.shop.items.*;
 import com.formdev.flatlaf.FlatClientProperties;
+import controllers.AddressController;
 import controllers.StatusController;
 import controllers.SupplierController;
 import java.awt.Color;
@@ -24,11 +25,13 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import includes.LoggerConfig;
+import includes.MySqlConnection;
 import java.awt.event.ItemEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import models.AddressModel;
 import models.SupplierModel;
 
 /**
@@ -378,11 +381,10 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_search_boxKeyReleased
 
     private void SupplierViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SupplierViewTableMouseClicked
-        // TODO add your handling code here:
+
         int row = SupplierViewTable.getSelectedRow();
 
         if (evt.getClickCount() == 2 && row != -1) {
-
             String supplierId = String.valueOf(SupplierViewTable.getValueAt(row, 0));
             String firstName = String.valueOf(SupplierViewTable.getValueAt(row, 1));
             String lastName = String.valueOf(SupplierViewTable.getValueAt(row, 2));
@@ -397,11 +399,25 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
             supplierModel.setEmail(email);
             supplierModel.setMobile(mobile);
             supplierModel.setStatusName(status);
-            //supplierModel.setStatusId(Integer.parseInt(StatusMap.get(status)));
+
+            AddressModel addressModel = new AddressModel();
 
             try {
-                Frame supplierViewJPanel = null;
-                SupplierUpdate supUpdate = new SupplierUpdate(supplierViewJPanel, true, supplierModel);
+                String addressId = new AddressController().retrieveAddressId(supplierId);
+
+                if (addressId != null) {
+                    String query = "SELECT * FROM address WHERE supplier_id = '" + addressId + "'";
+                    ResultSet rs = MySqlConnection.executeSearch(query);
+
+                    if (rs.next()) {
+                        addressModel.setSupId(supplierId);
+                        addressModel.setLane1(rs.getString("lane1"));
+                        addressModel.setLane2(rs.getString("lane2"));
+                        addressModel.setCity(rs.getString("city_id"));
+                    }
+                }
+
+                SupplierUpdate supUpdate = new SupplierUpdate(null, true, supplierModel, addressModel);
                 supUpdate.setVisible(true);
 
             } catch (Exception e) {
@@ -409,7 +425,6 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
             }
             loadsupplier();
         }
-
     }//GEN-LAST:event_SupplierViewTableMouseClicked
 
     private void StatusSortBtnItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_StatusSortBtnItemStateChanged
@@ -435,7 +450,7 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
             if (searchText.equals("Select")) {
                 resultSet = new SupplierController().searchAll();
             } else {
-               
+
                 ResultSet statusResultSet = new StatusController().search(searchText);
                 int statusId = -1;
                 if (statusResultSet.next()) {
@@ -458,7 +473,6 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
                 statusMap.put(id, name);
             }
 
-            
             while (resultSet.next()) {
                 String id = resultSet.getString("id");
                 String fname = resultSet.getString("first_name");
