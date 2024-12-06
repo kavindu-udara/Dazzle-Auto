@@ -201,6 +201,7 @@ public class SingleEmployeeAttendance extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel2.setText("Employee Id");
 
+        attendanceTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         attendanceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -218,6 +219,7 @@ public class SingleEmployeeAttendance extends javax.swing.JDialog {
             }
         });
         attendanceTable.setFocusable(false);
+        attendanceTable.setRowHeight(30);
         jScrollPane1.setViewportView(attendanceTable);
 
         employeeIdValueLabel.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N

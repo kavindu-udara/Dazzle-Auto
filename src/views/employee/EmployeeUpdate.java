@@ -31,6 +31,8 @@ import models.EmployeeImageModel;
 import models.EmployeeModel;
 import java.util.logging.Logger;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import jnafilechooser.api.JnaFileChooser;
+import raven.toast.Notifications;
 
 /**
  *
@@ -586,12 +588,11 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
     private void employee_imageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employee_imageMouseClicked
         // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new FileNameExtensionFilter("JPG", "jpg"));
-        fileChooser.setFileFilter(new FileNameExtensionFilter("PNG", "png"));
-        int result = fileChooser.showOpenDialog(this);
+        JnaFileChooser fileChooser = new JnaFileChooser();
+        fileChooser.addFilter("PNG JPG AND JPEG", "png", "jpg", "jpeg");
+        boolean result = fileChooser.showOpenDialog(this);
 
-        if (result == JFileChooser.APPROVE_OPTION) {
+        if (result) {
 
             selectedFile = fileChooser.getSelectedFile();
             try {
@@ -622,6 +623,11 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 logger.severe("Error while reading selected File : " + ex.getMessage());
 
             }
+        } else {
+            Notifications.getInstance().show(
+                    Notifications.Type.ERROR,
+                    Notifications.Location.TOP_RIGHT,
+                    "File Not Selected !");
         }
     }//GEN-LAST:event_employee_imageMouseClicked
 
