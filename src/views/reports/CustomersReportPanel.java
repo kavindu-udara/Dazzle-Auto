@@ -4,21 +4,18 @@
  */
 package views.reports;
 
-import com.formdev.flatlaf.FlatClientProperties;
 import controllers.CustomerController;
 import includes.LoggerConfig;
+import includes.MySqlConnection;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -30,7 +27,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import models.CustomerModel;
 import models.LoginModel;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -39,7 +35,6 @@ import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import views.customer.CustomerJPanel;
 import views.customer.CustomerSelector;
-import views.customer.CustomerUpdate;
 import views.dashboard.Dashboard;
 import views.vehicle.VehicleRegistration;
 import views.vehicle.VehicleUpdate;
@@ -64,7 +59,6 @@ public class CustomersReportPanel extends javax.swing.JPanel {
     public CustomersReportPanel(Dashboard dashboard) {
         initComponents();
         loadCustomer();
-        jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/Mobile");
         customerViewReportTableRender();
         this.dashboard = dashboard;
 
@@ -85,9 +79,59 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         initComponents();
 
         loadCustomer();
-        jTextField1.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/Mobile");
         customerViewReportTableRender();
 
+    }
+
+    private void sortby() {
+        try {
+            String query = "SELECT * FROM customer";
+
+            // Sorting logic
+            String sort = String.valueOf(jComboBox1.getSelectedItem());
+
+            // Append sorting conditions to the query
+            if (sort.contains("First Name A-Z")) {
+                query += " ORDER BY `first_name` ASC";
+            } else if (sort.contains("First Name Z-A")) {
+                query += " ORDER BY `first_name` DESC";
+            } else if (sort.contains("Last Name A-Z")) {
+                query += " ORDER BY `last_name` ASC";
+            } else if (sort.contains("Last Name Z-A")) {
+                query += " ORDER BY `last_name` DESC";
+            } else if (sort.contains("Registered Date Oldest")) {
+                query += " ORDER BY `registered_date` ASC";
+            } else if (sort.contains("Registered Date Newest")) {
+                query += " ORDER BY `registered_date` DESC";
+            }
+
+            ResultSet employeeResultSet = MySqlConnection.executeSearch(query);
+
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+
+            HashMap<Integer, String> customerTypeMap = new HashMap<>();
+            HashMap<Integer, String> statusMap = new HashMap<>();
+
+
+            while (employeeResultSet.next()) {
+                String Id = employeeResultSet.getString("id");
+                String firstName = employeeResultSet.getString("first_name");
+                String lastName = employeeResultSet.getString("last_name");
+                String email = employeeResultSet.getString("email");
+                String registered_date = employeeResultSet.getString("registered_date");
+
+
+                model.addRow(new Object[]{Id, firstName, lastName, email, registered_date});
+            }
+
+            jTable1.revalidate();
+            jTable1.repaint();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading employees: " + e.getMessage());
+        }
     }
 
     private void loadCustomer() {
@@ -106,7 +150,7 @@ public class CustomersReportPanel extends javax.swing.JPanel {
 
                 vector.add(customerResultSet.getString("first_name"));
                 vector.add(customerResultSet.getString("last_name"));
-                vector.add(customerResultSet.getString("mobile"));
+                vector.add(customerResultSet.getString("email"));
                 vector.add(customerResultSet.getString("registered_date"));
 
                 model.addRow(vector);
@@ -130,11 +174,11 @@ public class CustomersReportPanel extends javax.swing.JPanel {
                 String id = resultSet.getString("id");
                 String fname = resultSet.getString("first_name");
                 String lname = resultSet.getString("last_name");
-                String mobile = resultSet.getString("mobile");
+                String email = resultSet.getString("email");
 
                 String registeredDate = resultSet.getString("registered_date");
 
-                model.addRow(new Object[]{id, fname, lname, mobile, registeredDate});
+                model.addRow(new Object[]{id, fname, lname, email, registeredDate});
             }
 
         } catch (Exception ex) {
@@ -171,7 +215,8 @@ public class CustomersReportPanel extends javax.swing.JPanel {
             jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-        public JasperPrint makeReport() {
+
+    public JasperPrint makeReport() {
 
         String headerImg;
         try {
@@ -183,12 +228,8 @@ public class CustomersReportPanel extends javax.swing.JPanel {
 
             HashMap<String, Object> params = new HashMap<>();
             params.put("image", headerImg);
-            
-              if (!jTextField1.getText().isEmpty()) {
-                params.put("findCustomer", String.valueOf(jTextField1.getText()));
-            } else {
-                params.put("findCustomer", "All");
-            }
+            params.put("Sort_By", String.valueOf(jComboBox1.getSelectedItem()));
+
             JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
 
             JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
@@ -212,11 +253,11 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -246,18 +287,7 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         });
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jLabel2.setText("Find Customer");
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField1KeyReleased(evt);
-            }
-        });
+        jLabel2.setText("Sort By");
 
         jTable1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -268,7 +298,7 @@ public class CustomersReportPanel extends javax.swing.JPanel {
                 {null, null, null, null, null}
             },
             new String [] {
-                "ID", "First Name", "Last Name", "Mobile", "Registered Date"
+                "ID", "First Name", "Last Name", "Email", "Registered Date"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -316,6 +346,14 @@ public class CustomersReportPanel extends javax.swing.JPanel {
             }
         });
 
+        jComboBox1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "First Name A-Z", "First Name Z-A", "Last Name A-Z", "Last Name Z-A", "Registered Date Oldest", "Registered Date Newest" }));
+        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox1ItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -326,15 +364,12 @@ public class CustomersReportPanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1065, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButton1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1065, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jButton1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -343,7 +378,12 @@ public class CustomersReportPanel extends javax.swing.JPanel {
                             .addGap(12, 12, 12)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1042, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1042, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -357,9 +397,9 @@ public class CustomersReportPanel extends javax.swing.JPanel {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -390,11 +430,6 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jLabel1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jLabel1ComponentShown
         // TODO add your handling code here:
         try {
@@ -405,19 +440,9 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jLabel1ComponentShown
 
-    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
-        // TODO add your handling code here:
-        try {
-            fetchUser(jTextField1.getText().toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.warning("Error while jTextField1KeyReleased : " + e.getMessage());
-        }
-    }//GEN-LAST:event_jTextField1KeyReleased
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        
+
         try {
             JasperPrint report = makeReport();
             JasperViewer.viewReport(report, false);
@@ -431,50 +456,11 @@ public class CustomersReportPanel extends javax.swing.JPanel {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
-        int row = jTable1.getSelectedRow();
-
-        int customerId = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
-        String firstName = String.valueOf(jTable1.getValueAt(row, 1));
-        String lastName = String.valueOf(jTable1.getValueAt(row, 2));
-        String mobile = String.valueOf(jTable1.getValueAt(row, 3));
-
-        if (From.equals("Selecter")) {
-
-            if (BaseDialog.equals("vehicleRegistration")) {
-                vehicleRegistration.setCustomerDetails(String.valueOf(customerId), firstName, lastName);
-            } else if (BaseDialog.equals("vehicleUpdate")) {
-                VehicleUpdate.setCustomerDetails(String.valueOf(customerId), firstName, lastName);
-            }
-            CustomerSelecterFrame.dispose();
-        }
-
-        if (evt.getClickCount() == 2 && row != -1) {
-
-            CustomerModel customerModel = new CustomerModel();
-            customerModel.setId(customerId);
-            customerModel.setFirstName(firstName);
-            customerModel.setLastName(lastName);
-
-            customerModel.setMobile(mobile);
-
-            try {
-                Frame CustomerJPanel = null;
-                CustomerUpdate customerUpdate = new CustomerUpdate(CustomerJPanel, true, customerModel);
-                customerUpdate.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-                logger.warning("Error while opening customer update dialog : " + e.getMessage());
-            }
-
-            loadCustomer();
-        }
-
-
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-                try {
+        try {
             JasperPrint report = makeReport();
             JasperPrintManager.printReport(report, false);
 
@@ -485,11 +471,17 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
+        // TODO add your handling code here:
+        sortby();
+    }//GEN-LAST:event_jComboBox1ItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -497,6 +489,5 @@ public class CustomersReportPanel extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
