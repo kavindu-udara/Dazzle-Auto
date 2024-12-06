@@ -22,7 +22,7 @@ public class SupplierController {
     }
 
     public ResultSet show(int id) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `sup_id`='" + id + "'");
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
     public ResultSet store(SupplierModel supplierModel) throws Exception {

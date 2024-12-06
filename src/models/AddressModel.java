@@ -17,6 +17,7 @@ public class AddressModel {
     private String lane2;
     private String city;
     private String postalCode;
+    private String SupId;
 
     /**
      * @return the id
@@ -114,6 +115,20 @@ public class AddressModel {
      */
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    /**
+     * @return the SupId
+     */
+    public String getSupId() {
+        return SupId;
+    }
+
+    /**
+     * @param SupId the SupId to set
+     */
+    public void setSupId(String SupId) {
+        this.SupId = SupId;
     }
 
 }

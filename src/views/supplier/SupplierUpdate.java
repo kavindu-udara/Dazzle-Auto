@@ -4,7 +4,8 @@
  */
 package views.supplier;
 
-
+import controllers.AddressController;
+import controllers.CityController;
 import controllers.StatusController;
 import controllers.SupplierController;
 import includes.LoggerConfig;
@@ -16,42 +17,56 @@ import includes.RegexValidator;
 import java.awt.Frame;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JToggleButton;
 import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.table.DefaultTableModel;
+import models.AddressModel;
 import models.SupplierModel;
 
 /**
  *
- * @author USER
+ * @author Dumindu
  */
 public class SupplierUpdate extends java.awt.Dialog {
 
     private static final Logger logger = LoggerConfig.getLogger();
     private static HashMap<String, String> StatusMap = new HashMap<>();
-
+    private static HashMap<Integer, String> CityMap = new HashMap<>();
+    private SupplierViewJPanel supplierViewJPanel;
     private SupplierModel supplierModel;
+    private AddressModel addressModel;
 
     /**
      * Creates new form Employee_Update
      */
-    public SupplierUpdate(Frame parent, boolean modal, SupplierModel supplierModel) {
+    public SupplierUpdate(Frame parent, boolean modal, SupplierModel supplierModel, AddressModel addressModel) {
         super(parent, modal);
         initComponents();
         setDocumentFilters();
         loadSupplierStatus();
-        
+        loadCity();
+
         this.supplierModel = supplierModel;
 
+        supIField.setText(supplierModel.getId());
         supplier_firstname.setText(supplierModel.getFirstName());
         supplier_lastname.setText(supplierModel.getLastName());
         supplier_email.setText(supplierModel.getEmail());
         supplier_mobile.setText(supplierModel.getMobile());
         sup_status.setSelectedItem(supplierModel.getStatusName());
 
+       if (addressModel != null) {
+            Lane1Field.setText(addressModel.getLane1());
+            lane2Field.setText(addressModel.getLane2());
+            if (addressModel.getCity() != null) {
+                cityComboBox.setSelectedItem(CityMap.get(Integer.parseInt(addressModel.getCity())));
+            }
+        }
+       supIField.setFocusable(false);
     }
 
     private void setDocumentFilters() {
@@ -60,7 +75,32 @@ public class SupplierUpdate extends java.awt.Dialog {
         ((AbstractDocument) supplier_lastname.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
 
     }
-    
+
+    private void loadCity() {
+
+        try {
+            ResultSet resultSet = new CityController().show();
+
+            Vector<String> vector = new Vector<>();
+            vector.add("Select");
+
+            while (resultSet.next()) {
+                int cityId = resultSet.getInt("id");
+                String cityName = resultSet.getString("name");
+
+                vector.add(cityName);
+                CityMap.put(cityId, cityName); 
+            }
+
+            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(vector);
+            cityComboBox.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading cities: " + e.getMessage());
+        }
+    }
+
     private void loadSupplierStatus() {
         try {
             ResultSet resultSet = new StatusController().show();
@@ -107,6 +147,17 @@ public class SupplierUpdate extends java.awt.Dialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         sup_status = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        Lane1Field = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        lane2Field = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        cityComboBox = new javax.swing.JComboBox<>();
+        supIField = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -115,20 +166,30 @@ public class SupplierUpdate extends java.awt.Dialog {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel3.setText("First Name");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 130, -1, -1));
+        jPanel3.add(supplier_firstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 125, 196, 34));
 
-        jLabel4.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel4.setText("Last Name");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 186, -1, -1));
+        jPanel3.add(supplier_lastname, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 181, 196, 34));
 
-        jLabel5.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel5.setText("Email");
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 242, -1, -1));
+        jPanel3.add(supplier_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 237, 196, 34));
 
-        jLabel7.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel7.setText("Mobile");
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 291, -1, -1));
+        jPanel3.add(supplier_mobile, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 286, 196, 34));
 
         supplier_update_btn.setBackground(new java.awt.Color(33, 43, 108));
-        supplier_update_btn.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        supplier_update_btn.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         supplier_update_btn.setForeground(new java.awt.Color(255, 255, 255));
         supplier_update_btn.setText("UPDATE");
         supplier_update_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -136,8 +197,9 @@ public class SupplierUpdate extends java.awt.Dialog {
                 supplier_update_btnActionPerformed(evt);
             }
         });
+        jPanel3.add(supplier_update_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, 159, 48));
 
-        supplier_reset_btn.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        supplier_reset_btn.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         supplier_reset_btn.setForeground(new java.awt.Color(255, 0, 0));
         supplier_reset_btn.setText("RESET");
         supplier_reset_btn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
@@ -146,6 +208,7 @@ public class SupplierUpdate extends java.awt.Dialog {
                 supplier_reset_btnActionPerformed(evt);
             }
         });
+        jPanel3.add(supplier_reset_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 420, 150, 48));
 
         jPanel4.setBackground(new java.awt.Color(200, 204, 225));
 
@@ -156,86 +219,61 @@ public class SupplierUpdate extends java.awt.Dialog {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(250, 250, 250)
                 .addComponent(jLabel1)
-                .addGap(130, 130, 130))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
+                .addContainerGap(40, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(33, 33, 33))
+                .addGap(31, 31, 31))
         );
 
-        jLabel8.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, -1));
+
+        jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel8.setText("Status");
+        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 341, -1, -1));
 
         sup_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel3.add(sup_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 335, 196, 37));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(77, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(supplier_update_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(supplier_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3))
-                                .addGap(55, 55, 55))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(83, 83, 83)))
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(supplier_firstname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(supplier_lastname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(supplier_email, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(supplier_mobile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(sup_status, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(80, 80, 80))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(supplier_firstname, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(supplier_lastname, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(25, 25, 25)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(supplier_email, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(25, 25, 25)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(supplier_mobile, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addGap(25, 25, 25)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sup_status, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addGap(25, 25, 25)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(supplier_update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(supplier_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(28, Short.MAX_VALUE))
-        );
+        jLabel9.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel9.setText("Address ");
+        jPanel3.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 190, -1, -1));
+
+        jLabel12.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(163, 163, 163));
+        jLabel12.setText("(Optional)");
+        jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 190, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel10.setText("Lane 1");
+        jPanel3.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 240, -1, -1));
+        jPanel3.add(Lane1Field, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 196, 34));
+
+        jLabel11.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel11.setText("Lane 2");
+        jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 290, -1, -1));
+        jPanel3.add(lane2Field, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 290, 196, 34));
+
+        jLabel13.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel13.setText("City");
+        jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 340, -1, -1));
+
+        cityComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel3.add(cityComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 340, 196, 34));
+        jPanel3.add(supIField, new org.netbeans.lib.awtextra.AbsoluteConstraints(497, 125, -1, 34));
+
+        jLabel14.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel14.setText("Supplier ID");
+        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(396, 130, -1, -1));
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 180, 11, 210));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -245,7 +283,7 @@ public class SupplierUpdate extends java.awt.Dialog {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -289,6 +327,7 @@ public class SupplierUpdate extends java.awt.Dialog {
         String email = supplier_email.getText();
         String mobile = supplier_mobile.getText();
         String status = String.valueOf(sup_status.getSelectedItem());
+        String sssid = supIField.getText();
 
         if (firstName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -298,42 +337,75 @@ public class SupplierUpdate extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Please enter your email", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!RegexValidator.isValidEmail(email)) {
             JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else if (mobile.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else if (status.equals("Select")) {
             JOptionPane.showMessageDialog(this, "Please Select Supplier Status", "Warning", JOptionPane.WARNING_MESSAGE);
-
         } else {
             try {
-
+                supplierModel.setId(sssid);
                 supplierModel.setFirstName(firstName);
                 supplierModel.setLastName(lastName);
                 supplierModel.setEmail(email);
                 supplierModel.setMobile(mobile);
                 supplierModel.setStatusId(Integer.parseInt(StatusMap.get(sup_status.getSelectedItem())));
-                
-                new SupplierController().update(supplierModel);
 
+                new SupplierController().update(supplierModel);
+                updateAddressData(sssid);
                 JOptionPane.showMessageDialog(this, "Supplier details updated successfully");
                 reset();
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                logger.severe("Error while updating supplier : " + e.getMessage());
+                logger.severe("Error while updating supplier: " + e.getMessage());
             }
         }
 
 
     }//GEN-LAST:event_supplier_update_btnActionPerformed
 
+    private void updateAddressData(String supplierId) {
+        String lane1 = Lane1Field.getText().isEmpty() ? null : Lane1Field.getText();
+        String lane2 = lane2Field.getText().isEmpty() ? null : lane2Field.getText();
+        String cityName = (String) cityComboBox.getSelectedItem();
+        String cityId = null;
+
+        try {
+            if (cityName != null && !cityName.equals("Select")) {
+                for (Map.Entry<Integer, String> entry : CityMap.entrySet()) {
+                    if (entry.getValue().equals(cityName)) {
+                        cityId = String.valueOf(entry.getKey());
+                        break;
+                    }
+                }
+            }
+
+            AddressModel addresszModel = new AddressModel();
+            addresszModel.setLane1(lane1);
+            addresszModel.setLane2(lane2);
+            addresszModel.setCity(cityId);
+            addresszModel.setSupId(supplierId);
+
+            String addressId = new AddressController().retrieveAddressId(supplierId);
+
+            if (addressId != null) {
+                addresszModel.setSupId(addressId);
+                new AddressController().update(addresszModel);
+            } else {
+                new AddressController().create(addresszModel);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while updating address: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error updating address: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void supplier_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplier_reset_btnActionPerformed
 
         reset();
     }//GEN-LAST:event_supplier_reset_btnActionPerformed
-
- 
-
 
     private void reset() {
 
@@ -341,19 +413,34 @@ public class SupplierUpdate extends java.awt.Dialog {
         supplier_lastname.setText("");
         supplier_mobile.setText("");
         supplier_email.setText("");
+        supIField.setText("");
+        Lane1Field.setText("");
+        lane2Field.setText("");
+        cityComboBox.setSelectedItem("Select");
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField Lane1Field;
+    private javax.swing.JComboBox<String> cityComboBox;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField lane2Field;
+    private javax.swing.JTextField supIField;
     private javax.swing.JComboBox<String> sup_status;
     private javax.swing.JTextField supplier_email;
     private javax.swing.JTextField supplier_firstname;
