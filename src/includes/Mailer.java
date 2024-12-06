@@ -46,9 +46,9 @@ public class Mailer {
      * @param subject the subject of the email
      * @param body the body of the email
      * @param attachmentPath the path to the attachment file, or null if no
-     * attachment is needed
+     * @param isHtml the body is html
      */
-    public void sendMail(String recipientEmail, String subject, String body, String attachmentPath) {
+    public void sendMail(String recipientEmail, String subject, String body, String attachmentPath, boolean isHtml) {
 
         if (host != null && username != null && password != null && dotenv.get("MAILER_PORT") != null) {
             // Create a session
@@ -68,7 +68,11 @@ public class Mailer {
 
                 // Create Message Body
                 BodyPart messageBodyPart = new MimeBodyPart();
-                messageBodyPart.setText(body);
+                if (isHtml) {
+                    messageBodyPart.setContent(body, "text/html"); // Set HTML content
+                } else {
+                    messageBodyPart.setText(body); // Set plain text content
+                }
 
                 Multipart multipart = new MimeMultipart();
                 multipart.addBodyPart(messageBodyPart);
