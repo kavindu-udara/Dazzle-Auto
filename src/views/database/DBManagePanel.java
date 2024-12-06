@@ -5,7 +5,6 @@
 package views.database;
 
 import includes.LoggerConfig;
-import includes.Mailer;
 import includes.MySqlConnection;
 import includes.TimestampsGenerator;
 import java.io.FileInputStream;
