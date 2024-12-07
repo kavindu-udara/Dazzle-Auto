@@ -18,6 +18,7 @@ public class AddressModel {
     private String city;
     private String postalCode;
     private String SupId;
+    private String EmpId;
 
     /**
      * @return the id
@@ -129,6 +130,20 @@ public class AddressModel {
      */
     public void setSupId(String SupId) {
         this.SupId = SupId;
+    }
+
+    /**
+     * @return the EmpId
+     */
+    public String getEmpId() {
+        return EmpId;
+    }
+
+    /**
+     * @param EmpId the EmpId to set
+     */
+    public void setEmpId(String EmpId) {
+        this.EmpId = EmpId;
     }
 
 }
