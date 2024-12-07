@@ -36,7 +36,6 @@ public class SplashWindow extends javax.swing.JFrame {
                     }
                     if (i == 70) {
                         LoadingText.setText("Setting Up Coonection..");
-                        
                     }
                     if (i == 90) {
                         LoadingText.setText("Almost There..");

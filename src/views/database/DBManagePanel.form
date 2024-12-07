@@ -35,6 +35,12 @@
                       <Component id="jButton1" min="-2" pref="169" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="restoreDbSqlFilePathField" min="-2" pref="531" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="sqlSelectButton" max="32767" attributes="0"/>
+                  </Group>
+                  <Component id="restoreButton" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="71" max="32767" attributes="0"/>
           </Group>
@@ -54,7 +60,14 @@
               </Group>
               <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Component id="jButton2" min="-2" pref="43" max="-2" attributes="0"/>
-              <EmptySpace pref="364" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="sqlSelectButton" max="32767" attributes="0"/>
+                  <Component id="restoreDbSqlFilePathField" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="restoreButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="289" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -134,6 +147,24 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Sql File Path"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="restoreDbSqlFilePathField">
+    </Component>
+    <Component class="javax.swing.JButton" name="sqlSelectButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="select sql file"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sqlSelectButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="restoreButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Restore Database"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="restoreButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

@@ -43,6 +43,9 @@ public class DBManagePanel extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        restoreDbSqlFilePathField = new javax.swing.JTextField();
+        sqlSelectButton = new javax.swing.JButton();
+        restoreButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(853, 575));
@@ -83,6 +86,20 @@ public class DBManagePanel extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel3.setText("Sql File Path");
 
+        sqlSelectButton.setText("select sql file");
+        sqlSelectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sqlSelectButtonActionPerformed(evt);
+            }
+        });
+
+        restoreButton.setText("Restore Database");
+        restoreButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                restoreButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -96,7 +113,12 @@ public class DBManagePanel extends javax.swing.JPanel {
                         .addComponent(outPathField, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(restoreDbSqlFilePathField, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sqlSelectButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(restoreButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(71, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -112,7 +134,13 @@ public class DBManagePanel extends javax.swing.JPanel {
                     .addComponent(outPathField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(364, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sqlSelectButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(restoreDbSqlFilePathField))
+                .addGap(18, 18, 18)
+                .addComponent(restoreButton)
+                .addGap(289, 289, 289))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -172,13 +200,76 @@ public class DBManagePanel extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(null, "Backup Failed with exit code: " + exitCode);
                     logger.severe("Backup Failed with exit code : " + exitCode);
                 }
-                              
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void sqlSelectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sqlSelectButtonActionPerformed
+        // TODO add your handling code here:
+
+        String date = TimestampsGenerator.getTodayDate();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("SQL", "sql"));
+        fileChooser.setSelectedFile(new java.io.File("DB_backup" + date + ".sql"));
+        int result = fileChooser.showSaveDialog(null);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = fileChooser.getSelectedFile().getPath();
+            restoreDbSqlFilePathField.setText(path);
+        }
+
+    }//GEN-LAST:event_sqlSelectButtonActionPerformed
+
+    private void restoreButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreButtonActionPerformed
+        // TODO add your handling code here:
+
+        if (restoreDbSqlFilePathField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Sql file is Required !");
+        } else {
+            try {
+
+                // Read serialized database connection information
+                FileInputStream fileInputStream = new FileInputStream("dbinfo.ser");
+                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+                MySqlConnection mySqlConnection = (MySqlConnection) objectInputStream.readObject();
+                objectInputStream.close();
+
+                // Define backup file path
+                String path = outPathField.getText();
+
+                // Create ProcessBuilder with correct mysqldump arguments
+                ProcessBuilder processBuilder = new ProcessBuilder(
+                        "mysql",
+                        "-u" + mySqlConnection.USERNAME,
+                        "-p" + mySqlConnection.PASSWORD,
+                        "-P" + mySqlConnection.PORT,
+                        mySqlConnection.DBNAME,
+                        "<", path
+                );
+
+                // Start the process
+                Process process = processBuilder.start();
+
+                // Wait for the process to complete
+                int exitCode = process.waitFor();
+                if (exitCode == 0) {
+                    JOptionPane.showMessageDialog(null, "Restore successful: " + path);
+                    logger.info("Database Restore Success : " + path);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Restore Failed with exit code: " + exitCode);
+                    logger.severe("Backup Restore Failed with exit code : " + exitCode);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_restoreButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -187,5 +278,8 @@ public class DBManagePanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField outPathField;
+    private javax.swing.JButton restoreButton;
+    private javax.swing.JTextField restoreDbSqlFilePathField;
+    private javax.swing.JButton sqlSelectButton;
     // End of variables declaration//GEN-END:variables
 }
