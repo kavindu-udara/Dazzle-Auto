@@ -362,10 +362,6 @@ public class EmployeeRegistration extends java.awt.Dialog {
         String email = employee_email.getText();
         String mobile = employee_mobile.getText();
         String employeeType = String.valueOf(employee_type.getSelectedItem());
-        String lane1 = Lane1Field.getText();
-        String lane2 = lane2Field.getText();
-        String postalCode = PostalCodeField.getText();
-        String cityName = String.valueOf(cityComboBox.getSelectedItem());
 
         if (firstName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -407,26 +403,8 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 String registerDateTime = TimestampsGenerator.getFormattedDateTime();
                 employeeModel.setRegisteredDate(registerDateTime);
 
-                addressModel.setLane1(lane1);
-                addressModel.setLane2(lane2);
-                addressModel.setPostalCode(postalCode);
-
-                // Map city ID
-                if (!CityMap.containsValue(cityName)) {
-                    JOptionPane.showMessageDialog(this, "City not found", "Warning", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-                int cityId = CityMap.entrySet().stream()
-                        .filter(entry -> entry.getValue().equals(cityName))
-                        .map(Map.Entry::getKey)
-                        .findFirst()
-                        .orElseThrow(() -> new IllegalArgumentException("City not found"));
-
-                addressModel.setCity(cityName);
-
                 // Store employee and address
                 ResultSet resultSet = new EmployeeController().store(employeeModel);
-                ResultSet resultSet2 = new AddressController().create2(addressModel);
 
                 // Save image
                 String imagePath = saveImage(generatedId + nic + firstName + lastName);
@@ -453,7 +431,38 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
 
     }//GEN-LAST:event_employee_register_btnActionPerformed
+    private void regAddressData(String supplierId) {
+        String lane1 = Lane1Field.getText();
+        String lane2 = lane2Field.getText();
+        String cityName = (String) cityComboBox.getSelectedItem();
 
+        try {
+            AddressModel addressModel = new AddressModel();
+
+            addressModel.setLane1(lane1);
+            addressModel.setLane2(lane2);
+            addressModel.setSupId(supplierId);
+
+            int cityId = -1;
+            for (Map.Entry<Integer, String> entry : CityMap.entrySet()) {
+                if (entry.getValue().equals(cityName)) {
+                    cityId = entry.getKey();
+                    break;
+                }
+            }
+
+            if (cityId == -1) {
+                JOptionPane.showMessageDialog(this, "City not found", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+                addressModel.setCity(String.valueOf(cityId));
+            }
+
+            new AddressController().create(addressModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while storing address : " + e.getMessage());
+        }
+    }
     private void employee_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_typeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_employee_typeActionPerformed
