@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -46,10 +47,12 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
     private static Logger logger = LoggerConfig.getLogger();
 
     Dashboard dashboard = null;
+    private static HashMap<String, String> vehicleTypesHashMap = new HashMap<>();
 
     public OurServicesReportPanel(Dashboard dashboard) {
         initComponents();
         loadServices();
+        loadVehicleTypes();
         ourserviceTableRender();
         this.dashboard = dashboard;
     }
@@ -132,6 +135,10 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
         ourServicesViewTable2 = new javax.swing.JTable();
         viewReportb = new javax.swing.JButton();
         printReportb = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        serviceFindField = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jVehicleTypeComboBox = new javax.swing.JComboBox<>();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -206,33 +213,61 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        jLabel2.setText("Find Service :");
+
+        serviceFindField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        serviceFindField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                serviceFindFieldKeyReleased(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/filter-30.png"))); // NOI18N
+
+        jVehicleTypeComboBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jVehicleTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jVehicleTypeComboBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(7, 7, 7)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1065, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 981, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 11, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 981, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 1065, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(serviceFindField, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(32, 32, 32)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jVehicleTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(viewReportb)
-                                .addGap(22, 22, 22)
-                                .addComponent(printReportb)))))
+                                .addGap(27, 27, 27)
+                                .addComponent(printReportb)
+                                .addGap(27, 27, 27)))))
+                .addContainerGap(26, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1085, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -244,13 +279,20 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(viewReportb)
-                    .addComponent(printReportb))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(viewReportb)
+                        .addComponent(printReportb))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(serviceFindField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jVehicleTypeComboBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
         );
 
@@ -330,16 +372,104 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_printReportbActionPerformed
 
+    private void serviceFindFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceFindFieldKeyReleased
+        loadServices();
+        loadVehicleTypes();
+    }//GEN-LAST:event_serviceFindFieldKeyReleased
+
+    private void jVehicleTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehicleTypeComboBoxActionPerformed
+        searchTable();
+        loadVehicleTypes();
+    }//GEN-LAST:event_jVehicleTypeComboBoxActionPerformed
+    private void loadVehicleTypes() {
+
+        try {
+            ResultSet resultSet = new VehicleTypeController().show();
+
+            Vector vector = new Vector();
+
+            vector.add("Vehicle Type");
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("name"));
+                vehicleTypesHashMap.put(resultSet.getString("name"), resultSet.getString("id"));
+            }
+
+            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
+            jVehicleTypeComboBox.setModel(comboBoxModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loadVehicleTypes : " + e.getMessage());
+        }
+
+    }
+
+    private void searchTable() {
+        // search process
+        String searchText = serviceFindField.getText();
+        String vehicleTypeId = "";
+        if (!jVehicleTypeComboBox.getSelectedItem().equals("  All")) {
+            vehicleTypeId = vehicleTypesHashMap.get(jVehicleTypeComboBox.getSelectedItem());
+        }
+
+        loadSearchedTable(searchText, vehicleTypeId);
+
+    }
+
+    private void loadSearchedTable(String searchText, String vehicleTypeId) {
+        try {
+            ResultSet resultSet;
+            if (vehicleTypeId.equals("")) {
+                resultSet = new ServicesController().search(searchText);
+            } else {
+                resultSet = new ServicesController().search(searchText, vehicleTypeId);
+            }
+
+            DefaultTableModel tableModel = (DefaultTableModel) ourServicesViewTable2.getModel();
+            tableModel.setRowCount(0);
+
+            while (resultSet.next()) {
+                Vector<String> vector = new Vector<>();
+
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("name"));
+
+                try {
+                    ResultSet vehicleTypeResultSet = new VehicleTypeController().show(resultSet.getInt("vehicle_type_id"));
+                    if (vehicleTypeResultSet.next()) {
+                        vector.add(vehicleTypeResultSet.getString("name"));
+                    } else {
+                        vector.add("empty");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.severe("Error while searching services : " + e.getMessage());
+                }
+
+                vector.add(resultSet.getString("charge"));
+
+                tableModel.addRow(vector);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while showing vehicle types : " + e.getMessage());
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JComboBox<String> jVehicleTypeComboBox;
     private javax.swing.JTable ourServicesViewTable2;
     private javax.swing.JButton printReportb;
+    private javax.swing.JTextField serviceFindField;
     private javax.swing.JButton viewReportb;
     // End of variables declaration//GEN-END:variables
 }
