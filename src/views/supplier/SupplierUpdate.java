@@ -243,7 +243,7 @@ public class SupplierUpdate extends java.awt.Dialog {
 
         jLabel9.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel9.setText("Address ");
-        jPanel3.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 190, -1, -1));
+        jPanel3.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 190, 80, -1));
 
         jLabel12.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(163, 163, 163));
@@ -266,11 +266,11 @@ public class SupplierUpdate extends java.awt.Dialog {
 
         cityComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel3.add(cityComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 340, 196, 34));
-        jPanel3.add(supIField, new org.netbeans.lib.awtextra.AbsoluteConstraints(497, 125, -1, 34));
+        jPanel3.add(supIField, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 130, -1, 34));
 
         jLabel14.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel14.setText("Supplier ID");
-        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(396, 130, -1, -1));
+        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 130, -1, -1));
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 180, 11, 210));
