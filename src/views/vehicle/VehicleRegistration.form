@@ -57,10 +57,10 @@
                                       <Component id="vehicle_brand" min="-2" pref="198" max="-2" attributes="0"/>
                                       <Component id="driveTypesComboBox" alignment="1" min="-2" pref="196" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="55" max="32767" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jButton1" alignment="1" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel10" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jButton1" alignment="1" min="-2" pref="156" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="103" groupAlignment="1" attributes="0">
@@ -84,31 +84,28 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-                                  <Component id="engineNumberField" min="-2" pref="196" max="-2" attributes="0"/>
+                                  <Component id="vehicleModelTextField" min="-2" pref="196" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="chassisNumberField" min="-2" pref="196" max="-2" attributes="0"/>
-                                      <Component id="vehicleModelTextField" min="-2" pref="196" max="-2" attributes="0"/>
+                                      <Component id="engineNumberField" min="-2" pref="196" max="-2" attributes="0"/>
                                       <Component id="engineNameField" alignment="0" min="-2" pref="196" max="-2" attributes="0"/>
                                       <Component id="jLabel2" alignment="0" min="-2" pref="167" max="-2" attributes="0"/>
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                          <Component id="jLabel7" min="-2" pref="196" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="jLabel7" alignment="0" min="-2" pref="202" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="237" max="-2" attributes="0"/>
-                          <Component id="vehicle_register_btn" min="-2" pref="167" max="-2" attributes="0"/>
-                          <EmptySpace min="23" pref="23" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="252" max="-2" attributes="0"/>
                           <Component id="vehicle_reset_btn" min="-2" pref="159" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="vehicle_register_btn" min="-2" pref="167" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="58" max="32767" attributes="0"/>
+                  <EmptySpace pref="36" max="32767" attributes="0"/>
               </Group>
               <Component id="jPanel2" alignment="1" max="32767" attributes="0"/>
           </Group>
@@ -127,7 +124,7 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="engineNumberField" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+                              <Component id="vehicleModelTextField" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                               <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -142,7 +139,7 @@
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="vehicleModelTextField" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
+                          <Component id="engineNumberField" alignment="3" min="-2" pref="34" max="-2" attributes="0"/>
                           <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -177,10 +174,10 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="34" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="vehicle_register_btn" min="-2" pref="45" max="-2" attributes="0"/>
-                      <Component id="vehicle_reset_btn" min="-2" pref="45" max="-2" attributes="0"/>
+                  <EmptySpace pref="29" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="vehicle_reset_btn" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
+                      <Component id="vehicle_register_btn" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
               </Group>
@@ -191,17 +188,22 @@
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="16" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Vehicle Number"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="vehicle_number">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Roboto" size="16" style="1"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="16" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Vehicle Brand"/>
           </Properties>
@@ -218,6 +220,11 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="REGISTER"/>
+            <Property name="borderPainted" type="boolean" value="false"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="vehicle_register_btnActionPerformed"/>
@@ -239,6 +246,10 @@
                 </LineBorder>
               </Border>
             </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
+            </Property>
+            <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="vehicle_reset_btnActionPerformed"/>
@@ -246,8 +257,14 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="vehicle_brand">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Roboto" size="16" style="1"/>
+            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
+            </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
             </Property>
           </Properties>
           <AuxValues>
@@ -257,15 +274,21 @@
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="16" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Vehicle Model"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="vehicle_type">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Roboto" size="16" style="1"/>
+            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
+            </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
             </Property>
           </Properties>
           <AuxValues>
@@ -275,7 +298,7 @@
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="16" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Vehicle Type"/>
           </Properties>
@@ -283,9 +306,20 @@
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="16" style="1"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="99" green="0" red="0" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Select Customer"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder roundedCorners="true">
+                  <Color PropertyName="color" blue="99" green="0" red="0" type="rgb"/>
+                </LineBorder>
+              </Border>
+            </Property>
+            <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
@@ -294,7 +328,7 @@
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="18" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Customer Name"/>
           </Properties>
@@ -302,47 +336,67 @@
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="18" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Customer ID"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="vehicleModelTextField">
+        <Component class="javax.swing.JTextField" name="engineNumberField">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Roboto" size="16" style="1"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="16" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Engine Number"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="engineNumberField">
+        <Component class="javax.swing.JTextField" name="vehicleModelTextField">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Roboto" size="16" style="1"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="16" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Chassis Number"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="chassisNumberField">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Roboto" size="16" style="1"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="16" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Engine Name"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="engineNameField">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Roboto" size="16" style="1"/>
+            </Property>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel11">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="16" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Powertrain Types"/>
           </Properties>
@@ -350,7 +404,7 @@
         <Component class="javax.swing.JComboBox" name="powertrainTypesComboBox">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="16" style="1"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
@@ -359,6 +413,9 @@
                 <StringItem index="2" value="Item 3"/>
                 <StringItem index="3" value="Item 4"/>
               </StringArray>
+            </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
             </Property>
           </Properties>
           <AuxValues>
@@ -368,7 +425,7 @@
         <Component class="javax.swing.JLabel" name="jLabel12">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="16" style="0"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Drive Types"/>
           </Properties>
@@ -376,7 +433,7 @@
         <Component class="javax.swing.JComboBox" name="driveTypesComboBox">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Roboto" size="14" style="0"/>
+              <Font name="Roboto" size="16" style="1"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
@@ -385,6 +442,9 @@
                 <StringItem index="2" value="Item 3"/>
                 <StringItem index="3" value="Item 4"/>
               </StringArray>
+            </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Hand Cursor"/>
             </Property>
           </Properties>
           <AuxValues>

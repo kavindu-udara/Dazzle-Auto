@@ -159,9 +159,9 @@ public class VehicleRegistration extends java.awt.Dialog {
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        vehicleModelTextField = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
         engineNumberField = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        vehicleModelTextField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         chassisNumberField = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
@@ -179,16 +179,21 @@ public class VehicleRegistration extends java.awt.Dialog {
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel3.setText("Vehicle Number");
 
-        jLabel4.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        vehicle_number.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+
+        jLabel4.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel4.setText("Vehicle Brand");
 
         vehicle_register_btn.setBackground(new java.awt.Color(33, 43, 108));
         vehicle_register_btn.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         vehicle_register_btn.setForeground(new java.awt.Color(255, 255, 255));
         vehicle_register_btn.setText("REGISTER");
+        vehicle_register_btn.setBorderPainted(false);
+        vehicle_register_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        vehicle_register_btn.setFocusPainted(false);
         vehicle_register_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 vehicle_register_btnActionPerformed(evt);
@@ -199,52 +204,73 @@ public class VehicleRegistration extends java.awt.Dialog {
         vehicle_reset_btn.setForeground(new java.awt.Color(255, 0, 0));
         vehicle_reset_btn.setText("RESET");
         vehicle_reset_btn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        vehicle_reset_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        vehicle_reset_btn.setFocusPainted(false);
         vehicle_reset_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 vehicle_reset_btnActionPerformed(evt);
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        vehicle_brand.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        vehicle_brand.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        jLabel5.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel5.setText("Vehicle Model");
 
-        jLabel6.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        vehicle_type.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        vehicle_type.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        jLabel6.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel6.setText("Vehicle Type");
 
-        jButton1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 0, 153));
         jButton1.setText("Select Customer");
+        jButton1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 153), 1, true));
+        jButton1.setFocusable(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel2.setText("Customer Name");
 
-        jLabel7.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel7.setText("Customer ID");
 
-        jLabel8.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        engineNumberField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+
+        jLabel8.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel8.setText("Engine Number");
 
-        jLabel9.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        vehicleModelTextField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+
+        jLabel9.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel9.setText("Chassis Number");
 
-        jLabel10.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        chassisNumberField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+
+        jLabel10.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel10.setText("Engine Name");
 
-        jLabel11.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        engineNameField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+
+        jLabel11.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel11.setText("Powertrain Types");
 
-        powertrainTypesComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        powertrainTypesComboBox.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         powertrainTypesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        powertrainTypesComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jLabel12.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel12.setText("Drive Types");
 
-        driveTypesComboBox.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        driveTypesComboBox.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         driveTypesComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        driveTypesComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jPanel2.setBackground(new java.awt.Color(229, 229, 229));
 
@@ -289,10 +315,10 @@ public class VehicleRegistration extends java.awt.Dialog {
                                     .addComponent(powertrainTypesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(vehicle_brand, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(driveTypesComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -308,23 +334,21 @@ public class VehicleRegistration extends java.awt.Dialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(29, 29, 29)
-                                .addComponent(engineNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(vehicleModelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(28, 28, 28)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(chassisNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(vehicleModelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(engineNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(engineNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(237, 237, 237)
-                        .addComponent(vehicle_register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23)
-                        .addComponent(vehicle_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(58, Short.MAX_VALUE))
+                        .addGap(252, 252, 252)
+                        .addComponent(vehicle_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(vehicle_register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(36, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
@@ -340,7 +364,7 @@ public class VehicleRegistration extends java.awt.Dialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(engineNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(vehicleModelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))))
                 .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -350,7 +374,7 @@ public class VehicleRegistration extends java.awt.Dialog {
                             .addComponent(vehicle_type, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6)))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(vehicleModelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(engineNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel8)))
                 .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -376,10 +400,10 @@ public class VehicleRegistration extends java.awt.Dialog {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(vehicle_register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(vehicle_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(vehicle_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(vehicle_register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40))
         );
 
@@ -411,9 +435,9 @@ public class VehicleRegistration extends java.awt.Dialog {
         String vehicleNumberValue = vehicle_number.getText();
         String vehicleType = String.valueOf(vehicle_type.getSelectedItem());
         String vehicleBrand = String.valueOf(vehicle_brand.getSelectedItem());
-        String vehicleModelValue = vehicleModelTextField.getText();
+        String vehicleModelValue = engineNumberField.getText();
 
-        String engineNumber = String.valueOf(engineNumberField.getText());
+        String engineNumber = String.valueOf(vehicleModelTextField.getText());
         String chassisNumber = String.valueOf(chassisNumberField.getText());
         String engineName = String.valueOf(engineNameField.getText());
         String powertrainType = String.valueOf(powertrainTypesComboBox.getSelectedItem());
@@ -505,10 +529,10 @@ public class VehicleRegistration extends java.awt.Dialog {
         vehicle_number.setText("");
         vehicle_type.setSelectedIndex(0);
         vehicle_brand.setSelectedIndex(0);
-        vehicleModelTextField.setText("");
+        engineNumberField.setText("");
         jLabel2.setText("Customer Name");
         jLabel7.setText("Customer ID");
-        engineNumberField.setText("");
+        vehicleModelTextField.setText("");
         chassisNumberField.setText("");
         engineNameField.setText("");
         powertrainTypesComboBox.setSelectedIndex(0);

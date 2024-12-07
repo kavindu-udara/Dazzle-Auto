@@ -29,7 +29,7 @@ public class QuantityRenderer extends DefaultTableCellRenderer {
                 double quantity = Double.parseDouble(value.toString());
                 if (quantity <= 5) {
                     c.setForeground(Color.RED);
-                    c.setBackground(new Color(255, 240, 240));
+//                    c.setBackground(new Color(255, 240, 240));
                 } else {
                     c.setForeground(isSelected ? table.getSelectionForeground() : Color.BLACK);
                     c.setBackground(isSelected ? table.getSelectionBackground() : Color.WHITE);

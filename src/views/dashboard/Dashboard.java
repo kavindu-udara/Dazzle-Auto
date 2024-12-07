@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import models.LoginModel;
 import views.LoginChooser;
+import views.components.help.PDFViewer;
 import views.settings.Settings;
 import views.customer.CustomerJPanel;
 import views.employee.StaffJPanel;
@@ -134,8 +135,11 @@ public class Dashboard extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
+        jsettings = new javax.swing.JMenuItem();
         jLoginAccessMenuItem = new javax.swing.JMenuItem();
         jDatabaseMenuItem = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jUsermanual = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DASHBOARD");
@@ -413,6 +417,17 @@ public class Dashboard extends javax.swing.JFrame {
         jMenu3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
+        jsettings.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jsettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/settings-15.png"))); // NOI18N
+        jsettings.setText("Settings");
+        jsettings.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jsettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jsettingsActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jsettings);
+
         jLoginAccessMenuItem.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLoginAccessMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/access-20.png"))); // NOI18N
         jLoginAccessMenuItem.setText("Manage Login Access");
@@ -435,6 +450,24 @@ public class Dashboard extends javax.swing.JFrame {
         jMenu3.add(jDatabaseMenuItem);
 
         jMenuBar1.add(jMenu3);
+
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/icons8-question-mark-15.png"))); // NOI18N
+        jMenu4.setText("Help");
+        jMenu4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenu4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
+        jUsermanual.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jUsermanual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/user-manual-20.png"))); // NOI18N
+        jUsermanual.setText("User Manual");
+        jUsermanual.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jUsermanual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jUsermanualActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jUsermanual);
+
+        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -547,6 +580,16 @@ public class Dashboard extends javax.swing.JFrame {
         new Settings(this, true, "jDatabaseMenuItem").setVisible(true);
     }//GEN-LAST:event_jDatabaseMenuItemActionPerformed
 
+    private void jsettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jsettingsActionPerformed
+        new Settings(this, true, "jLoginAccessMenu").setVisible(true);
+    }//GEN-LAST:event_jsettingsActionPerformed
+
+    private void jUsermanualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsermanualActionPerformed
+        PDFViewer pdfViewer = new PDFViewer();
+        pdfViewer.loadPDF(new File(this.getClass().getResource("/resources/help/Dazzle_Auto_Manual.pdf").getFile()).getAbsolutePath());
+        pdfViewer.setVisible(true);
+    }//GEN-LAST:event_jUsermanualActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel HeaderPanel;
@@ -569,6 +612,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JButton jOurServicesButton;
     private javax.swing.JPanel jOurServicesPanel;
@@ -582,8 +626,10 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton jStaffButton;
     public javax.swing.JPanel jStaffPanel;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JMenuItem jUsermanual;
     private javax.swing.JButton jVehiclesButton;
     private javax.swing.JPanel jVehiclesPanel;
+    private javax.swing.JMenuItem jsettings;
     private javax.swing.JPanel menuButtonsPanel;
     // End of variables declaration//GEN-END:variables
 }
