@@ -70,12 +70,21 @@ public class AddressController {
     
     public ResultSet create(AddressModel addressModel) throws Exception {
     return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "` (`supplier_id`, `lane1`, `lane2`, `city_id`) VALUES ("
+            
             + (addressModel.getSupId() == null ? "" : "'" + addressModel.getSupId() + "'") + ", "
             + (addressModel.getLane1() == null ? "" : "'" + addressModel.getLane1() + "'") + ", "
             + (addressModel.getLane2() == null ? "" : "'" + addressModel.getLane2() + "'") + ", "
             + (addressModel.getCity() == null ? "" : "'" + addressModel.getCity() + "'") + ")");
 }
 
+    public ResultSet create2(AddressModel addressModel) throws Exception {
+    return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "` (`employee_id`, `lane1`, `lane2`, `city_id`) VALUES ("
+            
+            + (addressModel.getEmpId()== null ? "" : "'" + addressModel.getEmpId() + "'") + ", "
+            + (addressModel.getLane1() == null ? "" : "'" + addressModel.getLane1() + "'") + ", "
+            + (addressModel.getLane2() == null ? "" : "'" + addressModel.getLane2() + "'") + ", "
+            + (addressModel.getCity() == null ? "" : "'" + addressModel.getCity() + "'") + ")");
+}
     
 }
 

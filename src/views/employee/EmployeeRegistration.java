@@ -426,7 +426,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
                 // Store employee and address
                 ResultSet resultSet = new EmployeeController().store(employeeModel);
-                ResultSet resultSet2 = new AddressController().create(addressModel);
+                ResultSet resultSet2 = new AddressController().create2(addressModel);
 
                 // Save image
                 String imagePath = saveImage(generatedId + nic + firstName + lastName);
