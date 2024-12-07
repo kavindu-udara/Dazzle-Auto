@@ -82,9 +82,10 @@ public class SignIn extends javax.swing.JFrame {
         jLabel2.setBounds(166, 112, 180, 43);
 
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Username");
         jPanel2.add(jLabel3);
-        jLabel3.setBounds(33, 201, 90, 22);
+        jLabel3.setBounds(13, 201, 110, 22);
 
         EmailField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jPanel2.add(EmailField);
@@ -100,16 +101,19 @@ public class SignIn extends javax.swing.JFrame {
         PasswordField.setBounds(130, 250, 180, 40);
 
         jLabel4.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Password");
         jPanel2.add(jLabel4);
-        jLabel4.setBounds(41, 256, 80, 22);
+        jLabel4.setBounds(11, 256, 110, 22);
 
         SignInButton.setBackground(new java.awt.Color(5, 15, 76));
         SignInButton.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
         SignInButton.setForeground(new java.awt.Color(255, 255, 255));
         SignInButton.setText("Sign In");
         SignInButton.setAlignmentY(0.0F);
+        SignInButton.setBorderPainted(false);
         SignInButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        SignInButton.setFocusPainted(false);
         SignInButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SignInButtonActionPerformed(evt);

@@ -234,55 +234,58 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
 
         jLabel6.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel6.setText("Price");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, -1, 32));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 50, 32));
 
         PriceTo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         PriceTo.setText("0");
-        PriceTo.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        PriceTo.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         PriceTo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PriceToActionPerformed(evt);
             }
         });
-        jPanel2.add(PriceTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, 92, 34));
+        jPanel2.add(PriceTo, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, 92, 34));
 
         jLabel7.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("TO");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 20, -1, 32));
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 40, 32));
 
+        jComboBox1.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product ID A-Z", "Product ID Z-A", "Brand A-Z", "Brand Z-A" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 135, 39));
+        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 180, 39));
 
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel10.setText("Sort By ID");
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, 32));
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 22, -1, 30));
 
         PriceFrom.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         PriceFrom.setText("0");
-        PriceFrom.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        PriceFrom.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         PriceFrom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PriceFromActionPerformed(evt);
             }
         });
-        jPanel2.add(PriceFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 92, 34));
+        jPanel2.add(PriceFrom, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 92, 34));
 
         PriceFindBtn2.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         PriceFindBtn2.setForeground(new java.awt.Color(5, 15, 76));
         PriceFindBtn2.setText("FIND");
         PriceFindBtn2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(5, 15, 76)));
         PriceFindBtn2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        PriceFindBtn2.setFocusPainted(false);
         PriceFindBtn2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PriceFindBtn2ActionPerformed(evt);
             }
         });
-        jPanel2.add(PriceFindBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 20, 99, 36));
+        jPanel2.add(PriceFindBtn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 20, 99, 36));
 
         jButton1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(222, 123, 14));
