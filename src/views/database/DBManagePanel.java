@@ -7,8 +7,12 @@ package views.database;
 import includes.LoggerConfig;
 import includes.MySqlConnection;
 import includes.TimestampsGenerator;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.OutputStreamWriter;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -19,7 +23,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author E
  */
 public class DBManagePanel extends javax.swing.JPanel {
-
+    
     private static final Logger logger = LoggerConfig.getLogger();
 
     /**
@@ -183,7 +187,7 @@ public class DBManagePanel extends javax.swing.JPanel {
         fileChooser.setFileFilter(new FileNameExtensionFilter("SQL", "sql"));
         fileChooser.setSelectedFile(new java.io.File("DB_backup" + date + ".sql"));
         int result = fileChooser.showSaveDialog(null);
-
+        
         if (result == JFileChooser.APPROVE_OPTION) {
             String path = fileChooser.getSelectedFile().getPath();
             outPathField.setText(path);
@@ -192,7 +196,7 @@ public class DBManagePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
+        
         if (outPathField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Output Path is Required !");
         } else {
@@ -201,7 +205,7 @@ public class DBManagePanel extends javax.swing.JPanel {
                 // Read serialized database connection information
                 FileInputStream fileInputStream = new FileInputStream("dbinfo.ser");
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-
+                
                 MySqlConnection mySqlConnection = (MySqlConnection) objectInputStream.readObject();
                 objectInputStream.close();
 
@@ -231,7 +235,7 @@ public class DBManagePanel extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(null, "Backup Failed with exit code: " + exitCode);
                     logger.severe("Backup Failed with exit code : " + exitCode);
                 }
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -247,7 +251,7 @@ public class DBManagePanel extends javax.swing.JPanel {
         fileChooser.setFileFilter(new FileNameExtensionFilter("SQL", "sql"));
         fileChooser.setSelectedFile(new java.io.File("DB_backup" + date + ".sql"));
         int result = fileChooser.showSaveDialog(null);
-
+        
         if (result == JFileChooser.APPROVE_OPTION) {
             String path = fileChooser.getSelectedFile().getPath();
             restoreDbSqlFilePathField.setText(path);
@@ -259,45 +263,63 @@ public class DBManagePanel extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         if (restoreDbSqlFilePathField.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Sql file is Required !");
+            JOptionPane.showMessageDialog(null, "SQL file is required!");
         } else {
             try {
-
                 // Read serialized database connection information
                 FileInputStream fileInputStream = new FileInputStream("dbinfo.ser");
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-
+                
                 MySqlConnection mySqlConnection = (MySqlConnection) objectInputStream.readObject();
                 objectInputStream.close();
 
-                // Define backup file path
-                String path = outPathField.getText();
+                // SQL file path
+                String sqlFilePath = restoreDbSqlFilePathField.getText();
 
-                // Create ProcessBuilder with correct mysqldump arguments
+                // Create ProcessBuilder with mysql command
                 ProcessBuilder processBuilder = new ProcessBuilder(
                         "mysql",
                         "-u" + mySqlConnection.USERNAME,
                         "-p" + mySqlConnection.PASSWORD,
                         "-P" + mySqlConnection.PORT,
-                        mySqlConnection.DBNAME,
-                        "<", path
+                        mySqlConnection.DBNAME
                 );
 
                 // Start the process
                 Process process = processBuilder.start();
 
+                // Write SQL file content to process input
+                try (BufferedReader reader = new BufferedReader(new FileReader(sqlFilePath)); OutputStreamWriter writer = new OutputStreamWriter(process.getOutputStream())) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        writer.write(line);
+                        writer.write(System.lineSeparator());
+                    }
+                    writer.flush();
+                }
+
                 // Wait for the process to complete
                 int exitCode = process.waitFor();
                 if (exitCode == 0) {
-                    JOptionPane.showMessageDialog(null, "Restore successful: " + path);
-                    logger.info("Database Restore Success : " + path);
+                    JOptionPane.showMessageDialog(null, "Restore successful: " + sqlFilePath);
+                    logger.info("Database Restore Success: " + sqlFilePath);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Restore Failed with exit code: " + exitCode);
-                    logger.severe("Backup Restore Failed with exit code : " + exitCode);
+                    // Log error output
+                    try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+                        StringBuilder errorOutput = new StringBuilder();
+                        String errorLine;
+                        while ((errorLine = errorReader.readLine()) != null) {
+                            errorOutput.append(errorLine).append(System.lineSeparator());
+                        }
+                        JOptionPane.showMessageDialog(null, "Restore failed:\n" + errorOutput);
+                        logger.severe("Backup Restore Failed: " + errorOutput);
+                    }
                 }
-
+                
             } catch (Exception e) {
                 e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "An error occurred: " + e.getMessage());
+                logger.severe("While DB restore process : " + e.getMessage());
             }
         }
     }//GEN-LAST:event_restoreButtonActionPerformed
