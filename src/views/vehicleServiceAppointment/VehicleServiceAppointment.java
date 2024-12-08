@@ -5,14 +5,30 @@
 package views.vehicleServiceAppointment;
 
 import controllers.AppointmentController;
+import controllers.CustomerController;
+import controllers.VehicleController;
 import includes.IDGenarator;
 import views.vehicle.VehicleSelecter;
 import javax.swing.JOptionPane;
 import models.AppointmentModel;
 import views.ourServices.OurServicesSelecter;
 import includes.LoggerConfig;
+import includes.Mailer;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import resources.emailTemplates.MailTemplates;
+import views.loadingGuis.PleaseWaitDialog;
 
 /**
  *
@@ -31,6 +47,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         datePicker1.setEditor(dateField);
 
         jServiceIdLabel.setVisible(false);
+        waitLabel.setVisible(false);
     }
 
     public void setVehicleDetails(String vehicleNumber, String owner, String brand, String model, String type) {
@@ -68,6 +85,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         jServiceIdLabel = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jTypeLabel = new javax.swing.JLabel();
+        waitLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -89,7 +107,9 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         appointment_btn.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         appointment_btn.setForeground(new java.awt.Color(255, 255, 255));
         appointment_btn.setText("MAKE APPOINTMENT");
+        appointment_btn.setBorderPainted(false);
         appointment_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        appointment_btn.setFocusPainted(false);
         appointment_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 appointment_btnActionPerformed(evt);
@@ -169,6 +189,15 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         jTypeLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jTypeLabel.setText("...............................................");
 
+        waitLabel.setBackground(new java.awt.Color(255, 255, 255));
+        waitLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        waitLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        waitLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/1495.gif"))); // NOI18N
+        waitLabel.setText("Wait For Sending Email...    ");
+        waitLabel.setFocusable(false);
+        waitLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        waitLabel.setOpaque(true);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -191,8 +220,9 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                             .addComponent(jBrandModelLabel)
                             .addComponent(jTypeLabel)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(waitLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel10)
@@ -201,8 +231,8 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                                         .addComponent(appointment_btn)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                                 .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jServiceSelectorButton, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE))
@@ -253,7 +283,9 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(appointment_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(waitLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -266,7 +298,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 9, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -283,8 +315,40 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
 
     }//GEN-LAST:event_resetActionPerformed
 
-    private void appointment_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appointment_btnActionPerformed
+    public void openDialog() {
+        // Create a custom undecorated JDialog
+        JDialog dialog = new JDialog();
+        dialog.setUndecorated(true); // Removes title bar and decorations
+        dialog.setModal(true); // Blocks interaction with other windows
 
+        // Create a JLabel for the message
+        JLabel messageLabel = new JLabel("Wait For Sending Email...", SwingConstants.CENTER);
+        messageLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        messageLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        messageLabel.setOpaque(true);
+        messageLabel.setBackground(new Color(214, 230, 255));
+
+        // Add the message to the dialog
+        dialog.add(messageLabel);
+        dialog.setSize(400, 100);
+        dialog.setLocationRelativeTo(null); // Centers the dialog on the screen
+
+        // Timer to automatically close the dialog after 5 seconds
+        Timer timer = new Timer(2000, new ActionListener() { // 5000 ms = 5 seconds
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose(); // Close the dialog
+            }
+        });
+        timer.setRepeats(false); // Run the timer only once
+        timer.start(); // Start the timer
+
+        // Show the dialog
+        dialog.setVisible(true);
+    }
+    
+    private void appointment_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appointment_btnActionPerformed
+        LocalDate today = LocalDate.now();
         String appointmentID = IDGenarator.appointmentID();
         String vehicleNumber = jVehicleNoLabel.getText();
         String vehicleModel = jBrandModelLabel.getText();
@@ -293,6 +357,8 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         int serviceID = Integer.valueOf(jServiceIdLabel.getText());
         String date = String.valueOf(datePicker1.getSelectedDate());
         String note = additional_issues.getText();
+        String ownerName = "";
+        String ownerEmail = "";
 
         if (vehicleNumber.equals("...............................................")) {
             JOptionPane.showMessageDialog(this, "Please Select Vehicle", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -300,6 +366,8 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Select Service", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!datePicker1.isDateSelected()) {
             JOptionPane.showMessageDialog(this, "Please Select Appointment Date ", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (datePicker1.getSelectedDate().isBefore(today)) {
+            JOptionPane.showMessageDialog(this, "Please Select Today Or Future Date ", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (note.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Make a note of something !", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
@@ -321,7 +389,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                 if (rs.next()) {
                     JOptionPane.showMessageDialog(this, "This Appointment Already Scheduled !", "Warning", JOptionPane.WARNING_MESSAGE);
                 } else {
-
+                    openDialog();
                     new AppointmentController().store(appointmentModel);
 
                     logger.info("New Appointment Scheduled : "
@@ -333,11 +401,22 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
 
                     reset();
 
+                    ResultSet vehicleRS = new VehicleController().show(vehicleNumber);
+                    if (vehicleRS.next()) {
+                        ResultSet cus_Rs = new CustomerController().show(vehicleRS.getInt("customer_id"));
+                        if (cus_Rs.next()) {
+                            ownerName = cus_Rs.getString("first_name") + " " + cus_Rs.getString("last_name");
+                            ownerEmail = cus_Rs.getString("email");                           
+                        }
+                    }
+
+                    new Mailer().sendMail(ownerEmail, "Service Appointment - Dazzle Auto", new MailTemplates().appointmentScheduledMail(ownerName, appointmentID, vehicleNumber, vehicleModel, vehicleType, date, serviceName, note), null, true);
                     this.dispose();
-                    new AppointmentSuccessDialog(this, true, appointmentModel).setVisible(true);
-
+                    AppointmentSuccessDialog app = new AppointmentSuccessDialog(this, true, appointmentModel);
+                    app.setVisible(true);
+                    
                     AppointmnetPanel.loadAppointments();
-
+                  
                 }
 
             } catch (Exception ex) {
@@ -404,5 +483,6 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
     private javax.swing.JLabel jTypeLabel;
     private javax.swing.JLabel jVehicleNoLabel;
     private javax.swing.JButton reset;
+    private javax.swing.JLabel waitLabel;
     // End of variables declaration//GEN-END:variables
 }
