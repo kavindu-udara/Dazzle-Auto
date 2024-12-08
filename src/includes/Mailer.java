@@ -12,6 +12,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import java.io.File;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import views.loadingGuis.PleaseWaitDialog;
 
 /**
  *
@@ -26,6 +27,8 @@ public class Mailer {
     private int port = Integer.parseInt(dotenv.get("MAILER_PORT"));
     private String username = dotenv.get("MAILER_USERNAME");
     private String password = dotenv.get("MAILER_PASSWORD");
+    
+    private PleaseWaitDialog pleaseWaitDialog = new PleaseWaitDialog(null, true);
 
     // Set up properties
     private Properties properties = new Properties();
@@ -49,7 +52,7 @@ public class Mailer {
      * @param isHtml the body is html
      */
     public void sendMail(String recipientEmail, String subject, String body, String attachmentPath, boolean isHtml) {
-
+        
         if (host != null && username != null && password != null && dotenv.get("MAILER_PORT") != null) {
             // Create a session
             Session session = Session.getInstance(properties, new Authenticator() {
@@ -86,8 +89,10 @@ public class Mailer {
 
                 message.setContent(multipart);
 
+                pleaseWaitDialog.setVisible(true);
                 // Send the message
                 Transport.send(message);
+                pleaseWaitDialog.setVisible(false);
                 logger.info("Email Sended : " + recipientEmail + ", Subject : " + subject + ", Body : " + body);
                 JOptionPane.showMessageDialog(null, "Email sent successfully!");
             } catch (Exception e) {

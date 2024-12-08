@@ -90,4 +90,46 @@ public class MailTemplates {
         return mailerBody.toString();
     }
 
+    /**
+     * Generates an HTML email body for an invoice notification.
+     *
+     * @param name the name of the recipient
+     * @return a String containing the HTML content for the invoice email
+     */
+    public String invoiceMailTemplate(String name){
+        StringBuilder mailerBody = new StringBuilder();
+        mailerBody.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+        mailerBody.append("<html lang='en'>");
+        mailerBody.append("<head>");
+        mailerBody.append("<meta charset='UTF-8'>");
+        mailerBody.append("<title>Appointment Scheduled</title>");
+        mailerBody.append("</head>");
+        mailerBody.append("<body style='font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;'>");
+
+        mailerBody.append("<table width='100%' border='0' cellspacing='0' cellpadding='0'>");
+
+        mailerBody.append("<tr><td style='padding: 20px; text-align: center;'>");
+        mailerBody.append("<table width='600' border='0' cellspacing='0' cellpadding='0' style='background-color: #ffffff; border: 1px solid #dddddd; margin: 0 auto;'>");
+
+        mailerBody.append("<tr><td style='background-color: #4CAF50; color: #ffffff; padding: 20px; text-align: center;'>");
+        mailerBody.append("<h1>Dazzle Auto</h1></td></tr>");
+
+        mailerBody.append("<tr><td style='padding: 20px;'>");
+        mailerBody.append("<h2 style='color: #333333;'>A new Appointment has been Scheduled</h2>");
+
+        // User name
+        mailerBody.append("<p style='color: #666666;'>Hi " + name + ", This is your invoice</p>");
+        
+        mailerBody.append("</td></tr>");
+
+        mailerBody.append("<tr><td style='padding: 10px;'><table width='100%' border='0' cellspacing='0' cellpadding='0'>");
+
+        mailerBody.append("<tr><td style='padding: 10px; text-align: center; background-color: #f4f4f4;'>");
+        mailerBody.append("<p style='color: #aaaaaa; font-size: 12px;'>&copy; 2024 Dazzle Auto. All rights reserved.</p>");
+        mailerBody.append("</td></tr>");
+        mailerBody.append("</table></td></tr>");
+        mailerBody.append("</table></body></html>");
+        return mailerBody.toString();
+    }
+
 }
