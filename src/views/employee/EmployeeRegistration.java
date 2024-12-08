@@ -356,6 +356,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
     }//GEN-LAST:event_employee_reset_btnActionPerformed
 
     private void employee_register_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_register_btnActionPerformed
+
         String firstName = employee_firstname.getText();
         String lastName = employee_lastname.getText();
         String nic = employee_nic.getText();
@@ -364,73 +365,66 @@ public class EmployeeRegistration extends java.awt.Dialog {
         String employeeType = String.valueOf(employee_type.getSelectedItem());
 
         if (firstName.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Please enter your first name");
         } else if (lastName.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter your last name", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Please enter your last name");
         } else if (email.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter your email", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Please enter your email");
         } else if (!RegexValidator.isValidEmail(email)) {
-            JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Invalid email");
         } else if (nic.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter your NIC", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Please enter your NIC");
         } else if (!RegexValidator.isValidSlNic(nic) && !RegexValidator.isValidSlNewNic(nic)) {
-            JOptionPane.showMessageDialog(this, "Invalid NIC Number", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Invalid NIC Number");
         } else if (mobile.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter your mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Please enter your mobile number");
         } else if (!RegexValidator.isValidSlPhone(mobile)) {
-            JOptionPane.showMessageDialog(this, "Invalid mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Invalid mobile number");
         } else if (employeeType.equals("Select")) {
-            JOptionPane.showMessageDialog(this, "Please select an employee type", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Please select an employee type");
         } else {
-            try {
-                String generatedId = IDGenarator.employeeID();
+            if (!isThisEmployeeAlreadyExists(nic, email)) {
+                try {
+                    String generatedId = IDGenarator.employeeID();
 
-                EmployeeModel employeeModel = new EmployeeModel();
-                AddressModel addressModel = new AddressModel();
+                    EmployeeModel employeeModel = new EmployeeModel();
+                    employeeModel.setId(generatedId);
+                    employeeModel.setFirstName(firstName);
+                    employeeModel.setLastName(lastName);
+                    employeeModel.setEmail(email);
+                    employeeModel.setNic(nic);
+                    employeeModel.setMobile(mobile);
+                    employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
+                    employeeModel.setStatusId(1);
+                    String registerDateTime = TimestampsGenerator.getFormattedDateTime();
+                    employeeModel.setRegisteredDate(registerDateTime);
 
-                employeeModel.setId(generatedId);
-                employeeModel.setFirstName(firstName);
-                employeeModel.setLastName(lastName);
-                employeeModel.setEmail(email);
-                employeeModel.setNic(nic);
-                employeeModel.setMobile(mobile);
+                    ResultSet resultSet = new EmployeeController().store(employeeModel);
 
-                // Map employee type ID
-                employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
-                employeeModel.setStatusId(1);
+                    String imagePath = saveImage(generatedId + nic + firstName + lastName);
+                    if (imagePath != null) {
+                        EmployeeImageModel employeeImageModel = new EmployeeImageModel();
+                        employeeImageModel.setPath(imagePath);
+                        employeeImageModel.setEmployeeId(generatedId);
+                        new EmployeeImageController().store(employeeImageModel);
+                    }
 
-                // Set registration date
-                String registerDateTime = TimestampsGenerator.getFormattedDateTime();
-                employeeModel.setRegisteredDate(registerDateTime);
+                    JOptionPane.showMessageDialog(this, "Employee Registration Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-                // Store employee and address
-                ResultSet resultSet = new EmployeeController().store(employeeModel);
+                    staffJPanel.reloadTable();
+                    reset();
 
-                // Save image
-                String imagePath = saveImage(generatedId + nic + firstName + lastName);
-                if (imagePath != null) {
-                    EmployeeImageModel employeeImageModel = new EmployeeImageModel();
-                    employeeImageModel.setPath(imagePath);
-                    employeeImageModel.setEmployeeId(generatedId);
-
-                    new EmployeeImageController().store(employeeImageModel);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    logger.severe("Error while storing employee: " + e.getMessage());
                 }
-
-                JOptionPane.showMessageDialog(this, "Employee Registration Successful");
-
-                // Reload view table
-                staffJPanel.reloadTable();
-
-                reset();
-
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                logger.severe("Error while storing employee: " + e.getMessage());
+            } else {
+                showWarningMessage("This employee already exists (NIC or Email)");
             }
         }
 
-
     }//GEN-LAST:event_employee_register_btnActionPerformed
+
     private void regAddressData(String supplierId) {
         String lane1 = Lane1Field.getText();
         String lane2 = lane2Field.getText();
@@ -563,4 +557,24 @@ public class EmployeeRegistration extends java.awt.Dialog {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField lane2Field;
     // End of variables declaration//GEN-END:variables
+
+    private void showWarningMessage(String message) {
+
+        JOptionPane.showMessageDialog(this, message, "Warning", JOptionPane.WARNING_MESSAGE);
+
+    }
+
+    private boolean isThisEmployeeAlreadyExists(String nic, String email) {
+
+        try {
+            ResultSet resultSet = new EmployeeController().show();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            logger.severe("Error while load vehicle by number : " + e.getMessage());
+        }
+        return false;
+
+    }
 }
