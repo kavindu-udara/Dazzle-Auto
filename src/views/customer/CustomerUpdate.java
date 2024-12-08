@@ -43,6 +43,7 @@ public class CustomerUpdate extends java.awt.Dialog {
         customer_firstname.setText(customerModel.getFirstName());
         customer_lastname.setText(customerModel.getLastName());
         customer_mobile.setText(customerModel.getMobile());
+        customer_email.setText(customerModel.getEmail());
 
     }
 
