@@ -92,14 +92,22 @@ public class SupplierRegistration extends java.awt.Dialog {
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel3.setText("First Name");
 
+        supplier_firstname.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel4.setText("Last Name");
+
+        supplier_lastname.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel5.setText("Email");
 
+        supplier_email.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+
         jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel7.setText("Mobile");
+
+        supplier_mobile.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
 
         supplier_register_btn.setBackground(new java.awt.Color(33, 43, 108));
         supplier_register_btn.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -146,12 +154,17 @@ public class SupplierRegistration extends java.awt.Dialog {
         jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel8.setText("Lane 1");
 
+        Lane1Field.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+
         jLabel9.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel9.setText("Address ");
 
         jLabel10.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel10.setText("Lane 2");
 
+        lane2Field.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+
+        cityComboBox.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         cityComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel11.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -168,13 +181,13 @@ public class SupplierRegistration extends java.awt.Dialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(supplier_register_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(supplier_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(supplier_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(supplier_register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
@@ -253,11 +266,11 @@ public class SupplierRegistration extends java.awt.Dialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(31, 31, 31)
+                .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(supplier_register_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(supplier_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

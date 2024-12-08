@@ -246,7 +246,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel1.setText("Search Items");
 
-        search_box.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        search_box.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         search_box.setFocusCycleRoot(true);
         search_box.setSelectionColor(new java.awt.Color(214, 132, 13));
         search_box.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -258,8 +258,9 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel2.setText("Sort By Brand");
 
-        Brand_chooser.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        Brand_chooser.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         Brand_chooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Brand_chooser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         Brand_chooser.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 Brand_chooserItemStateChanged(evt);
@@ -307,12 +308,12 @@ public class Shop_ItemsView extends javax.swing.JPanel {
                 .addGap(22, 22, 22)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(search_box, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60)
+                    .addComponent(search_box, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(Brand_chooser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 365, Short.MAX_VALUE)
                 .addComponent(ItemBrandRegisterBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Item_Register_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)

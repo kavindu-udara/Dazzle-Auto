@@ -171,21 +171,29 @@ public class SupplierUpdate extends java.awt.Dialog {
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel3.setText("First Name");
         jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 130, -1, -1));
+
+        supplier_firstname.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel3.add(supplier_firstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 125, 196, 34));
 
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel4.setText("Last Name");
         jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 186, -1, -1));
+
+        supplier_lastname.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel3.add(supplier_lastname, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 181, 196, 34));
 
         jLabel5.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel5.setText("Email");
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 242, -1, -1));
+
+        supplier_email.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel3.add(supplier_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 237, 196, 34));
 
         jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel7.setText("Mobile");
         jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 291, -1, -1));
+
+        supplier_mobile.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel3.add(supplier_mobile, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 286, 196, 34));
 
         supplier_update_btn.setBackground(new java.awt.Color(33, 43, 108));
@@ -238,7 +246,9 @@ public class SupplierUpdate extends java.awt.Dialog {
         jLabel8.setText("Status");
         jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 341, -1, -1));
 
+        sup_status.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         sup_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        sup_status.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel3.add(sup_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 335, 196, 37));
 
         jLabel9.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -253,20 +263,28 @@ public class SupplierUpdate extends java.awt.Dialog {
         jLabel10.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel10.setText("Lane 1");
         jPanel3.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 240, -1, -1));
+
+        Lane1Field.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel3.add(Lane1Field, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 196, 34));
 
         jLabel11.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel11.setText("Lane 2");
         jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 290, -1, -1));
+
+        lane2Field.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel3.add(lane2Field, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 290, 196, 34));
 
         jLabel13.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel13.setText("City");
         jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 340, -1, -1));
 
+        cityComboBox.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         cityComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cityComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel3.add(cityComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 340, 196, 34));
-        jPanel3.add(supIField, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 130, -1, 34));
+
+        supIField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        jPanel3.add(supIField, new org.netbeans.lib.awtextra.AbsoluteConstraints(497, 125, -1, 34));
 
         jLabel14.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel14.setText("Supplier ID");

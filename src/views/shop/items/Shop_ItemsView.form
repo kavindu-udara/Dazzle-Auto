@@ -69,14 +69,14 @@
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <Component id="search_box" min="-2" pref="193" max="-2" attributes="0"/>
+                          <Component id="search_box" min="-2" pref="241" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <Component id="Brand_chooser" min="-2" pref="150" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="365" max="32767" attributes="0"/>
                       <Component id="ItemBrandRegisterBtn" min="-2" pref="232" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="Item_Register_Button" min="-2" pref="239" max="-2" attributes="0"/>
@@ -125,7 +125,7 @@
             <Component class="javax.swing.JTextField" name="search_box">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Roboto" size="14" style="0"/>
+                  <Font name="Roboto" size="18" style="1"/>
                 </Property>
                 <Property name="focusCycleRoot" type="boolean" value="true"/>
                 <Property name="selectionColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -147,7 +147,7 @@
             <Component class="javax.swing.JComboBox" name="Brand_chooser">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Roboto" size="14" style="0"/>
+                  <Font name="Roboto" size="18" style="1"/>
                 </Property>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="4">
@@ -156,6 +156,9 @@
                     <StringItem index="2" value="Item 3"/>
                     <StringItem index="3" value="Item 4"/>
                   </StringArray>
+                </Property>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Hand Cursor"/>
                 </Property>
               </Properties>
               <Events>

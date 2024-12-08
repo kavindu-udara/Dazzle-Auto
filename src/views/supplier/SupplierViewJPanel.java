@@ -218,7 +218,7 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel1.setText("Search Suppliers");
 
-        search_box.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        search_box.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         search_box.setFocusCycleRoot(true);
         search_box.setSelectionColor(new java.awt.Color(214, 132, 13));
         search_box.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -244,6 +244,7 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel2.setText("Status");
 
+        StatusSortBtn.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         StatusSortBtn.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         StatusSortBtn.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -311,6 +312,7 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        SupplierViewTable.setFocusable(false);
         SupplierViewTable.setRowHeight(30);
         SupplierViewTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

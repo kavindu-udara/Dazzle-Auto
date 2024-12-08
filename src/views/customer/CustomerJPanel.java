@@ -157,7 +157,7 @@ public class CustomerJPanel extends javax.swing.JPanel {
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             customerViewTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }

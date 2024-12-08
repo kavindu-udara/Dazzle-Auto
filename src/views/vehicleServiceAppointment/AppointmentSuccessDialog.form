@@ -53,51 +53,45 @@
                           <Component id="jSeparator1" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="110" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                          <Component id="jButton1" min="-2" pref="257" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Component id="jLabel4" min="-2" pref="277" max="-2" attributes="0"/>
+                                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jDateLabel" alignment="0" pref="280" max="32767" attributes="0"/>
+                                      <Component id="jTypeLabel1" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jServiceLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jNoteLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jBrandModelLabel" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="jDateLabel" alignment="0" pref="280" max="32767" attributes="0"/>
-                                              <Component id="jTypeLabel1" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jServiceLabel" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jNoteLabel" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jBrandModelLabel" max="32767" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="jLabel14" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jLabel13" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jLabel15" alignment="0" min="-2" pref="126" max="-2" attributes="0"/>
-                                              <Component id="jLabel11" alignment="0" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jVehicleNoLabel" pref="269" max="32767" attributes="0"/>
-                                      </Group>
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="jLabel14" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jLabel13" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="jLabel15" alignment="0" min="-2" pref="126" max="-2" attributes="0"/>
+                                      <Component id="jLabel11" alignment="0" max="32767" attributes="0"/>
                                   </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jVehicleNoLabel" pref="269" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace pref="1" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="107" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jLabel4" max="32767" attributes="0"/>
+                      <Component id="jButton1" min="-2" pref="257" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
