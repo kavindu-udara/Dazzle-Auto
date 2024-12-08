@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import models.AppointmentModel;
 import views.ourServices.OurServicesSelecter;
 import includes.LoggerConfig;
+import includes.Mailer;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
 
@@ -338,6 +339,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
 
                     AppointmnetPanel.loadAppointments();
 
+                    
                 }
 
             } catch (Exception ex) {
