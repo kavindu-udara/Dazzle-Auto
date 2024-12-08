@@ -219,54 +219,69 @@ public class CustomerRegistration extends java.awt.Dialog {
     }//GEN-LAST:event_customer_mobileActionPerformed
 
     private void customer_register_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customer_register_btnActionPerformed
-
         String firstName = customer_firstname.getText();
         String lastName = customer_lastname.getText();
         String mobile = customer_mobile.getText();
         String email = customer_email.getText();
 
         if (firstName.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Please enter your first name");
         } else if (lastName.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter your last name", "Warning", JOptionPane.WARNING_MESSAGE);
-
+            showWarningMessage("Please enter your last name");
         } else if (mobile.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Please enter your mobile number");
         } else if (!RegexValidator.isValidSlPhone(mobile)) {
-            JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Invalid mobile number! (Ex: 0771234567)");
         } else if (email.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter your email", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Please enter your email");
         } else if (!RegexValidator.isValidEmail(email)) {
-            JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
+            showWarningMessage("Invalid email format!");
         } else {
+            // Setup CustomerModel
+            CustomerModel customerModel = new CustomerModel();
+            customerModel.setFirstName(firstName);
+            customerModel.setLastName(lastName);
+            customerModel.setMobile(mobile);
+            customerModel.setEmail(email);
 
-            try {
+            String registerDateTime = TimestampsGenerator.getFormattedDateTime();
+            customerModel.setRegisteredDate(registerDateTime);
 
-                CustomerModel customerModel = new CustomerModel();
-                customerModel.setFirstName(firstName);
-                customerModel.setLastName(lastName);
-                customerModel.setMobile(mobile);
-                customerModel.setEmail(email);
-
-                String registerDateTime = TimestampsGenerator.getFormattedDateTime();
-                customerModel.setRegisteredDate(registerDateTime);
-
-                ResultSet resultSet = new CustomerController().store(customerModel);
-
-                JOptionPane.showMessageDialog(this, "Customer Registration Successfully");
+            // Check if the customer already exists
+            if (!isThisCustomerAlreadyExists(mobile, email)) {
+                // Proceed to register the customer
+                try {
+                    ResultSet resultSet = new CustomerController().store(customerModel);
+                    JOptionPane.showMessageDialog(this, "Customer Registered Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    reset();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.severe("Error while registering a customer: " + e.getMessage());
+                }
 
                 customerJPanel.reloadTable();
-
-                reset();
-
-            } catch (Exception e) {
-                System.out.println(e);
-                logger.severe("Error while storing customer : " + e.getMessage());
+            } else {
+                showWarningMessage("This customer is already registered (Mobile or Email)!");
             }
-
         }
 
+
     }//GEN-LAST:event_customer_register_btnActionPerformed
+    private boolean isThisCustomerAlreadyExists(String mobile, String email) {
+        try {
+            ResultSet resultSet = new CustomerController().show();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            logger.severe("Error while load vehicle by number : " + e.getMessage());
+        }
+        return false;
+    }
+
+    private void showWarningMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Warning", JOptionPane.WARNING_MESSAGE);
+    }
 
     private void customer_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customer_reset_btnActionPerformed
 
