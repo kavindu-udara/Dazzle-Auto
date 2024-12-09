@@ -121,14 +121,6 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
                 query += " ORDER BY `vehicle`.`model` DESC";
 
             }
-//            String vehicleBrand = String.valueOf(jComboBox3.getSelectedItem());
-//            if (vehicleBrand.equals("  All")) {
-//                query += " AND `vehicle_brand_id`LIKE'%%'";
-//            } else {
-//                String typeID = vehicleBrandHashMap.get(vehicleBrand);
-//
-//                query += " AND `vehicle_brand_id`LIKE'%" + typeID + "%'";
-//            }
             String whereClause = "";
             String selectedBrand = jComboBox3.getSelectedItem() != null ? String.valueOf(jComboBox3.getSelectedItem()) : "All";
 
