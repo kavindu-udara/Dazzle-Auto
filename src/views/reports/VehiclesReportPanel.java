@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
@@ -42,6 +43,7 @@ import views.dashboard.Dashboard;
  *
  * @author Dinuka
  */
+
 public class VehiclesReportPanel extends javax.swing.JPanel {
 
     private static Logger logger = LoggerConfig.getLogger();
@@ -49,6 +51,7 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
     Dashboard dashboard = null;
 
     private static HashMap<String, String> vehicleTypesHashMap = new HashMap<>();
+    private static HashMap<String, String> vehicleBrandHashMap = new HashMap<>();
 
     public VehiclesReportPanel(Dashboard dashboard) {
         initComponents();
@@ -88,7 +91,6 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
     }
 
     public void loadVehicles() {
-
         try {
 
             String query = "SELECT * FROM vehicle "
@@ -119,6 +121,20 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
                 query += " ORDER BY `vehicle`.`model` DESC";
 
             }
+//            String vehicleBrand = String.valueOf(jComboBox3.getSelectedItem());
+//            if (vehicleBrand.equals("  All")) {
+//                query += " AND `vehicle_brand_id`LIKE'%%'";
+//            } else {
+//                String typeID = vehicleBrandHashMap.get(vehicleBrand);
+//
+//                query += " AND `vehicle_brand_id`LIKE'%" + typeID + "%'";
+//            }
+            String whereClause = "";
+            String selectedBrand = jComboBox3.getSelectedItem() != null ? String.valueOf(jComboBox3.getSelectedItem()) : "All";
+
+            if (!selectedBrand.equals("All")) {
+                whereClause += "product_brand.name = '" + selectedBrand + "' ";
+            }
 
             ResultSet resultSet = MySqlConnection.executeSearch(query);
 
@@ -136,6 +152,9 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
                 vector.add(resultSet.getString("vehicle_type.name"));
 
                 dtm.addRow(vector);
+                DefaultComboBoxModel model = new DefaultComboBoxModel(vector);
+                jComboBox3.setModel(model);
+
             }
 
             jTable1.setModel(dtm);
@@ -185,7 +204,8 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
             params.put("image", headerImg);
             params.put("Sort_By", String.valueOf(jComboBox2.getSelectedItem()));
             params.put("vehicle_type", jComboBox1.getSelectedItem());
-
+            params.put("vehicle_brand", jComboBox3.getSelectedItem());
+            
             JRTableModelDataSource dataSource = new JRTableModelDataSource(jTable1.getModel());
 
             JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
@@ -216,6 +236,8 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -242,7 +264,7 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/filter-30.png"))); // NOI18N
 
         jComboBox1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Car ", "Van ", "Threewheel", "Motorcycle", "Bus", "Lorry", "Truck" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Car ", "Van ", "Threewheel", "Motorcycle", "Bus", "Lorry", "Truck" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -285,7 +307,7 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTable1);
 
         jButton2.setBackground(new java.awt.Color(51, 51, 51));
-        jButton2.setFont(new java.awt.Font("Microsoft YaHei UI Light", 1, 18)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/analyze-30.png"))); // NOI18N
         jButton2.setText("Save Report");
@@ -296,7 +318,7 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
         });
 
         jButton3.setBackground(new java.awt.Color(0, 102, 0));
-        jButton3.setFont(new java.awt.Font("Microsoft YaHei UI Light", 1, 18)); // NOI18N
+        jButton3.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/print-30.png"))); // NOI18N
         jButton3.setText("Print Report");
@@ -305,6 +327,22 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
                 jButton3ActionPerformed(evt);
             }
         });
+
+        jComboBox3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Toyota", "Nissan", "Honda", "BMW", "Mercedes-Benz", "Bajaj", "Maruti Suzuki", "Mitsubishi", "Subaru", "Ford", "Cherverlot", "Volkswagon", "Cherry", "KIA", "Hyundai", "Mahindra", "TATA", "Audi", "Volvo", "Mazda", "Land Rover", "TVS", "ISUZU", "LAYLAND", "EICHER" }));
+        jComboBox3.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox3ItemStateChanged(evt);
+            }
+        });
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel4.setText("Sort By Brand");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -329,13 +367,18 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
                         .addGap(30, 30, 30)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(71, 71, 71)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(592, 592, 592)
+                                .addComponent(jButton2)
+                                .addGap(26, 26, 26)
                                 .addComponent(jButton3))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 998, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(18, Short.MAX_VALUE))
@@ -355,7 +398,9 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jComboBox2)
-                        .addComponent(jComboBox1)))
+                        .addComponent(jComboBox1)
+                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -427,6 +472,16 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+        loadVehicles();
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
+        // TODO add your handling code here:           
+
+    }//GEN-LAST:event_jComboBox3ItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -434,9 +489,11 @@ public class VehiclesReportPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
