@@ -21,6 +21,7 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,6 +37,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 import models.LoginModel;
 import models.MainInvoiceItemModel;
 import models.ServiceInvoiceItemsModel;
@@ -70,6 +73,7 @@ public class MainInvoice extends javax.swing.JFrame {
         setDocumentFilters();
         invoiceTableRender();
         loadPaymentMethods();
+        paymentValidate();
         jInvoiceIDTextField.setText(IDGenarator.invoiceID());
         jEmployeeNameLabel.setText(LoginModel.getFirstName() + " " + LoginModel.getLastName());
 
@@ -82,10 +86,23 @@ public class MainInvoice extends javax.swing.JFrame {
         odometerField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "0000000");
     }
 
+    private void paymentValidate() {
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        numberFormat.setGroupingUsed(false);
+        numberFormat.setMinimumFractionDigits(1);
+        numberFormat.setMaximumFractionDigits(1);
+
+        NumberFormatter numberFormatter = new NumberFormatter(numberFormat);
+        numberFormatter.setAllowsInvalid(false);
+        numberFormatter.setMinimum(0.0);
+
+        paymentField.setFormatterFactory(new DefaultFormatterFactory(numberFormatter));
+    }
+    
     private void setDocumentFilters() {
         ((AbstractDocument) jServiceChargeField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
         ((AbstractDocument) discountField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
-        ((AbstractDocument) paymentField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
+        //((AbstractDocument) paymentField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
         ((AbstractDocument) odometerField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
     }
 
