@@ -38,7 +38,7 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author kavindu
  */
-public class SingleEmployeeAttendance extends javax.swing.JDialog {
+public class SingleEmployeeAttendance extends javax.swing.JFrame {
 
     private String empId;
     private static Logger logger = LoggerConfig.getLogger();
@@ -47,7 +47,7 @@ public class SingleEmployeeAttendance extends javax.swing.JDialog {
      * Creates new form SingleEmployeeAttendance
      */
     public SingleEmployeeAttendance(java.awt.Frame parent, boolean modal, String empId) {
-        super(parent, modal);
+        //super(parent, modal);
         initComponents();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
         

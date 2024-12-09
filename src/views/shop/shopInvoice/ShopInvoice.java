@@ -13,6 +13,7 @@ import controllers.StockController;
 import includes.IDGenarator;
 import includes.LoggerConfig;
 import includes.OnlyDoubleDocumentFilter;
+import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
 import java.awt.Color;
 import java.awt.Component;
@@ -22,6 +23,8 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,6 +32,7 @@ import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -37,6 +41,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
+import javax.swing.text.PlainDocument;
 import models.LoginModel;
 import models.ShopInvoiceItemModel;
 import models.ShopInvoiceModel;
@@ -74,6 +81,7 @@ public class ShopInvoice extends javax.swing.JFrame {
 
         jLabel19.setVisible(false);
         discountField.setVisible(false);
+        QtyValidate();
     }
 
     public void setStockDetails(String stockID, String brand, String productName, String qty, String sellingPrice) {
@@ -84,10 +92,25 @@ public class ShopInvoice extends javax.swing.JFrame {
         jSellingPriceLabel.setText(sellingPrice);
     }
 
+    private void QtyValidate() {
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        numberFormat.setGroupingUsed(false);
+        numberFormat.setMinimumFractionDigits(1);
+        numberFormat.setMaximumFractionDigits(1);
+
+        NumberFormatter numberFormatter = new NumberFormatter(numberFormat);
+        numberFormatter.setAllowsInvalid(false);
+        numberFormatter.setMinimum(0.0);
+
+        QtyField.setFormatterFactory(new DefaultFormatterFactory(numberFormatter));
+    }
+
     private void setDocumentFilters() {
-        ((AbstractDocument) QtyField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
+
+        //((AbstractDocument) QtyField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
         ((AbstractDocument) discountField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
         ((AbstractDocument) paymentField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
+
     }
 
     private void loadPaymentMethods() {

@@ -74,8 +74,11 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         GrnNumberField.setEditable(false);
         EmployeeName.setText(LoginModel.getFirstName() + " " + LoginModel.getLastName());
         PaymenntField.setEditable(false);
-        ProductIdField.setEditable(false);
-        BrandNameField.setEditable(false);
+        ProductIdField.setFocusable(false);
+        BrandNameField.setFocusable(false);
+        ProductNameField.setFocusable(false);
+        SupplierNameField.setFocusable(false);
+        SupplierIdField.setFocusable(false);
     }
 
     private void setDocumentFilters() {

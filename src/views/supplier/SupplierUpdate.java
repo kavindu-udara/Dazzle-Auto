@@ -284,7 +284,7 @@ public class SupplierUpdate extends java.awt.Dialog {
         jPanel3.add(cityComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 340, 196, 34));
 
         supIField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jPanel3.add(supIField, new org.netbeans.lib.awtextra.AbsoluteConstraints(497, 125, -1, 34));
+        jPanel3.add(supIField, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 130, -1, 34));
 
         jLabel14.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel14.setText("Supplier ID");
