@@ -63,7 +63,7 @@ public class StaffJPanel extends javax.swing.JPanel {
         loadEmployees();
         employeeViewTable.clearSelection();
 
-        employeeFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/NIC");
+        employeeFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/NIC/Mobile/Email");
 
         employeeViewTableRender();
 

@@ -4,6 +4,7 @@
  */
 package views.reports;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import controllers.EmployeeController;
 import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
@@ -53,6 +54,8 @@ public class EmployeeReportPanel extends javax.swing.JPanel {
         this.dashboard = dashboard;
         loadEmployees();
         EmployeeTableRender();
+        
+        employeeFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/Mobile/NIC/Email");
     }
 
      private void EmployeeTableRender() {

@@ -8,12 +8,15 @@ import controllers.ProductBrandController;
 import controllers.ProductController;
 import includes.IDGenarator;
 import includes.LoggerConfig;
+import includes.OnlyLettersDocumentFilter;
+import includes.OnlyNumbersDocumentFilter;
 import java.util.HashMap;
 import java.sql.ResultSet;
 import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
 import models.ProductBrandModel;
 import models.ProductModel;
 
@@ -34,10 +37,13 @@ public class RegisterBrand extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.shop_ItemsView = shop_ItemsView;
+        setDocumentFilters();
     }
 
     
-
+ private void setDocumentFilters() {
+        ((AbstractDocument) BrandNameField.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

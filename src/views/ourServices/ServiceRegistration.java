@@ -14,6 +14,7 @@ import models.ServicesModel;
 import controllers.ServicesController;
 import controllers.VehicleTypeController;
 import includes.LoggerConfig;
+import includes.OnlyLettersDocumentFilter;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -42,6 +43,7 @@ public class ServiceRegistration extends java.awt.Dialog {
         loadTypes();
     }
 
+   
     private static HashMap<String, String> vehicleTypeMap = new HashMap<>();
 
     private void loadTypes() {
@@ -70,6 +72,7 @@ public class ServiceRegistration extends java.awt.Dialog {
     private void setDocumentFilters() {
         AbstractDocument doc = (AbstractDocument) Price.getDocument();
         doc.setDocumentFilter(new OnlyDoubleDocumentFilter());
+        ((AbstractDocument) Service_name.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
     }
 
     /**

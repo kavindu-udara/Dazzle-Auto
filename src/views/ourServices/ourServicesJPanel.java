@@ -22,11 +22,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import views.mainInvoice.MainInvoice;
 import includes.LoggerConfig;
+import includes.OnlyLettersDocumentFilter;
+import includes.OnlyNumbersDocumentFilter;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AbstractDocument;
 import models.ServicesModel;
 import views.vehicleServiceAppointment.VehicleServiceAppointment;
 
@@ -53,9 +56,15 @@ public class ourServicesJPanel extends javax.swing.JPanel {
         initComponents();
         loadServices();
         serviceFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Service Name");
+        setDocumentFilters();
 
         OurServiceTableRender();
         loadVehicleTypes();
+    }
+
+    private void setDocumentFilters() {
+        ((AbstractDocument) serviceFindField.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
+
     }
 
     //Constructer for service selector
