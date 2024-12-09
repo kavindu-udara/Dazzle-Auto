@@ -8,7 +8,9 @@ import controllers.ShopInoviceController;
 import controllers.ServiceInvoiceController;
 
 import includes.LoggerConfig;
+import includes.MySqlConnection;
 import java.awt.BorderLayout;
+import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.InputStream;
 import java.util.logging.Logger;
@@ -57,6 +59,8 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
         jPaidInvoiceTable = new javax.swing.JTable();
         viewReportb = new javax.swing.JButton();
         printReportb = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jSortComboBox = new javax.swing.JComboBox<>();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
         setPreferredSize(new java.awt.Dimension(1100, 610));
@@ -151,6 +155,23 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel7.setText("Sort By :");
+
+        jSortComboBox.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jSortComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vehicle No A-Z", "Vehicle No Z-A", "Paid Amount A-Z", "Paid Amount Z-A", "Registered Date Oldest", "Registered Date Newest" }));
+        jSortComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jSortComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jSortComboBoxItemStateChanged(evt);
+            }
+        });
+        jSortComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSortComboBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -170,15 +191,19 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jInvoiceSerachField, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(104, 104, 104)
+                        .addGap(102, 102, 102)
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(jSortComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(viewReportb)
                         .addGap(35, 35, 35)
                         .addComponent(printReportb))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1067, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1067, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jInvoiceSerachField, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -190,17 +215,21 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(5, 5, 5)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
+                .addGap(51, 51, 51)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(printReportb)
                     .addComponent(viewReportb)
-                    .addComponent(jInvoiceSerachField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSortComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jInvoiceSerachField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
-            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
+            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -255,6 +284,46 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
     private void jInvoiceSerachFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInvoiceSerachFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jInvoiceSerachFieldActionPerformed
+
+    public ResultSet search(String searchText, String sortOption) throws Exception {
+        // Base query
+
+        String tableName = "service_invoice";
+        String query = "SELECT * FROM `" + tableName + "` "
+                + "INNER JOIN payment_method ON service_invoice.payment_method_id = payment_method.id "
+                + "INNER JOIN employee ON service_invoice.employee_id = employee.id";
+
+        // Add search filters if `searchText` is not empty
+        if (searchText != null && !searchText.trim().isEmpty()) {
+            query += " WHERE `vehicle_number` LIKE '%" + searchText + "%' OR "
+                    + "`service_invoice`.`id` LIKE '%" + searchText + "%' OR "
+                    + "`employee`.`first_name` LIKE '%" + searchText + "%' OR "
+                    + "`employee`.`last_name` LIKE '%" + searchText + "%'";
+        }
+
+        // Add sorting conditions based on the selected option
+        if (sortOption != null && !sortOption.trim().isEmpty()) {
+            if (sortOption.equals("Vehicle No A-Z")) {
+                query += " ORDER BY `vehicle_number` ASC";
+            } else if (sortOption.equals("Vehicle No Z-A")) {
+                query += " ORDER BY `vehicle_number` DESC";
+            } else if (sortOption.equals("Paid Amount Oldest")) {
+                query += " ORDER BY `service_invoice`.`paid_amount` ASC";
+            } else if (sortOption.equals("Paid Amount Newest")) {
+                query += " ORDER BY `service_invoice`.`paid_amount` DESC";
+            } else if (sortOption.equals("Registered Date Oldest")) {
+                query += " ORDER BY `service_invoice`.`date` ASC";
+            } else if (sortOption.equals("Registered Date Newest")) {
+                query += " ORDER BY `service_invoice`.`date` DESC";
+            }
+        } else {
+            // Default sorting if no specific sort option is provided
+            query += " ORDER BY `service_invoice`.`date` DESC";
+        }
+
+        // Execute the query
+        return MySqlConnection.executeSearch(query);
+    }
 
     private void jInvoiceSerachFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jInvoiceSerachFieldKeyReleased
         loadInvoices();
@@ -314,6 +383,62 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_printReportbActionPerformed
 
+    private void jSortComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jSortComboBoxItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            // Call the method to sort and display invoices
+            try {
+                // Fetch search text and selected sort option
+                String searchText = jInvoiceSerachField.getText().trim();
+                String sortOption = String.valueOf(jSortComboBox.getSelectedItem());
+
+                // Execute the search with sorting
+                ResultSet resultSet = search(searchText, sortOption);
+
+                // Get the table model
+                DefaultTableModel model = (DefaultTableModel) jPaidInvoiceTable.getModel();
+                model.setRowCount(0); // Clear the table
+
+                // Populate the table with data from ResultSet
+                while (resultSet.next()) {
+                    String invoiceId = resultSet.getString("id");
+                    String vehicleNo = resultSet.getString("vehicle_number");
+                    String date = resultSet.getString("date");
+                    double total = resultSet.getDouble("total"); // Total Amount
+                    double paidAmount = resultSet.getDouble("paid_amount");
+                    double balance = resultSet.getDouble("balance");
+                    String paymentMethod = resultSet.getString("method"); // Payment Method
+                    String issuedBy = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
+
+                    // Add the row to the table model
+                    model.addRow(new Object[]{
+                        invoiceId, // Invoice ID
+                        vehicleNo, // Vehicle Number
+                        date, // Date
+                        total, // Total Amount
+                        paidAmount, // Paid Amount
+                        balance, // Balance
+                        paymentMethod, // Payment Method
+                        issuedBy // Issued By
+                    });
+                }
+
+                // Revalidate and repaint the table to reflect updates
+                jPaidInvoiceTable.revalidate();
+                jPaidInvoiceTable.repaint();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.severe("Error while sorting invoices: " + e.getMessage());
+            }
+        }
+
+
+    }//GEN-LAST:event_jSortComboBoxItemStateChanged
+
+    private void jSortComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSortComboBoxActionPerformed
+        //
+    }//GEN-LAST:event_jSortComboBoxActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -321,11 +446,13 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JTable jPaidInvoiceTable;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JComboBox<String> jSortComboBox;
     private javax.swing.JButton printReportb;
     private javax.swing.JButton viewReportb;
     // End of variables declaration//GEN-END:variables
