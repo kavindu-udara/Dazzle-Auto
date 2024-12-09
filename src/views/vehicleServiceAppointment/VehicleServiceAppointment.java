@@ -416,7 +416,6 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                     app.setVisible(true);
                     
                     AppointmnetPanel.loadAppointments();
-                  
                 }
 
             } catch (Exception ex) {
