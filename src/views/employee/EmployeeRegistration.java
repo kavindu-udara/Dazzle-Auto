@@ -383,44 +383,42 @@ public class EmployeeRegistration extends java.awt.Dialog {
         } else if (employeeType.equals("Select")) {
             showWarningMessage("Please select an employee type");
         } else {
-            if (!isThisEmployeeAlreadyExists(nic, email)) {
-                try {
-                    String generatedId = IDGenarator.employeeID();
 
-                    EmployeeModel employeeModel = new EmployeeModel();
-                    employeeModel.setId(generatedId);
-                    employeeModel.setFirstName(firstName);
-                    employeeModel.setLastName(lastName);
-                    employeeModel.setEmail(email);
-                    employeeModel.setNic(nic);
-                    employeeModel.setMobile(mobile);
-                    employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
-                    employeeModel.setStatusId(1);
-                    String registerDateTime = TimestampsGenerator.getFormattedDateTime();
-                    employeeModel.setRegisteredDate(registerDateTime);
+            try {
+                String generatedId = IDGenarator.employeeID();
 
-                    ResultSet resultSet = new EmployeeController().store(employeeModel);
+                EmployeeModel employeeModel = new EmployeeModel();
+                employeeModel.setId(generatedId);
+                employeeModel.setFirstName(firstName);
+                employeeModel.setLastName(lastName);
+                employeeModel.setEmail(email);
+                employeeModel.setNic(nic);
+                employeeModel.setMobile(mobile);
+                employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
+                employeeModel.setStatusId(1);
+                String registerDateTime = TimestampsGenerator.getFormattedDateTime();
+                employeeModel.setRegisteredDate(registerDateTime);
 
-                    String imagePath = saveImage(generatedId + nic + firstName + lastName);
-                    if (imagePath != null) {
-                        EmployeeImageModel employeeImageModel = new EmployeeImageModel();
-                        employeeImageModel.setPath(imagePath);
-                        employeeImageModel.setEmployeeId(generatedId);
-                        new EmployeeImageController().store(employeeImageModel);
-                    }
+                ResultSet resultSet = new EmployeeController().store(employeeModel);
 
-                    JOptionPane.showMessageDialog(this, "Employee Registration Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-                    staffJPanel.reloadTable();
-                    reset();
-
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    logger.severe("Error while storing employee: " + e.getMessage());
+                String imagePath = saveImage(generatedId + nic + firstName + lastName);
+                if (imagePath != null) {
+                    EmployeeImageModel employeeImageModel = new EmployeeImageModel();
+                    employeeImageModel.setPath(imagePath);
+                    employeeImageModel.setEmployeeId(generatedId);
+                    new EmployeeImageController().store(employeeImageModel);
                 }
-            } else {
-                showWarningMessage("This employee already exists (NIC or Email)");
+
+                JOptionPane.showMessageDialog(this, "Employee Registration Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                staffJPanel.reloadTable();
+                reset();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                logger.severe("Error while storing employee: " + e.getMessage());
             }
+
         }
 
     }//GEN-LAST:event_employee_register_btnActionPerformed
