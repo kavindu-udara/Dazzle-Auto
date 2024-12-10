@@ -8,6 +8,7 @@ import controllers.ProductBrandController;
 import controllers.ProductController;
 import controllers.StockController;
 import includes.LoggerConfig;
+import includes.OnlyNumbersDocumentFilter;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -23,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.util.Vector;
 import java.sql.ResultSet;
+import javax.swing.text.AbstractDocument;
 import views.shop.shopInvoice.ShopInvoice;
 
 /**
@@ -49,6 +51,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         StockTableRender();
         sortby();
         searchByPrice();
+        setDocumentFilters();
     }
 
     public Shop_StockJPanel(Frame parentFrame, JStockSelector stockSelector, String BaseFrame) {
@@ -193,7 +196,12 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
             logger.severe("Error while loading table : " + e.getMessage());
         }
     }
+    private void setDocumentFilters() {
+        ((AbstractDocument) PriceFrom.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+        ((AbstractDocument) PriceTo.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
+    //    ((AbstractDocument) QtyField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
 
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -437,6 +445,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
     private void resetPricePanel() {
         PriceFrom.setText("");
         PriceTo.setText("");
+        setDocumentFilters();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
