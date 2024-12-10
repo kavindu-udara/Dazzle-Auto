@@ -183,6 +183,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
         leavesPriceField.setEditable(false);
         leavesPriceField.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
+        leavesPriceField.setText("0");
         add(leavesPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 120, 150, 30));
 
         jLabel12.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -534,8 +535,8 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             Double leaveSalary = (basicSalary * presentage) / 100;
             leavesPriceField.setText(String.valueOf(leaves * leaveSalary));
 
-            loadTotalSalary();
         }
+        loadTotalSalary();
     }
 
     private void loadTotalSalary() {

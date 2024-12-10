@@ -443,7 +443,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         jDatabaseMenuItem.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jDatabaseMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/database-20.png"))); // NOI18N
-        jDatabaseMenuItem.setText("Manage Database");
+        jDatabaseMenuItem.setText("Data Backup & Restore");
         jDatabaseMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jDatabaseMenuItemActionPerformed(evt);
