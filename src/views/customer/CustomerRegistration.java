@@ -248,21 +248,18 @@ public class CustomerRegistration extends java.awt.Dialog {
             customerModel.setRegisteredDate(registerDateTime);
 
             // Check if the customer already exists
-            if (!isThisCustomerAlreadyExists(mobile, email)) {
-                // Proceed to register the customer
-                try {
-                    ResultSet resultSet = new CustomerController().store(customerModel);
-                    JOptionPane.showMessageDialog(this, "Customer Registered Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    reset();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    logger.severe("Error while registering a customer: " + e.getMessage());
-                }
-
-                customerJPanel.reloadTable();
-            } else {
-                showWarningMessage("This customer is already registered (Mobile or Email)!");
+            // Proceed to register the customer
+            try {
+                ResultSet resultSet = new CustomerController().store(customerModel);
+                JOptionPane.showMessageDialog(this, "Customer Registered Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                reset();
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.severe("Error while registering a customer: " + e.getMessage());
             }
+
+            customerJPanel.reloadTable();
+
         }
 
 
