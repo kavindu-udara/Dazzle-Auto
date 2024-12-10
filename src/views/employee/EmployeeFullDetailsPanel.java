@@ -234,6 +234,51 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         return null;
     }
 
+    public JasperPrint makeIDPrint() {
+
+        String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
+
+        String idFront;
+        String idBack;
+        String empImg;
+        String qr;
+        try {
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/Employee_ID.jasper");           
+            String front = new File(this.getClass().getResource("/resources/reports/FRONT-01.png").getFile()).getAbsolutePath();
+            String back = new File(this.getClass().getResource("/resources/reports/FRONT-02.png").getFile()).getAbsolutePath();
+            String qrPath = tempFile.getAbsolutePath();
+
+            idFront = front.replace("\\", "/");
+            idBack = back.replace("\\", "/");
+            empImg = empImgPath.replace("\\", "/");
+            qr = qrPath.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("idFront", idFront);
+            params.put("IdBack", idBack);
+            params.put("empImg", empImg);
+            params.put("qr", qr);
+
+            params.put("issuedBy", LoginModel.getFirstName() + " " + LoginModel.getLastName());
+            params.put("nic", nicLabel.getText());
+            params.put("fullName", nameLabel.getText());
+            params.put("mobile", mobileLabel.getText());
+            params.put("empType", empTypeLabel.getText());
+            params.put("date", dateTime);
+
+            JREmptyDataSource emptyDataSource = new JREmptyDataSource();
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, emptyDataSource);
+
+            return report;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while makeIDPrint() : " + e.getMessage());
+        }
+        return null;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -271,6 +316,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         qrLabel = new javax.swing.JLabel();
         idFront = new javax.swing.JLabel();
         idBack = new javax.swing.JLabel();
+        idPrintButton = new javax.swing.JButton();
         viewReportb = new javax.swing.JButton();
         printReportb = new javax.swing.JButton();
         viewAttendanceButton = new javax.swing.JButton();
@@ -425,6 +471,21 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         idBack.setOpaque(true);
         jPanel1.add(idBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 370, 240));
 
+        idPrintButton.setBackground(new java.awt.Color(30, 124, 188));
+        idPrintButton.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
+        idPrintButton.setForeground(new java.awt.Color(255, 255, 255));
+        idPrintButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/print-25.png"))); // NOI18N
+        idPrintButton.setText(" Print ID Card");
+        idPrintButton.setBorderPainted(false);
+        idPrintButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        idPrintButton.setFocusPainted(false);
+        idPrintButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idPrintButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(idPrintButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 500, 370, 40));
+
         jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(551, 53, 558, 551));
 
         viewReportb.setBackground(new java.awt.Color(51, 51, 51));
@@ -537,6 +598,21 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         new SingleEmployeeAttendance(null, true, empId).setVisible(true);
     }//GEN-LAST:event_viewAttendanceButtonActionPerformed
 
+    private void idPrintButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idPrintButtonActionPerformed
+        try {
+            JasperPrint report = makeIDPrint();
+            JasperViewer.viewReport(report, false);
+            if (tempFile != null) {
+                tempFile.deleteOnExit();
+            }
+
+            logger.info("Employee : " + empId + ", ID card viewed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while idPrintButtonActionPerformed : " + e.getMessage());
+        }
+    }//GEN-LAST:event_idPrintButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel emailLabel;
@@ -546,6 +622,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
     private javax.swing.JLabel employeeTypeInId;
     private javax.swing.JLabel idBack;
     private javax.swing.JLabel idFront;
+    private javax.swing.JButton idPrintButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

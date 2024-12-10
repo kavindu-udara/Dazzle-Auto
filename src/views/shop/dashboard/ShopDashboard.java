@@ -501,11 +501,11 @@ public class ShopDashboard extends javax.swing.JFrame {
     private void jDashboardbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDashboardbtnMouseClicked
         jTabbedPane1.setSelectedIndex(0);
 
-        jDashboardbtn.setBackground(new Color(250, 238, 220));
-        jPaymentsbtn.setBackground(new Color(246, 249, 255));
-        jItemsbtn.setBackground(new Color(246, 249, 255));
-        jStockbtn.setBackground(new Color(246, 249, 255));
-        jGRNbtn.setBackground(new Color(246, 249, 255));
+        jDashboardbtn.setBackground(btnSelectedColor);
+        jPaymentsbtn.setBackground(btnDefaultColor);
+        jItemsbtn.setBackground(btnDefaultColor);
+        jStockbtn.setBackground(btnDefaultColor);
+        jGRNbtn.setBackground(btnDefaultColor);
 
         if (shop_DashboardPanel == null) {
             shop_DashboardPanel = new shop_DashboardJPanel();
@@ -520,11 +520,11 @@ public class ShopDashboard extends javax.swing.JFrame {
     private void jPaymentsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPaymentsbtnMouseClicked
         jTabbedPane1.setSelectedIndex(1);
 
-        jDashboardbtn.setBackground(new Color(246, 249, 255));
-        jPaymentsbtn.setBackground(new Color(250, 238, 220));
-        jItemsbtn.setBackground(new Color(246, 249, 255));
-        jStockbtn.setBackground(new Color(246, 249, 255));
-        jGRNbtn.setBackground(new Color(246, 249, 255));
+        jDashboardbtn.setBackground(btnDefaultColor);
+        jPaymentsbtn.setBackground(btnSelectedColor);
+        jItemsbtn.setBackground(btnDefaultColor);
+        jStockbtn.setBackground(btnDefaultColor);
+        jGRNbtn.setBackground(btnDefaultColor);
 
         if (shop_PaymentJPanel == null) {
             shop_PaymentJPanel = new Shop_PaymentJPanel(this);
@@ -536,11 +536,11 @@ public class ShopDashboard extends javax.swing.JFrame {
     private void jItemsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jItemsbtnMouseClicked
         jTabbedPane1.setSelectedIndex(2);
 
-        jDashboardbtn.setBackground(new Color(246, 249, 255));
-        jPaymentsbtn.setBackground(new Color(246, 249, 255));
-        jItemsbtn.setBackground(new Color(250, 238, 220));
-        jStockbtn.setBackground(new Color(246, 249, 255));
-        jGRNbtn.setBackground(new Color(246, 249, 255));
+        jDashboardbtn.setBackground(btnDefaultColor);
+        jPaymentsbtn.setBackground(btnDefaultColor);
+        jItemsbtn.setBackground(btnSelectedColor);
+        jStockbtn.setBackground(btnDefaultColor);
+        jGRNbtn.setBackground(btnDefaultColor);
 
         if (shop_itemjpanel == null) {
             shop_itemjpanel = new shop_ItemsJPanel();
@@ -552,11 +552,11 @@ public class ShopDashboard extends javax.swing.JFrame {
     private void jStockbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jStockbtnMouseClicked
         jTabbedPane1.setSelectedIndex(3);
 
-        jDashboardbtn.setBackground(new Color(246, 249, 255));
-        jPaymentsbtn.setBackground(new Color(246, 249, 255));
-        jItemsbtn.setBackground(new Color(246, 249, 255));
-        jStockbtn.setBackground(new Color(250, 238, 220));
-        jGRNbtn.setBackground(new Color(246, 249, 255));
+        jDashboardbtn.setBackground(btnDefaultColor);
+        jPaymentsbtn.setBackground(btnDefaultColor);
+        jItemsbtn.setBackground(btnDefaultColor);
+        jStockbtn.setBackground(btnSelectedColor);
+        jGRNbtn.setBackground(btnDefaultColor);
 
         if (shop_StockJPanel == null) {
             shop_StockJPanel = new Shop_StockJPanel();
@@ -570,11 +570,11 @@ public class ShopDashboard extends javax.swing.JFrame {
     private void jGRNbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jGRNbtnMouseClicked
         jTabbedPane1.setSelectedIndex(4);
 
-        jDashboardbtn.setBackground(new Color(246, 249, 255));
-        jPaymentsbtn.setBackground(new Color(246, 249, 255));
-        jItemsbtn.setBackground(new Color(246, 249, 255));
-        jStockbtn.setBackground(new Color(246, 249, 255));
-        jGRNbtn.setBackground(new Color(250, 238, 220));
+        jDashboardbtn.setBackground(btnDefaultColor);
+        jPaymentsbtn.setBackground(btnDefaultColor);
+        jItemsbtn.setBackground(btnDefaultColor);
+        jStockbtn.setBackground(btnDefaultColor);
+        jGRNbtn.setBackground(btnSelectedColor);
 
         if (shop_grnjpanel == null) {
             shop_grnjpanel = new shop_GRNJPanel();
