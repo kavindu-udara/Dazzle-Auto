@@ -8,6 +8,7 @@ import controllers.AccessRoleController;
 import includes.BDUtility;
 import includes.LoggerConfig;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
@@ -37,6 +38,10 @@ import views.vehicleServiceAppointment.AppointmnetPanel;
 public class Dashboard extends javax.swing.JFrame {
 
     private static final Logger logger = LoggerConfig.getLogger();
+
+    private Color btnDefaultColor = new Color(255, 255, 255);
+    private Color btnHoverColor = new Color(246, 249, 255);
+    private Color btnSelectedColor = new Color(250, 238, 220);
 
     LoginModel loginModel;
 
@@ -105,7 +110,7 @@ public class Dashboard extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         menuButtonsPanel = new javax.swing.JPanel();
         jStaffButton = new javax.swing.JButton();
-        jDashboardButton1 = new javax.swing.JButton();
+        jDashboardButton = new javax.swing.JButton();
         jPaymentButton = new javax.swing.JButton();
         jAppointmentsButton = new javax.swing.JButton();
         jCustomerButton = new javax.swing.JButton();
@@ -166,19 +171,19 @@ public class Dashboard extends javax.swing.JFrame {
         });
         menuButtonsPanel.add(jStaffButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 200, 60));
 
-        jDashboardButton1.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
-        jDashboardButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/dashboard-3.png"))); // NOI18N
-        jDashboardButton1.setText("  Dashboard");
-        jDashboardButton1.setBorderPainted(false);
-        jDashboardButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jDashboardButton1.setFocusable(false);
-        jDashboardButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jDashboardButton1.addActionListener(new java.awt.event.ActionListener() {
+        jDashboardButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jDashboardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/dashboard-3.png"))); // NOI18N
+        jDashboardButton.setText("  Dashboard");
+        jDashboardButton.setBorderPainted(false);
+        jDashboardButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jDashboardButton.setFocusable(false);
+        jDashboardButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jDashboardButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jDashboardButton1ActionPerformed(evt);
+                jDashboardButtonActionPerformed(evt);
             }
         });
-        menuButtonsPanel.add(jDashboardButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 60));
+        menuButtonsPanel.add(jDashboardButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 60));
 
         jPaymentButton.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
         jPaymentButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/DashboardIcons/payment-3.png"))); // NOI18N
@@ -491,6 +496,16 @@ public class Dashboard extends javax.swing.JFrame {
     private void jStaffButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jStaffButtonActionPerformed
         jTabbedPane1.setSelectedIndex(8);
 
+        jDashboardButton.setBackground(btnDefaultColor);
+        jPaymentButton.setBackground(btnDefaultColor);
+        jAppointmentsButton.setBackground(btnDefaultColor);
+        jVehiclesButton.setBackground(btnDefaultColor);
+        jCustomerButton.setBackground(btnDefaultColor);
+        jOurServicesButton.setBackground(btnDefaultColor);
+        jFinanceButton.setBackground(btnDefaultColor);
+        jReportsButton.setBackground(btnDefaultColor);
+        jStaffButton.setBackground(btnSelectedColor);
+
         if (staffJPanel == null) {
             staffJPanel = new StaffJPanel(this);
             jStaffPanel.add(staffJPanel, BorderLayout.CENTER);
@@ -499,21 +514,41 @@ public class Dashboard extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jStaffButtonActionPerformed
 
-    private void jDashboardButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDashboardButton1ActionPerformed
-            
+    private void jDashboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDashboardButtonActionPerformed
+
         jTabbedPane1.setSelectedIndex(0);
+
+        jDashboardButton.setBackground(btnSelectedColor);
+        jPaymentButton.setBackground(btnDefaultColor);
+        jAppointmentsButton.setBackground(btnDefaultColor);
+        jVehiclesButton.setBackground(btnDefaultColor);
+        jCustomerButton.setBackground(btnDefaultColor);
+        jOurServicesButton.setBackground(btnDefaultColor);
+        jFinanceButton.setBackground(btnDefaultColor);
+        jReportsButton.setBackground(btnDefaultColor);
+        jStaffButton.setBackground(btnDefaultColor);
 
         if (dashboardMainPanel == null) {
             dashboardPanel = new DashboardPanel();
             jDashboardPanel.add(dashboardPanel, BorderLayout.CENTER);
             SwingUtilities.updateComponentTreeUI(this);
-        }else{
+        } else {
             dashboardPanel.reload();
         }
-    }//GEN-LAST:event_jDashboardButton1ActionPerformed
+    }//GEN-LAST:event_jDashboardButtonActionPerformed
 
     private void jPaymentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPaymentButtonActionPerformed
         jTabbedPane1.setSelectedIndex(1);
+
+        jDashboardButton.setBackground(btnDefaultColor);
+        jPaymentButton.setBackground(btnSelectedColor);
+        jAppointmentsButton.setBackground(btnDefaultColor);
+        jVehiclesButton.setBackground(btnDefaultColor);
+        jCustomerButton.setBackground(btnDefaultColor);
+        jOurServicesButton.setBackground(btnDefaultColor);
+        jFinanceButton.setBackground(btnDefaultColor);
+        jReportsButton.setBackground(btnDefaultColor);
+        jStaffButton.setBackground(btnDefaultColor);
 
         if (paymentPanel == null) {
             paymentPanel = new PaymentsPanel(this);
@@ -525,6 +560,17 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jAppointmentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAppointmentsButtonActionPerformed
         jTabbedPane1.setSelectedIndex(2);
+
+        jDashboardButton.setBackground(btnDefaultColor);
+        jPaymentButton.setBackground(btnDefaultColor);
+        jAppointmentsButton.setBackground(btnSelectedColor);
+        jVehiclesButton.setBackground(btnDefaultColor);
+        jCustomerButton.setBackground(btnDefaultColor);
+        jOurServicesButton.setBackground(btnDefaultColor);
+        jFinanceButton.setBackground(btnDefaultColor);
+        jReportsButton.setBackground(btnDefaultColor);
+        jStaffButton.setBackground(btnDefaultColor);
+
         if (appointmnetPanel == null) {
             appointmnetPanel = new AppointmnetPanel(this);
             jAppointmentPanel.add(appointmnetPanel, BorderLayout.CENTER);
@@ -534,6 +580,17 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCustomerButtonActionPerformed
         jTabbedPane1.setSelectedIndex(4);
+
+        jDashboardButton.setBackground(btnDefaultColor);
+        jPaymentButton.setBackground(btnDefaultColor);
+        jAppointmentsButton.setBackground(btnDefaultColor);
+        jVehiclesButton.setBackground(btnDefaultColor);
+        jCustomerButton.setBackground(btnSelectedColor);
+        jOurServicesButton.setBackground(btnDefaultColor);
+        jFinanceButton.setBackground(btnDefaultColor);
+        jReportsButton.setBackground(btnDefaultColor);
+        jStaffButton.setBackground(btnDefaultColor);
+
         if (customerJPanel == null) {
             customerJPanel = new CustomerJPanel();
             jCustomerPanel.add(customerJPanel, BorderLayout.CENTER);
@@ -543,6 +600,17 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jOurServicesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jOurServicesButtonActionPerformed
         jTabbedPane1.setSelectedIndex(5);
+
+        jDashboardButton.setBackground(btnDefaultColor);
+        jPaymentButton.setBackground(btnDefaultColor);
+        jAppointmentsButton.setBackground(btnDefaultColor);
+        jVehiclesButton.setBackground(btnDefaultColor);
+        jCustomerButton.setBackground(btnDefaultColor);
+        jOurServicesButton.setBackground(btnSelectedColor);
+        jFinanceButton.setBackground(btnDefaultColor);
+        jReportsButton.setBackground(btnDefaultColor);
+        jStaffButton.setBackground(btnDefaultColor);
+
         if (ourServices == null) {
             ourServices = new ourServicesJPanel();
             jOurServicesPanel.add(ourServices, BorderLayout.CENTER);
@@ -552,6 +620,17 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jFinanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFinanceButtonActionPerformed
         jTabbedPane1.setSelectedIndex(6);
+
+        jDashboardButton.setBackground(btnDefaultColor);
+        jPaymentButton.setBackground(btnDefaultColor);
+        jAppointmentsButton.setBackground(btnDefaultColor);
+        jVehiclesButton.setBackground(btnDefaultColor);
+        jCustomerButton.setBackground(btnDefaultColor);
+        jOurServicesButton.setBackground(btnDefaultColor);
+        jFinanceButton.setBackground(btnSelectedColor);
+        jReportsButton.setBackground(btnDefaultColor);
+        jStaffButton.setBackground(btnDefaultColor);
+
         if (financeJPanel == null) {
             financeJPanel = new FinanceAndHrJPanel();
             jFinancePanel.add(financeJPanel, BorderLayout.CENTER);
@@ -561,6 +640,17 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jReportsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jReportsButtonActionPerformed
         jTabbedPane1.setSelectedIndex(7);
+
+        jDashboardButton.setBackground(btnDefaultColor);
+        jPaymentButton.setBackground(btnDefaultColor);
+        jAppointmentsButton.setBackground(btnDefaultColor);
+        jVehiclesButton.setBackground(btnDefaultColor);
+        jCustomerButton.setBackground(btnDefaultColor);
+        jOurServicesButton.setBackground(btnDefaultColor);
+        jFinanceButton.setBackground(btnDefaultColor);
+        jReportsButton.setBackground(btnSelectedColor);
+        jStaffButton.setBackground(btnDefaultColor);
+
         if (reportsJPanel == null) {
             reportsJPanel = new ReportsJPanel(this);
             jReportPanel.add(reportsJPanel, BorderLayout.CENTER);
@@ -570,6 +660,17 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jVehiclesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehiclesButtonActionPerformed
         jTabbedPane1.setSelectedIndex(3);
+
+        jDashboardButton.setBackground(btnDefaultColor);
+        jPaymentButton.setBackground(btnDefaultColor);
+        jAppointmentsButton.setBackground(btnDefaultColor);
+        jVehiclesButton.setBackground(btnSelectedColor);
+        jCustomerButton.setBackground(btnDefaultColor);
+        jOurServicesButton.setBackground(btnDefaultColor);
+        jFinanceButton.setBackground(btnDefaultColor);
+        jReportsButton.setBackground(btnDefaultColor);
+        jStaffButton.setBackground(btnDefaultColor);
+
         if (vehiclesJPanel == null) {
             vehiclesJPanel = new VehiclesJPanel();
             jVehiclesPanel.add(vehiclesJPanel, BorderLayout.CENTER);
@@ -605,7 +706,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-         TutorialVideo Video = new TutorialVideo();
+        TutorialVideo Video = new TutorialVideo();
         Video.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -619,7 +720,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jCustomerButton;
     private javax.swing.JPanel jCustomerPanel;
-    private javax.swing.JButton jDashboardButton1;
+    private javax.swing.JButton jDashboardButton;
     private javax.swing.JPanel jDashboardPanel;
     private javax.swing.JMenuItem jDatabaseMenuItem;
     private javax.swing.JLabel jEmployeeNameLabel;
