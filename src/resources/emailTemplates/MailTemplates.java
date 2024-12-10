@@ -102,7 +102,7 @@ public class MailTemplates {
         mailerBody.append("<html lang='en'>");
         mailerBody.append("<head>");
         mailerBody.append("<meta charset='UTF-8'>");
-        mailerBody.append("<title>Appointment Scheduled</title>");
+        mailerBody.append("<title>Your Invoice</title>");
         mailerBody.append("</head>");
         mailerBody.append("<body style='font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;'>");
 
