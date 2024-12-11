@@ -249,11 +249,11 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel5.setText("Allowed Leaves Count :");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 187, -1));
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 200, -1));
 
         allowedLeavesCountLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         allowedLeavesCountLabel.setText("0");
-        add(allowedLeavesCountLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, -1, -1));
+        add(allowedLeavesCountLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 90, 20, -1));
 
         ClearAllBtn.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         ClearAllBtn.setForeground(new java.awt.Color(255, 0, 0));
@@ -298,7 +298,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         employeeIdLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         employeeIdLabel.setForeground(new java.awt.Color(0, 0, 204));
         employeeIdLabel.setText("ID value label");
-        jPanel1.add(employeeIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 20, -1, -1));
+        jPanel1.add(employeeIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, -1, 20));
 
         employeeTypeLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         employeeTypeLabel.setForeground(new java.awt.Color(0, 0, 204));
@@ -518,9 +518,10 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
     private void ClearAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearAllBtnActionPerformed
         // TODO add your handling code here:
-        bonusField.setText("0");
-        precentageField.setText("0");
-        loadPresentageSalary();
+//        bonusField.setText("0");
+//        precentageField.setText("0");
+//        basicSalaryField.setText("0");
+//        loadPresentageSalary();
     }//GEN-LAST:event_ClearAllBtnActionPerformed
 
     private void loadPresentageSalary() {

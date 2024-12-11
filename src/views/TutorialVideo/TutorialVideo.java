@@ -32,28 +32,20 @@ public class TutorialVideo extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Dazzle Auto Tutorial");
+        setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout videoPanelLayout = new javax.swing.GroupLayout(videoPanel);
         videoPanel.setLayout(videoPanelLayout);
         videoPanelLayout.setHorizontalGroup(
             videoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 893, Short.MAX_VALUE)
+            .addGap(0, 737, Short.MAX_VALUE)
         );
         videoPanelLayout.setVerticalGroup(
             videoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 503, Short.MAX_VALUE)
+            .addGap(0, 430, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(videoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(videoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(videoPanel, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
