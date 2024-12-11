@@ -254,7 +254,7 @@ public class CustomerUpdate extends java.awt.Dialog {
                 new CustomerController().update(customerModel);
 
                 JOptionPane.showMessageDialog(this, "Customer details updated successfully");
-                reset();
+                this.dispose();
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.severe("Error while updating customer : " + e.getMessage());
