@@ -159,7 +159,7 @@ public class EmployeeSelectorDialog extends javax.swing.JDialog {
 
         int row = employeeTable.getSelectedRow();
         String id = String.valueOf(employeeTable.getValueAt(row, 0));
-        if (row > 0) {
+        if (row >= 0) {
             if (action.equals("manual attendance")) {
                 new ManualAttendanceMarker(null, true, id, actionMethod).setVisible(true);
             } else {

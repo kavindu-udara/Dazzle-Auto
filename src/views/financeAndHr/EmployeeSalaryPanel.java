@@ -518,10 +518,13 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
     private void ClearAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearAllBtnActionPerformed
         // TODO add your handling code here:
-//        bonusField.setText("0");
-//        precentageField.setText("0");
-//        basicSalaryField.setText("0");
-//        loadPresentageSalary();
+        bonusField.setText("0");
+        precentageField.setText("0");
+        basicSalaryField.setText("0");
+        employeeNameLabel.setText("Name value label");
+        employeeIdLabel.setText("ID value label");
+        employeeTypeLabel.setText("Employee Type");
+        loadPresentageSalary();
     }//GEN-LAST:event_ClearAllBtnActionPerformed
 
     private void loadPresentageSalary() {
