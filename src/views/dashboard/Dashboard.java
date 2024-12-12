@@ -708,6 +708,7 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         TutorialVideo Video = new TutorialVideo();
         Video.setVisible(true);
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
 

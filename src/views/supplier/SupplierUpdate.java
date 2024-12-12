@@ -21,9 +21,6 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JToggleButton;
-import javax.swing.JToggleButton.ToggleButtonModel;
-import javax.swing.table.DefaultTableModel;
 import models.AddressModel;
 import models.SupplierModel;
 

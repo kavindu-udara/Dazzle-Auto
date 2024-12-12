@@ -34,15 +34,22 @@ public class AddressController {
                 + "'" + addressModel.getPostalCode() + "') ");
     }
 
-    
-
     public ResultSet update(AddressModel addressModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
                 + "`employee_id`=null, "
-                +"`lane1`='" + addressModel.getLane1() + "', "
+                + "`lane1`='" + addressModel.getLane1() + "', "
                 + "`lane2`='" + addressModel.getLane2() + "', "
                 + "`city_id`='" + addressModel.getCity() + "' "
                 + "WHERE `supplier_id`='" + addressModel.getSupId() + "' ");
+    }
+    
+    public ResultSet update2(AddressModel addressModel) throws Exception {
+        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
+                + "`supplier_id`=null, "
+                + "`lane1`='" + addressModel.getLane1() + "', "
+                + "`lane2`='" + addressModel.getLane2() + "', "
+                + "`city_id`='" + addressModel.getCity() + "' "
+                + "WHERE `employee_id`='" + addressModel.getEmpId()+ "' ");
     }
 
     public ResultSet search(String searchText) throws Exception {
@@ -65,27 +72,32 @@ public class AddressController {
         if (resultSet.next()) {
             return resultSet.getString("supplier_id");
         }
-        return null; 
+        return null;
     }
-    
+
+    public String retrieveeEmpAddressId(String employeeId) throws Exception {
+        ResultSet resultSet = MySqlConnection.executeSearch(
+                "SELECT `employee_id` FROM `" + tableName + "` WHERE `employee_id` = '" + employeeId + "'");
+        if (resultSet.next()) {
+            return resultSet.getString("employee_id");
+        }
+        return null;
+    }
+
     public ResultSet create(AddressModel addressModel) throws Exception {
-    return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "` (`supplier_id`, `lane1`, `lane2`, `city_id`) VALUES ("
-            
-            + (addressModel.getSupId() == null ? "" : "'" + addressModel.getSupId() + "'") + ", "
-            + (addressModel.getLane1() == null ? "" : "'" + addressModel.getLane1() + "'") + ", "
-            + (addressModel.getLane2() == null ? "" : "'" + addressModel.getLane2() + "'") + ", "
-            + (addressModel.getCity() == null ? "" : "'" + addressModel.getCity() + "'") + ")");
-}
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "` (`supplier_id`, `lane1`, `lane2`, `city_id`) VALUES ("
+                + (addressModel.getSupId() == null ? "" : "'" + addressModel.getSupId() + "'") + ", "
+                + (addressModel.getLane1() == null ? "" : "'" + addressModel.getLane1() + "'") + ", "
+                + (addressModel.getLane2() == null ? "" : "'" + addressModel.getLane2() + "'") + ", "
+                + (addressModel.getCity() == null ? "" : "'" + addressModel.getCity() + "'") + ")");
+    }
 
     public ResultSet create2(AddressModel addressModel) throws Exception {
-    return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "` (`employee_id`, `lane1`, `lane2`, `city_id`) VALUES ("
-            
-            + (addressModel.getEmpId()== null ? "" : "'" + addressModel.getEmpId() + "'") + ", "
-            + (addressModel.getLane1() == null ? "" : "'" + addressModel.getLane1() + "'") + ", "
-            + (addressModel.getLane2() == null ? "" : "'" + addressModel.getLane2() + "'") + ", "
-            + (addressModel.getCity() == null ? "" : "'" + addressModel.getCity() + "'") + ")");
-}
-    
-}
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "` (`employee_id`, `lane1`, `lane2`, `city_id`) VALUES ("
+                + (addressModel.getEmpId() == null ? "" : "'" + addressModel.getEmpId() + "'") + ", "
+                + (addressModel.getLane1() == null ? "" : "'" + addressModel.getLane1() + "'") + ", "
+                + (addressModel.getLane2() == null ? "" : "'" + addressModel.getLane2() + "'") + ", "
+                + (addressModel.getCity() == null ? "" : "'" + addressModel.getCity() + "'") + ")");
+    }
 
-
+}

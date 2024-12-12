@@ -143,8 +143,6 @@ public class EmployeeRegistration extends java.awt.Dialog {
         lane2Field = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         cityComboBox = new javax.swing.JComboBox<>();
-        jLabel13 = new javax.swing.JLabel();
-        PostalCodeField = new javax.swing.JTextField();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -213,7 +211,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
         jPanel1.add(employee_nic, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 360, 228, 34));
 
         employee_register_btn.setBackground(new java.awt.Color(33, 43, 108));
-        employee_register_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        employee_register_btn.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         employee_register_btn.setForeground(new java.awt.Color(255, 255, 255));
         employee_register_btn.setText("REGISTER");
         employee_register_btn.setBorderPainted(false);
@@ -224,9 +222,9 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 employee_register_btnActionPerformed(evt);
             }
         });
-        jPanel1.add(employee_register_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(522, 460, 160, 50));
+        jPanel1.add(employee_register_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 460, 160, 50));
 
-        employee_reset_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        employee_reset_btn.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         employee_reset_btn.setForeground(new java.awt.Color(255, 0, 0));
         employee_reset_btn.setText("RESET");
         employee_reset_btn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
@@ -237,7 +235,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 employee_reset_btnActionPerformed(evt);
             }
         });
-        jPanel1.add(employee_reset_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 460, 160, 50));
+        jPanel1.add(employee_reset_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 460, 160, 50));
 
         jLabel8.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel8.setText("Employee Type");
@@ -279,11 +277,6 @@ public class EmployeeRegistration extends java.awt.Dialog {
             }
         });
         jPanel1.add(cityComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 330, 210, 34));
-
-        jLabel13.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        jLabel13.setText("Postal Code");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, -1, -1));
-        jPanel1.add(PostalCodeField, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 380, 210, 34));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -528,7 +521,6 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Lane1Field;
-    private javax.swing.JTextField PostalCodeField;
     private javax.swing.JComboBox<String> cityComboBox;
     private javax.swing.JTextField employee_email;
     private javax.swing.JTextField employee_firstname;
@@ -543,7 +535,6 @@ public class EmployeeRegistration extends java.awt.Dialog {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

@@ -4,6 +4,8 @@
  */
 package views.employee;
 
+import controllers.AddressController;
+import controllers.CityController;
 import controllers.EmployeeController;
 import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
@@ -22,6 +24,7 @@ import java.io.File;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
@@ -32,6 +35,7 @@ import models.EmployeeModel;
 import java.util.logging.Logger;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import jnafilechooser.api.JnaFileChooser;
+import models.AddressModel;
 import raven.toast.Notifications;
 
 /**
@@ -42,7 +46,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
     private static HashMap<String, String> employeeTypeMap = new HashMap<>();
     private static HashMap<String, String> StatusMap = new HashMap<>();
-
+    private static HashMap<Integer, String> CityMap = new HashMap<>();
     private static final Logger logger = LoggerConfig.getLogger();
 
     private boolean isEmployerHaveAnImage = false;
@@ -51,16 +55,18 @@ public class EmployeeUpdate extends java.awt.Dialog {
     private EmployeeImageModel employeeImageModel = new EmployeeImageModel();
 
     private StaffJPanel staffJPanel;
+    private AddressModel addressModel;
 
-    public EmployeeUpdate(Frame parent, boolean modal, EmployeeModel employeeModel, StaffJPanel staffJPanel) {
+    public EmployeeUpdate(Frame parent, boolean modal, EmployeeModel employeeModel, StaffJPanel staffJPanel, AddressModel addressModel) {
         super(parent, modal);
         initComponents();
         setDocumentFilters();
         loadEmployeeTypes();
         loadempStatus();
-
+        loadCity();
         this.employeeModel = employeeModel;
         this.staffJPanel = staffJPanel;
+        EmpIdField.setFocusable(false);
 
         setEmployeeData();
         loadAmployeeImage();
@@ -68,6 +74,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
     }
 
     private void setEmployeeData() {
+        EmpIdField.setText(employeeModel.getId());
         employee_firstname.setText(employeeModel.getFirstName());
         employee_lastname.setText(employeeModel.getLastName());
         employee_email.setText(employeeModel.getEmail());
@@ -75,6 +82,16 @@ public class EmployeeUpdate extends java.awt.Dialog {
         employee_mobile.setText(employeeModel.getMobile());
         employee_type.setSelectedItem(employeeModel.getEmployeeTypeName());
         emp_status.setSelectedItem(employeeModel.getStatusName());
+
+        if (addressModel != null) {
+            Lane1Field.setText(addressModel.getLane1());
+            lane2Field.setText(addressModel.getLane2());
+            System.out.println(String.valueOf(addressModel.getLane1()));
+            System.out.println(String.valueOf(addressModel.getLane2()));
+            if (addressModel.getCity() != null) {
+                cityComboBox.setSelectedItem(CityMap.get(Integer.parseInt(addressModel.getCity())));
+            }
+        }
 
         try {
             ResultSet resultSet = new StatusController().show(employeeModel.getStatusId());
@@ -85,6 +102,31 @@ public class EmployeeUpdate extends java.awt.Dialog {
             logger.severe("Error while setting status : " + e.getMessage());
         }
 
+    }
+
+    private void loadCity() {
+
+        try {
+            ResultSet resultSet = new CityController().show();
+
+            Vector<String> vector = new Vector<>();
+            vector.add("Select");
+
+            while (resultSet.next()) {
+                int cityId = resultSet.getInt("id");
+                String cityName = resultSet.getString("name");
+
+                vector.add(cityName);
+                CityMap.put(cityId, cityName);
+            }
+
+            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(vector);
+            cityComboBox.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading cities: " + e.getMessage());
+        }
     }
 
     private void loadempStatus() {
@@ -216,6 +258,15 @@ public class EmployeeUpdate extends java.awt.Dialog {
         employee_status = new javax.swing.JLabel();
         emp_status = new javax.swing.JComboBox<>();
         jSeparator1 = new javax.swing.JSeparator();
+        jLabel12 = new javax.swing.JLabel();
+        cityComboBox = new javax.swing.JComboBox<>();
+        jLabel11 = new javax.swing.JLabel();
+        lane2Field = new javax.swing.JTextField();
+        Lane1Field = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        EmpIdField = new javax.swing.JTextField();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -224,10 +275,12 @@ public class EmployeeUpdate extends java.awt.Dialog {
         });
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("EMPLOYEE DETAILS");
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 188, 30));
 
         employee_image.setBackground(new java.awt.Color(255, 255, 51));
         employee_image.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -239,19 +292,25 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employee_imageMouseClicked(evt);
             }
         });
+        jPanel3.add(employee_image, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 90, 123, 141));
 
-        jLabel3.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel3.setText("First Name");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, 118, 34));
 
         employee_firstname.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jPanel3.add(employee_firstname, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 130, 218, 34));
 
-        jLabel4.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel4.setText("Last Name");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 118, 32));
 
         employee_lastname.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jPanel3.add(employee_lastname, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 180, 218, 34));
 
-        jLabel5.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel5.setText("Email");
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 118, 32));
 
         employee_email.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         employee_email.addActionListener(new java.awt.event.ActionListener() {
@@ -259,9 +318,11 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employee_emailActionPerformed(evt);
             }
         });
+        jPanel3.add(employee_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 230, 218, 34));
 
-        jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel7.setText("Mobile");
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 80, 34));
 
         employee_mobile.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         employee_mobile.addActionListener(new java.awt.event.ActionListener() {
@@ -269,14 +330,17 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employee_mobileActionPerformed(evt);
             }
         });
+        jPanel3.add(employee_mobile, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, 220, 34));
 
-        jLabel6.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel6.setText("Nic");
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, 124, 34));
 
         employee_nic.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jPanel3.add(employee_nic, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 330, 218, 34));
 
         employee_update_btn.setBackground(new java.awt.Color(33, 43, 108));
-        employee_update_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        employee_update_btn.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         employee_update_btn.setForeground(new java.awt.Color(255, 255, 255));
         employee_update_btn.setText("UPDATE");
         employee_update_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -285,8 +349,9 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employee_update_btnActionPerformed(evt);
             }
         });
+        jPanel3.add(employee_update_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 470, 170, 50));
 
-        employee_reset_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        employee_reset_btn.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         employee_reset_btn.setForeground(new java.awt.Color(255, 0, 0));
         employee_reset_btn.setText("RESET");
         employee_reset_btn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
@@ -296,9 +361,11 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employee_reset_btnActionPerformed(evt);
             }
         });
+        jPanel3.add(employee_reset_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 470, 170, 50));
 
-        jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel8.setText("Employee Type");
+        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 380, 140, 32));
 
         employee_type.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         employee_type.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -307,116 +374,50 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employee_typeActionPerformed(evt);
             }
         });
+        jPanel3.add(employee_type, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 380, 220, 35));
 
-        employee_status.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        employee_status.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         employee_status.setText("Status");
+        jPanel3.add(employee_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 430, 120, 34));
 
         emp_status.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         emp_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select" }));
         emp_status.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanel3.add(emp_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 430, 220, 37));
+        jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 890, -1));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 890, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 890, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(employee_nic))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(employee_firstname))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(employee_lastname)
-                            .addComponent(employee_email))))
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(203, 203, 203)
-                        .addComponent(emp_status, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(203, 203, 203)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(employee_type, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(employee_mobile, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(73, 73, 73))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(employee_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(employee_update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(employee_status, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(234, 234, 234))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(380, 380, 380)
-                .addComponent(employee_image, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(employee_image, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(employee_firstname, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
-                                .addGap(15, 15, 15)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(employee_lastname, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(15, 15, 15)
-                                        .addComponent(employee_email, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(15, 15, 15)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(15, 15, 15)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(15, 15, 15)
-                                .addComponent(employee_status, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(13, 13, 13)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(employee_nic, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(employee_mobile, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(15, 15, 15)
-                        .addComponent(employee_type, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(15, 15, 15)
-                        .addComponent(emp_status, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(30, 30, 30)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(employee_reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(employee_update_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(28, Short.MAX_VALUE))
-        );
+        jLabel12.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel12.setText("City");
+        jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 400, -1, -1));
+
+        cityComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cityComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cityComboBoxActionPerformed(evt);
+            }
+        });
+        jPanel3.add(cityComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 390, 210, 34));
+
+        jLabel11.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel11.setText("Lane 2");
+        jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 350, -1, -1));
+        jPanel3.add(lane2Field, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 340, 210, 34));
+        jPanel3.add(Lane1Field, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 290, 210, 34));
+
+        jLabel10.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel10.setText("Lane 1");
+        jPanel3.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 290, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel9.setText("Address (Optional)");
+        jPanel3.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 250, -1, -1));
+
+        jLabel14.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel14.setText("Employee ID");
+        jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 110, -1, -1));
+
+        EmpIdField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        jPanel3.add(EmpIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 140, 100, 34));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -433,22 +434,22 @@ public class EmployeeUpdate extends java.awt.Dialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 956, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 956, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
         );
 
         pack();
@@ -478,6 +479,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
         String mobile = employee_mobile.getText();
         String employeeType = String.valueOf(employee_type.getSelectedItem());
         String status = String.valueOf(emp_status.getSelectedItem());
+        String sssid = EmpIdField.getText();
 
         if (firstName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -511,6 +513,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employeeModel.setStatusId(Integer.parseInt(StatusMap.get(emp_status.getSelectedItem())));
 
                 new EmployeeController().update(employeeModel);
+                updateAddressData(sssid);
 
                 if (selectedFile != null) {
                     String imagePath = saveImage(employeeModel.getId() + nic + firstName + lastName);
@@ -532,6 +535,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
                         JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
                 }
+
                 JOptionPane.showMessageDialog(this, "Employee details updated successfully");
                 staffJPanel.reloadTable();
             } catch (Exception e) {
@@ -540,6 +544,45 @@ public class EmployeeUpdate extends java.awt.Dialog {
             }
         }
     }//GEN-LAST:event_employee_update_btnActionPerformed
+
+    private void updateAddressData(String employeeId) {
+        String lane1 = Lane1Field.getText().isEmpty() ? null : Lane1Field.getText();
+        String lane2 = lane2Field.getText().isEmpty() ? null : lane2Field.getText();
+        String cityName = (String) cityComboBox.getSelectedItem();
+        String cityId = null;
+
+        try {
+            if (cityName != null && !cityName.equals("Select")) {
+                for (Map.Entry<Integer, String> entry : CityMap.entrySet()) {
+                    if (entry.getValue().equals(cityName)) {
+                        cityId = String.valueOf(entry.getKey());
+                        break;
+                    }
+                }
+            }
+
+            AddressModel addresszModel = new AddressModel();
+            addresszModel.setLane1(lane1);
+            addresszModel.setLane2(lane2);
+            addresszModel.setCity(cityId);
+            addresszModel.setEmpId(employeeId);
+
+            String addressId = new AddressController().retrieveeEmpAddressId(employeeId);
+            System.out.println(addressId);
+            if (addressId != null) {
+                addresszModel.setEmpId(addressId);
+
+                new AddressController().update2(addresszModel);
+            } else {
+                new AddressController().create2(addresszModel);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while updating address: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error updating address: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     // Save image in resources package
     private String saveImage(String email) {
@@ -631,6 +674,10 @@ public class EmployeeUpdate extends java.awt.Dialog {
         }
     }//GEN-LAST:event_employee_imageMouseClicked
 
+    private void cityComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cityComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cityComboBoxActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -660,6 +707,9 @@ public class EmployeeUpdate extends java.awt.Dialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField EmpIdField;
+    private javax.swing.JTextField Lane1Field;
+    private javax.swing.JComboBox<String> cityComboBox;
     private javax.swing.JComboBox<String> emp_status;
     private javax.swing.JTextField employee_email;
     private javax.swing.JTextField employee_firstname;
@@ -672,16 +722,22 @@ public class EmployeeUpdate extends java.awt.Dialog {
     private javax.swing.JComboBox<String> employee_type;
     private javax.swing.JButton employee_update_btn;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField lane2Field;
     // End of variables declaration//GEN-END:variables
 
 }
