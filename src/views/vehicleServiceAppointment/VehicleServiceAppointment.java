@@ -18,17 +18,21 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import resources.emailTemplates.MailTemplates;
 import views.loadingGuis.PleaseWaitDialog;
+import views.signIn.SignIn;
 
 /**
  *
@@ -46,8 +50,18 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
 
         datePicker1.setEditor(dateField);
 
+        SignIn.dashboard.setEnabled(false);
         jServiceIdLabel.setVisible(false);
         waitLabel.setVisible(false);
+        
+                // Add a Window Listener
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                SignIn.dashboard.setEnabled(true); 
+            }
+        });
     }
 
     public void setVehicleDetails(String vehicleNumber, String owner, String brand, String model, String type) {
@@ -411,7 +425,6 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                     }
 
                     new Mailer().sendMail(ownerEmail, "Service Appointment - Dazzle Auto", new MailTemplates().appointmentScheduledMail(ownerName, appointmentID, vehicleNumber, vehicleModel, vehicleType, date, serviceName, note), null, true);
-                    this.dispose();
                     AppointmentSuccessDialog app = new AppointmentSuccessDialog(this, true, appointmentModel);
                     app.setVisible(true);
                     

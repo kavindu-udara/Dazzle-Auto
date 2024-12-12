@@ -20,7 +20,7 @@ public class TutorialVideo extends javax.swing.JDialog {
      */
     public TutorialVideo() {
         initComponents();
-        NativeInterface.open(); 
+        NativeInterface.open();
         addBrowser();
     }
 
@@ -38,11 +38,11 @@ public class TutorialVideo extends javax.swing.JDialog {
         videoPanel.setLayout(videoPanelLayout);
         videoPanelLayout.setHorizontalGroup(
             videoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 737, Short.MAX_VALUE)
+            .addGap(0, 593, Short.MAX_VALUE)
         );
         videoPanelLayout.setVerticalGroup(
             videoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
+            .addGap(0, 465, Short.MAX_VALUE)
         );
 
         getContentPane().add(videoPanel, java.awt.BorderLayout.CENTER);
@@ -58,7 +58,7 @@ public class TutorialVideo extends javax.swing.JDialog {
         webBrowser.navigate("https://www.youtube.com/watch_popup?v=E2Rj2gQAyPA&ab_channel=LeagueofLegends");
 
         browserPanel.add(webBrowser, BorderLayout.CENTER);
-        videoPanel.setLayout(new BorderLayout()); 
+        videoPanel.setLayout(new BorderLayout());
         videoPanel.add(browserPanel, BorderLayout.CENTER);
 
         videoPanel.revalidate();

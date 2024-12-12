@@ -19,6 +19,7 @@ import views.shop.dashboard.ShopDashboard;
 public class SignIn extends javax.swing.JFrame {
 
     private static String choosedLogin = "";
+    public static Dashboard dashboard;
 
     public SignIn(String choosedLogin) {
         SignIn.choosedLogin = choosedLogin;
@@ -179,7 +180,8 @@ public class SignIn extends javax.swing.JFrame {
         } else if (choosedLogin.equals("ServiceStation")) {
 
             this.dispose();
-            new Dashboard(loginModel).setVisible(true);
+            dashboard = new Dashboard(loginModel);
+            dashboard.setVisible(true);
 
         } else {
             JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
