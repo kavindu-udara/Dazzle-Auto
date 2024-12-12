@@ -20,8 +20,8 @@ public class EmployeeAttendanceController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
 
-    public ResultSet show(int id) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
+    public ResultSet show(String userId, int dateId) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + userId + "' AND `attendance_date_id`='" + dateId + "' ");
     }
 
     public ResultSet showByDateId(int dateId) throws Exception {

@@ -7,9 +7,10 @@ package views.financeAndHr;
 import controllers.AttendanceDateController;
 import controllers.EmployeeAttendanceController;
 import controllers.EmployeeController;
+import includes.LoggerConfig;
 import includes.TimestampsGenerator;
 import java.sql.ResultSet;
-import java.util.Map;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,12 +18,15 @@ import javax.swing.JOptionPane;
  * @author kavindu
  */
 public class ManualAttendanceMarker extends javax.swing.JDialog {
-
+    
     private String action = "";
-
+    private static final Logger logger = LoggerConfig.getLogger();
+    
     private String todayDate = TimestampsGenerator.getTodayDate();
     private String employeeId;
     private Runnable actionMethod;
+    
+    private boolean isUserAlreadyCheckin = false;
 
     /**
      * Creates new form ManualAttendanceMarker
@@ -34,6 +38,26 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
         this.action = action;
         this.employeeId = employeeId;
         this.actionMethod = actionMethod;
+        checkingData();
+    }
+    
+    private void checkingData() {
+        try {
+            ResultSet dateResultSet = getAttendanceDateResultSet();
+            if (dateResultSet.next()) {
+                ResultSet employeeAttendanceResultSet = new EmployeeAttendanceController().show(employeeId, dateResultSet.getInt("id"));
+                if (employeeAttendanceResultSet.next()) {
+                    if (employeeAttendanceResultSet.getString("checkin") != null) {
+                        jButton1.setEnabled(false);
+                    } else {
+                        jButton2.setEnabled(false);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.severe("Error while checking data: " + ex.getMessage());
+        }
     }
 
     /**
@@ -106,11 +130,11 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
     private ResultSet getAttendanceDateResultSet() throws Exception {
         return new AttendanceDateController().show(todayDate);
     }
-
+    
     private ResultSet getEmployerResultSet(String id) throws Exception {
         return new EmployeeController().show(id);
     }
-
+    
     private void checkInEmployer() {
         int dateId = 0;
         try {
@@ -122,8 +146,9 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while checking employee: " + e.getMessage());
         }
-
+        
         String currentTime = TimestampsGenerator.getCurrentTime();
         if (dateId != 0) {
             try {
@@ -136,16 +161,18 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
                         dispose();
                     } catch (Exception ex) {
                         ex.printStackTrace();
+                        logger.severe("Error while update checking : " + ex.getMessage());
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "employee not found");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                logger.severe("Error while getting employee data : " + e.getMessage());
             }
         }
     }
-
+    
     private void checkOutEmployer() {
         int dateId = 0;
         try {
@@ -157,8 +184,9 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.severe("Error while checkout user : " + e.getMessage());
         }
-
+        
         String currentTime = TimestampsGenerator.getCurrentTime();
         if (dateId != 0) {
             try {
@@ -171,8 +199,10 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
                                 ResultSet checkInResultSet = new EmployeeAttendanceController().updateCheckOutByUserId(currentTime, employeeResultSet.getString("id"), dateId);
                                 JOptionPane.showMessageDialog(null, "mark attendance success");
                                 actionMethod.run();
+                                this.dispose();
                             } catch (Exception ex) {
                                 ex.printStackTrace();
+                                logger.severe("Error while checkout : " + ex.getMessage());
                             }
                         } else {
                             JOptionPane.showMessageDialog(null, "Check in first !");
@@ -183,6 +213,7 @@ public class ManualAttendanceMarker extends javax.swing.JDialog {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                logger.severe("Error while getting emp data: " + e.getMessage());
             }
         }
     }
