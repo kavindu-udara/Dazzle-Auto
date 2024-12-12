@@ -524,6 +524,8 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         employeeNameLabel.setText("Name value label");
         employeeIdLabel.setText("ID value label");
         employeeTypeLabel.setText("Employee Type");
+        allowedLeavesCountLabel.setText("0");
+        leavesCountValueLabel.setText("0");
         loadPresentageSalary();
     }//GEN-LAST:event_ClearAllBtnActionPerformed
 
