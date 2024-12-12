@@ -140,13 +140,13 @@ public class Dashboard extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        settingsMenu = new javax.swing.JMenu();
         jsettings = new javax.swing.JMenuItem();
         jLoginAccessMenuItem = new javax.swing.JMenuItem();
         jDatabaseMenuItem = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        helpMenu = new javax.swing.JMenu();
         jUsermanual = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jTutorialVideo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DASHBOARD");
@@ -419,10 +419,10 @@ public class Dashboard extends javax.swing.JFrame {
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/settings-15.png"))); // NOI18N
-        jMenu3.setText("Settings");
-        jMenu3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenu3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        settingsMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/settings-15.png"))); // NOI18N
+        settingsMenu.setText("Settings");
+        settingsMenu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        settingsMenu.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         jsettings.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jsettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/settings-15.png"))); // NOI18N
@@ -433,7 +433,7 @@ public class Dashboard extends javax.swing.JFrame {
                 jsettingsActionPerformed(evt);
             }
         });
-        jMenu3.add(jsettings);
+        settingsMenu.add(jsettings);
 
         jLoginAccessMenuItem.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLoginAccessMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/access-20.png"))); // NOI18N
@@ -444,7 +444,7 @@ public class Dashboard extends javax.swing.JFrame {
                 jLoginAccessMenuItemActionPerformed(evt);
             }
         });
-        jMenu3.add(jLoginAccessMenuItem);
+        settingsMenu.add(jLoginAccessMenuItem);
 
         jDatabaseMenuItem.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jDatabaseMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/database-20.png"))); // NOI18N
@@ -454,14 +454,14 @@ public class Dashboard extends javax.swing.JFrame {
                 jDatabaseMenuItemActionPerformed(evt);
             }
         });
-        jMenu3.add(jDatabaseMenuItem);
+        settingsMenu.add(jDatabaseMenuItem);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(settingsMenu);
 
-        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/icons8-question-mark-15.png"))); // NOI18N
-        jMenu4.setText("Help");
-        jMenu4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenu4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        helpMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/icons8-question-mark-15.png"))); // NOI18N
+        helpMenu.setText("Help");
+        helpMenu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        helpMenu.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         jUsermanual.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jUsermanual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/user-manual-20.png"))); // NOI18N
@@ -472,20 +472,20 @@ public class Dashboard extends javax.swing.JFrame {
                 jUsermanualActionPerformed(evt);
             }
         });
-        jMenu4.add(jUsermanual);
+        helpMenu.add(jUsermanual);
 
-        jMenuItem1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/icons8-video-20.png"))); // NOI18N
-        jMenuItem1.setText("Tutorial");
-        jMenuItem1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jTutorialVideo.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jTutorialVideo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/icons8-video-20.png"))); // NOI18N
+        jTutorialVideo.setText("Tutorial");
+        jTutorialVideo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jTutorialVideo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jTutorialVideoActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem1);
+        helpMenu.add(jTutorialVideo);
 
-        jMenuBar1.add(jMenu4);
+        jMenuBar1.add(helpMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -704,17 +704,18 @@ public class Dashboard extends javax.swing.JFrame {
         pdfViewer.setVisible(true);
     }//GEN-LAST:event_jUsermanualActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+    private void jTutorialVideoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTutorialVideoActionPerformed
+        
         TutorialVideo Video = new TutorialVideo();
         Video.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jTutorialVideoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel HeaderPanel;
     private javax.swing.JPanel dashboardMainPanel;
     private javax.swing.JLabel empImageLabel;
+    private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel jAppointmentPanel;
     private javax.swing.JButton jAppointmentsButton;
     private javax.swing.JButton jButton1;
@@ -731,10 +732,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JMenuItem jLoginAccessMenuItem;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JButton jOurServicesButton;
     private javax.swing.JPanel jOurServicesPanel;
     private javax.swing.JPanel jPanel1;
@@ -747,10 +745,12 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton jStaffButton;
     public javax.swing.JPanel jStaffPanel;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JMenuItem jTutorialVideo;
     private javax.swing.JMenuItem jUsermanual;
     private javax.swing.JButton jVehiclesButton;
     private javax.swing.JPanel jVehiclesPanel;
     private javax.swing.JMenuItem jsettings;
     private javax.swing.JPanel menuButtonsPanel;
+    private javax.swing.JMenu settingsMenu;
     // End of variables declaration//GEN-END:variables
 }
