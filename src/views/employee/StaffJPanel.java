@@ -5,6 +5,7 @@
 package views.employee;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import controllers.AddressController;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -33,11 +34,13 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
+import models.AddressModel;
 import models.EmployeeModel;
 import raven.toast.Notifications;
 import views.dashboard.Dashboard;
 import views.settings.AddAndUpdateAccessJDialog;
 import views.shop.payments.ShopInvoiceItemsPanel;
+import views.supplier.SupplierUpdate;
 
 /**
  *
@@ -575,15 +578,41 @@ public class StaffJPanel extends javax.swing.JPanel {
                     logger.severe("Error while finding Status : " + ex.getMessage());
                 }
 
+//                try {
+//                    Frame staffJPanel = null;
+//                    EmployeeUpdate employeeUpdate = new EmployeeUpdate(staffJPanel, true, employeeModel, this.staffJPanel);
+//                    employeeUpdate.setVisible(true);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    logger.severe("Error while showing employee update dialog : " + e.getMessage());
+//                }
+                //               
+                AddressModel addressModel = new AddressModel();
+
                 try {
-                    Frame staffJPanel = null;
-                    EmployeeUpdate employeeUpdate = new EmployeeUpdate(staffJPanel, true, employeeModel, this.staffJPanel);
-                    employeeUpdate.setVisible(true);
+                    Frame stafzfJPanel = null;
+                    String addressId = new AddressController().retrieveeEmpAddressId(employeeId);
+
+                    if (addressId != null) {
+                        String query = "SELECT * FROM address WHERE employee_id = '" + addressId + "'";
+                        ResultSet rs = MySqlConnection.executeSearch(query);
+
+                        if (rs.next()) {
+                            addressModel.setEmpId(employeeId);
+                            addressModel.setLane1(rs.getString("lane1"));
+                            addressModel.setLane2(rs.getString("lane2"));
+                            addressModel.setCity(rs.getString("city_id"));
+
+                        }
+                    }
+
+                    EmployeeUpdate empUpdate = new EmployeeUpdate(stafzfJPanel, true, employeeModel, this.staffJPanel, addressModel);
+                    empUpdate.setVisible(true);
+
                 } catch (Exception e) {
                     e.printStackTrace();
-                    logger.severe("Error while showing employee update dialog : " + e.getMessage());
                 }
-
+//
                 loadEmployees();
             }
 

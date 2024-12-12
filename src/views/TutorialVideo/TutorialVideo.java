@@ -13,7 +13,7 @@ import javax.swing.JPanel;
  *
  * @author Dumindu
  */
-public class TutorialVideo extends javax.swing.JFrame {
+public class TutorialVideo extends javax.swing.JDialog {
 
     /**
      * Creates new form TutorialVideo

@@ -708,8 +708,8 @@ public class Dashboard extends javax.swing.JFrame {
         
         TutorialVideo Video = new TutorialVideo();
         Video.setVisible(true);
-    }//GEN-LAST:event_jTutorialVideoActionPerformed
 
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel HeaderPanel;
