@@ -12,6 +12,8 @@ public class MailTemplates {
 
     StringBuilder mailerBody = new StringBuilder();
 
+    String mainColor = "#f19108";
+
     public MailTemplates() {
         //
     }
@@ -43,7 +45,7 @@ public class MailTemplates {
         mailerBody.append("<tr><td style='padding: 20px; text-align: center;'>");
         mailerBody.append("<table width='600' border='0' cellspacing='0' cellpadding='0' style='background-color: #ffffff; border: 1px solid #dddddd; margin: 0 auto;'>");
 
-        mailerBody.append("<tr><td style='background-color: #4CAF50; color: #ffffff; padding: 20px; text-align: center;'>");
+        mailerBody.append("<tr><td style='background-color: " + mainColor + "; color: #ffffff; padding: 20px; text-align: center;'>");
         mailerBody.append("<h1>Dazzle Auto</h1></td></tr>");
 
         mailerBody.append("<tr><td style='padding: 20px;'>");
@@ -96,7 +98,7 @@ public class MailTemplates {
      * @param name the name of the recipient
      * @return a String containing the HTML content for the invoice email
      */
-    public String invoiceMailTemplate(String name){
+    public String invoiceMailTemplate(String name) {
         StringBuilder mailerBody = new StringBuilder();
         mailerBody.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
         mailerBody.append("<html lang='en'>");
@@ -111,7 +113,7 @@ public class MailTemplates {
         mailerBody.append("<tr><td style='padding: 20px; text-align: center;'>");
         mailerBody.append("<table width='600' border='0' cellspacing='0' cellpadding='0' style='background-color: #ffffff; border: 1px solid #dddddd; margin: 0 auto;'>");
 
-        mailerBody.append("<tr><td style='background-color: #4CAF50; color: #ffffff; padding: 20px; text-align: center;'>");
+        mailerBody.append("<tr><td style='background-color: " + mainColor + "; color: #ffffff; padding: 20px; text-align: center;'>");
         mailerBody.append("<h1>Dazzle Auto</h1></td></tr>");
 
         mailerBody.append("<tr><td style='padding: 20px;'>");
@@ -119,7 +121,7 @@ public class MailTemplates {
 
         // User name
         mailerBody.append("<p style='color: #666666;'>Hi " + name + ", This is your invoice</p>");
-        
+
         mailerBody.append("</td></tr>");
 
         mailerBody.append("<tr><td style='padding: 10px;'><table width='100%' border='0' cellspacing='0' cellpadding='0'>");
