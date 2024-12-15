@@ -73,7 +73,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
         setEmployeeData();
         loadAmployeeImage();
-        
+
         employee_update_btn.grabFocus();
     }
 
@@ -521,31 +521,41 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employeeModel.setStatusId(Integer.parseInt(StatusMap.get(emp_status.getSelectedItem())));
 
                 new EmployeeController().update(employeeModel);
-                updateAddressData(sssid);
 
-                if (selectedFile != null) {
-                    String imagePath = saveImage(employeeModel.getId() + nic + firstName + lastName);
-                    if (imagePath != null) {
-                        employeeImageModel.setPath(imagePath);
+                String lane1 = Lane1Field.getText().trim();
+                String lane2 = lane2Field.getText().trim();
+                String cityName = (String) cityComboBox.getSelectedItem();
 
-                        // check user had an image before
-                        if (isEmployerHaveAnImage) {
-                            new EmployeeImageController().update(employeeImageModel);
-                        } else {
-                            EmployeeImageModel employeeImageModel = new EmployeeImageModel();
+                if (!lane1.isEmpty() || !lane2.isEmpty() || (cityName != null && !cityName.equals("Select"))) {
+                    updateAddressData(sssid);
+
+                } else {
+                    if (selectedFile != null) {
+                        String imagePath = saveImage(employeeModel.getId() + nic + firstName + lastName);
+                        if (imagePath != null) {
                             employeeImageModel.setPath(imagePath);
-                            employeeImageModel.setEmployeeId(employeeModel.getId());
 
-                            new EmployeeImageController().store(employeeImageModel);
+                            // check user had an image before
+                            if (isEmployerHaveAnImage) {
+                                new EmployeeImageController().update(employeeImageModel);
+                            } else {
+                                EmployeeImageModel employeeImageModel = new EmployeeImageModel();
+                                employeeImageModel.setPath(imagePath);
+                                employeeImageModel.setEmployeeId(employeeModel.getId());
+
+                                new EmployeeImageController().store(employeeImageModel);
+                            }
+
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
+                            reset();
                         }
-
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
+                    JOptionPane.showMessageDialog(this, "oooEmployee details updated successfully");
+                    reset();
+                    staffJPanel.reloadTable();
                 }
 
-                JOptionPane.showMessageDialog(this, "Employee details updated successfully");
-                staffJPanel.reloadTable();
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.severe("Error while updating employee : " + e.getMessage());
@@ -569,6 +579,18 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 }
             }
 
+            // Check if lane1 or lane2 is null or empty
+            if ((lane1 == null || lane1.isEmpty()) || (lane2 == null || lane2.isEmpty())) {
+                JOptionPane.showMessageDialog(this, "Please fill in both Address Lanes.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return; // Exit method if validation fails
+            }
+
+            // Check if both lanes are filled but city is not selected
+            if (cityName == null || cityName.equals("Select")) {
+                JOptionPane.showMessageDialog(this, "Address requires a city. Please select a city.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return; // Exit method if validation fails
+            }
+
             AddressModel addresszModel = new AddressModel();
             addresszModel.setLane1(lane1);
             addresszModel.setLane2(lane2);
@@ -583,6 +605,8 @@ public class EmployeeUpdate extends java.awt.Dialog {
             } else {
                 new AddressController().create2(addresszModel);
             }
+            JOptionPane.showMessageDialog(this, "Employee address updated successfully.");
+            reset();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -710,6 +734,10 @@ public class EmployeeUpdate extends java.awt.Dialog {
         employee_nic.setText("");
         employee_email.setText("");
         employee_type.setSelectedIndex(0);
+        Lane1Field.setText("");
+        lane2Field.setText("");
+        cityComboBox.setSelectedItem("Select");
+        
 
     }
 

@@ -406,6 +406,7 @@ public class SupplierViewJPanel extends javax.swing.JPanel {
 
             try {
                 String addressId = new AddressController().retrieveAddressId(supplierId);
+               
 
                 if (addressId != null) {
                     String query = "SELECT * FROM address WHERE supplier_id = '" + addressId + "'";
