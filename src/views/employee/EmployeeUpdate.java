@@ -19,6 +19,7 @@ import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
 import java.awt.Frame;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -60,17 +61,20 @@ public class EmployeeUpdate extends java.awt.Dialog {
     public EmployeeUpdate(Frame parent, boolean modal, EmployeeModel employeeModel, StaffJPanel staffJPanel, AddressModel addressModel) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
         setDocumentFilters();
         loadEmployeeTypes();
         loadempStatus();
         loadCity();
         this.employeeModel = employeeModel;
         this.staffJPanel = staffJPanel;
+        this.addressModel = addressModel;
         EmpIdField.setFocusable(false);
 
         setEmployeeData();
         loadAmployeeImage();
-
+        
+        employee_update_btn.grabFocus();
     }
 
     private void setEmployeeData() {
@@ -86,8 +90,6 @@ public class EmployeeUpdate extends java.awt.Dialog {
         if (addressModel != null) {
             Lane1Field.setText(addressModel.getLane1());
             lane2Field.setText(addressModel.getLane2());
-            System.out.println(String.valueOf(addressModel.getLane1()));
-            System.out.println(String.valueOf(addressModel.getLane2()));
             if (addressModel.getCity() != null) {
                 cityComboBox.setSelectedItem(CityMap.get(Integer.parseInt(addressModel.getCity())));
             }
@@ -384,12 +386,13 @@ public class EmployeeUpdate extends java.awt.Dialog {
         emp_status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select" }));
         emp_status.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel3.add(emp_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 430, 220, 37));
-        jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 890, -1));
+        jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, -1));
 
         jLabel12.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel12.setText("City");
         jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 400, -1, -1));
 
+        cityComboBox.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         cityComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cityComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -401,7 +404,11 @@ public class EmployeeUpdate extends java.awt.Dialog {
         jLabel11.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel11.setText("Lane 2");
         jPanel3.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 350, -1, -1));
+
+        lane2Field.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel3.add(lane2Field, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 340, 210, 34));
+
+        Lane1Field.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel3.add(Lane1Field, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 290, 210, 34));
 
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
@@ -417,6 +424,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
         jPanel3.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 110, -1, -1));
 
         EmpIdField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        EmpIdField.setBorder(null);
         jPanel3.add(EmpIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 140, 100, 34));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -427,29 +435,29 @@ public class EmployeeUpdate extends java.awt.Dialog {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 956, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 956, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -568,7 +576,6 @@ public class EmployeeUpdate extends java.awt.Dialog {
             addresszModel.setEmpId(employeeId);
 
             String addressId = new AddressController().retrieveeEmpAddressId(employeeId);
-            System.out.println(addressId);
             if (addressId != null) {
                 addresszModel.setEmpId(addressId);
 
