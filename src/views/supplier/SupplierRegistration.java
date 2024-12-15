@@ -357,7 +357,16 @@ public class SupplierRegistration extends java.awt.Dialog {
 
                 if (supplierResultSet2.next()) {
                     String supplierId = supplierResultSet2.getString("id");
-                    regAddressData(supplierId);
+
+                    // Check if address data exists
+                    String lane1 = Lane1Field.getText().trim();
+                    String lane2 = lane2Field.getText().trim();
+                    String cityName = (String) cityComboBox.getSelectedItem();
+
+                    if (!lane1.isEmpty() || !lane2.isEmpty() || (cityName != null && !cityName.equals("Select"))) {
+                        regAddressData(supplierId);
+                    }
+
                     JOptionPane.showMessageDialog(this, "Supplier Registration Successfully");
                     reset();
                     supplierViewJPanel.reloadTable();
@@ -370,37 +379,44 @@ public class SupplierRegistration extends java.awt.Dialog {
     }//GEN-LAST:event_supplier_register_btnActionPerformed
 
     private void regAddressData(String supplierId) {
-        String lane1 = Lane1Field.getText();
-        String lane2 = lane2Field.getText();
+        String lane1 = Lane1Field.getText().trim();
+        String lane2 = lane2Field.getText().trim();
         String cityName = (String) cityComboBox.getSelectedItem();
 
         try {
+           
+            if ((!lane1.isEmpty() || !lane2.isEmpty()) && (cityName == null || cityName.equals("Select"))) {
+                JOptionPane.showMessageDialog(this, "Address requires a city. Please select a city.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             AddressModel addressModel = new AddressModel();
 
-            addressModel.setLane1(lane1);
-            addressModel.setLane2(lane2);
+            addressModel.setLane1(lane1.isEmpty() ? null : lane1);
+            addressModel.setLane2(lane2.isEmpty() ? null : lane2);
             addressModel.setSupId(supplierId);
 
-            int cityId = -1;
-            for (Map.Entry<Integer, String> entry : CityMap.entrySet()) {
-                if (entry.getValue().equals(cityName)) {
-                    cityId = entry.getKey();
-                    break;
+            if (cityName != null && !cityName.equals("Select")) {
+                int cityId = -1;
+                for (Map.Entry<Integer, String> entry : CityMap.entrySet()) {
+                    if (entry.getValue().equals(cityName)) {
+                        cityId = entry.getKey();
+                        break;
+                    }
+                }
+                if (cityId != -1) {
+                    addressModel.setCity(String.valueOf(cityId));
                 }
             }
 
-            if (cityId == -1) {
-                JOptionPane.showMessageDialog(this, "City not found", "Warning", JOptionPane.WARNING_MESSAGE);
-            } else {
-                addressModel.setCity(String.valueOf(cityId));
-            }
-
             new AddressController().create(addressModel);
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while storing address : " + e.getMessage());
         }
     }
+
 
     private void supplier_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplier_reset_btnActionPerformed
         reset();

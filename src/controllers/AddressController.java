@@ -39,17 +39,17 @@ public class AddressController {
                 + "`employee_id`=null, "
                 + "`lane1`='" + addressModel.getLane1() + "', "
                 + "`lane2`='" + addressModel.getLane2() + "', "
-                + "`city_id`='" + addressModel.getCity() + "' "
+                + "`city_id`=" + (addressModel.getCity() == null ? "NULL" : "'" + addressModel.getCity() + "'") + " "
                 + "WHERE `supplier_id`='" + addressModel.getSupId() + "' ");
     }
-    
+
     public ResultSet update2(AddressModel addressModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
                 + "`supplier_id`=null, "
                 + "`lane1`='" + addressModel.getLane1() + "', "
                 + "`lane2`='" + addressModel.getLane2() + "', "
-                + "`city_id`='" + addressModel.getCity() + "' "
-                + "WHERE `employee_id`='" + addressModel.getEmpId()+ "' ");
+                + "`city_id`=" + (addressModel.getCity() == null ? "NULL" : "'" + addressModel.getCity() + "'") + " "
+                + "WHERE `employee_id`='" + addressModel.getEmpId() + "' ");
     }
 
     public ResultSet search(String searchText) throws Exception {
@@ -85,19 +85,59 @@ public class AddressController {
     }
 
     public ResultSet create(AddressModel addressModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "` (`supplier_id`, `lane1`, `lane2`, `city_id`) VALUES ("
-                + (addressModel.getSupId() == null ? "" : "'" + addressModel.getSupId() + "'") + ", "
-                + (addressModel.getLane1() == null ? "" : "'" + addressModel.getLane1() + "'") + ", "
-                + (addressModel.getLane2() == null ? "" : "'" + addressModel.getLane2() + "'") + ", "
-                + (addressModel.getCity() == null ? "" : "'" + addressModel.getCity() + "'") + ")");
+        StringBuilder queryBuilder = new StringBuilder("INSERT INTO `" + tableName + "` (`supplier_id`");
+
+        if (addressModel.getLane1() != null) {
+            queryBuilder.append(", `lane1`");
+        }
+        if (addressModel.getLane2() != null) {
+            queryBuilder.append(", `lane2`");
+        }
+        if (addressModel.getCity() != null) {
+            queryBuilder.append(", `city_id`");
+        }
+
+        queryBuilder.append(") VALUES ('").append(addressModel.getSupId()).append("'");
+        if (addressModel.getLane1() != null) {
+            queryBuilder.append(", '").append(addressModel.getLane1()).append("'");
+        }
+        if (addressModel.getLane2() != null) {
+            queryBuilder.append(", '").append(addressModel.getLane2()).append("'");
+        }
+        if (addressModel.getCity() != null) {
+            queryBuilder.append(", '").append(addressModel.getCity()).append("'");
+        }
+
+        queryBuilder.append(")");
+        return MySqlConnection.executeIUD(queryBuilder.toString());
     }
 
     public ResultSet create2(AddressModel addressModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "` (`employee_id`, `lane1`, `lane2`, `city_id`) VALUES ("
-                + (addressModel.getEmpId() == null ? "" : "'" + addressModel.getEmpId() + "'") + ", "
-                + (addressModel.getLane1() == null ? "" : "'" + addressModel.getLane1() + "'") + ", "
-                + (addressModel.getLane2() == null ? "" : "'" + addressModel.getLane2() + "'") + ", "
-                + (addressModel.getCity() == null ? "" : "'" + addressModel.getCity() + "'") + ")");
-    }
+        StringBuilder queryBuilder = new StringBuilder("INSERT INTO `" + tableName + "` (`employee_id`");
 
+        if (addressModel.getLane1() != null) {
+            queryBuilder.append(", `lane1`");
+        }
+        if (addressModel.getLane2() != null) {
+            queryBuilder.append(", `lane2`");
+        }
+        if (addressModel.getCity() != null) {
+            queryBuilder.append(", `city_id`");
+        }
+
+        queryBuilder.append(") VALUES ('").append(addressModel.getEmpId()).append("'");
+        if (addressModel.getLane1() != null) {
+            queryBuilder.append(", '").append(addressModel.getLane1()).append("'");
+        }
+        if (addressModel.getLane2() != null) {
+            queryBuilder.append(", '").append(addressModel.getLane2()).append("'");
+        }
+        if (addressModel.getCity() != null) {
+            queryBuilder.append(", '").append(addressModel.getCity()).append("'");
+        }
+
+        queryBuilder.append(")");
+        return MySqlConnection.executeIUD(queryBuilder.toString());
+
+    }
 }

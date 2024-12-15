@@ -56,14 +56,14 @@ public class SupplierUpdate extends java.awt.Dialog {
         supplier_mobile.setText(supplierModel.getMobile());
         sup_status.setSelectedItem(supplierModel.getStatusName());
 
-       if (addressModel != null) {
+        if (addressModel != null) {
             Lane1Field.setText(addressModel.getLane1());
             lane2Field.setText(addressModel.getLane2());
             if (addressModel.getCity() != null) {
                 cityComboBox.setSelectedItem(CityMap.get(Integer.parseInt(addressModel.getCity())));
             }
         }
-       supIField.setFocusable(false);
+        supIField.setFocusable(false);
     }
 
     private void setDocumentFilters() {
@@ -86,7 +86,7 @@ public class SupplierUpdate extends java.awt.Dialog {
                 String cityName = resultSet.getString("name");
 
                 vector.add(cityName);
-                CityMap.put(cityId, cityName); 
+                CityMap.put(cityId, cityName);
             }
 
             DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(vector);
@@ -366,9 +366,18 @@ public class SupplierUpdate extends java.awt.Dialog {
                 supplierModel.setStatusId(Integer.parseInt(StatusMap.get(sup_status.getSelectedItem())));
 
                 new SupplierController().update(supplierModel);
-                updateAddressData(sssid);
-                JOptionPane.showMessageDialog(this, "Supplier details updated successfully");
-                reset();
+
+                String lane1 = Lane1Field.getText().trim();
+                String lane2 = lane2Field.getText().trim();
+                String cityName = (String) cityComboBox.getSelectedItem();
+
+                if (!lane1.isEmpty() || !lane2.isEmpty() || (cityName != null && !cityName.equals("Select"))) {
+                    updateAddressData(sssid);
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Supplier details updated successfully");
+                    reset();
+                }
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -380,13 +389,14 @@ public class SupplierUpdate extends java.awt.Dialog {
     }//GEN-LAST:event_supplier_update_btnActionPerformed
 
     private void updateAddressData(String supplierId) {
-        String lane1 = Lane1Field.getText().isEmpty() ? null : Lane1Field.getText();
-        String lane2 = lane2Field.getText().isEmpty() ? null : lane2Field.getText();
-        String cityName = (String) cityComboBox.getSelectedItem();
+        String lane1 = (Lane1Field.getText() == null || Lane1Field.getText().trim().isEmpty()) ? null : Lane1Field.getText().trim();
+        String lane2 = (lane2Field.getText() == null || lane2Field.getText().trim().isEmpty()) ? null : lane2Field.getText().trim();
+        String cityName = (cityComboBox.getSelectedItem() == null || cityComboBox.getSelectedItem().equals("Select")) ? null : cityComboBox.getSelectedItem().toString();
         String cityId = null;
 
         try {
-            if (cityName != null && !cityName.equals("Select")) {
+
+            if (cityName != null) {
                 for (Map.Entry<Integer, String> entry : CityMap.entrySet()) {
                     if (entry.getValue().equals(cityName)) {
                         cityId = String.valueOf(entry.getKey());
@@ -394,28 +404,39 @@ public class SupplierUpdate extends java.awt.Dialog {
                     }
                 }
             }
-
-            AddressModel addresszModel = new AddressModel();
-            addresszModel.setLane1(lane1);
-            addresszModel.setLane2(lane2);
-            addresszModel.setCity(cityId);
-            addresszModel.setSupId(supplierId);
-
-            String addressId = new AddressController().retrieveAddressId(supplierId);
-
-            if (addressId != null) {
-                addresszModel.setSupId(addressId);
-                new AddressController().update(addresszModel);
-            } else {
-                new AddressController().create(addresszModel);
+            if ((lane1 == null || lane1.isEmpty()) || (lane2 == null || lane2.isEmpty())) {
+                JOptionPane.showMessageDialog(this, "Please fill in both Address Lanes.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
             }
 
+            if (cityName == null || cityName.equals("Select")) {
+                JOptionPane.showMessageDialog(this, "Address requires a city. Please select a city.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            AddressModel addressModel = new AddressModel();
+            addressModel.setLane1(lane1);
+            addressModel.setLane2(lane2);
+            addressModel.setCity(cityId);
+            addressModel.setSupId(supplierId);
+
+            String addressId = new AddressController().retrieveAddressId(supplierId);
+            if (addressId != null) {
+                addressModel.setSupId(addressId);
+                new AddressController().update(addressModel);
+            } else {
+                new AddressController().create(addressModel);
+            }
+
+            JOptionPane.showMessageDialog(this, "Supplier address updated successfully.");
+            reset();
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while updating address: " + e.getMessage());
             JOptionPane.showMessageDialog(this, "Error updating address: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     private void supplier_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supplier_reset_btnActionPerformed
 
@@ -432,6 +453,7 @@ public class SupplierUpdate extends java.awt.Dialog {
         Lane1Field.setText("");
         lane2Field.setText("");
         cityComboBox.setSelectedItem("Select");
+        sup_status.setSelectedItem("Select");
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
