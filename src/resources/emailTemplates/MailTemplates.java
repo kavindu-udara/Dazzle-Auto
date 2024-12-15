@@ -46,7 +46,7 @@ public class MailTemplates {
         mailerBody.append("<table width='600' border='0' cellspacing='0' cellpadding='0' style='background-color: #ffffff; border: 1px solid #dddddd; margin: 0 auto;'>");
 
         mailerBody.append("<tr><td style='background-color: #ffffff; color: #ffffff; padding: 20px; text-align: center;'>");
-        mailerBody.append("<img src=\"https://raw.githubusercontent.com/kavindu-udara/dazzle-auto-images/refs/heads/main/dazzle_auto0.png\" width=\"80%\" alt=\"brand-image\">");
+        mailerBody.append("<img src=\"https://raw.githubusercontent.com/kavindu-udara/dazzle-auto-images/refs/heads/main/dazzle_auto0.png\" width=\"60%\" alt=\"brand-image\">");
         mailerBody.append("</td></tr>");
         mailerBody.append("<tr><td style='padding: 20px;'>");
         mailerBody.append("<h2 style='color: #333333;'>A new Appointment has been Scheduled</h2>");
