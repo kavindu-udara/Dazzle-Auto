@@ -50,10 +50,13 @@ public class SingleEmployeeAttendance extends javax.swing.JFrame {
         //super(parent, modal);
         initComponents();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
-        
+
         this.empId = empId;
         loadTableData();
         SingleEmployeeTableRender();
+
+        fromDatePicker.setEditor(jFromTextField);
+        toDatePicker.setEditor(jToTextField);
     }
 
     private void loadTableData() {
@@ -180,6 +183,8 @@ public class SingleEmployeeAttendance extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        fromDatePicker = new raven.datetime.component.date.DatePicker();
+        toDatePicker = new raven.datetime.component.date.DatePicker();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -189,6 +194,11 @@ public class SingleEmployeeAttendance extends javax.swing.JFrame {
         printButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jFromTextField = new javax.swing.JFormattedTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jToTextField = new javax.swing.JFormattedTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Employee Attendance");
@@ -245,6 +255,39 @@ public class SingleEmployeeAttendance extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel4.setText(":");
 
+        jLabel5.setText("From");
+
+        jFromTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jFromTextFieldMouseExited(evt);
+            }
+        });
+        jFromTextField.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jFromTextFieldPropertyChange(evt);
+            }
+        });
+
+        jLabel6.setText("to");
+
+        jToTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jToTextFieldMouseExited(evt);
+            }
+        });
+        jToTextField.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jToTextFieldPropertyChange(evt);
+            }
+        });
+
+        jButton1.setText("sort");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -252,30 +295,44 @@ public class SingleEmployeeAttendance extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(jLabel2)
-                        .addGap(64, 64, 64)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(employeeIdValueLabel))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(jLabel1)
-                        .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(employeeNameValueLabel))
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(590, 590, 590)
-                        .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(10, Short.MAX_VALUE))
+                                .addGap(40, 40, 40)
+                                .addComponent(jLabel2)
+                                .addGap(64, 64, 64)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(20, 20, 20)
+                                        .addComponent(employeeIdValueLabel))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(jLabel1)
+                                .addGap(35, 35, 35)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(20, 20, 20)
+                                        .addComponent(employeeNameValueLabel))
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(590, 590, 590)
+                                .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jFromTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jToTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
+                        .addComponent(jButton1)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,17 +347,24 @@ public class SingleEmployeeAttendance extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(employeeNameValueLabel)
                     .addComponent(jLabel4))
-                .addGap(17, 17, 17)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jFromTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(jToTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
- 
+
     private void SingleEmployeeTableRender() {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -343,16 +407,139 @@ public class SingleEmployeeAttendance extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_printButtonActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jFromTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jFromTextFieldMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFromTextFieldMouseExited
+
+    private void jToTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jToTextFieldMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jToTextFieldMouseExited
+
+    private void jFromTextFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jFromTextFieldPropertyChange
+        // TODO add your handling code here:
+        sortTableDataByDate();
+    }//GEN-LAST:event_jFromTextFieldPropertyChange
+
+    private void jToTextFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jToTextFieldPropertyChange
+        // TODO add your handling code here:
+        sortTableDataByDate();
+    }//GEN-LAST:event_jToTextFieldPropertyChange
+
+    private void sortTableDataByDate(){
+        if (!fromDatePicker.isDateSelected() && !toDatePicker.isDateSelected()) {
+            loadTableData();
+        } else {
+            String query = "SELECT * FROM `emp_attendance` INNER JOIN `attendance_date` ON `attendance_date`.`id`=`emp_attendance`.`attendance_date_id` WHERE `emp_attendance`.`employee_id`='" + empId + "' ";
+
+            String fromDate = "";
+            String toDate = "";
+            if (fromDatePicker.isDateSelected()) {
+                fromDate = String.valueOf(fromDatePicker.getSelectedDate());
+                query += " AND `attendance_date`.`date` > '" + fromDate + "'";
+            }
+            if (toDatePicker.isDateSelected()) {
+                toDate = String.valueOf(toDatePicker.getSelectedDate());
+                query += " AND `attendance_date`.`date` < '" + toDate + "'";
+            }
+            query += " ORDER BY `attendance_date`.`date` ASC ";
+
+            DefaultTableModel tableModel = (DefaultTableModel) attendanceTable.getModel();
+            tableModel.setRowCount(0);
+
+            try {
+
+                ResultSet attendanceResultSet = new EmployeeAttendanceController().showByCustomQuery(query);
+
+                while (attendanceResultSet.next()) {
+
+                    Vector vector = new Vector();
+                    vector.add(attendanceResultSet.getString("id"));
+
+                    try {
+                        ResultSet employeeResultSet = getEmployeeResultSet(attendanceResultSet.getString("employee_id"));
+                        if (employeeResultSet.next()) {
+                            employeeNameValueLabel.setText(employeeResultSet.getString("first_name") + " " + employeeResultSet.getString("last_name"));
+                        } else {
+                            vector.add("-");
+                        }
+                    } catch (Exception ex3) {
+                        ex3.printStackTrace();
+                        logger.severe("Error while getting employee : " + ex3.getMessage());
+                    }
+
+                    if (attendanceResultSet.getString("checkin") != null) {
+                        vector.add(attendanceResultSet.getString("checkin"));
+                    } else {
+                        vector.add("-");
+                    }
+
+                    if (attendanceResultSet.getString("checkout") != null) {
+                        vector.add(attendanceResultSet.getString("checkout"));
+                    } else {
+                        vector.add("-");
+                    }
+
+                    try {
+                        ResultSet dateResultSet = getDateResultSet(attendanceResultSet.getInt("attendance_date_id"));
+                        if (dateResultSet.next()) {
+                            vector.add(dateResultSet.getString("date"));
+                        } else {
+                            vector.add("-");
+                        }
+                    } catch (Exception ex4) {
+                        ex4.printStackTrace();
+                        logger.severe("Error while loading attendance date : " + ex4.getMessage());
+                    }
+
+                    try {
+                        ResultSet statusResultSet = getStatusResultSet(attendanceResultSet.getInt("attendance_status_id"));
+                        if (statusResultSet.next()) {
+                            vector.add(statusResultSet.getString("status"));
+                        }
+                    } catch (Exception ex2) {
+                        ex2.printStackTrace();
+                        logger.severe("Error while getting employee attendance status : " + ex2.getMessage());
+                    }
+
+                    if (attendanceResultSet.getString("checkin") != null && attendanceResultSet.getString("checkout") != null) {
+                        int workingHrs = Integer.parseInt(attendanceResultSet.getString("checkout").split(":")[0]) - Integer.parseInt(attendanceResultSet.getString("checkin").split(":")[0]);
+                        vector.add(String.valueOf(workingHrs));
+                    } else {
+                        vector.add("-");
+                    }
+                    tableModel.addRow(vector);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            attendanceTable.setModel(tableModel);
+
+        }
+
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable attendanceTable;
     private javax.swing.JLabel employeeIdValueLabel;
     private javax.swing.JLabel employeeNameValueLabel;
+    private raven.datetime.component.date.DatePicker fromDatePicker;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JFormattedTextField jFromTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JFormattedTextField jToTextField;
     private javax.swing.JButton printButton;
+    private raven.datetime.component.date.DatePicker toDatePicker;
     // End of variables declaration//GEN-END:variables
 }
