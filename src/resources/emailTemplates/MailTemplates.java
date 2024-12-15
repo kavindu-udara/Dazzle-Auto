@@ -81,7 +81,7 @@ public class MailTemplates {
 
         mailerBody.append("<tr><td width='50%' style='padding: 10px; border-bottom: 1px solid #dddddd;'>Additional Note</td>");
 //        Additional Note
-        mailerBody.append("<td width='50%' style='padding: 10px; font-weight: bold; border-bottom: 1px solid #dddddd;'>Additional Note</td></tr>");
+        mailerBody.append("<td width='50%' style='padding: 10px; font-weight: bold; border-bottom: 1px solid #dddddd;'>"+additionalNote+"</td></tr>");
         mailerBody.append("</table></td></tr>");
 
         mailerBody.append("<tr><td style='padding: 10px; text-align: center; background-color: #f4f4f4;'>");
@@ -114,7 +114,7 @@ public class MailTemplates {
         mailerBody.append("<table width='600' border='0' cellspacing='0' cellpadding='0' style='background-color: #ffffff; border: 1px solid #dddddd; margin: 0 auto;'>");
 
         mailerBody.append("<tr><td style='background-color: #ffffff; color: #ffffff; padding: 20px; text-align: center;'>");
-        mailerBody.append("<img src=\"https://raw.githubusercontent.com/kavindu-udara/dazzle-auto-images/refs/heads/main/dazzle_auto0.png\" width=\"80%\" alt=\"brand-image\">");
+        mailerBody.append("<img src=\"https://raw.githubusercontent.com/kavindu-udara/dazzle-auto-images/refs/heads/main/dazzle_auto0.png\" width=\"60%\" alt=\"brand-image\">");
         mailerBody.append("</td></tr>");
 
         mailerBody.append("<tr><td style='padding: 20px;'>");
