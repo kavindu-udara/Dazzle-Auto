@@ -449,6 +449,7 @@ public class Dashboard extends javax.swing.JFrame {
         jDatabaseMenuItem.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jDatabaseMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/database-20.png"))); // NOI18N
         jDatabaseMenuItem.setText("Data Backup & Restore");
+        jDatabaseMenuItem.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jDatabaseMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jDatabaseMenuItemActionPerformed(evt);
@@ -704,12 +705,12 @@ public class Dashboard extends javax.swing.JFrame {
         pdfViewer.setVisible(true);
     }//GEN-LAST:event_jUsermanualActionPerformed
 
-    private void jTutorialVideoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTutorialVideoActionPerformed
+    private void jTutorialVideoActionPerformed(java.awt.event.ActionEvent evt) {                                               
         
         TutorialVideo Video = new TutorialVideo();
         Video.setVisible(true);
 
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }                                          
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel HeaderPanel;
