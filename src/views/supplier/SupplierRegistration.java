@@ -327,6 +327,10 @@ public class SupplierRegistration extends java.awt.Dialog {
         String email = supplier_email.getText();
         String mobile = supplier_mobile.getText();
 
+        String lane1 = Lane1Field.getText().trim();
+        String lane2 = lane2Field.getText().trim();
+        String cityName = (String) cityComboBox.getSelectedItem();
+
         if (firstName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (lastName.isEmpty()) {
@@ -338,9 +342,24 @@ public class SupplierRegistration extends java.awt.Dialog {
         } else if (mobile.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter your mobile", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!RegexValidator.isValidSlPhone(mobile)) {
-            JOptionPane.showMessageDialog(this, "Invalid mobile Number", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid mobile number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
+            
             try {
+                boolean isAddressPartiallyFilled = !lane1.isEmpty() || !lane2.isEmpty() || (cityName != null && !cityName.equals("Select"));
+
+                if (isAddressPartiallyFilled) {
+                    if (lane1.isEmpty() || lane2.isEmpty() || cityName == null || cityName.equals("Select")) {
+                        JOptionPane.showMessageDialog(this, "All address fields must be filled.", "Warning", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                } else {
+                    int confirm = JOptionPane.showConfirmDialog(this, "You did not enter address details. Address is optional. Do you want to register?", "Address Details Missing", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    if (confirm != JOptionPane.YES_OPTION) {
+                        return;
+                    }
+                }
+
                 String generatedId = IDGenarator.supplierID();
 
                 SupplierModel suppliermodel = new SupplierModel();
@@ -353,27 +372,17 @@ public class SupplierRegistration extends java.awt.Dialog {
 
                 new SupplierController().store(suppliermodel);
 
-                ResultSet supplierResultSet2 = new SupplierController().getSuppliersBySupId(generatedId);
-
-                if (supplierResultSet2.next()) {
-                    String supplierId = supplierResultSet2.getString("id");
-
-                    // Check if address data exists
-                    String lane1 = Lane1Field.getText().trim();
-                    String lane2 = lane2Field.getText().trim();
-                    String cityName = (String) cityComboBox.getSelectedItem();
-
-                    if (!lane1.isEmpty() || !lane2.isEmpty() || (cityName != null && !cityName.equals("Select"))) {
-                        regAddressData(supplierId);
-                    }
-
-                    JOptionPane.showMessageDialog(this, "Supplier Registration Successfully");
-                    reset();
-                    supplierViewJPanel.reloadTable();
+                if (isAddressPartiallyFilled) {
+                    regAddressData(generatedId);
                 }
 
+                JOptionPane.showMessageDialog(this, "Supplier registration successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                reset();
+                supplierViewJPanel.reloadTable();
+
             } catch (Exception e) {
-                logger.severe("Error while storing supplier : " + e.getMessage());
+                logger.severe("Error while storing supplier: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Error while storing supplier: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_supplier_register_btnActionPerformed
@@ -384,36 +393,33 @@ public class SupplierRegistration extends java.awt.Dialog {
         String cityName = (String) cityComboBox.getSelectedItem();
 
         try {
-           
-            if ((!lane1.isEmpty() || !lane2.isEmpty()) && (cityName == null || cityName.equals("Select"))) {
-                JOptionPane.showMessageDialog(this, "Address requires a city. Please select a city.", "Warning", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+            
 
             AddressModel addressModel = new AddressModel();
-
-            addressModel.setLane1(lane1.isEmpty() ? null : lane1);
-            addressModel.setLane2(lane2.isEmpty() ? null : lane2);
+            addressModel.setLane1(lane1);
+            addressModel.setLane2(lane2);
             addressModel.setSupId(supplierId);
 
-            if (cityName != null && !cityName.equals("Select")) {
-                int cityId = -1;
-                for (Map.Entry<Integer, String> entry : CityMap.entrySet()) {
-                    if (entry.getValue().equals(cityName)) {
-                        cityId = entry.getKey();
-                        break;
-                    }
-                }
-                if (cityId != -1) {
-                    addressModel.setCity(String.valueOf(cityId));
+            int cityId = -1;
+            for (Map.Entry<Integer, String> entry : CityMap.entrySet()) {
+                if (entry.getValue().equals(cityName)) {
+                    cityId = entry.getKey();
+                    break;
                 }
             }
 
+            if (cityId != -1) {
+                addressModel.setCity(String.valueOf(cityId));
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid city selected. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             new AddressController().create(addressModel);
 
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while storing address : " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error saving address: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

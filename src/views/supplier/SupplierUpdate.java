@@ -202,7 +202,7 @@ public class SupplierUpdate extends java.awt.Dialog {
                 supplier_update_btnActionPerformed(evt);
             }
         });
-        jPanel3.add(supplier_update_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, 159, 48));
+        jPanel3.add(supplier_update_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 420, 159, 48));
 
         supplier_reset_btn.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         supplier_reset_btn.setForeground(new java.awt.Color(255, 0, 0));
@@ -213,9 +213,9 @@ public class SupplierUpdate extends java.awt.Dialog {
                 supplier_reset_btnActionPerformed(evt);
             }
         });
-        jPanel3.add(supplier_reset_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 420, 150, 48));
+        jPanel3.add(supplier_reset_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, 150, 48));
 
-        jPanel4.setBackground(new java.awt.Color(200, 204, 225));
+        jPanel4.setBackground(new java.awt.Color(155, 192, 227));
 
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
         jLabel1.setText("SUPPLIER DETAILS");
@@ -376,7 +376,8 @@ public class SupplierUpdate extends java.awt.Dialog {
 
                 } else {
                     JOptionPane.showMessageDialog(this, "Supplier details updated successfully");
-                    reset();
+                    this.dispose();
+
                 }
 
             } catch (Exception e) {
@@ -411,25 +412,27 @@ public class SupplierUpdate extends java.awt.Dialog {
 
             if (cityName == null || cityName.equals("Select")) {
                 JOptionPane.showMessageDialog(this, "Address requires a city. Please select a city.", "Warning", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            AddressModel addressModel = new AddressModel();
-            addressModel.setLane1(lane1);
-            addressModel.setLane2(lane2);
-            addressModel.setCity(cityId);
-            addressModel.setSupId(supplierId);
-
-            String addressId = new AddressController().retrieveAddressId(supplierId);
-            if (addressId != null) {
-                addressModel.setSupId(addressId);
-                new AddressController().update(addressModel);
+                //return;
             } else {
-                new AddressController().create(addressModel);
+
+                AddressModel addressModel = new AddressModel();
+                addressModel.setLane1(lane1);
+                addressModel.setLane2(lane2);
+                addressModel.setCity(cityId);
+                addressModel.setSupId(supplierId);
+
+                String addressId = new AddressController().retrieveAddressId(supplierId);
+                if (addressId != null) {
+                    addressModel.setSupId(addressId);
+                    new AddressController().update(addressModel);
+                } else {
+                    new AddressController().create(addressModel);
+                }
+
+                JOptionPane.showMessageDialog(this, "Supplier address updated successfully.");
+                this.dispose();
             }
 
-            JOptionPane.showMessageDialog(this, "Supplier address updated successfully.");
-            reset();
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while updating address: " + e.getMessage());
@@ -444,16 +447,20 @@ public class SupplierUpdate extends java.awt.Dialog {
     }//GEN-LAST:event_supplier_reset_btnActionPerformed
 
     private void reset() {
+        supIField.setText(supplierModel.getId());
+        supplier_firstname.setText(supplierModel.getFirstName());
+        supplier_lastname.setText(supplierModel.getLastName());
+        supplier_email.setText(supplierModel.getEmail());
+        supplier_mobile.setText(supplierModel.getMobile());
+        sup_status.setSelectedItem(supplierModel.getStatusName());
 
-        supplier_firstname.setText("");
-        supplier_lastname.setText("");
-        supplier_mobile.setText("");
-        supplier_email.setText("");
-        supIField.setText("");
-        Lane1Field.setText("");
-        lane2Field.setText("");
-        cityComboBox.setSelectedItem("Select");
-        sup_status.setSelectedItem("Select");
+        if (addressModel != null) {
+            Lane1Field.setText(addressModel.getLane1());
+            lane2Field.setText(addressModel.getLane2());
+            if (addressModel.getCity() != null) {
+                cityComboBox.setSelectedItem(CityMap.get(Integer.parseInt(addressModel.getCity())));
+            }
+        }
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

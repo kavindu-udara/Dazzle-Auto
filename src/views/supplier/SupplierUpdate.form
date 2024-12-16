@@ -190,7 +190,7 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="40" y="420" width="159" height="48"/>
+                      <AbsoluteConstraints x="200" y="420" width="159" height="48"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -216,14 +216,14 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="210" y="420" width="150" height="48"/>
+                      <AbsoluteConstraints x="40" y="420" width="150" height="48"/>
                     </Constraint>
                   </Constraints>
                 </Component>
                 <Container class="javax.swing.JPanel" name="jPanel4">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="e1" green="cc" red="c8" type="rgb"/>
+                      <Color blue="e3" green="c0" red="9b" type="rgb"/>
                     </Property>
                   </Properties>
                   <Constraints>
