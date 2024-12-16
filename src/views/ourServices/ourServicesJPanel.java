@@ -350,6 +350,11 @@ public class ourServicesJPanel extends javax.swing.JPanel {
     private void ourServicesViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ourServicesViewTableMouseClicked
 
         int row = ourServicesViewTable.getSelectedRow();
+        
+        if(row < 0){
+            return;
+        }
+        
         String serviceID = String.valueOf(ourServicesViewTable.getValueAt(row, 0));
         String serviceName = String.valueOf(ourServicesViewTable.getValueAt(row, 1));
         String vehicleType = String.valueOf(ourServicesViewTable.getValueAt(row, 2));
