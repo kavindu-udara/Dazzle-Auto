@@ -332,6 +332,10 @@ public class CustomerJPanel extends javax.swing.JPanel {
     private void customerViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerViewTableMouseClicked
         int row = customerViewTable.getSelectedRow();
 
+        if (row < 0) {
+            return;
+        }
+
         int customerId = Integer.parseInt(customerViewTable.getValueAt(row, 0).toString());
         String firstName = String.valueOf(customerViewTable.getValueAt(row, 1));
         String lastName = String.valueOf(customerViewTable.getValueAt(row, 2));
