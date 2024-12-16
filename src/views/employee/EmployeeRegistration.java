@@ -376,14 +376,42 @@ public class EmployeeRegistration extends java.awt.Dialog {
         } else if (employeeType.equals("Select")) {
             showWarningMessage("Please select an employee type");
         } else {
-
             try {
 
                 ResultSet alreadyExistResultSet = new EmployeeController().showByEmailOrMobileOrNIC(email, mobile, nic);
 
                 if (alreadyExistResultSet.next()) {
                     JOptionPane.showMessageDialog(null, "User Already Registered");
+
                 } else {
+
+                    String lane1 = Lane1Field.getText().trim();
+                    String lane2 = lane2Field.getText().trim();
+                    String cityName = (String) cityComboBox.getSelectedItem();
+
+                    boolean hasAddressData = !lane1.isEmpty() || !lane2.isEmpty() || (cityName != null && !cityName.equals("Select"));
+
+                    if (!hasAddressData) {
+                        int confirm = JOptionPane.showConfirmDialog(this,
+                                "You did not enter address details. Address is optional. Do you want to proceed?",
+                                "Address Missing", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                        if (confirm != JOptionPane.YES_OPTION) {
+                            return;
+                        }
+                    } else {
+
+                        if (lane1.isEmpty() || lane2.isEmpty()) {
+                            JOptionPane.showMessageDialog(this, "Please fill in both Address Lanes.", "Warning", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
+
+                        if (cityName == null || cityName.equals("Select")) {
+                            JOptionPane.showMessageDialog(this, "Address requires a city. Please select a city.", "Warning", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
+                    }
+
                     String generatedId = IDGenarator.employeeID();
 
                     EmployeeModel employeeModel = new EmployeeModel();
@@ -398,8 +426,9 @@ public class EmployeeRegistration extends java.awt.Dialog {
                     String registerDateTime = TimestampsGenerator.getFormattedDateTime();
                     employeeModel.setRegisteredDate(registerDateTime);
 
-                    ResultSet resultSet = new EmployeeController().store(employeeModel);
+                    new EmployeeController().store(employeeModel);
 
+                    // Save employee image if available
                     String imagePath = saveImage(generatedId + nic + firstName + lastName);
                     if (imagePath != null) {
                         EmployeeImageModel employeeImageModel = new EmployeeImageModel();
@@ -408,8 +437,11 @@ public class EmployeeRegistration extends java.awt.Dialog {
                         new EmployeeImageController().store(employeeImageModel);
                     }
 
-                    JOptionPane.showMessageDialog(this, "Employee Registration Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    if (hasAddressData) {
+                        regAddressData(generatedId);
+                    }
 
+                    JOptionPane.showMessageDialog(this, "Employee Registration Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
                     staffJPanel.reloadTable();
                     reset();
                 }
@@ -418,12 +450,11 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 logger.severe("Error while storing employee: " + e.getMessage());
             }
-
         }
 
     }//GEN-LAST:event_employee_register_btnActionPerformed
 
-    private void regAddressData(String supplierId) {
+    private void regAddressData(String employeeId) {
         String lane1 = Lane1Field.getText();
         String lane2 = lane2Field.getText();
         String cityName = (String) cityComboBox.getSelectedItem();
@@ -433,7 +464,7 @@ public class EmployeeRegistration extends java.awt.Dialog {
 
             addressModel.setLane1(lane1);
             addressModel.setLane2(lane2);
-            addressModel.setSupId(supplierId);
+            addressModel.setEmpId(employeeId);
 
             int cityId = -1;
             for (Map.Entry<Integer, String> entry : CityMap.entrySet()) {
@@ -449,12 +480,13 @@ public class EmployeeRegistration extends java.awt.Dialog {
                 addressModel.setCity(String.valueOf(cityId));
             }
 
-            new AddressController().create(addressModel);
+            new AddressController().create2(addressModel);
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while storing address : " + e.getMessage());
         }
     }
+
     private void employee_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employee_typeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_employee_typeActionPerformed
