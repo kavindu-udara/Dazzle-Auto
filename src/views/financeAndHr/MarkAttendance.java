@@ -126,7 +126,7 @@ public class MarkAttendance extends java.awt.Dialog implements Runnable, ThreadF
                     }
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+//                ex.printStackTrace();
             }
 
         } while (running);
