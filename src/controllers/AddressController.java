@@ -65,6 +65,7 @@ public class AddressController {
     public ResultSet delete(int id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
+   
 
     public String retrieveAddressId(String supplierId) throws Exception {
         ResultSet resultSet = MySqlConnection.executeSearch(
