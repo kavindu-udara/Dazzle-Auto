@@ -199,7 +199,6 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
     private void setDocumentFilters() {
         ((AbstractDocument) PriceFrom.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
         ((AbstractDocument) PriceTo.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
-    //    ((AbstractDocument) QtyField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
 
     }
     /**
@@ -269,8 +268,8 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 180, 39));
 
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jLabel10.setText("Sort By ID");
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 22, -1, 30));
+        jLabel10.setText("Sort By ");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, 30));
 
         PriceFrom.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         PriceFrom.setText("0");
@@ -428,14 +427,14 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
     private void StockViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StockViewTableMouseClicked
         int row = StockViewTable.getSelectedRow();
         String stockID = String.valueOf(StockViewTable.getValueAt(row, 0));
+        String product_id = String.valueOf(StockViewTable.getValueAt(row, 1));
         String productName = String.valueOf(StockViewTable.getValueAt(row, 2));
         String brand = String.valueOf(StockViewTable.getValueAt(row, 3));
         String qty = String.valueOf(StockViewTable.getValueAt(row, 4));
-        String sellingPrice = String.valueOf(StockViewTable.getValueAt(row, 5));
 
         if (From.equals("Selecter")) {
             if (BaseFrame.equals("ShopInvoice")) {
-                shopInvoice.setStockDetails(stockID, brand, productName, qty, sellingPrice);
+                shopInvoice.setStockDetails(stockID, product_id, productName, brand, qty);
             }
 
             StockSelectorFrame.dispose();
