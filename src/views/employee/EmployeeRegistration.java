@@ -378,34 +378,41 @@ public class EmployeeRegistration extends java.awt.Dialog {
         } else {
 
             try {
-                String generatedId = IDGenarator.employeeID();
 
-                EmployeeModel employeeModel = new EmployeeModel();
-                employeeModel.setId(generatedId);
-                employeeModel.setFirstName(firstName);
-                employeeModel.setLastName(lastName);
-                employeeModel.setEmail(email);
-                employeeModel.setNic(nic);
-                employeeModel.setMobile(mobile);
-                employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
-                employeeModel.setStatusId(1);
-                String registerDateTime = TimestampsGenerator.getFormattedDateTime();
-                employeeModel.setRegisteredDate(registerDateTime);
+                ResultSet alreadyExistResultSet = new EmployeeController().showByEmailOrMobileOrNIC(email, mobile, nic);
 
-                ResultSet resultSet = new EmployeeController().store(employeeModel);
+                if (alreadyExistResultSet.next()) {
+                    JOptionPane.showMessageDialog(null, "User Already Registered");
+                } else {
+                    String generatedId = IDGenarator.employeeID();
 
-                String imagePath = saveImage(generatedId + nic + firstName + lastName);
-                if (imagePath != null) {
-                    EmployeeImageModel employeeImageModel = new EmployeeImageModel();
-                    employeeImageModel.setPath(imagePath);
-                    employeeImageModel.setEmployeeId(generatedId);
-                    new EmployeeImageController().store(employeeImageModel);
+                    EmployeeModel employeeModel = new EmployeeModel();
+                    employeeModel.setId(generatedId);
+                    employeeModel.setFirstName(firstName);
+                    employeeModel.setLastName(lastName);
+                    employeeModel.setEmail(email);
+                    employeeModel.setNic(nic);
+                    employeeModel.setMobile(mobile);
+                    employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
+                    employeeModel.setStatusId(1);
+                    String registerDateTime = TimestampsGenerator.getFormattedDateTime();
+                    employeeModel.setRegisteredDate(registerDateTime);
+
+                    ResultSet resultSet = new EmployeeController().store(employeeModel);
+
+                    String imagePath = saveImage(generatedId + nic + firstName + lastName);
+                    if (imagePath != null) {
+                        EmployeeImageModel employeeImageModel = new EmployeeImageModel();
+                        employeeImageModel.setPath(imagePath);
+                        employeeImageModel.setEmployeeId(generatedId);
+                        new EmployeeImageController().store(employeeImageModel);
+                    }
+
+                    JOptionPane.showMessageDialog(this, "Employee Registration Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                    staffJPanel.reloadTable();
+                    reset();
                 }
-
-                JOptionPane.showMessageDialog(this, "Employee Registration Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-                staffJPanel.reloadTable();
-                reset();
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
