@@ -5,9 +5,12 @@
 package views.settings;
 
 import java.awt.BorderLayout;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import views.dashboard.Dashboard;
 import views.database.DBManagePanel;
-import views.vehicle.VehiclesJPanel;
 
 /**
  *
@@ -26,6 +29,24 @@ public class Settings extends javax.swing.JDialog {
             jTabbedPane1.setSelectedIndex(0);
         } else if (clickedPath.equals("jDatabaseMenuItem")) {
             jTabbedPane1.setSelectedIndex(1);
+        }
+
+        if (Dashboard.loginModel.getAccessRoleId() != 1) {
+            
+            jTabbedPane1.setEnabledAt(0, false);
+            
+            // Add a ChangeListener to restrict tab selection
+            jTabbedPane1.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    int selectedIndex = jTabbedPane1.getSelectedIndex();
+
+                    if (selectedIndex == 0) { // Restrict Tab 1
+                        JOptionPane.showMessageDialog(null, "Login Access is restricted !");
+                        jTabbedPane1.setSelectedIndex(1); // Force back to Tab 2
+                    }
+                }
+            });
         }
     }
 
