@@ -548,7 +548,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
                         } else {
                             JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
-                            this.dispose();
+                            
                         }
                     }
                     JOptionPane.showMessageDialog(this, "Employee details updated successfully");
