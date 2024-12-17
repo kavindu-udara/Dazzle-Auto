@@ -14,6 +14,8 @@ import javax.swing.DefaultComboBoxModel;
 import views.employee.EmployeeSelector;
 import includes.LoggerConfig;
 import includes.RegexValidator;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import models.EmployeeModel;
@@ -29,6 +31,9 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
 
     private static HashMap<String, Integer> accessRoleMap = new HashMap<>();
 
+    int AccesRole = 0;
+    String Password = "";
+
     //constructor for add new access
     public AddAndUpdateAccessJDialog(java.awt.Frame parent, boolean modal, String process) {
         super(parent, modal);
@@ -37,6 +42,16 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
         loadAccessRoleTypes();
         jLabel1.setText(process);
         jUpdateButton.setEnabled(false);
+
+        jPasswordTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // Block the spacebar
+                if (e.getKeyChar() == ' ') {
+                    e.consume(); // Prevent space input
+                }
+            }
+        });
     }
 
     //constructor for update access
@@ -48,6 +63,19 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
         jLabel1.setText(process);
         jEmployeeSelectButton.setEnabled(false);
         jSaveButton.setEnabled(false);
+
+        jPasswordTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // Block the spacebar
+                if (e.getKeyChar() == ' ') {
+                    e.consume(); // Prevent space input
+                }
+            }
+        });
+
+        AccesRole = accessRoleMap.get(loginModel.getEmployeeId());
+        Password = loginModel.getPassword();
 
         jempIDLabel.setText(employeeModel.getId());
         jNICTextField.setText(employeeModel.getNic());
@@ -357,7 +385,7 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
 
         String empID = jempIDLabel.getText();
         String loginID = jLoginIDTextField.getText();
-        String password = jPasswordTextField.getText();
+        String password = jPasswordTextField.getText().replaceAll("\\s+", "");
 
         if (loginID.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Select Employee", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -400,13 +428,14 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jSaveButtonActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        reset();
+        jAccesRoleComboBox.setSelectedIndex(AccesRole);
+        jPasswordTextField.setText(Password);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jUpdateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUpdateButtonActionPerformed
 
         String loginID = jLoginIDTextField.getText();
-        String password = jPasswordTextField.getText();
+        String password = jPasswordTextField.getText().replaceAll("\\s+", "");
 
         if (loginID.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Select Employee", "Warning", JOptionPane.WARNING_MESSAGE);

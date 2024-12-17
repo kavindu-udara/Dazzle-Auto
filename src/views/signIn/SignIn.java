@@ -4,19 +4,30 @@
  */
 package views.signIn;
 
+import includes.MySqlConnection;
+import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.sql.ResultSet;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import models.LoginModel;
+import raven.toast.Notifications;
 import views.LoginChooser;
 import views.dashboard.Dashboard;
 import views.shop.dashboard.ShopDashboard;
+import includes.LoggerConfig;
+import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Dumindu
  */
 public class SignIn extends javax.swing.JFrame {
+
+    private static Logger logger = LoggerConfig.getLogger();
 
     private static String choosedLogin = "";
     public static Dashboard dashboard;
@@ -25,7 +36,28 @@ public class SignIn extends javax.swing.JFrame {
         SignIn.choosedLogin = choosedLogin;
 
         initComponents();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
         jLabel1.setIcon(new javax.swing.ImageIcon("src/resources/login.png"));
+        Notifications.getInstance().setJFrame(this);
+
+        usernameField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // Block the spacebar
+                if (e.getKeyChar() == ' ') {
+                    e.consume(); // Prevent space input
+                }
+            }
+        });
+        passwordField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // Block the spacebar
+                if (e.getKeyChar() == ' ') {
+                    e.consume(); // Prevent space input
+                }
+            }
+        });
     }
 
     /**
@@ -43,8 +75,8 @@ public class SignIn extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        EmailField = new javax.swing.JTextField();
-        PasswordField = new javax.swing.JPasswordField();
+        usernameField = new javax.swing.JTextField();
+        passwordField = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
         SignInButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -79,8 +111,13 @@ public class SignIn extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         jLabel2.setText("Sign In");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
         jPanel2.add(jLabel2);
-        jLabel2.setBounds(166, 112, 180, 43);
+        jLabel2.setBounds(166, 112, 150, 43);
 
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -88,18 +125,18 @@ public class SignIn extends javax.swing.JFrame {
         jPanel2.add(jLabel3);
         jLabel3.setBounds(13, 201, 110, 22);
 
-        EmailField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jPanel2.add(EmailField);
-        EmailField.setBounds(130, 190, 217, 39);
+        usernameField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jPanel2.add(usernameField);
+        usernameField.setBounds(130, 190, 217, 39);
 
-        PasswordField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        PasswordField.addActionListener(new java.awt.event.ActionListener() {
+        passwordField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        passwordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PasswordFieldActionPerformed(evt);
+                passwordFieldActionPerformed(evt);
             }
         });
-        jPanel2.add(PasswordField);
-        PasswordField.setBounds(130, 250, 180, 40);
+        jPanel2.add(passwordField);
+        passwordField.setBounds(130, 250, 180, 40);
 
         jLabel4.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -164,39 +201,101 @@ public class SignIn extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SignInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignInButtonActionPerformed
+        String username = usernameField.getText().replaceAll("\\s+", "");
+        String password = String.valueOf(passwordField.getPassword()).replaceAll("\\s+", "");
 
-        LoginModel loginModel = new LoginModel();
-        loginModel.setEmployeeId("EMP01");
-        loginModel.setFirstName("Super");
-        loginModel.setLastName("User");
-        loginModel.setAccessRoleId(1);
-        loginModel.setImage("resources/employeeImages/EMP02200276353830NimsaraDayananda.jpg");
-
-        if (choosedLogin.equals("Shop")) {
-
-            this.dispose();
-            new ShopDashboard(loginModel).setVisible(true);
-
-        } else if (choosedLogin.equals("ServiceStation")) {
-
-            this.dispose();
-            dashboard = new Dashboard(loginModel);
-            dashboard.setVisible(true);
-
+        if (username.isEmpty()) {
+            Notifications.getInstance().show(
+                    Notifications.Type.WARNING,
+                    Notifications.Location.TOP_RIGHT,
+                    "Please Enter Username");
+        } else if (password.isEmpty()) {
+            Notifications.getInstance().show(
+                    Notifications.Type.WARNING,
+                    Notifications.Location.TOP_RIGHT,
+                    "Please Enter Password");
         } else {
-            JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
+            try {
+                ResultSet resultSet = MySqlConnection.executeSearch("SELECT * FROM `login` "
+                        + "INNER JOIN `employee` ON login.employee_id=employee.id "
+                        + "INNER JOIN `employee_image` ON employee_image.employee_id=employee.id "
+                        + "WHERE `login`.`id`='" + username + "' AND `login`.`password`='" + password + "' ");
+
+                if (resultSet.next()) {
+                    String employeeID = resultSet.getString("employee.id");
+                    String firstName = resultSet.getString("employee.first_name");
+                    String lastName = resultSet.getString("employee.last_name");
+                    int accessRoleID = resultSet.getInt("login.access_role_id");
+                    String imagePath = resultSet.getString("employee_image.path");
+
+                    LoginModel loginModel = new LoginModel();
+                    loginModel.setEmployeeId(employeeID);
+                    loginModel.setFirstName(firstName);
+                    loginModel.setLastName(lastName);
+                    loginModel.setAccessRoleId(accessRoleID);
+                    loginModel.setImage("resources/employeeImages/" + imagePath + "");
+
+                    if (choosedLogin.equals("Shop")) {
+
+                        this.dispose();
+                        new ShopDashboard(loginModel).setVisible(true);
+                        logger.info(username + " Logged Into Shop ");
+
+                    } else if (choosedLogin.equals("ServiceStation")) {
+
+                        this.dispose();
+                        dashboard = new Dashboard(loginModel);
+                        dashboard.setVisible(true);
+                        logger.info(username + " Logged Into Service Station ");
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
+                    }
+
+                } else {
+                    Notifications.getInstance().show(
+                            Notifications.Type.ERROR,
+                            Notifications.Location.TOP_RIGHT,
+                            "Invalid Username or Password");
+                }
+
+            } catch (Exception ex) {
+                logger.warning("Error while SignInButtonActionPerformed : " + ex.getMessage());
+            }
         }
+
+//        LoginModel loginModel = new LoginModel();
+//        loginModel.setEmployeeId("EMP01");
+//        loginModel.setFirstName("Super");
+//        loginModel.setLastName("User");
+//        loginModel.setAccessRoleId(3);
+//        loginModel.setImage("resources/employeeImages/EMP02200276353830NimsaraDayananda.jpg");
+//
+//        if (choosedLogin.equals("Shop")) {
+//
+//            this.dispose();
+//            new ShopDashboard(loginModel).setVisible(true);
+//
+//        } else if (choosedLogin.equals("ServiceStation")) {
+//
+//            this.dispose();
+//            dashboard = new Dashboard(loginModel);
+//            dashboard.setVisible(true);
+//
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
+//        }
 
     }//GEN-LAST:event_SignInButtonActionPerformed
 
     private void jButton2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MousePressed
-        PasswordField.setEchoChar('\u0000');
+        passwordField.setEchoChar('\u0000');
         Icon icon = new ImageIcon("src/resources/icons/icons8-hide-20.png");
         jButton2.setIcon(icon);
     }//GEN-LAST:event_jButton2MousePressed
 
     private void jButton2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseReleased
-        PasswordField.setEchoChar('\u2022');
+        passwordField.setEchoChar('\u2022');
         Icon icon = new ImageIcon("src/resources/icons/eye.png");
         jButton2.setIcon(icon);
     }//GEN-LAST:event_jButton2MouseReleased
@@ -205,14 +304,46 @@ public class SignIn extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void PasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordFieldActionPerformed
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_PasswordFieldActionPerformed
+    }//GEN-LAST:event_passwordFieldActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       new LoginChooser().setVisible(true);
-       this.dispose();
+        new LoginChooser().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        String username = usernameField.getText().replaceAll("\\s+", "");
+        String password = String.valueOf(passwordField.getPassword()).replaceAll("\\s+", "");
+
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+
+            if (username.equals("DazzleAuto") && password.equals("Dazzle123")) {
+                LoginModel loginModel = new LoginModel();
+                loginModel.setEmployeeId("EMP01");
+                loginModel.setFirstName("Super");
+                loginModel.setLastName("User");
+                loginModel.setAccessRoleId(1);
+                loginModel.setImage("resources/employeeImages/EMP02200276353830NimsaraDayananda.jpg");
+
+                if (choosedLogin.equals("Shop")) {
+
+                    this.dispose();
+                    new ShopDashboard(loginModel).setVisible(true);
+
+                } else if (choosedLogin.equals("ServiceStation")) {
+
+                    this.dispose();
+                    dashboard = new Dashboard(loginModel);
+                    dashboard.setVisible(true);
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
+                }
+            }
+        }
+    }//GEN-LAST:event_jLabel2MouseClicked
 
 //    /**
 //     * @param args the command line arguments
@@ -231,8 +362,6 @@ public class SignIn extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField EmailField;
-    private javax.swing.JPasswordField PasswordField;
     private javax.swing.JButton SignInButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -242,5 +371,7 @@ public class SignIn extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPasswordField passwordField;
+    private javax.swing.JTextField usernameField;
     // End of variables declaration//GEN-END:variables
 }

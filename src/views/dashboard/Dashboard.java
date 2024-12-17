@@ -43,7 +43,7 @@ public class Dashboard extends javax.swing.JFrame {
     private Color btnHoverColor = new Color(246, 249, 255);
     private Color btnSelectedColor = new Color(250, 238, 220);
 
-    LoginModel loginModel;
+    public static LoginModel loginModel;
 
     public StaffJPanel staffJPanel = null;
     DashboardPanel dashboardPanel = null;
@@ -61,12 +61,42 @@ public class Dashboard extends javax.swing.JFrame {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
 
         setLoggedUserDetails();
+        accessControl();
 
-        jTabbedPane1.setSelectedIndex(0);
+        if (loginModel.getAccessRoleId() == 4) {
+            jTabbedPane1.setSelectedIndex(1);
+            jPaymentButton.setBackground(btnSelectedColor);
+            if (paymentPanel == null) {
+                paymentPanel = new PaymentsPanel(this);
+                jPaymentsPanel.add(paymentPanel, BorderLayout.CENTER);
+                SwingUtilities.updateComponentTreeUI(this);
+            }
+        } else {
+            jTabbedPane1.setSelectedIndex(0);
+            dashboardPanel = new DashboardPanel();
+            jDashboardPanel.add(dashboardPanel, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(this);
+            jDashboardButton.setBackground(btnSelectedColor);
+        }
+    }
 
-        dashboardPanel = new DashboardPanel();
-        jDashboardPanel.add(dashboardPanel, BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(this);
+    private void accessControl() {
+        if (loginModel.getAccessRoleId() == 4) {
+            jDashboardButton.setEnabled(false);
+            jVehiclesButton.setEnabled(false);
+            jCustomerButton.setEnabled(false);
+            jOurServicesButton.setEnabled(false);
+            jFinanceButton.setEnabled(false);
+            jReportsButton.setEnabled(false);
+            jStaffButton.setEnabled(false);
+        }
+        
+        if (loginModel.getAccessRoleId() != 1 && loginModel.getAccessRoleId() != 2) {
+            jVehiclesButton.setEnabled(false);
+            jCustomerButton.setEnabled(false);
+            jOurServicesButton.setEnabled(false);
+            jReportsButton.setEnabled(false);
+        }
     }
 
     private void setLoggedUserDetails() {
@@ -529,7 +559,7 @@ public class Dashboard extends javax.swing.JFrame {
         jReportsButton.setBackground(btnDefaultColor);
         jStaffButton.setBackground(btnDefaultColor);
 
-        if (dashboardMainPanel == null) {
+        if (dashboardPanel == null) {
             dashboardPanel = new DashboardPanel();
             jDashboardPanel.add(dashboardPanel, BorderLayout.CENTER);
             SwingUtilities.updateComponentTreeUI(this);
@@ -680,7 +710,11 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jVehiclesButtonActionPerformed
 
     private void jLoginAccessMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLoginAccessMenuItemActionPerformed
-        new Settings(this, true, "jLoginAccessMenu").setVisible(true);
+        if (Dashboard.loginModel.getAccessRoleId() == 1) {
+            new Settings(this, true, "jLoginAccessMenu").setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "You Don't Have Access To This !", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jLoginAccessMenuItemActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -696,7 +730,11 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jDatabaseMenuItemActionPerformed
 
     private void jsettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jsettingsActionPerformed
-        new Settings(this, true, "jLoginAccessMenu").setVisible(true);
+        if (Dashboard.loginModel.getAccessRoleId() == 1) {
+            new Settings(this, true, "jLoginAccessMenu").setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "You Don't Have Access To This !", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jsettingsActionPerformed
 
     private void jUsermanualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsermanualActionPerformed
@@ -705,12 +743,12 @@ public class Dashboard extends javax.swing.JFrame {
         pdfViewer.setVisible(true);
     }//GEN-LAST:event_jUsermanualActionPerformed
 
-    private void jTutorialVideoActionPerformed(java.awt.event.ActionEvent evt) {                                               
-        
+    private void jTutorialVideoActionPerformed(java.awt.event.ActionEvent evt) {
+
         TutorialVideo Video = new TutorialVideo();
         Video.setVisible(true);
 
-    }                                          
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel HeaderPanel;
