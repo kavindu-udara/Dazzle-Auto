@@ -548,11 +548,11 @@ public class EmployeeUpdate extends java.awt.Dialog {
 
                         } else {
                             JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
-                            reset();
+                            this.dispose();
                         }
                     }
-                    JOptionPane.showMessageDialog(this, "oooEmployee details updated successfully");
-                    reset();
+                    JOptionPane.showMessageDialog(this, "Employee details updated successfully");
+                    this.dispose();
                     staffJPanel.reloadTable();
                 }
 
@@ -579,16 +579,14 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 }
             }
 
-            // Check if lane1 or lane2 is null or empty
             if ((lane1 == null || lane1.isEmpty()) || (lane2 == null || lane2.isEmpty())) {
                 JOptionPane.showMessageDialog(this, "Please fill in both Address Lanes.", "Warning", JOptionPane.WARNING_MESSAGE);
-                return; // Exit method if validation fails
+                return;
             }
 
-            // Check if both lanes are filled but city is not selected
             if (cityName == null || cityName.equals("Select")) {
                 JOptionPane.showMessageDialog(this, "Address requires a city. Please select a city.", "Warning", JOptionPane.WARNING_MESSAGE);
-                return; // Exit method if validation fails
+                return;
             }
 
             AddressModel addresszModel = new AddressModel();
@@ -606,7 +604,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 new AddressController().create2(addresszModel);
             }
             JOptionPane.showMessageDialog(this, "Employee address updated successfully.");
-            reset();
+            this.dispose();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -726,20 +724,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
 //            }
 //        });
 //    }
-    private void reset() {
-
-        employee_firstname.setText("");
-        employee_lastname.setText("");
-        employee_mobile.setText("");
-        employee_nic.setText("");
-        employee_email.setText("");
-        employee_type.setSelectedIndex(0);
-        Lane1Field.setText("");
-        lane2Field.setText("");
-        cityComboBox.setSelectedItem("Select");
-        
-
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField EmpIdField;
