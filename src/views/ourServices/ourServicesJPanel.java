@@ -87,7 +87,7 @@ public class ourServicesJPanel extends javax.swing.JPanel {
 
         OurServiceTableRender();
         loadVehicleTypes();
-        jVehicleTypeComboBox.setSelectedIndex(Integer.valueOf(vehicleTypesHashMap.get(VehicleTYPE)));
+        jVehicleTypeComboBox.setSelectedItem(VehicleTYPE);
         jVehicleTypeComboBox.setEnabled(false);
     }
 
