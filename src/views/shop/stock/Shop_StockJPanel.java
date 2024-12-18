@@ -427,14 +427,14 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
     private void StockViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StockViewTableMouseClicked
         int row = StockViewTable.getSelectedRow();
         String stockID = String.valueOf(StockViewTable.getValueAt(row, 0));
-        String product_id = String.valueOf(StockViewTable.getValueAt(row, 1));
         String productName = String.valueOf(StockViewTable.getValueAt(row, 2));
         String brand = String.valueOf(StockViewTable.getValueAt(row, 3));
         String qty = String.valueOf(StockViewTable.getValueAt(row, 4));
+        String selling_price = String.valueOf(StockViewTable.getValueAt(row, 5));
 
         if (From.equals("Selecter")) {
             if (BaseFrame.equals("ShopInvoice")) {
-                shopInvoice.setStockDetails(stockID, product_id, productName, brand, qty);
+                shopInvoice.setStockDetails(stockID, brand, productName, qty, selling_price);
             }
 
             StockSelectorFrame.dispose();
