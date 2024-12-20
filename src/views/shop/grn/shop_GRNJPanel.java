@@ -71,12 +71,13 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         setDocumentFilters();
 
         GrnNumberField.setText(IDGenarator.GrnID());
-        GrnNumberField.setEditable(false);
+       SaveGRN.setEnabled(false);
+        
         EmployeeName.setText(LoginModel.getFirstName() + " " + LoginModel.getLastName());
         PaymenntField.setEditable(false);
         ProductIdField.setFocusable(false);
         BrandNameField.setFocusable(false);
-        ProductNameField.setFocusable(false);
+        ProductNameField.setEditable(false);
         SupplierNameField.setFocusable(false);
         SupplierIdField.setFocusable(false);
     }
@@ -125,7 +126,6 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         ProductNameField.setText(ItemModel.getName());
         BrandNameField.setText(ItemModel.getbrandName());
         ProductIdField.setText(ItemModel.getItemId());
-        ProductIdField.setEditable(false);
 
         GRNTableRender();
     }
@@ -136,7 +136,6 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         ProductNameField.setText(product.getName());
         BrandNameField.setText(product.getbrandName());
         ProductIdField.setText(product.getItemId());
-        ProductIdField.setEditable(false);
     }
 
     //for Supplier Select
@@ -145,7 +144,6 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         this.supModel = supplierModel;
         SupplierNameField.setText(supplierModel.getFirstName() + " " + supplierModel.getLastName());
         SupplierIdField.setText(supplierModel.getId());
-        SupplierIdField.setEditable(false);
 
         GRNTableRender();
     }
@@ -155,7 +153,6 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         this.supModel = supplierModel;
         SupplierNameField.setText(supplierModel.getFirstName() + " " + supplierModel.getLastName());
         SupplierIdField.setText(supplierModel.getId());
-        SupplierIdField.setEditable(false);
         SupplierNameField.setEditable(false);
     }
 
@@ -174,10 +171,8 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         BrandNameField = new javax.swing.JTextField();
         ProductSelectBtn = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         EmployeeName = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         GrnNumberField = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
@@ -186,15 +181,15 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         jLabel12 = new javax.swing.JLabel();
         AddGRNBtn = new javax.swing.JButton();
         ClearAllBtn = new javax.swing.JButton();
-        SupplierIdField = new javax.swing.JTextField();
         SupplierSelectBtn = new javax.swing.JButton();
         QtyField = new javax.swing.JTextField();
         ProductNameField = new javax.swing.JTextField();
-        ProductIdField = new javax.swing.JTextField();
         SupplierNameField = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        ProductIdField = new javax.swing.JLabel();
+        SupplierIdField = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         GRNViewTable = new javax.swing.JTable();
@@ -225,10 +220,10 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel1.setText("Product :");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, 20));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, 20));
 
         BrandNameField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jPanel2.add(BrandNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 150, 31));
+        jPanel2.add(BrandNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 150, 31));
 
         ProductSelectBtn.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         ProductSelectBtn.setForeground(new java.awt.Color(33, 43, 108));
@@ -239,41 +234,35 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                 ProductSelectBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(ProductSelectBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(293, 20, -1, 31));
-
-        jLabel2.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jLabel2.setText("Product ID :");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, 20));
+        jPanel2.add(ProductSelectBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, 31));
 
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel5.setText("Brand Name :");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, 20));
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, 30));
 
         EmployeeName.setFont(new java.awt.Font("Roboto", 3, 16)); // NOI18N
         EmployeeName.setText("Emp_Name");
         jPanel2.add(EmployeeName, new org.netbeans.lib.awtextra.AbsoluteConstraints(891, 140, 110, -1));
 
-        jLabel9.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jLabel9.setText("Supplier ID :");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 80, -1, -1));
-
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel10.setText("Quantity :");
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 30, -1, -1));
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 19, -1, 30));
 
+        GrnNumberField.setEditable(false);
         GrnNumberField.setBackground(new java.awt.Color(255, 204, 51));
         GrnNumberField.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        GrnNumberField.setFocusable(false);
         jPanel2.add(GrnNumberField, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 90, 160, 31));
 
         jLabel11.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel11.setText("Buying Price :");
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 119, -1, 30));
-        jPanel2.add(BuyingPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, 130, 31));
-        jPanel2.add(SellingPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 120, 130, 31));
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, -1, 30));
+        jPanel2.add(BuyingPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 130, 140, 31));
+        jPanel2.add(SellingPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 130, 130, 31));
 
         jLabel12.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel12.setText("Selling Price :");
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 119, -1, 30));
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 130, -1, 30));
 
         AddGRNBtn.setBackground(new java.awt.Color(33, 43, 108));
         AddGRNBtn.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
@@ -299,9 +288,6 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         });
         jPanel2.add(ClearAllBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 80, 190, 50));
 
-        SupplierIdField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jPanel2.add(SupplierIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, 150, 31));
-
         SupplierSelectBtn.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         SupplierSelectBtn.setForeground(new java.awt.Color(33, 43, 108));
         SupplierSelectBtn.setText("SELECT");
@@ -311,21 +297,29 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                 SupplierSelectBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(SupplierSelectBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 20, -1, 31));
+        jPanel2.add(SupplierSelectBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, -1, 31));
         jPanel2.add(QtyField, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 20, 80, 31));
 
         ProductNameField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jPanel2.add(ProductNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 150, 31));
-
-        ProductIdField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jPanel2.add(ProductIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 150, 31));
+        ProductNameField.setBorder(null);
+        ProductNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProductNameFieldActionPerformed(evt);
+            }
+        });
+        jPanel2.add(ProductNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 390, 31));
 
         SupplierNameField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jPanel2.add(SupplierNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, 150, 31));
+        SupplierNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SupplierNameFieldActionPerformed(evt);
+            }
+        });
+        jPanel2.add(SupplierNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 270, 31));
 
         jLabel13.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel13.setText("Supplier :");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 30, -1, -1));
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel8.setText("GRN Number :");
@@ -334,6 +328,12 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         jLabel14.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel14.setText("Issued By :");
         jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 140, -1, -1));
+
+        ProductIdField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        jPanel2.add(ProductIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 110, 20));
+
+        SupplierIdField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        jPanel2.add(SupplierIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 110, 20));
 
         GRNViewTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         GRNViewTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -662,6 +662,8 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(this, "This GRN Record Already In Table", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     GrnItemMap.put(productId + "" + supplierId + "" + brand, grnItem);
+                    resetInputs();
+                    SaveGRN.setEnabled(true);
                 }
 
             }
@@ -670,7 +672,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         }
 
-        resetInputs();
+        
         PaymenntField.grabFocus();
         PaymenntField.setEditable(true);
 
@@ -855,6 +857,14 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_GRNViewTableMousePressed
 
+    private void ProductNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductNameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ProductNameFieldActionPerformed
+
+    private void SupplierNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SupplierNameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SupplierNameFieldActionPerformed
+
     private void showContextMenu(MouseEvent evt, int row) {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem deleteItem = new JMenuItem("Delete");
@@ -913,7 +923,6 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
     private void resetInputs() {
         ProductNameField.setText("");
-        ProductIdField.setEditable(true);
         ProductIdField.setText("");
         BrandNameField.setText("");
         BuyingPriceField.setText("");
@@ -924,16 +933,12 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
     private void reset() {
         ProductNameField.setText("");
-        ProductIdField.setEditable(true);
         ProductIdField.setText("");
         BrandNameField.setText("");
-        SupplierIdField.setEditable(true);
         SupplierIdField.setText("");
         BuyingPriceField.setText("");
         SellingPriceField.setText("");
         QtyField.setText("");
-        GrnNumberField.setEditable(true);
-        GrnNumberField.setText("");
         SupplierNameField.setText("");
         DefaultTableModel dtm = (DefaultTableModel) GRNViewTable.getModel();
         dtm.setRowCount(0);
@@ -941,6 +946,8 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         PaymenntField.setText("0.00");
         BalanceField.setText("0.00");
         GrnItemMap.clear();
+        GrnNumberField.setText(IDGenarator.GrnID());
+        GrnNumberField.setEditable(false);
 
     }
 
@@ -955,13 +962,13 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     private javax.swing.JTable GRNViewTable;
     private javax.swing.JTextField GrnNumberField;
     private javax.swing.JFormattedTextField PaymenntField;
-    private javax.swing.JTextField ProductIdField;
+    private javax.swing.JLabel ProductIdField;
     private javax.swing.JTextField ProductNameField;
     private javax.swing.JButton ProductSelectBtn;
     private javax.swing.JTextField QtyField;
     private javax.swing.JButton SaveGRN;
     private javax.swing.JTextField SellingPriceField;
-    private javax.swing.JTextField SupplierIdField;
+    private javax.swing.JLabel SupplierIdField;
     private javax.swing.JTextField SupplierNameField;
     private javax.swing.JButton SupplierSelectBtn;
     private javax.swing.JLabel TotalField;
@@ -974,11 +981,9 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
