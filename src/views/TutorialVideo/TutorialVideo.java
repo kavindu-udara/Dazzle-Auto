@@ -13,7 +13,7 @@ import javax.swing.JPanel;
  *
  * @author Dumindu
  */
-public class TutorialVideo extends javax.swing.JDialog {
+public class TutorialVideo extends javax.swing.JFrame {
 
     /**
      * Creates new form TutorialVideo
@@ -38,11 +38,11 @@ public class TutorialVideo extends javax.swing.JDialog {
         videoPanel.setLayout(videoPanelLayout);
         videoPanelLayout.setHorizontalGroup(
             videoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 593, Short.MAX_VALUE)
+            .addGap(0, 669, Short.MAX_VALUE)
         );
         videoPanelLayout.setVerticalGroup(
             videoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 465, Short.MAX_VALUE)
+            .addGap(0, 387, Short.MAX_VALUE)
         );
 
         getContentPane().add(videoPanel, java.awt.BorderLayout.CENTER);

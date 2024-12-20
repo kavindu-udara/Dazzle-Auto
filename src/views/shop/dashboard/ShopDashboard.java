@@ -416,7 +416,7 @@ public class ShopDashboard extends javax.swing.JFrame {
         jEmployeeNameLabel.setForeground(new java.awt.Color(0, 102, 102));
         jEmployeeNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jEmployeeNameLabel.setText("Employee Name");
-        jHeaderPanel.add(jEmployeeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 40, 120, 30));
+        jHeaderPanel.add(jEmployeeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 40, 160, 30));
 
         empImageLabel.setBackground(new java.awt.Color(255, 255, 255));
         empImageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
