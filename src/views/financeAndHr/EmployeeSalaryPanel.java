@@ -9,6 +9,7 @@ import controllers.EmployeeAttendanceController;
 import controllers.EmployeeController;
 import controllers.EmployeeSalaryController;
 import controllers.EmployeeTypeController;
+import controllers.MonthsController;
 import includes.LoggerConfig;
 import includes.OnlyDoubleDocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
@@ -44,7 +45,11 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private static final HashMap<String, String> monthHashMap = new HashMap<>();
     private static final Logger logger = LoggerConfig.getLogger();
 
+    private String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
     private EmployeeSalaryPanel employeeSalaryPanel = this;
+
+    private HashMap<String, String> monthsHashMap = new HashMap<>();
 
     /**
      * Creates new form EmployeeSalaryPanel
@@ -52,7 +57,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     public EmployeeSalaryPanel() {
         initComponents();
         setDocumentFilters();
-        loadMonthsComboBox();
+        loadMonths();
         loadSalaryTable();
         salaryTableRender();
     }
@@ -62,21 +67,22 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         ((AbstractDocument) bonusField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
     }
 
-    private void loadMonthsComboBox() {
-        int monthNumber = Integer.parseInt(TimestampsGenerator.getTodayDate().split("-")[1]);
-        String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-        Vector vector = new Vector();
-        String todayMonth = "January";
-        for (int i = 0; i < months.length; i++) {
-            monthHashMap.put(months[i], String.valueOf(i + 1));
-            vector.add(months[i]);
-            if (monthNumber == i + 1) {
-                todayMonth = months[i];
+    private void loadMonths() {
+        try (ResultSet monthsResultSet = new MonthsController().show()) {
+            Vector vector = new Vector();
+            String todayMonth = "January";
+            while (monthsResultSet.next()) {
+                String month = monthsResultSet.getString("name");
+                monthHashMap.put(month, monthsResultSet.getString("id"));
+                vector.add(month);
             }
+            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
+            monthsComboBox.setModel(comboBoxModel);
+            monthsComboBox.setSelectedItem(todayMonth);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while load months : " + e.getMessage());
         }
-        DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
-        monthsComboBox.setModel(comboBoxModel);
-        monthsComboBox.setSelectedItem(todayMonth);
     }
 
     /**
@@ -213,17 +219,18 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Date", "Salary", "Employee ID"
+                "Name", "Payed Date", "Salary", "Employee ID", "Employee Type", "Month"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        salaryTable.setFocusable(false);
         salaryTable.setRowHeight(25);
         jScrollPane1.setViewportView(salaryTable);
 
@@ -336,26 +343,33 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             salaryTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
+        String today = TimestampsGenerator.getTodayDate();
         if (!employeeIdLabel.getText().equals("ID value label")) {
             String employeeId = employeeIdLabel.getText();
-            if (isThisEmployeeAlreadyInSalaryTable(employeeId)) {
+            if (isThisEmployeeAlreadyInSalaryTable(employeeId, today, Integer.parseInt(monthHashMap.get(monthsComboBox.getSelectedItem())))) {
                 JOptionPane.showMessageDialog(null, "Employee Already in the salary table");
             } else {
 
-                String today = TimestampsGenerator.getTodayDate();
                 Double salary = Double.parseDouble(totalPriceField.getText());
 
                 SalaryModel salaryModel = new SalaryModel();
                 salaryModel.setEmployeeId(employeeId);
                 salaryModel.setDate(today);
                 salaryModel.setSalary(salary);
+                System.out.println(monthHashMap);
+                System.out.println(String.valueOf(monthsComboBox.getSelectedItem()));
+                System.out.println(String.valueOf(monthHashMap.get(String.valueOf(monthsComboBox.getSelectedItem()))));
+
+                String monthId = String.valueOf(monthHashMap.get(String.valueOf(monthsComboBox.getSelectedItem())));
+
+                salaryModel.setMonthId(Integer.parseInt(monthId));
 
                 try {
                     new EmployeeSalaryController().store(salaryModel);
@@ -371,16 +385,16 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
-    private boolean isThisEmployeeAlreadyInSalaryTable(String employeeId) {
+    private boolean isThisEmployeeAlreadyInSalaryTable(String employeeId, String day, int monthId) {
 
         String startMonth = getStartMonth();
         String finishMonth = getFinishMonth();
 
-        try (ResultSet resultSet = new EmployeeSalaryController().showByMonthRange(startMonth, finishMonth)) {
-            while (resultSet.next()) {
-                if (employeeId.equals(resultSet.getString("employee_id"))) {
-                    return true;
-                }
+        String year = day.split("-")[0];
+
+        try (ResultSet resultSet = new EmployeeSalaryController().showBydateYearAndMonthId(employeeId, year, monthId)) {
+            if (resultSet.next()) {
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -579,15 +593,39 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         String startMonth = getStartMonth();
         String finishMonth = getFinishMonth();
 
-        try (ResultSet resultSet = new EmployeeSalaryController().showByMonthRange(startMonth, finishMonth)) {
+        try (ResultSet resultSet = new EmployeeSalaryController().showByMonthId(Integer.parseInt(monthHashMap.get(String.valueOf(monthsComboBox.getSelectedItem()))))) {
+//        try (ResultSet resultSet = new EmployeeSalaryController().showByMonthRange(startMonth, finishMonth)) {
             DefaultTableModel tableModel = (DefaultTableModel) salaryTable.getModel();
             tableModel.setRowCount(0);
             while (resultSet.next()) {
+
                 Vector vector = new Vector();
-                vector.add(resultSet.getInt("id"));
+                ResultSet employeeResultSet = new EmployeeController().show(resultSet.getString("employee_id"));
+
+                if (employeeResultSet.next()) {
+                    vector.add(employeeResultSet.getString("first_name") + " " + employeeResultSet.getString("last_name"));
+                } else {
+                    vector.add("-");
+                }
+
                 vector.add(resultSet.getString("date"));
                 vector.add(resultSet.getString("salary"));
                 vector.add(resultSet.getString("employee_id"));
+
+                ResultSet employeeTypeResultSet = new EmployeeTypeController().show(employeeResultSet.getInt("employee_type_id"));
+                if (employeeTypeResultSet.next()) {
+                    vector.add(employeeTypeResultSet.getString("type"));
+                } else {
+                    vector.add("-");
+                }
+
+                ResultSet salaryMonthResultSet = new MonthsController().show(resultSet.getInt("months_id"));
+                if (salaryMonthResultSet.next()) {
+                    vector.add(salaryMonthResultSet.getString("name"));
+                } else {
+                    vector.add("-");
+                }
+
                 tableModel.addRow(vector);
             }
         } catch (Exception e) {

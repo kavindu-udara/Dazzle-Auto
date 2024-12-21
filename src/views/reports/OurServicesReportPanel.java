@@ -4,6 +4,7 @@
  */
 package views.reports;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import controllers.ServicesController;
 import controllers.VehicleTypeController;
 import includes.LoggerConfig;
@@ -55,6 +56,7 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
         loadVehicleTypes();
         ourserviceTableRender();
         this.dashboard = dashboard;
+        serviceFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter service...");
     }
 
     private void loadServices() {
@@ -180,6 +182,7 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
             }
         });
         ourServicesViewTable2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ourServicesViewTable2.setFocusable(false);
         ourServicesViewTable2.setRowHeight(30);
         ourServicesViewTable2.getTableHeader().setReorderingAllowed(false);
         ourServicesViewTable2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -378,13 +381,11 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_printReportbActionPerformed
 
     private void serviceFindFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceFindFieldKeyReleased
-        loadServices();
-        loadVehicleTypes();
+        searchTable();
     }//GEN-LAST:event_serviceFindFieldKeyReleased
 
     private void jVehicleTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVehicleTypeComboBoxActionPerformed
         searchTable();
-        loadVehicleTypes();
     }//GEN-LAST:event_jVehicleTypeComboBoxActionPerformed
     private void loadVehicleTypes() {
 
@@ -413,7 +414,7 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
         // search process
         String searchText = serviceFindField.getText();
         String vehicleTypeId = "";
-        if (!jVehicleTypeComboBox.getSelectedItem().equals("  All")) {
+        if (!jVehicleTypeComboBox.getSelectedItem().equals("Vehicle Type")) {
             vehicleTypeId = vehicleTypesHashMap.get(jVehicleTypeComboBox.getSelectedItem());
         }
 

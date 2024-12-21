@@ -9,10 +9,12 @@ package models;
  * @author Dumindu
  */
 public class SalaryModel {
-     private int id;
+
+    private int id;
     private String date;
     private double salary;
     private String employeeId;
+    private int monthId;
 
     /**
      * @return the id
@@ -69,4 +71,20 @@ public class SalaryModel {
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
+
+    /**
+     * @return the monthId
+     */
+    public int getMonthId() {
+        return monthId;
+    }
+
+    /**
+     * @param monthId the monthId to set
+     */
+    public void setMonthId(int monthId) {
+        this.monthId = monthId;
+    }
+
+    
 }

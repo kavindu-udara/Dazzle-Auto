@@ -229,6 +229,7 @@ public class ourServicesJPanel extends javax.swing.JPanel {
             }
         });
         ourServicesViewTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ourServicesViewTable.setFocusable(false);
         ourServicesViewTable.setRowHeight(30);
         ourServicesViewTable.getTableHeader().setReorderingAllowed(false);
         ourServicesViewTable.addMouseListener(new java.awt.event.MouseAdapter() {

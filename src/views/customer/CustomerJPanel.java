@@ -217,6 +217,8 @@ public class CustomerJPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        customerViewTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        customerViewTable.setFocusable(false);
         customerViewTable.setRowHeight(30);
         customerViewTable.getTableHeader().setReorderingAllowed(false);
         customerViewTable.addMouseListener(new java.awt.event.MouseAdapter() {

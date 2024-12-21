@@ -518,7 +518,9 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         viewAttendanceButton.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         viewAttendanceButton.setForeground(new java.awt.Color(255, 255, 255));
         viewAttendanceButton.setText("View Attendance");
+        viewAttendanceButton.setBorderPainted(false);
         viewAttendanceButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        viewAttendanceButton.setFocusPainted(false);
         viewAttendanceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewAttendanceButtonActionPerformed(evt);
