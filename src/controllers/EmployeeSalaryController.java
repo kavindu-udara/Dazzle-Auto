@@ -29,11 +29,20 @@ public class EmployeeSalaryController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `date` >= '" + startMonth + "' AND `date` < '" + endMonth + "' ");
     }
 
+    public ResultSet showByMonthId(int id) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `months_id` = '" + id + "' ");
+    }
+    
+    public ResultSet showBydateYearAndMonthId(String employeeId, String year, int monthId) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `months_id`='" + monthId + "' AND `employee_id`='"+employeeId+"' AND `date` LIKE '" + year + "%' ");
+    }
+
     public ResultSet store(SalaryModel salaryModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`,`date`, `salary`, `employee_id`) VALUES ("
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`,`date`, `salary`, `months_id`, `employee_id`) VALUES ("
                 + "'" + salaryModel.getId() + "',"
                 + "'" + salaryModel.getDate() + "', "
                 + "'" + salaryModel.getSalary() + "', "
+                + "'" + salaryModel.getMonthId() + "', "
                 + "'" + salaryModel.getEmployeeId() + "') ");
     }
 

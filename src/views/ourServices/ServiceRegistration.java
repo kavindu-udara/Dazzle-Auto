@@ -43,7 +43,6 @@ public class ServiceRegistration extends java.awt.Dialog {
         loadTypes();
     }
 
-   
     private static HashMap<String, String> vehicleTypeMap = new HashMap<>();
 
     private void loadTypes() {
@@ -72,7 +71,6 @@ public class ServiceRegistration extends java.awt.Dialog {
     private void setDocumentFilters() {
         AbstractDocument doc = (AbstractDocument) Price.getDocument();
         doc.setDocumentFilter(new OnlyDoubleDocumentFilter());
-        ((AbstractDocument) Service_name.getDocument()).setDocumentFilter(new OnlyLettersDocumentFilter());
     }
 
     /**
@@ -118,6 +116,7 @@ public class ServiceRegistration extends java.awt.Dialog {
         service_register_btn.setForeground(new java.awt.Color(255, 255, 255));
         service_register_btn.setText("REGISTER");
         service_register_btn.setBorderPainted(false);
+        service_register_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         service_register_btn.setFocusPainted(false);
         service_register_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -129,6 +128,7 @@ public class ServiceRegistration extends java.awt.Dialog {
         service_reset_btn.setForeground(new java.awt.Color(255, 0, 0));
         service_reset_btn.setText("RESET");
         service_reset_btn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        service_reset_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         service_reset_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 service_reset_btnActionPerformed(evt);
@@ -224,7 +224,6 @@ public class ServiceRegistration extends java.awt.Dialog {
         String ServiceName = Service_name.getText();
         String VehicleType = String.valueOf(vehicle_type.getSelectedItem());
         String ServicePrice = Price.getText();
-        double servicePrice = Double.parseDouble(ServicePrice);
 
         if (ServiceName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter Service Name", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -234,26 +233,28 @@ public class ServiceRegistration extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Please enter Service Price", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
 
-        } //store
-        try {
-            ServicesModel servicesmodel = new ServicesModel();
-            servicesmodel.setName(ServiceName);
-            servicesmodel.setVehicleTypeId(Integer.parseInt(vehicleTypeMap.get(vehicle_type.getSelectedItem())));
-            servicesmodel.setCharge(servicePrice);
+            //store
+            try {
+                double doubleServicePrice = Double.parseDouble(ServicePrice);
 
-            new ServicesController().store(servicesmodel);
+                ServicesModel servicesmodel = new ServicesModel();
+                servicesmodel.setName(ServiceName);
+                servicesmodel.setVehicleTypeId(Integer.parseInt(vehicleTypeMap.get(vehicle_type.getSelectedItem())));
+                servicesmodel.setCharge(doubleServicePrice);
 
-            JOptionPane.showMessageDialog(this, "Service Registration Successfully");
-            reset();
+                new ServicesController().store(servicesmodel);
 
-            // reload our services jpanel table
-            parentPanel.reloadTable();
+                JOptionPane.showMessageDialog(this, "Service Registration Successfully");
+                reset();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.severe("Error while storing service : " + e.getMessage());
+                // reload our services jpanel table
+                parentPanel.reloadTable();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.severe("Error while storing service : " + e.getMessage());
+            }
         }
-
     }//GEN-LAST:event_service_register_btnActionPerformed
 
     private void service_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_service_reset_btnActionPerformed
