@@ -18,9 +18,13 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.File;
+import java.io.InputStream;
 import javax.swing.table.DefaultTableModel;
 
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -35,6 +39,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
 import models.SalaryModel;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -60,6 +68,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         loadMonths();
         loadSalaryTable();
         salaryTableRender();
+        employeeIdLabel.setVisible(false);
     }
 
     private void setDocumentFilters() {
@@ -123,6 +132,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         employeeIdLabel = new javax.swing.JLabel();
         employeeTypeLabel = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        regDate = new javax.swing.JLabel();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -299,13 +309,13 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         jPanel1.add(employeeNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        jLabel2.setText("Employee Id :");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, -1, -1));
+        jLabel2.setText("Reg. Date:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, -1, -1));
 
-        employeeIdLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        employeeIdLabel.setFont(new java.awt.Font("Roboto", 0, 8)); // NOI18N
         employeeIdLabel.setForeground(new java.awt.Color(0, 0, 204));
         employeeIdLabel.setText("ID value label");
-        jPanel1.add(employeeIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, -1, 20));
+        jPanel1.add(employeeIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 10));
 
         employeeTypeLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         employeeTypeLabel.setForeground(new java.awt.Color(0, 0, 204));
@@ -315,6 +325,11 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         jLabel7.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel7.setText("Employee Type :");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 20, -1, -1));
+
+        regDate.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 18)); // NOI18N
+        regDate.setForeground(new java.awt.Color(0, 0, 153));
+        regDate.setText("Date");
+        jPanel1.add(regDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 16, 120, 30));
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1120, 60));
     }// </editor-fold>//GEN-END:initComponents
@@ -372,9 +387,48 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 salaryModel.setMonthId(Integer.parseInt(monthId));
 
                 try {
-                    new EmployeeSalaryController().store(salaryModel);
-                    JOptionPane.showMessageDialog(null, "Saved Successfull");
-                    loadSalaryTable();
+//                    new EmployeeSalaryController().store(salaryModel);
+//                    JOptionPane.showMessageDialog(null, "Saved Successfull");
+//                    loadSalaryTable();
+
+                    //Payslip print
+                    try {
+                        String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
+                        String imgPath = "";
+                        //View or print grn
+                        InputStream s = this.getClass().getResourceAsStream("/resources/reports/PaySlip.jasper");
+                        String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+                        imgPath = img.replace("\\", "/");
+
+                        HashMap<String, Object> params = new HashMap<>();
+                        params.put("img", imgPath);  
+                        params.put("employeeName", employeeNameLabel.getText());
+                        params.put("type", employeeTypeLabel.getText());
+                        params.put("joinedDate", regDate.getText());
+                        params.put("payedDate", dateTime);
+                        params.put("salaryMonth", "");
+                        params.put("workedDays", "");
+
+                        params.put("basic", String.valueOf(basicSalaryField.getText()));
+                        params.put("bonus", bonusField.getText());
+                        params.put("ot", "0");
+                        params.put("totalEarnings", totalPriceField.getText());
+                        
+                        params.put("leavesCut", leavesPriceField.getText());
+                        params.put("tax", "");
+                        params.put("other", "");
+                        params.put("totalDeductions", "");
+                        params.put("netTotal", "");
+
+                        JREmptyDataSource dataSource = new JREmptyDataSource();
+
+                        JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+                        JasperViewer.viewReport(report, false);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        logger.severe("Error while payslip printing : " + e.getMessage());
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     logger.severe("Error while adding employee Salary : " + e.getMessage());
@@ -410,7 +464,8 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     public void setEmployeeData(String employeeId) {
         try (ResultSet resultSet = new EmployeeController().show(employeeId)) {
             if (resultSet.next()) {
-                employeeNameLabel.setText(resultSet.getString("first_name"));
+                employeeNameLabel.setText(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
+                regDate.setText(resultSet.getString("registered_date").split(" ")[0]);
                 employeeIdLabel.setText(employeeId);
 
                 // leaves count process
@@ -663,6 +718,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private javax.swing.JTextField leavesPriceField;
     private javax.swing.JComboBox<String> monthsComboBox;
     private javax.swing.JTextField precentageField;
+    private javax.swing.JLabel regDate;
     private javax.swing.JTable salaryTable;
     private javax.swing.JTextField totalPriceField;
     // End of variables declaration//GEN-END:variables
