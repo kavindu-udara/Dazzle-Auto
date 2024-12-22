@@ -224,7 +224,7 @@ public class StockReportPanel extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(37, 142, 1));
         jLabel5.setText("00");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 560, -1, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 560, 30, -1));
 
         Brand_chooser.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         Brand_chooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
