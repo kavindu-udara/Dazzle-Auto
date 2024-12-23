@@ -364,6 +364,10 @@ public class Shop_ItemsView extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(Items_View_Table);
+        if (Items_View_Table.getColumnModel().getColumnCount() > 0) {
+            Items_View_Table.getColumnModel().getColumn(1).setPreferredWidth(550);
+            Items_View_Table.getColumnModel().getColumn(1).setMaxWidth(500);
+        }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);

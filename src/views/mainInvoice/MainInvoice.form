@@ -830,7 +830,7 @@
                   <Font name="Roboto" size="16" style="1"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
-                <Property name="text" type="java.lang.String" value="Blalance"/>
+                <Property name="text" type="java.lang.String" value="Balance"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="paymentMethodComboBox">

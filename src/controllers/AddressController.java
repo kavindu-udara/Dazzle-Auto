@@ -23,6 +23,10 @@ public class AddressController {
     public ResultSet show(int id) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
+    
+    public ResultSet showEmployeeAddress(String id) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + id + "'");
+    }
 
     public ResultSet store(AddressModel addressModel) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`employee_id`, `supplier_id`, `lane1`, `lane2`, `city_id`, `postalcode`) VALUES "

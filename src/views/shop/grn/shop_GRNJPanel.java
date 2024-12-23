@@ -257,7 +257,11 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         jLabel11.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel11.setText("Buying Price :");
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, -1, 30));
+
+        BuyingPriceField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel2.add(BuyingPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 130, 140, 31));
+
+        SellingPriceField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel2.add(SellingPriceField, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 130, 130, 31));
 
         jLabel12.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
@@ -298,6 +302,8 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
             }
         });
         jPanel2.add(SupplierSelectBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, -1, 31));
+
+        QtyField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel2.add(QtyField, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 20, 80, 31));
 
         ProductNameField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N

@@ -688,7 +688,7 @@ public class MainInvoice extends javax.swing.JFrame {
 
         jLabel20.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel20.setText("Blalance");
+        jLabel20.setText("Balance");
 
         paymentMethodComboBox.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
         paymentMethodComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
