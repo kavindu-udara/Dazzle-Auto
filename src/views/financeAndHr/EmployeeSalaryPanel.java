@@ -49,14 +49,14 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author kavindu
  */
 public class EmployeeSalaryPanel extends javax.swing.JPanel {
-
+    
     private static final HashMap<String, String> monthHashMap = new HashMap<>();
     private static final Logger logger = LoggerConfig.getLogger();
-
+    
     private String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-
+    
     private EmployeeSalaryPanel employeeSalaryPanel = this;
-
+    
     private HashMap<String, String> monthsHashMap = new HashMap<>();
 
     /**
@@ -70,12 +70,12 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         salaryTableRender();
         employeeIdLabel.setVisible(false);
     }
-
+    
     private void setDocumentFilters() {
         ((AbstractDocument) precentageField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
         ((AbstractDocument) bonusField.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
     }
-
+    
     private void loadMonths() {
         try (ResultSet monthsResultSet = new MonthsController().show()) {
             Vector vector = new Vector();
@@ -335,12 +335,12 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     public void salaryTableRender() {
-
+        
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
+        
         JTableHeader tableHeader = salaryTable.getTableHeader();
-
+        
         tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -355,9 +355,9 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 return label;
             }
         });
-
+        
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
-
+        
         for (int i = 0; i < 6; i++) {
             salaryTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
@@ -371,9 +371,9 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             if (isThisEmployeeAlreadyInSalaryTable(employeeId, today, Integer.parseInt(monthHashMap.get(monthsComboBox.getSelectedItem())))) {
                 JOptionPane.showMessageDialog(null, "Employee Already in the salary table");
             } else {
-
+                
                 Double salary = Double.parseDouble(totalPriceField.getText());
-
+                
                 SalaryModel salaryModel = new SalaryModel();
                 salaryModel.setEmployeeId(employeeId);
                 salaryModel.setDate(today);
@@ -381,11 +381,11 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 System.out.println(monthHashMap);
                 System.out.println(String.valueOf(monthsComboBox.getSelectedItem()));
                 System.out.println(String.valueOf(monthHashMap.get(String.valueOf(monthsComboBox.getSelectedItem()))));
-
+                
                 String monthId = String.valueOf(monthHashMap.get(String.valueOf(monthsComboBox.getSelectedItem())));
-
+                
                 salaryModel.setMonthId(Integer.parseInt(monthId));
-
+                
                 try {
                     new EmployeeSalaryController().store(salaryModel);
                     JOptionPane.showMessageDialog(null, "Saved Successfull");
@@ -399,36 +399,36 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                         InputStream s = this.getClass().getResourceAsStream("/resources/reports/PaySlip.jasper");
                         String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
                         imgPath = img.replace("\\", "/");
-
+                        
                         HashMap<String, Object> params = new HashMap<>();
-                        params.put("img", imgPath);  
+                        params.put("img", imgPath);                        
                         params.put("employeeName", employeeNameLabel.getText());
                         params.put("type", employeeTypeLabel.getText());
                         params.put("joinedDate", regDate.getText());
                         params.put("payedDate", dateTime);
-                        params.put("salaryMonth", "");
-                        params.put("workedDays", "");
-
+                        params.put("salaryMonth", String.valueOf(monthsComboBox.getSelectedItem()));
+                        params.put("workedDays", String.valueOf(30 - Integer.parseInt(leavesCountValueLabel.getText())));
+                        
                         params.put("basic", String.valueOf(basicSalaryField.getText()));
                         params.put("bonus", bonusField.getText());
                         params.put("ot", "0");
-                        params.put("totalEarnings", totalPriceField.getText());
+                        params.put("totalEarnings", String.valueOf(Double.parseDouble(totalPriceField.getText()) + Double.parseDouble(leavesPriceField.getText())));
                         
                         params.put("leavesCut", leavesPriceField.getText());
-                        params.put("tax", "");
-                        params.put("other", "");
-                        params.put("totalDeductions", "");
-                        params.put("netTotal", "");
-
+                        params.put("tax", "0");
+                        params.put("other", "0");
+                        params.put("totalDeductions", leavesPriceField.getText());
+                        params.put("netTotal", totalPriceField.getText());
+                        
                         JREmptyDataSource dataSource = new JREmptyDataSource();
-
+                        
                         JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
                         JasperViewer.viewReport(report, false);
                     } catch (Exception e) {
                         e.printStackTrace();
                         logger.severe("Error while payslip printing : " + e.getMessage());
                     }
-
+                    
                 } catch (Exception e) {
                     e.printStackTrace();
                     logger.severe("Error while adding employee Salary : " + e.getMessage());
@@ -438,14 +438,14 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Select a Employee First !");
         }
     }//GEN-LAST:event_addButtonActionPerformed
-
+    
     private boolean isThisEmployeeAlreadyInSalaryTable(String employeeId, String day, int monthId) {
-
+        
         String startMonth = getStartMonth();
         String finishMonth = getFinishMonth();
-
+        
         String year = day.split("-")[0];
-
+        
         try (ResultSet resultSet = new EmployeeSalaryController().showBydateYearAndMonthId(employeeId, year, monthId)) {
             if (resultSet.next()) {
                 return true;
@@ -460,7 +460,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private void basicSalaryFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_basicSalaryFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_basicSalaryFieldActionPerformed
-
+    
     public void setEmployeeData(String employeeId) {
         try (ResultSet resultSet = new EmployeeController().show(employeeId)) {
             if (resultSet.next()) {
@@ -488,7 +488,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             logger.severe("Error while setting employee : " + e.getMessage());
         }
     }
-
+    
     private void loadBasicSalary(int typeId) {
         try (ResultSet resultSet = new EmployeeTypeController().show(typeId)) {
             if (resultSet.next()) {
@@ -504,7 +504,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             logger.severe("Error while loading employee basic Salary : " + e.getMessage());
         }
     }
-
+    
     private int getLeavesForMonth(int typeId) {
         try (ResultSet resultSet = new EmployeeTypeController().show(typeId)) {
             if (resultSet.next()) {
@@ -516,7 +516,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         }
         return 0;
     }
-
+    
     private int getLeavesCount(String employeeId) {
         int leavesCount = 0;
         try (ResultSet resultSet = new AttendanceDateController().showByMonthRange(getStartMonth(), getFinishMonth())) {
@@ -531,7 +531,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         }
         return leavesCount;
     }
-
+    
     private boolean isEmployeeAbsent(String employeeId, int dateId) {
         try (ResultSet resultSet = new EmployeeAttendanceController().showByDateAndStatus(employeeId, dateId, 2)) {
             if (resultSet.next()) {
@@ -597,10 +597,10 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         leavesCountValueLabel.setText("0");
         loadPresentageSalary();
     }//GEN-LAST:event_ClearAllBtnActionPerformed
-
+    
     private void loadPresentageSalary() {
         if (Integer.parseInt(leavesCountValueLabel.getText()) > Integer.parseInt(allowedLeavesCountLabel.getText())) {
-
+            
             Double basicSalary = Double.parseDouble(basicSalaryField.getText());
             int leaves = Integer.parseInt(leavesCountValueLabel.getText());
             Double presentage = 0.0;
@@ -609,30 +609,30 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
             }
             Double leaveSalary = (basicSalary * presentage) / 100;
             leavesPriceField.setText(String.valueOf(leaves * leaveSalary));
-
+            
         }
         loadTotalSalary();
     }
-
+    
     private void loadTotalSalary() {
         Double basicSalary = Double.parseDouble(basicSalaryField.getText());
         Double leavesPrice = Double.parseDouble(leavesPriceField.getText());
-
+        
         Double bonus = 0.0;
         if (!bonusField.getText().isEmpty()) {
             bonus = Double.parseDouble(bonusField.getText());
         }
-
+        
         Double totalPrice = (basicSalary - leavesPrice) + bonus;
-
+        
         totalPriceField.setText(String.valueOf(totalPrice));
     }
-
+    
     private String getStartMonth() {
         String month = String.valueOf(monthsComboBox.getSelectedItem());
         return "2024-" + Integer.valueOf(monthHashMap.get(month)) + "-1";
     }
-
+    
     private String getFinishMonth() {
         String month = String.valueOf(monthsComboBox.getSelectedItem());
         int monthNumber = Integer.valueOf(monthHashMap.get(month));
@@ -643,44 +643,44 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         }
         return finishMonth;
     }
-
+    
     private void loadSalaryTable() {
         String startMonth = getStartMonth();
         String finishMonth = getFinishMonth();
-
+        
         try (ResultSet resultSet = new EmployeeSalaryController().showByMonthId(Integer.parseInt(monthHashMap.get(String.valueOf(monthsComboBox.getSelectedItem()))))) {
 //        try (ResultSet resultSet = new EmployeeSalaryController().showByMonthRange(startMonth, finishMonth)) {
             DefaultTableModel tableModel = (DefaultTableModel) salaryTable.getModel();
             tableModel.setRowCount(0);
             while (resultSet.next()) {
-
+                
                 Vector vector = new Vector();
                 ResultSet employeeResultSet = new EmployeeController().show(resultSet.getString("employee_id"));
-
+                
                 if (employeeResultSet.next()) {
                     vector.add(employeeResultSet.getString("first_name") + " " + employeeResultSet.getString("last_name"));
                 } else {
                     vector.add("-");
                 }
-
+                
                 vector.add(resultSet.getString("date"));
                 vector.add(resultSet.getString("salary"));
                 vector.add(resultSet.getString("employee_id"));
-
+                
                 ResultSet employeeTypeResultSet = new EmployeeTypeController().show(employeeResultSet.getInt("employee_type_id"));
                 if (employeeTypeResultSet.next()) {
                     vector.add(employeeTypeResultSet.getString("type"));
                 } else {
                     vector.add("-");
                 }
-
+                
                 ResultSet salaryMonthResultSet = new MonthsController().show(resultSet.getInt("months_id"));
                 if (salaryMonthResultSet.next()) {
                     vector.add(salaryMonthResultSet.getString("name"));
                 } else {
                     vector.add("-");
                 }
-
+                
                 tableModel.addRow(vector);
             }
         } catch (Exception e) {
