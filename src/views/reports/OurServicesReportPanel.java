@@ -9,35 +9,29 @@ import controllers.ServicesController;
 import controllers.VehicleTypeController;
 import includes.LoggerConfig;
 import includes.MySqlConnection;
+import includes.OnlyDoubleDocumentFilter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Vector;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.text.AbstractDocument;
 import models.LoginModel;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -56,16 +50,20 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
 
     Dashboard dashboard = null;
     private static HashMap<String, String> vehicleTypesHashMap = new HashMap<>();
-    private static HashMap<String, String> serviceNameHashMap = new HashMap<>();
-    private static HashMap<String, String> serviceChargeHashMap = new HashMap<>();
 
     public OurServicesReportPanel(Dashboard dashboard) {
         initComponents();
         loadServices();
+        setDocumentFilters();
         loadVehicleTypes();
         ourserviceTableRender();
         this.dashboard = dashboard;
         serviceFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter service...");
+    }
+
+    private void setDocumentFilters() {
+        ((AbstractDocument) PriceFrom1.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
+        ((AbstractDocument) PriceTo1.getDocument()).setDocumentFilter(new OnlyDoubleDocumentFilter());
     }
 
     private void loadServices() {
@@ -378,8 +376,8 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
 
     private void ourServicesViewTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ourServicesViewTable2MouseClicked
 
-
     }//GEN-LAST:event_ourServicesViewTable2MouseClicked
+
     public JasperPrint makeReport() {
 
         String headerImg;
@@ -406,6 +404,7 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
         }
         return null;
     }
+
     private void viewReportbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReportbActionPerformed
 
         try {
@@ -447,9 +446,7 @@ public class OurServicesReportPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_PriceFrom1KeyReleased
 
     private void PriceTo1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PriceTo1KeyReleased
-
         loadServices1();
-
     }//GEN-LAST:event_PriceTo1KeyReleased
     private void loadVehicleTypes() {
 
