@@ -55,4 +55,8 @@ public ResultSet showSorted() throws Exception {
     public ResultSet delete(int id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
     }
+
+    public ResultSet customQuery(String query) throws Exception {
+        return MySqlConnection.executeSearch(query);
+    }
 }
