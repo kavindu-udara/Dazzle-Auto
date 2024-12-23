@@ -387,9 +387,9 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 salaryModel.setMonthId(Integer.parseInt(monthId));
 
                 try {
-//                    new EmployeeSalaryController().store(salaryModel);
-//                    JOptionPane.showMessageDialog(null, "Saved Successfull");
-//                    loadSalaryTable();
+                    new EmployeeSalaryController().store(salaryModel);
+                    JOptionPane.showMessageDialog(null, "Saved Successfull");
+                    loadSalaryTable();
 
                     //Payslip print
                     try {
