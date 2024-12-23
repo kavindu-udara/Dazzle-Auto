@@ -89,7 +89,7 @@ public class SelectItems extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel2.setText("Sort By Brand");
 
-        Brand_chooser.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        Brand_chooser.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         Brand_chooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         Brand_chooser.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -137,7 +137,7 @@ public class SelectItems extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Item Id", "Item Name", "Brand Id", "Brand Name"
+                "Item ID", "Item Name", "Brand ID", "Brand Name"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -155,6 +155,10 @@ public class SelectItems extends javax.swing.JDialog {
             }
         });
         jScrollPane1.setViewportView(Items_View_Table);
+        if (Items_View_Table.getColumnModel().getColumnCount() > 0) {
+            Items_View_Table.getColumnModel().getColumn(1).setPreferredWidth(500);
+            Items_View_Table.getColumnModel().getColumn(1).setMaxWidth(450);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

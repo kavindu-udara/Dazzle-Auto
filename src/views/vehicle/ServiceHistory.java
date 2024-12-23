@@ -377,7 +377,9 @@ public class ServiceHistory extends javax.swing.JFrame {
         viewReportb.setForeground(new java.awt.Color(255, 255, 255));
         viewReportb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/analyze-30.png"))); // NOI18N
         viewReportb.setText(" View Report");
+        viewReportb.setBorderPainted(false);
         viewReportb.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        viewReportb.setFocusPainted(false);
         viewReportb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewReportbActionPerformed(evt);
@@ -389,7 +391,9 @@ public class ServiceHistory extends javax.swing.JFrame {
         printReportb.setForeground(new java.awt.Color(255, 255, 255));
         printReportb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/print-30.png"))); // NOI18N
         printReportb.setText(" Print Report");
+        printReportb.setBorderPainted(false);
         printReportb.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        printReportb.setFocusPainted(false);
         printReportb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 printReportbActionPerformed(evt);

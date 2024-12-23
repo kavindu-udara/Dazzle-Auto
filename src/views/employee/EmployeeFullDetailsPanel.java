@@ -6,6 +6,8 @@ package views.employee;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.google.gson.Gson;
+import controllers.AddressController;
+import controllers.CityController;
 import controllers.EmployeeController;
 import controllers.EmployeeImageController;
 import controllers.EmployeeTypeController;
@@ -63,6 +65,10 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         jLabel1.setText("  Employee Profile - " + empID);
         employeeIDLabel.setText(empID);
         setEmployeeDetails();
+        lane1.setVisible(false);
+        lane2.setVisible(false);
+        city.setVisible(false);
+        postalCode.setVisible(false);
     }
 
     private void setEmployeeDetails() {
@@ -101,6 +107,22 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
 
                 loadAmployeeImage();
                 loadQr(empId, employeeResultSet.getString("nic"), employeeResultSet.getString("mobile"));
+            }
+
+            ResultSet addressRS = new AddressController().showEmployeeAddress(empId);
+            if (addressRS.next()) {
+                lane1.setText(addressRS.getString("lane1"));
+                lane2.setText(addressRS.getString("lane2"));
+                ResultSet cityRs = new CityController().show(addressRS.getInt("city_id"));
+                if (cityRs.next()) {
+                    city.setText(cityRs.getString("name"));
+                    postalCode.setText(cityRs.getString("postalcode"));
+                }
+            } else {
+                lane1.setText("No Data");
+                lane2.setText("");
+                city.setText("");
+                postalCode.setText("");
             }
 
         } catch (Exception e) {
@@ -220,6 +242,9 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
             params.put("curruntStatus", statusLabel.getText());
             params.put("salary", salaryLable.getText());
             params.put("date", dateTime);
+            params.put("lane", lane1.getText()+" "+lane2.getText());
+            params.put("city", city.getText());
+            params.put("postalCode", postalCode.getText());
 
             JREmptyDataSource emptyDataSource = new JREmptyDataSource();
 
@@ -243,7 +268,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         String empImg;
         String qr;
         try {
-            InputStream s = this.getClass().getResourceAsStream("/resources/reports/Employee_ID.jasper");           
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/Employee_ID.jasper");
             String front = new File(this.getClass().getResource("/resources/reports/FRONT-01.png").getFile()).getAbsolutePath();
             String back = new File(this.getClass().getResource("/resources/reports/FRONT-02.png").getFile()).getAbsolutePath();
             String qrPath = tempFile.getAbsolutePath();
@@ -320,6 +345,10 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         viewReportb = new javax.swing.JButton();
         printReportb = new javax.swing.JButton();
         viewAttendanceButton = new javax.swing.JButton();
+        lane1 = new javax.swing.JLabel();
+        lane2 = new javax.swing.JLabel();
+        city = new javax.swing.JLabel();
+        postalCode = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -493,26 +522,30 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         viewReportb.setForeground(new java.awt.Color(255, 255, 255));
         viewReportb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/analyze-30.png"))); // NOI18N
         viewReportb.setText(" Save Profile");
+        viewReportb.setBorderPainted(false);
         viewReportb.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        viewReportb.setFocusPainted(false);
         viewReportb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewReportbActionPerformed(evt);
             }
         });
-        jPanel3.add(viewReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 501, 259, 45));
+        jPanel3.add(viewReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 501, 240, 40));
 
         printReportb.setBackground(new java.awt.Color(0, 102, 0));
         printReportb.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
         printReportb.setForeground(new java.awt.Color(255, 255, 255));
         printReportb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/print-30.png"))); // NOI18N
         printReportb.setText(" Print Profile");
+        printReportb.setBorderPainted(false);
         printReportb.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        printReportb.setFocusPainted(false);
         printReportb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 printReportbActionPerformed(evt);
             }
         });
-        jPanel3.add(printReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(297, 501, 248, 45));
+        jPanel3.add(printReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 500, 240, 40));
 
         viewAttendanceButton.setBackground(new java.awt.Color(16, 51, 124));
         viewAttendanceButton.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
@@ -527,6 +560,18 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
             }
         });
         jPanel3.add(viewAttendanceButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 70, -1, 30));
+
+        lane1.setText("jLabel2");
+        jPanel3.add(lane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 560, -1, 0));
+
+        lane2.setText("jLabel2");
+        jPanel3.add(lane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 560, -1, 0));
+
+        city.setText("jLabel2");
+        jPanel3.add(city, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 560, -1, 0));
+
+        postalCode.setText("jLabel2");
+        jPanel3.add(postalCode, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 560, -1, 0));
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -617,6 +662,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel city;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel empTypeLabel;
     private javax.swing.JLabel employeeIDLabel;
@@ -640,6 +686,8 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JLabel lane1;
+    private javax.swing.JLabel lane2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel mobileInId;
     private javax.swing.JLabel mobileLabel;
@@ -647,6 +695,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
     private javax.swing.JLabel nameLabel;
     private javax.swing.JLabel nicInId;
     private javax.swing.JLabel nicLabel;
+    private javax.swing.JLabel postalCode;
     private javax.swing.JButton printReportb;
     private javax.swing.JLabel qrLabel;
     private javax.swing.JLabel regDateLabel;

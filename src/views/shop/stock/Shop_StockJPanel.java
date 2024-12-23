@@ -333,6 +333,10 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(StockViewTable);
+        if (StockViewTable.getColumnModel().getColumnCount() > 0) {
+            StockViewTable.getColumnModel().getColumn(2).setPreferredWidth(600);
+            StockViewTable.getColumnModel().getColumn(2).setMaxWidth(550);
+        }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
