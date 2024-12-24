@@ -55,7 +55,8 @@ public class TutorialVideo extends javax.swing.JFrame {
         JPanel browserPanel = new JPanel(new BorderLayout());
         JWebBrowser webBrowser = new JWebBrowser();
         webBrowser.setBarsVisible(false);
-        webBrowser.navigate("https://www.youtube.com/watch_popup?v=E2Rj2gQAyPA&ab_channel=LeagueofLegends");
+        
+        webBrowser.navigate("https://www.youtube.com/watch_popup?v=eMee_HMIYXU&ab_channel=DuminduSankalpa");
 
         browserPanel.add(webBrowser, BorderLayout.CENTER);
         videoPanel.setLayout(new BorderLayout());

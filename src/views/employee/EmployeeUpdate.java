@@ -511,7 +511,7 @@ public class EmployeeUpdate extends java.awt.Dialog {
             JOptionPane.showMessageDialog(this, "Please Select Supplier Status", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
-
+               
                 employeeModel.setFirstName(firstName);
                 employeeModel.setLastName(lastName);
                 employeeModel.setNic(nic);
@@ -519,46 +519,43 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 employeeModel.setMobile(mobile);
                 employeeModel.setEmployeeTypeId(Integer.parseInt(employeeTypeMap.get(employee_type.getSelectedItem())));
                 employeeModel.setStatusId(Integer.parseInt(StatusMap.get(emp_status.getSelectedItem())));
-
                 new EmployeeController().update(employeeModel);
 
+                
                 String lane1 = Lane1Field.getText().trim();
                 String lane2 = lane2Field.getText().trim();
                 String cityName = (String) cityComboBox.getSelectedItem();
 
                 if (!lane1.isEmpty() || !lane2.isEmpty() || (cityName != null && !cityName.equals("Select"))) {
                     updateAddressData(sssid);
-
-                } else {
-                    if (selectedFile != null) {
-                        String imagePath = saveImage(employeeModel.getId() + nic + firstName + lastName);
-                        if (imagePath != null) {
-                            employeeImageModel.setPath(imagePath);
-
-                            // check user had an image before
-                            if (isEmployerHaveAnImage) {
-                                new EmployeeImageController().update(employeeImageModel);
-                            } else {
-                                EmployeeImageModel employeeImageModel = new EmployeeImageModel();
-                                employeeImageModel.setPath(imagePath);
-                                employeeImageModel.setEmployeeId(employeeModel.getId());
-
-                                new EmployeeImageController().store(employeeImageModel);
-                            }
-
-                        } else {
-                            JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
-                            
-                        }
-                    }
-                    JOptionPane.showMessageDialog(this, "Employee details updated successfully");
-                    this.dispose();
-                    staffJPanel.reloadTable();
                 }
+
+                // Image handling
+                if (selectedFile != null) {
+                    String imagePath = saveImage(employeeModel.getId() + nic + firstName + lastName);
+                    if (imagePath != null) {
+                        if (isEmployerHaveAnImage) {
+                            employeeImageModel.setPath(imagePath);
+                            new EmployeeImageController().update(employeeImageModel);
+                        } else {
+                            EmployeeImageModel newImageModel = new EmployeeImageModel();
+                            newImageModel.setPath(imagePath);
+                            newImageModel.setEmployeeId(employeeModel.getId());
+                            new EmployeeImageController().store(newImageModel);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Image not saved correctly.", "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+
+                JOptionPane.showMessageDialog(this, "Employee details updated successfully");
+                staffJPanel.reloadTable();
+                this.dispose();
 
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.severe("Error while updating employee : " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Error while updating employee: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_employee_update_btnActionPerformed
@@ -589,22 +586,19 @@ public class EmployeeUpdate extends java.awt.Dialog {
                 return;
             }
 
-            AddressModel addresszModel = new AddressModel();
-            addresszModel.setLane1(lane1);
-            addresszModel.setLane2(lane2);
-            addresszModel.setCity(cityId);
-            addresszModel.setEmpId(employeeId);
+            AddressModel addressModel = new AddressModel();
+            addressModel.setLane1(lane1);
+            addressModel.setLane2(lane2);
+            addressModel.setCity(cityId);
+            addressModel.setEmpId(employeeId);
 
             String addressId = new AddressController().retrieveeEmpAddressId(employeeId);
             if (addressId != null) {
-                addresszModel.setEmpId(addressId);
-
-                new AddressController().update2(addresszModel);
+                addressModel.setEmpId(addressId);
+                new AddressController().update2(addressModel);
             } else {
-                new AddressController().create2(addresszModel);
+                new AddressController().create2(addressModel);
             }
-            JOptionPane.showMessageDialog(this, "Employee address updated successfully.");
-            this.dispose();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -724,7 +718,6 @@ public class EmployeeUpdate extends java.awt.Dialog {
 //            }
 //        });
 //    }
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField EmpIdField;
