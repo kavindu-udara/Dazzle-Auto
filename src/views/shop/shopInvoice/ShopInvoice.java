@@ -260,7 +260,7 @@ public class ShopInvoice extends javax.swing.JFrame {
         jItemNameLabel.setText("Item Name");
         jStockIDField.setText("00");
         jSellingPriceLabel.setText("0000.00");
-        QtyField.setText("");
+        QtyField.setText("0");
         jLabel23.setText("0");
         jDescriptionTextArea.setText("");
 
