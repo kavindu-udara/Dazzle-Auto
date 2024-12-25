@@ -65,8 +65,8 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
         chart.addLegend("Invoice Count", new Color(245, 189, 135));
         try {
 
-            ResultSet resultSet = MySqlConnection.executeSearch("SELECT DATE_FORMAT(`date`, '%Y-%m-%d') AS `inv_date`, COUNT(id) AS `count` "
-                    + "FROM `shop_invoice` GROUP BY `inv_date` ORDER BY `inv_date` ASC LIMIT 6 ");
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT * FROM( SELECT DATE_FORMAT(`date`, '%Y-%m-%d') AS `inv_date`, COUNT(id) AS `count` "
+                    + "FROM `shop_invoice` GROUP BY `inv_date`ORDER BY `inv_date` DESC LIMIT 6) AS last_six ORDER BY `inv_date` ASC ");
 
             chart.model.clear();
             while (resultSet.next()) {
@@ -88,11 +88,11 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
         String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM")); //WHERE `shop_invoice`.`date` LIKE '%" + month + "%'
 
         try {
-            ResultSet resultSet = MySqlConnection.executeSearch("SELECT `product`.`name` AS `product`, SUM(shop_invoice_items.qty) AS `sell_qty`, SUM(stock.qty) AS `stock_qty` "
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT `product`.`name` AS `product`, SUM(shop_invoice_items.qty) AS `sell_qty`, stock.qty AS `stock_qty` "
                     + "FROM shop_invoice INNER JOIN shop_invoice_items ON shop_invoice_items.shop_invoice_id=shop_invoice.id "
                     + "INNER JOIN stock ON shop_invoice_items.stock_id=stock.id "
                     + "INNER JOIN product ON stock.product_id=product.id  "
-                    + "GROUP BY `product` ORDER BY `sell_qty` DESC LIMIT 5 ");
+                    + "GROUP BY `product`, `stock_qty` ORDER BY `sell_qty` DESC LIMIT 5 ");
 
             DefaultTableModel dtm = (DefaultTableModel) bestSellingTable.getModel();
             dtm.setRowCount(0);
