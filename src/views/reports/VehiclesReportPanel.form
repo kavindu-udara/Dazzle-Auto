@@ -64,6 +64,10 @@
                           <Component id="jLabel3" min="-2" pref="64" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jComboBox2" min="-2" pref="129" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                          <Component id="jLabel4" min="-2" pref="117" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jComboBox3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
@@ -99,6 +103,8 @@
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jComboBox2" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jComboBox3" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -317,6 +323,58 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel4">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Roboto" size="18" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Vehicle Brand"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="jComboBox3">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Roboto" size="18" style="1"/>
+            </Property>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="26">
+                <StringItem index="0" value="All"/>
+                <StringItem index="1" value="Toyota"/>
+                <StringItem index="2" value="Nissan"/>
+                <StringItem index="3" value="Honda"/>
+                <StringItem index="4" value="BMW"/>
+                <StringItem index="5" value="Mercedes-Benz"/>
+                <StringItem index="6" value="Bajaj"/>
+                <StringItem index="7" value="Maruti Suzuki"/>
+                <StringItem index="8" value="Mitsubishi"/>
+                <StringItem index="9" value="Subaru"/>
+                <StringItem index="10" value="Ford"/>
+                <StringItem index="11" value="Cherverlot"/>
+                <StringItem index="12" value="Volkswagon"/>
+                <StringItem index="13" value="Cherry"/>
+                <StringItem index="14" value="KIA"/>
+                <StringItem index="15" value="Hyundai"/>
+                <StringItem index="16" value="Mahindra"/>
+                <StringItem index="17" value="TATA"/>
+                <StringItem index="18" value="Audi"/>
+                <StringItem index="19" value="Volvo"/>
+                <StringItem index="20" value="Mazda"/>
+                <StringItem index="21" value="Land Rover"/>
+                <StringItem index="22" value="TVS"/>
+                <StringItem index="23" value="ISUZU"/>
+                <StringItem index="24" value="LAYLAND"/>
+                <StringItem index="25" value="EICHER"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jComboBox3ItemStateChanged"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBox3ActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
