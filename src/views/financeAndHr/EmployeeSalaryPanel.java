@@ -378,9 +378,6 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
                 salaryModel.setEmployeeId(employeeId);
                 salaryModel.setDate(today);
                 salaryModel.setSalary(salary);
-                System.out.println(monthHashMap);
-                System.out.println(String.valueOf(monthsComboBox.getSelectedItem()));
-                System.out.println(String.valueOf(monthHashMap.get(String.valueOf(monthsComboBox.getSelectedItem()))));
                 
                 String monthId = String.valueOf(monthHashMap.get(String.valueOf(monthsComboBox.getSelectedItem())));
                 
