@@ -13,7 +13,6 @@ import controllers.StockController;
 import includes.IDGenarator;
 import includes.LoggerConfig;
 import includes.OnlyDoubleDocumentFilter;
-import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
 import java.awt.Color;
 import java.awt.Component;
@@ -23,7 +22,6 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,7 +30,6 @@ import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -43,7 +40,6 @@ import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
-import javax.swing.text.PlainDocument;
 import models.LoginModel;
 import models.ShopInvoiceItemModel;
 import models.ShopInvoiceModel;
@@ -61,7 +57,7 @@ import views.shop.stock.JStockSelector;
 public class ShopInvoice extends javax.swing.JFrame {
 
     private static final Logger logger = LoggerConfig.getLogger();
-
+    
     HashMap<String, ShopInvoiceItemModel> invoiceItemMap = new HashMap<>();
     HashMap<String, String> paymentMethodmMap = new HashMap<>();
 
@@ -78,7 +74,6 @@ public class ShopInvoice extends javax.swing.JFrame {
         loadPaymentMethods();
         jInvoiceIDTextField.setText(IDGenarator.shopInvoiceID());
         jEmployeeNameLabel.setText(LoginModel.getFirstName() + " " + LoginModel.getLastName());
-
         jLabel19.setVisible(false);
         discountField.setVisible(false);
         QtyValidate();

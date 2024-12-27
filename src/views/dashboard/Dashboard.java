@@ -60,6 +60,7 @@ public class Dashboard extends javax.swing.JFrame {
         initComponents();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
 
+        dateTime();
         setLoggedUserDetails();
         accessControl();
 
@@ -132,6 +133,34 @@ public class Dashboard extends javax.swing.JFrame {
             logger.severe("Error while setting logged user details : " + ex.getMessage());
         }
     }
+    
+    public void dateTime() {
+        java.lang.Runnable runnable = new java.lang.Runnable() {
+            @Override
+            public void run() {
+
+                while (true) {
+                    java.util.Date date1 = new java.util.Date();
+
+                    java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy.MM.dd '-' hh:mm:ss a");
+                    String finaldate = dateFormat.format(date1);
+                    jLabel49.setText(finaldate);
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                        logger.severe("Error in dateTime() " + ex.getMessage());
+                    }
+                }
+
+            }
+
+        };
+
+        java.lang.Thread thread = new java.lang.Thread(runnable);
+        thread.start();
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -167,6 +196,7 @@ public class Dashboard extends javax.swing.JFrame {
         empImageLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
+        jLabel49 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -400,6 +430,11 @@ public class Dashboard extends javax.swing.JFrame {
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        jLabel49.setFont(new java.awt.Font("Courier New", 1, 24)); // NOI18N
+        jLabel49.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel49.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel49.setText(" Date & Time");
+
         javax.swing.GroupLayout HeaderPanelLayout = new javax.swing.GroupLayout(HeaderPanel);
         HeaderPanel.setLayout(HeaderPanelLayout);
         HeaderPanelLayout.setHorizontalGroup(
@@ -417,6 +452,11 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGap(7, 7, 7)
                 .addComponent(jButton1)
                 .addGap(7, 7, 7))
+            .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderPanelLayout.createSequentialGroup()
+                    .addContainerGap(207, Short.MAX_VALUE)
+                    .addComponent(jLabel49, javax.swing.GroupLayout.PREFERRED_SIZE, 790, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(301, Short.MAX_VALUE)))
         );
         HeaderPanelLayout.setVerticalGroup(
             HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -437,6 +477,11 @@ public class Dashboard extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jSeparator1)
+            .addGroup(HeaderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HeaderPanelLayout.createSequentialGroup()
+                    .addContainerGap(20, Short.MAX_VALUE)
+                    .addComponent(jLabel49)
+                    .addContainerGap(20, Short.MAX_VALUE)))
         );
 
         jPanel1.add(HeaderPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 70));
@@ -768,6 +813,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JButton jFinanceButton;
     private javax.swing.JPanel jFinancePanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JMenuItem jLoginAccessMenuItem;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
