@@ -16,7 +16,6 @@ import controllers.ShopInoviceController;
 import controllers.StockController;
 import controllers.SupplierController;
 import controllers.VehicleController;
-import includes.MySqlConnection;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -91,6 +90,8 @@ public class ReportsJPanel extends javax.swing.JPanel {
                         openShopIncomeReport();
                     } else if (reportName.equals("Employee Attendance Report")) {
                         openEmployeeAttendanceReport();
+                    } else if (reportName.equals("Expenses Report")) {
+                        openExpencesReport();
                     }
                 }
 
@@ -227,6 +228,14 @@ public class ReportsJPanel extends javax.swing.JPanel {
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }
 
+    private void openExpencesReport() {
+        removeThisPanel();
+
+        ExpencesReportPanel expencesReportPanel = new ExpencesReportPanel(dashboard);
+        dashboard.jReportPanel.add(expencesReportPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
     public void loadReports() {
         int Count = 0;
 
@@ -238,6 +247,14 @@ public class ReportsJPanel extends javax.swing.JPanel {
                 Count++;
             }
             addNewReport("Employees Report", Count);
+            Count = 0;
+
+            //Employee Attendance Report
+            ResultSet EmployeeAttendanceshow = new EmployeeAttendanceController().show();
+            while (EmployeeAttendanceshow.next()) {
+                Count++;
+            }
+            addNewReport("Employee Attendance Report", Count);
             Count = 0;
 
             //Vehicle Report
@@ -320,13 +337,8 @@ public class ReportsJPanel extends javax.swing.JPanel {
             addNewReport("Shop Income Report", Count);
             Count = 0;
 
-            //Employee Attendance Report
-            ResultSet EmployeeAttendanceshow = new EmployeeAttendanceController().show();
-            while (EmployeeAttendanceshow.next()) {
-                Count++;
-            }
-            addNewReport("Employee Attendance Report", Count);
-            Count = 0;
+            //Expences Report
+            addNewReport("Expenses Report", 0);
 
         } catch (Exception e) {
             e.printStackTrace();
