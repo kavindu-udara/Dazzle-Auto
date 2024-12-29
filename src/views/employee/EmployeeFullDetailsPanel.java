@@ -196,6 +196,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
             byte[] imageData = out.toByteArray();
             ImageIcon icon = new ImageIcon(imageData);
             qrLabel.setIcon(icon);
+            tempFile.deleteOnExit();
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.severe("Error while loading loadQr : " + ex.getMessage());

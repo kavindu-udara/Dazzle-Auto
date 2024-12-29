@@ -6,10 +6,8 @@ package views;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.IntelliJTheme;
-import includes.Mailer;
 import java.awt.Color;
 import java.awt.Toolkit;
-import views.shop.dashboard.ShopDashboard;
 import views.signIn.SignIn;
 
 /**
@@ -33,7 +31,6 @@ public class LoginChooser extends javax.swing.JFrame {
     public void roundPanels() {
         jShopButton.putClientProperty(FlatClientProperties.STYLE, "arc:20");
         jServiceStationButton.putClientProperty(FlatClientProperties.STYLE, "arc:20");
-
     }
 
     @SuppressWarnings("unchecked")
