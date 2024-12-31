@@ -58,6 +58,10 @@ public class Settings extends javax.swing.JDialog {
         DBManagePanel dBManagePanel = new DBManagePanel();
         dbBackupTab.add(dBManagePanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(this);
+        
+        LoginRecordPanel loginRecordPanel = new LoginRecordPanel();
+        loginRecordTab.add(loginRecordPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -67,12 +71,15 @@ public class Settings extends javax.swing.JDialog {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         loginAccessTab = new javax.swing.JPanel();
         dbBackupTab = new javax.swing.JPanel();
+        loginRecordTab = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Settings");
         setMinimumSize(new java.awt.Dimension(853, 606));
 
+        jTabbedPane1.setBackground(new java.awt.Color(243, 248, 255));
         jTabbedPane1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jTabbedPane1.setOpaque(true);
 
         loginAccessTab.setBackground(new java.awt.Color(255, 255, 255));
         loginAccessTab.setMinimumSize(new java.awt.Dimension(853, 575));
@@ -81,7 +88,10 @@ public class Settings extends javax.swing.JDialog {
 
         dbBackupTab.setBackground(new java.awt.Color(255, 255, 255));
         dbBackupTab.setLayout(new java.awt.BorderLayout());
-        jTabbedPane1.addTab("Dump Database", dbBackupTab);
+        jTabbedPane1.addTab("Dump Database    ", dbBackupTab);
+
+        loginRecordTab.setLayout(new java.awt.BorderLayout());
+        jTabbedPane1.addTab("Login Record     ", loginRecordTab);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,5 +113,6 @@ public class Settings extends javax.swing.JDialog {
     private javax.swing.JPanel dbBackupTab;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel loginAccessTab;
+    private javax.swing.JPanel loginRecordTab;
     // End of variables declaration//GEN-END:variables
 }
