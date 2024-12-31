@@ -51,8 +51,6 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private static final HashMap<String, String> monthHashMap = new HashMap<>();
     private static final Logger logger = LoggerConfig.getLogger();
     
-    private String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-    
     private EmployeeSalaryPanel employeeSalaryPanel = this;
     
     private HashMap<String, String> monthsHashMap = new HashMap<>();

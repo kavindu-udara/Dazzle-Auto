@@ -349,6 +349,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         lane2 = new javax.swing.JLabel();
         city = new javax.swing.JLabel();
         postalCode = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
 
@@ -573,6 +574,14 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         postalCode.setText("jLabel2");
         jPanel3.add(postalCode, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 560, -1, 0));
 
+        jButton2.setText("View Sallaries");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 70, 110, 30));
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -660,6 +669,12 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_idPrintButtonActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        
+        new SingleEmployeeSallary(null, true, empId).setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel city;
@@ -672,6 +687,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
     private javax.swing.JLabel idFront;
     private javax.swing.JButton idPrintButton;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
