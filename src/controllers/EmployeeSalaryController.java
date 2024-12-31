@@ -16,6 +16,7 @@ import models.SalaryModel;
 public class EmployeeSalaryController {
 
     private final String tableName = "employee_salary";
+    private final String tableName2 = "months";
 
     public ResultSet show() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
@@ -25,6 +26,14 @@ public class EmployeeSalaryController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
+    public ResultSet showByEmployeeId(String empId) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + empId + "'");
+    }
+
+    public ResultSet show(String employeeId, String monthId) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + employeeId + "' AND `months_id`='" + monthId + "'  ");
+    }
+
     public ResultSet showByMonthRange(String startMonth, String endMonth) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `date` >= '" + startMonth + "' AND `date` < '" + endMonth + "' ");
     }
@@ -32,9 +41,9 @@ public class EmployeeSalaryController {
     public ResultSet showByMonthId(int id) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `months_id` = '" + id + "' ");
     }
-    
+
     public ResultSet showBydateYearAndMonthId(String employeeId, String year, int monthId) throws Exception {
-        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `months_id`='" + monthId + "' AND `employee_id`='"+employeeId+"' AND `date` LIKE '" + year + "%' ");
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `months_id`='" + monthId + "' AND `employee_id`='" + employeeId + "' AND `date` LIKE '" + year + "%' ");
     }
 
     public ResultSet store(SalaryModel salaryModel) throws Exception {
