@@ -55,12 +55,9 @@ import views.shop.stock.JStockSelector;
  * @author Dinuka
  */
 public class ShopInvoice extends javax.swing.JFrame {
-
-    private static final Logger logger = LoggerConfig.getLogger();
-    
+    private static final Logger logger = LoggerConfig.getLogger();  
     HashMap<String, ShopInvoiceItemModel> invoiceItemMap = new HashMap<>();
     HashMap<String, String> paymentMethodmMap = new HashMap<>();
-
     Shop_PaymentJPanel ShopPaymentJPanel = null;
 
     public ShopInvoice(Shop_PaymentJPanel shop_PaymentJPanel) {

@@ -15,7 +15,6 @@ import views.signIn.SignIn;
  * @author Dinuka
  */
 public class LoginChooser extends javax.swing.JFrame {
-
     private final Color btnDefaultColor = new Color(246, 249, 255);
     private final Color textHoverColor = new Color(255, 115, 0);
     private final Color textDefaultColor = new Color(0, 0, 0);
@@ -24,7 +23,6 @@ public class LoginChooser extends javax.swing.JFrame {
     public LoginChooser() {
         initComponents();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
-
         roundPanels();
     }
 
@@ -207,7 +205,6 @@ public class LoginChooser extends javax.swing.JFrame {
     }//GEN-LAST:event_jServiceStationButtonMouseExited
 
     private void jShopButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jShopButtonMouseClicked
-       
         new SignIn("Shop").setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jShopButtonMouseClicked

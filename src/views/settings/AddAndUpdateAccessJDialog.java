@@ -26,11 +26,8 @@ import models.LoginModel;
  * @author Dinuka
  */
 public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
-
     private static Logger logger = LoggerConfig.getLogger();
-
     private static HashMap<String, Integer> accessRoleMap = new HashMap<>();
-
     int AccesRole = 0;
     String Password = "";
 

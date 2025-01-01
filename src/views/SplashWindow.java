@@ -12,7 +12,6 @@ import java.awt.Toolkit;
  * @author kavindu
  */
 public class SplashWindow extends javax.swing.JFrame {
-
     private static SplashWindow splashWindow;
 
     public SplashWindow() {

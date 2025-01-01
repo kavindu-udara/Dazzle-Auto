@@ -36,7 +36,7 @@ import views.signIn.SignIn;
 
 /**
  *
- * @author ILMA
+ * @author Dinuka
  */
 public class VehicleServiceAppointment extends javax.swing.JFrame {
 
@@ -53,13 +53,13 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         SignIn.dashboard.setEnabled(false);
         jServiceIdLabel.setVisible(false);
         waitLabel.setVisible(false);
-        
-                // Add a Window Listener
+
+        // Add a Window Listener
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                SignIn.dashboard.setEnabled(true); 
+                SignIn.dashboard.setEnabled(true);
             }
         });
     }
@@ -324,9 +324,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
     }//GEN-LAST:event_existing_vehicle_btnActionPerformed
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
-
         reset();
-
     }//GEN-LAST:event_resetActionPerformed
 
     public void openDialog() {
@@ -360,7 +358,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         // Show the dialog
         dialog.setVisible(true);
     }
-    
+
     private void appointment_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appointment_btnActionPerformed
         LocalDate today = LocalDate.now();
         String appointmentID = IDGenarator.appointmentID();
@@ -420,14 +418,14 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                         ResultSet cus_Rs = new CustomerController().show(vehicleRS.getInt("customer_id"));
                         if (cus_Rs.next()) {
                             ownerName = cus_Rs.getString("first_name") + " " + cus_Rs.getString("last_name");
-                            ownerEmail = cus_Rs.getString("email");                           
+                            ownerEmail = cus_Rs.getString("email");
                         }
                     }
 
                     new Mailer().sendMail(ownerEmail, "Service Appointment - Dazzle Auto", new MailTemplates().appointmentScheduledMail(ownerName, appointmentID, vehicleNumber, vehicleModel, vehicleType, date, serviceName, note), null, true);
                     AppointmentSuccessDialog app = new AppointmentSuccessDialog(this, true, appointmentModel);
                     app.setVisible(true);
-                    
+
                     AppointmnetPanel.loadAppointments();
                 }
 

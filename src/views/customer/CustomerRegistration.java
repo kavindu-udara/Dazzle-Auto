@@ -24,14 +24,9 @@ import models.CustomerModel;
  * @author USER Nimsara
  */
 public class CustomerRegistration extends java.awt.Dialog {
-
     private static final Logger logger = LoggerConfig.getLogger();
-
     private CustomerJPanel customerJPanel;
 
-    /**
-     * Creates new form SupplierRegistration
-     */
     public CustomerRegistration(Frame parent, boolean modal, CustomerJPanel customerJPanel) {
         super(parent, modal);
         initComponents();
@@ -257,9 +252,7 @@ public class CustomerRegistration extends java.awt.Dialog {
                 e.printStackTrace();
                 logger.severe("Error while registering a customer: " + e.getMessage());
             }
-
             customerJPanel.reloadTable();
-
         }
 
 
@@ -281,9 +274,7 @@ public class CustomerRegistration extends java.awt.Dialog {
     }
 
     private void customer_reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customer_reset_btnActionPerformed
-
-        reset();
-
+       reset();
     }//GEN-LAST:event_customer_reset_btnActionPerformed
 
     /**
@@ -305,12 +296,10 @@ public class CustomerRegistration extends java.awt.Dialog {
 //        });
 //    }
     private void reset() {
-
         customer_firstname.setText("");
         customer_lastname.setText("");
         customer_mobile.setText("");
         customer_email.setText("");
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
