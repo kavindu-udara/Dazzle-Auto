@@ -8,12 +8,30 @@ import controllers.EmployeeController;
 import controllers.EmployeeSalaryController;
 import controllers.MonthsController;
 import includes.LoggerConfig;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.io.File;
+import java.io.InputStream;
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import models.LoginModel;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -37,6 +55,7 @@ public class SingleEmployeeSallary extends javax.swing.JDialog {
         fillEmployeeDetailLabels();
         loadMonthsComboBoxData();
         loadTableData();
+
     }
 
     private void fillEmployeeDetailLabels() {
@@ -49,6 +68,33 @@ public class SingleEmployeeSallary extends javax.swing.JDialog {
             e.printStackTrace();
             logger.severe("Error while loading employee data : " + e.getMessage());
         }
+    }
+
+    public JasperPrint makeReport() {
+
+        String headerImg;
+        try {
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/SingleEmployeeSallaryy.jasper");
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+
+            headerImg = img.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("img", headerImg);
+
+            params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
+
+            JRTableModelDataSource dataSource = new JRTableModelDataSource(salaryTable.getModel());
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+
+            return report;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while makeReport() : " + e.getMessage());
+        }
+        return null;
     }
 
     private void loadMonthsComboBoxData() {
@@ -131,6 +177,7 @@ public class SingleEmployeeSallary extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         monthsComboBox = new javax.swing.JComboBox<>();
         printButton = new javax.swing.JButton();
+        printButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Single Employee Salary");
@@ -171,6 +218,18 @@ public class SingleEmployeeSallary extends javax.swing.JDialog {
         });
 
         printButton.setText("print");
+        printButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printButtonActionPerformed(evt);
+            }
+        });
+
+        printButton1.setText("Save");
+        printButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -179,6 +238,12 @@ public class SingleEmployeeSallary extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addGap(35, 35, 35)
+                            .addComponent(monthsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -187,20 +252,12 @@ public class SingleEmployeeSallary extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(nameValueLabel)
                             .addComponent(idValueLabel)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addGap(47, 47, 47)
-                            .addComponent(monthsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(printButton)
-                .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(printButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(printButton)
+                        .addGap(12, 12, 12))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -220,7 +277,9 @@ public class SingleEmployeeSallary extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(printButton)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(printButton)
+                    .addComponent(printButton1))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -244,6 +303,35 @@ public class SingleEmployeeSallary extends javax.swing.JDialog {
         loadTableData();
     }//GEN-LAST:event_monthsComboBoxItemStateChanged
 
+    private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
+
+        try {
+            JasperPrint report = makeReport();
+            JasperPrintManager.printReport(report, false);
+
+            logger.info("Single Employee Salary Report Printed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while printReportbActionPerformed : " + e.getMessage());
+        }
+
+    }//GEN-LAST:event_printButtonActionPerformed
+
+    private void printButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButton1ActionPerformed
+
+        try {
+            JasperPrint report = makeReport();
+            JasperViewer.viewReport(report, false);
+
+            logger.info("Single Employee Salary Report Viewed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while viewReportbActionPerformed : " + e.getMessage());
+        }
+
+
+    }//GEN-LAST:event_printButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -258,6 +346,7 @@ public class SingleEmployeeSallary extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> monthsComboBox;
     private javax.swing.JLabel nameValueLabel;
     private javax.swing.JButton printButton;
+    private javax.swing.JButton printButton1;
     private javax.swing.JTable salaryTable;
     // End of variables declaration//GEN-END:variables
 }
