@@ -37,9 +37,7 @@ import views.components.loginAccessTableRender.DeleteCellRender;
  * @author Dinuka
  */
 public class LoginAccessJPanel extends javax.swing.JPanel {
-
     Settings settings;
-
     private static Logger logger = LoggerConfig.getLogger();
 
     public LoginAccessJPanel(Settings settings) {

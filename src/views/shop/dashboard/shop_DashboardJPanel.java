@@ -58,7 +58,6 @@ public class shop_DashboardJPanel extends javax.swing.JPanel {
         stockOverview();
         bestSellings();
         setIssuedInvoices();
-
     }
     
     public void setIssuedInvoices() {

@@ -7,7 +7,6 @@ package views.customer;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.DocumentFilter;
 import includes.OnlyNumbersDocumentFilter;
 import includes.RegexValidator;
 import java.awt.Frame;
@@ -26,18 +25,13 @@ import java.util.logging.Logger;
 public class CustomerUpdate extends java.awt.Dialog {
 
     private static final Logger logger = LoggerConfig.getLogger();
-
     private CustomerModel customerModel;
 
-    /**
-     * Creates new form SupplierRegistration
-     */
     public CustomerUpdate(Frame parent, boolean modal, CustomerModel customerModel) {
         super(parent, modal);
         initComponents();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/resources/icon2.png")));
         setDocumentFilters();
-
         this.customerModel = customerModel;
 
         customer_firstname.setText(customerModel.getFirstName());
@@ -140,11 +134,6 @@ public class CustomerUpdate extends java.awt.Dialog {
         jLabel5.setText("Email");
 
         customer_email.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        customer_email.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                customer_emailActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -231,7 +220,6 @@ public class CustomerUpdate extends java.awt.Dialog {
     }//GEN-LAST:event_closeDialog
 
     private void customer_register_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customer_register_btnActionPerformed
-
         String firstName = customer_firstname.getText();
         String lastName = customer_lastname.getText();
         String mobile = customer_mobile.getText();
@@ -251,9 +239,7 @@ public class CustomerUpdate extends java.awt.Dialog {
         } else if (!RegexValidator.isValidEmail(email)) {
             JOptionPane.showMessageDialog(this, "Invalid email", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-
             try {
-
                 customerModel.setFirstName(firstName);
                 customerModel.setLastName(lastName);
                 customerModel.setMobile(mobile);
@@ -270,7 +256,6 @@ public class CustomerUpdate extends java.awt.Dialog {
                 e.printStackTrace();
                 logger.severe("Error while updating customer : " + e.getMessage());
             }
-
         }
 
     }//GEN-LAST:event_customer_register_btnActionPerformed
@@ -283,10 +268,6 @@ public class CustomerUpdate extends java.awt.Dialog {
         setcustomerData();
 
     }//GEN-LAST:event_customer_reset_btnActionPerformed
-
-    private void customer_emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customer_emailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_customer_emailActionPerformed
 
     private void reset() {
 

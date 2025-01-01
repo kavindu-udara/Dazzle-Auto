@@ -34,9 +34,7 @@ import views.vehicle.VehicleUpdate;
 public class CustomerJPanel extends javax.swing.JPanel {
 
     private static final Logger logger = LoggerConfig.getLogger();
-
     private CustomerJPanel customerJPanel;
-
     CustomerSelector CustomerSelecterFrame = null;
 
     VehicleRegistration vehicleRegistration = null;
@@ -46,15 +44,10 @@ public class CustomerJPanel extends javax.swing.JPanel {
 
     public CustomerJPanel() {
         initComponents();
-
         loadCustomer();
-
         customerFindField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Name/Mobile");
-
         customerViewTableRender();
-
         this.customerJPanel = this;
-
     }
 
     //constructor for selector
@@ -81,7 +74,6 @@ public class CustomerJPanel extends javax.swing.JPanel {
 
     private void loadCustomer() {
         try {
-
             ResultSet customerResultSet = new CustomerController().show();
 
             DefaultTableModel model = (DefaultTableModel) customerViewTable.getModel();
@@ -92,7 +84,6 @@ public class CustomerJPanel extends javax.swing.JPanel {
 
                 String employeeId = customerResultSet.getString("id");
                 vector.add(employeeId);
-
                 vector.add(customerResultSet.getString("first_name"));
                 vector.add(customerResultSet.getString("last_name"));
                 vector.add(customerResultSet.getString("mobile"));
@@ -123,7 +114,6 @@ public class CustomerJPanel extends javax.swing.JPanel {
                 String mobile = resultSet.getString("mobile");
                 String email = resultSet.getString("email");
                 String registeredDate = resultSet.getString("registered_date");
-
                 model.addRow(new Object[]{id, fname, lname, mobile, email, registeredDate});
             }
 
@@ -134,12 +124,9 @@ public class CustomerJPanel extends javax.swing.JPanel {
     }
 
     public void customerViewTableRender() {
-
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
         JTableHeader tableHeader = customerViewTable.getTableHeader();
-
         tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -326,14 +313,11 @@ public class CustomerJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_customerFindFieldActionPerformed
 
     private void jRegNewCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegNewCustomerButtonActionPerformed
-
         new CustomerRegistration(null, true, customerJPanel).setVisible(true);
-
     }//GEN-LAST:event_jRegNewCustomerButtonActionPerformed
 
     private void customerViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerViewTableMouseClicked
         int row = customerViewTable.getSelectedRow();
-
         if (row < 0) {
             return;
         }
@@ -345,7 +329,6 @@ public class CustomerJPanel extends javax.swing.JPanel {
         String email = String.valueOf(customerViewTable.getValueAt(row, 4));
 
         if (From.equals("Selecter")) {
-
             if (BaseDialog.equals("vehicleRegistration")) {
                 vehicleRegistration.setCustomerDetails(String.valueOf(customerId), firstName, lastName);
             } else if (BaseDialog.equals("vehicleUpdate")) {
@@ -371,7 +354,6 @@ public class CustomerJPanel extends javax.swing.JPanel {
                 e.printStackTrace();
                 logger.warning("Error while opening customer update dialog : " + e.getMessage());
             }
-
             loadCustomer();
         }
 
@@ -381,7 +363,6 @@ public class CustomerJPanel extends javax.swing.JPanel {
     }
 
     private void jLabel2ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jLabel2ComponentShown
-
         try {
             fetchUser(null);
         } catch (Exception e) {
@@ -392,7 +373,6 @@ public class CustomerJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel2ComponentShown
 
     private void customerFindFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_customerFindFieldKeyReleased
-
         try {
             fetchUser(customerFindField.getText().toString());
         } catch (Exception ex) {

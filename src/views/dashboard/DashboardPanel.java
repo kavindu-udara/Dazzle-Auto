@@ -32,7 +32,6 @@ import views.components.charts.com.raven.chart.ModelChart;
  * @author E
  */
 public class DashboardPanel extends javax.swing.JPanel {
-
     private static final Logger logger = LoggerConfig.getLogger();
     ArrayList<String> categories = new ArrayList<>();
 

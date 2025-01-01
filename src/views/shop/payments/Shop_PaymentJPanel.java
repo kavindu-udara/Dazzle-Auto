@@ -31,9 +31,7 @@ import views.shop.dashboard.ShopDashboard;
  * @author Dinuka
  */
 public class Shop_PaymentJPanel extends javax.swing.JPanel {
-
     private static Logger logger = LoggerConfig.getLogger();
-
     ShopDashboard ShopDashboard = null;
 
     public Shop_PaymentJPanel(ShopDashboard dashboard) {

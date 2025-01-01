@@ -36,7 +36,6 @@ import views.vehicleServiceAppointment.AppointmnetPanel;
  * @author Dinuka
  */
 public class Dashboard extends javax.swing.JFrame {
-
     private static final Logger logger = LoggerConfig.getLogger();
 
     private Color btnDefaultColor = new Color(255, 255, 255);
