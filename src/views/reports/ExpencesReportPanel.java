@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.sql.ResultSet;
 import java.text.DateFormatSymbols;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -50,12 +51,18 @@ public class ExpencesReportPanel extends javax.swing.JPanel {
     public ExpencesReportPanel(Dashboard dashboard) {
         initComponents();
         ExpensesTableRender();
-        loadMonthlyExpenses();
         this.dashboard = dashboard;
+
+        yearlyRadioButton.setSelected(true);
+        monthComboBox.setEnabled(false);
+        jYearChooser1.setEnabled(true);
+
+        // Load yearly data by default
+        loadExpenses();
 
     }
 
-    private void loadMonthlyExpenses() {
+    private void loadExpenses() {
         try {
             DefaultTableModel model = (DefaultTableModel) ExpensesTable.getModel();
             model.setRowCount(0);
@@ -147,8 +154,8 @@ public class ExpencesReportPanel extends javax.swing.JPanel {
     }
 
     public void reloadTable() {
-        loadMonthlyExpenses();
-        
+        loadExpenses();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -384,10 +391,6 @@ public class ExpencesReportPanel extends javax.swing.JPanel {
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void ExpensesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExpensesTableMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ExpensesTableMouseClicked
-
     public JasperPrint makeReport() {
 
         String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
@@ -447,7 +450,7 @@ public class ExpencesReportPanel extends javax.swing.JPanel {
 
     private void monthComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_monthComboBoxItemStateChanged
         // TODO add your handling code here:
-        loadMonthlyExpenses();
+        loadExpenses();
 
     }//GEN-LAST:event_monthComboBoxItemStateChanged
 
@@ -459,7 +462,7 @@ public class ExpencesReportPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         monthComboBox.setEnabled(true);
         jYearChooser1.setEnabled(false);
-        loadMonthlyExpenses();
+        loadExpenses();
 
 
     }//GEN-LAST:event_monthlyRadioButtonActionPerformed
@@ -469,7 +472,7 @@ public class ExpencesReportPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jYearChooser1MouseClicked
 
     private void jYearChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jYearChooser1PropertyChange
-        loadMonthlyExpenses();
+        loadExpenses();
     }//GEN-LAST:event_jYearChooser1PropertyChange
 
     private void jYearChooser1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jYearChooser1KeyPressed
@@ -480,8 +483,12 @@ public class ExpencesReportPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         monthComboBox.setEnabled(false);
         jYearChooser1.setEnabled(true);
-        loadMonthlyExpenses();
+        loadExpenses();
     }//GEN-LAST:event_yearlyRadioButtonActionPerformed
+
+    private void ExpensesTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExpensesTableMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ExpensesTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -8,7 +8,9 @@ import controllers.AppointmentController;
 import controllers.CustomerController;
 import controllers.EmployeeAttendanceController;
 import controllers.EmployeeController;
+import controllers.EmployeeSalaryController;
 import controllers.GrnController;
+import controllers.GrnItemsController;
 import controllers.ProductController;
 import controllers.ServiceInvoiceController;
 import controllers.ServicesController;
@@ -338,7 +340,8 @@ public class ReportsJPanel extends javax.swing.JPanel {
             Count = 0;
 
             //Expences Report
-            addNewReport("Expenses Report", 0);
+            addNewReport("Expenses Report", 12);
+       
 
         } catch (Exception e) {
             e.printStackTrace();
