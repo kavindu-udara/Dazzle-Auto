@@ -20,7 +20,8 @@ public class LoggerConfig {
     public static Logger getLogger() {
         if (logger.getHandlers().length == 0) {
             try {
-                FileHandler fileHandler = new FileHandler("logs/loggers.log", true); // 'true' for append mode
+                String today = TimestampsGenerator.getTodayDate();
+                FileHandler fileHandler = new FileHandler("logs/"+today+"loggers.log", true); // 'true' for append mode
 
                 SimpleFormatter formatter = new SimpleFormatter();
                 fileHandler.setFormatter(formatter);
