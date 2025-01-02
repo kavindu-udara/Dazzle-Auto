@@ -638,11 +638,8 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     }
     
     private void loadSalaryTable() {
-        String startMonth = getStartMonth();
-        String finishMonth = getFinishMonth();
         
         try (ResultSet resultSet = new EmployeeSalaryController().showByMonthId(Integer.parseInt(monthHashMap.get(String.valueOf(monthsComboBox.getSelectedItem()))))) {
-//        try (ResultSet resultSet = new EmployeeSalaryController().showByMonthRange(startMonth, finishMonth)) {
             DefaultTableModel tableModel = (DefaultTableModel) salaryTable.getModel();
             tableModel.setRowCount(0);
             while (resultSet.next()) {
