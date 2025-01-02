@@ -91,7 +91,7 @@ public class ExpencesReportPanel extends javax.swing.JPanel {
                 grandTotal += total;
 
                 String monthName = new DateFormatSymbols().getMonths()[month - 1];
-                model.addRow(new Object[]{totalSalary, totalIncome, total, monthName});
+                model.addRow(new Object[]{String.valueOf(totalSalary), String.valueOf(totalIncome), String.valueOf(total), monthName});
 
             } else if (yearlyRadioButton.isSelected()) {
                 int year = jYearChooser1.getYear();
@@ -112,7 +112,7 @@ public class ExpencesReportPanel extends javax.swing.JPanel {
                     grandTotal += total;
 
                     String monthName = new DateFormatSymbols().getMonths()[month - 1];
-                    model.addRow(new Object[]{totalSalary, totalIncome, total, monthName});
+                    model.addRow(new Object[]{String.valueOf(totalSalary), String.valueOf(totalIncome), String.valueOf(total), monthName});
                 }
             }
 
@@ -411,11 +411,8 @@ public class ExpencesReportPanel extends javax.swing.JPanel {
             params.put("reportDate", dateTime);
 
             JRTableModelDataSource dataSource = new JRTableModelDataSource(ExpensesTable.getModel());
-
             JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
-
             return report;
-
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while makeReport() : " + e.getMessage());

@@ -94,6 +94,8 @@ public class ReportsJPanel extends javax.swing.JPanel {
                         openEmployeeAttendanceReport();
                     } else if (reportName.equals("Expenses Report")) {
                         openExpencesReport();
+                    } else if (reportName.equals("Employee Overview")) {
+                        openEmployeeOverviewReport();
                     }
                 }
 
@@ -238,6 +240,14 @@ public class ReportsJPanel extends javax.swing.JPanel {
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }
 
+    private void openEmployeeOverviewReport() {
+        removeThisPanel();
+
+        EmployeeOverViewPanel employeeOverViewPanel = new EmployeeOverViewPanel(dashboard);
+        dashboard.jReportPanel.add(employeeOverViewPanel, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
+    }
+
     public void loadReports() {
         int Count = 0;
 
@@ -258,6 +268,9 @@ public class ReportsJPanel extends javax.swing.JPanel {
             }
             addNewReport("Employee Attendance Report", Count);
             Count = 0;
+
+            //EmployeeOverview Report
+            addNewReport("Employee Overview", 1);
 
             //Vehicle Report
             ResultSet vehicleshow = new VehicleController().show();
@@ -341,7 +354,6 @@ public class ReportsJPanel extends javax.swing.JPanel {
 
             //Expences Report
             addNewReport("Expenses Report", 12);
-       
 
         } catch (Exception e) {
             e.printStackTrace();
