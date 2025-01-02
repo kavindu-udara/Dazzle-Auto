@@ -4,9 +4,19 @@
  */
 package views.reports;
 
+import controllers.EmployeeAttendanceController;
+import controllers.EmployeeController;
+import controllers.MonthsController;
+import includes.LoggerConfig;
 import java.awt.BorderLayout;
 import javax.swing.SwingUtilities;
 import views.dashboard.Dashboard;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Vector;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,11 +24,63 @@ import views.dashboard.Dashboard;
  */
 public class EmployeeOverViewPanel extends javax.swing.JPanel {
 
+    private HashMap<String, String> monthsHashMap = new HashMap<>();
+    private static final Logger logger = LoggerConfig.getLogger();
+
     Dashboard dashboard = null;
 
     public EmployeeOverViewPanel(Dashboard dashboard) {
         initComponents();
         this.dashboard = dashboard;
+        loadMonthsComboBox();
+        loadTableData();
+    }
+
+    private void loadMonthsComboBox() {
+        try (ResultSet monthsResultSet = new MonthsController().show()) {
+            Vector vector = new Vector();
+            while (monthsResultSet.next()) {
+                String month = monthsResultSet.getString("name");
+                monthsHashMap.put(month, monthsResultSet.getString("id"));
+                vector.add(month);
+            }
+            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
+            monthSelectorComboBox.setModel(comboBoxModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading months : " + e.getMessage());
+        }
+    }
+
+    private void loadTableData() {
+
+        String monthId = monthsHashMap.get(String.valueOf(monthSelectorComboBox.getSelectedItem()));
+
+        try {
+            DefaultTableModel tableModel = (DefaultTableModel) employeesReport.getModel();
+            tableModel.setRowCount(0);
+
+            ResultSet employeeResultSet = new EmployeeController().show();
+
+            while (employeeResultSet.next()) {
+
+                Vector vector = new Vector();
+                vector.add(employeeResultSet.getString("id"));
+                vector.add(employeeResultSet.getString("first_name") + " " + employeeResultSet.getString("last_name"));
+                vector.add(employeeResultSet.getString("email"));
+                vector.add(employeeResultSet.getString("mobile"));
+
+                ResultSet attendanceResultSet = new EmployeeAttendanceController().showCountByEmployeeId(employeeResultSet.getString("id"), Integer.parseInt(monthId), 1);
+                if (attendanceResultSet.next()) {
+                    vector.add(attendanceResultSet.getString("row_count"));
+                }
+                tableModel.addRow(vector);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading table data : " + e.getMessage());
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -28,6 +90,11 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        employeesReport = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        monthSelectorComboBox = new javax.swing.JComboBox<>();
+        jButton2 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1100, 610));
@@ -51,17 +118,68 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
+        employeesReport.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Name", "Email", "Mobile", "Attendance Count"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(employeesReport);
+
+        jLabel2.setText("Select a month");
+
+        monthSelectorComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        monthSelectorComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                monthSelectorComboBoxActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("print");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 974, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 62, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1)
+                                .addContainerGap())
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(54, 54, 54)
+                                        .addComponent(monthSelectorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButton1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 974, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 36, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -72,7 +190,15 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
                         .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(monthSelectorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
+                .addGap(31, 31, 31))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -85,10 +211,25 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void monthSelectorComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthSelectorComboBoxActionPerformed
+        // TODO add your handling code here:
+        loadTableData();
+    }//GEN-LAST:event_monthSelectorComboBoxActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable employeesReport;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JComboBox<String> monthSelectorComboBox;
     // End of variables declaration//GEN-END:variables
 }

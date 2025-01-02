@@ -44,6 +44,10 @@ public class EmployeeAttendanceController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + employeeId + "' ");
     }
 
+    public ResultSet showCountByEmployeeId(String employeeId, int monthId, int statusId) throws Exception {
+        return MySqlConnection.executeSearch("SELECT COUNT(*) AS row_count FROM `" + tableName + "` INNER JOIN `attendance_date` ON `"+tableName+"`.`attendance_date_id`=`attendance_date`.`id` WHERE `employee_id`='" + employeeId + "' AND `attendance_date`.`date` LIKE '%-"+monthId+"-%' AND `attendance_status_id`='"+statusId+"'  ");
+    }
+
     public ResultSet showByCustomQuery(String query) throws Exception {
         return MySqlConnection.executeSearch(query);
     }
@@ -77,5 +81,9 @@ public class EmployeeAttendanceController {
 
     public ResultSet delete(int id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
+    }
+    
+    public ResultSet showCustomQuery(String query) throws Exception{
+        return MySqlConnection.executeSearch(query);
     }
 }
