@@ -21,13 +21,20 @@ import javax.swing.table.JTableHeader;
 import raven.toast.Notifications;
 import includes.LoggerConfig;
 import includes.MySqlConnection;
+import java.io.File;
+import java.io.InputStream;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.EmployeeModel;
 import models.LoginModel;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 import views.components.loginAccessTableRender.DeleteActionCellEditor;
 import views.components.loginAccessTableRender.DeleteActionEvent;
 import views.components.loginAccessTableRender.DeleteCellRender;
@@ -305,6 +312,25 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+                //Report  
+        try {
+            String imgPath = "";
+            
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/loginAccessReport.jasper");
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+            imgPath = img.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("img", imgPath);
+
+            JREmptyDataSource dataSource = new JREmptyDataSource();
+                    
+            JasperPrint report = JasperFillManager.fillReport(s, params,dataSource);
+            JasperViewer.viewReport(report, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while Login Access printing : " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
