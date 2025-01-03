@@ -24,7 +24,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
-
 /**
  *
  * @author Dumindu
@@ -40,7 +39,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
 
         monthComboBox.setEnabled(false);
         jYearChooser1.setEnabled(false);
-        
+
         ServiceStationIncomeField.setEditable(false);
         ServiceStationIncomeField.setFocusable(false);
         GrossIncomeField.setEditable(false);
@@ -61,6 +60,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         TotalExpencesField.setFocusable(false);
 
         TaxRateField.setText("30%");
+        jButton1.setEnabled(false);
 
     }
 
@@ -80,7 +80,6 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         taxableIncome();
         FinalTaxCalculation();
         loadSalaries();
-       
 
     }
 
@@ -109,33 +108,31 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         }
     }
 
- private void loadStationIncome() {
-    try {
-        int month = monthComboBox.getSelectedIndex() + 1;
-        int year = jYearChooser1.getYear();
+    private void loadStationIncome() {
+        try {
+            int month = monthComboBox.getSelectedIndex() + 1;
+            int year = jYearChooser1.getYear();
 
-        ServiceInvoiceController serviceInvoiceController = new ServiceInvoiceController();
-        ResultSet resultSet = null;
+            ServiceInvoiceController serviceInvoiceController = new ServiceInvoiceController();
+            ResultSet resultSet = null;
 
-        if (monthlyRadioButton.isSelected()) {
-            // Pass month and year as integers (without quotes)
-            resultSet = serviceInvoiceController.getMonthlyTotal(month, year);
-        } else if (yearlyRadioButton.isSelected()) {
-            resultSet = serviceInvoiceController.getYearlyTotal(year);
+            if (monthlyRadioButton.isSelected()) {
+                // Pass month and year as integers (without quotes)
+                resultSet = serviceInvoiceController.getMonthlyTotal(month, year);
+            } else if (yearlyRadioButton.isSelected()) {
+                resultSet = serviceInvoiceController.getYearlyTotal(year);
+            }
+
+            if (resultSet != null && resultSet.next()) {
+                double totalIncome = resultSet.getDouble("total_income");
+                ServiceStationIncomeField.setText(String.format("%.2f", totalIncome));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error loading station income: " + e.getMessage());
         }
-
-        if (resultSet != null && resultSet.next()) {
-            double totalIncome = resultSet.getDouble("total_income");
-            ServiceStationIncomeField.setText(String.format("%.2f", totalIncome));
-        }
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error loading station income: " + e.getMessage());
     }
-}
-
-
 
     private double grossIncome = 0;
     private double totalExpences = 0;
@@ -159,7 +156,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     }
 
     private void loadSalaries() {
-        
+
         try {
             int month = monthComboBox.getSelectedIndex() + 1;
             int year = jYearChooser1.getYear();
@@ -179,12 +176,11 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
 
             }
 
-           
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error loading Salary Payments: " + e.getMessage());
         }
-         
+
     }
 
     private void loadSupplierPayments() {
@@ -214,7 +210,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     }
 
     private void totalExpences() {
-        
+
         totalExpences = 0;
 
         String salary = EmployeeSalaryField.getText().isEmpty() ? "0" : EmployeeSalaryField.getText();
@@ -223,7 +219,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         String other = OtherField.getText().isEmpty() ? "0" : OtherField.getText();
 
         try {
-            double expencesCal = Double.parseDouble(salary)+ Double.parseDouble(supplierPayments)
+            double expencesCal = Double.parseDouble(salary) + Double.parseDouble(supplierPayments)
                     + Double.parseDouble(bills) + Double.parseDouble(other);
 
             totalExpences += expencesCal;
@@ -609,6 +605,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         jYearChooser1.setEnabled(false);
         MethodCalling();
         FinalTaxCalculation();
+        jButton1.setEnabled(true);
 
     }//GEN-LAST:event_monthlyRadioButtonActionPerformed
 
@@ -617,6 +614,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         monthComboBox.setEnabled(false);
         jYearChooser1.setEnabled(true);
         MethodCalling();
+        jButton1.setEnabled(true);
     }//GEN-LAST:event_yearlyRadioButtonActionPerformed
 
     private void monthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthComboBoxActionPerformed
@@ -652,6 +650,7 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     private void jYearChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jYearChooser1PropertyChange
         // TODO add your handling code here:
         MethodCalling();
+        
     }//GEN-LAST:event_jYearChooser1PropertyChange
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -660,12 +659,12 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
         //Report  
         try {
             String dateTime = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             String imgPath = "";
-            
+
             InputStream s = this.getClass().getResourceAsStream("/resources/reports/IncomeeTax.jasper");
             String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
             imgPath = img.replace("\\", "/");
@@ -688,20 +687,21 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
             params.put("finalTax", FinalTaxField.getText());
 
             JREmptyDataSource dataSource = new JREmptyDataSource();
-                    
-            JasperPrint report = JasperFillManager.fillReport(s, params,dataSource);
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
             JasperViewer.viewReport(report, false);
         } catch (Exception e) {
             e.printStackTrace();
             logger.severe("Error while grn printing : " + e.getMessage());
         }
 
-       
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void monthComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_monthComboBoxItemStateChanged
         // TODO add your handling code here:
         MethodCalling();
+        
     }//GEN-LAST:event_monthComboBoxItemStateChanged
 
 
@@ -757,6 +757,6 @@ public class IncomeTaxCalculator extends javax.swing.JPanel {
         TotalExpencesField.setText("");
         BillsField.setText("");
         OtherField.setText("");
-       
+
     }
 }
