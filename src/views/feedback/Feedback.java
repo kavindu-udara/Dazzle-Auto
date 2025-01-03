@@ -111,7 +111,7 @@ public class Feedback extends javax.swing.JDialog {
             feedbackTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -202,6 +202,7 @@ public class Feedback extends javax.swing.JDialog {
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         // TODO add your handling code here:
         loadData();
+        feedbackTableRender();
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     /**
