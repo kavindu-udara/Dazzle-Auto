@@ -4,10 +4,7 @@
  */
 package views.reports;
 
-import controllers.AppointmentStatusController;
 import controllers.EmployeeController;
-import controllers.StatusController;
-import controllers.StockController;
 import controllers.SupplierController;
 import includes.LoggerConfig;
 import includes.MySqlConnection;
@@ -17,7 +14,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ItemEvent;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;

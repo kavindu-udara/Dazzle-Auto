@@ -6,7 +6,6 @@ package views.supplier;
 
 import controllers.AddressController;
 import controllers.CityController;
-import controllers.ProductBrandController;
 import controllers.SupplierController;
 import includes.IDGenarator;
 import includes.LoggerConfig;
