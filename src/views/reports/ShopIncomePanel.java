@@ -172,7 +172,7 @@ public class ShopIncomePanel extends javax.swing.JPanel {
         });
 
         jLabel9.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jLabel9.setText("Number Of Suppliers  :");
+        jLabel9.setText("Number Of Invoices :");
 
         jLabel6.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 102, 0));
