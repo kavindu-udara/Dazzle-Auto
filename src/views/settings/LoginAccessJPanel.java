@@ -34,6 +34,7 @@ import models.LoginModel;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import views.components.loginAccessTableRender.DeleteActionCellEditor;
 import views.components.loginAccessTableRender.DeleteActionEvent;
@@ -323,7 +324,7 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
             HashMap<String, Object> params = new HashMap<>();
             params.put("img", imgPath);
 
-            JREmptyDataSource dataSource = new JREmptyDataSource();
+            JRTableModelDataSource dataSource = new JRTableModelDataSource(jLoginAccessTable.getModel());
                     
             JasperPrint report = JasperFillManager.fillReport(s, params,dataSource);
             JasperViewer.viewReport(report, false);
