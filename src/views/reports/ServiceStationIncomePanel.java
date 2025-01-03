@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -52,7 +53,7 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
         this.dashboard = dashboard;
         IncomeTableRender();
     }
-    
+
     private void IncomeTableRender() {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -77,7 +78,7 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 5; i++) {
             jPaidInvoiceTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
@@ -97,6 +98,12 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
         printReportb = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jSortComboBox = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        PriceFrom1 = new javax.swing.JFormattedTextField();
+        jLabel9 = new javax.swing.JLabel();
+        PriceTo1 = new javax.swing.JFormattedTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
         setPreferredSize(new java.awt.Dimension(1100, 610));
@@ -127,11 +134,11 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "INVOICE ID", "Vehicle No", "Date", "Total", "Paid Amount", "Balance", "Payment Method", "Issued By"
+                "INVOICE ID", "Vehicle No", "Date", "Total", "Issued By"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true, true
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -190,6 +197,45 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel8.setText("Price From");
+
+        PriceFrom1.setForeground(new java.awt.Color(0, 0, 204));
+        PriceFrom1.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
+        PriceFrom1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PriceFrom1ActionPerformed(evt);
+            }
+        });
+        PriceFrom1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                PriceFrom1KeyReleased(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel9.setText("To");
+
+        PriceTo1.setForeground(new java.awt.Color(0, 0, 204));
+        PriceTo1.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
+        PriceTo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PriceTo1ActionPerformed(evt);
+            }
+        });
+        PriceTo1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                PriceTo1KeyReleased(evt);
+            }
+        });
+
+        jLabel10.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel10.setText("Number Of Invoices  :");
+
+        jLabel6.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel6.setText("00");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -200,8 +246,12 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(viewReportb)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(printReportb))
@@ -210,13 +260,20 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
                                     .addComponent(jButton1)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 983, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1067, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(16, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(jSortComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1067, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(jSortComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(PriceFrom1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(PriceTo1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9))))
+                        .addContainerGap(16, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,17 +283,32 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSortComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jSortComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(PriceFrom1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PriceTo1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(7, 7, 7)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(printReportb)
-                    .addComponent(viewReportb))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(printReportb)
+                        .addComponent(viewReportb))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel10)
+                        .addComponent(jLabel6)))
                 .addGap(18, 18, 18))
             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
         );
@@ -264,9 +336,28 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
         dashboard.jReportPanel.add(dashboard.reportsJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }//GEN-LAST:event_jButton1ActionPerformed
+
     public void loadInvoices() {
         try {
-            ResultSet resultSet = new ServiceInvoiceController().search("");
+            double minPrice = PriceFrom1.getText().isEmpty() ? 0 : Double.parseDouble(PriceFrom1.getText());
+            double maxPrice = PriceTo1.getText().isEmpty() ? 0 : Double.parseDouble(PriceTo1.getText());
+
+            String whereClause = "";
+            if (minPrice > 0 && maxPrice == 0) {
+                whereClause += " AND `service_invoice`.`total` >= " + minPrice + " ";
+            } else if (minPrice == 0 && maxPrice > 0) {
+                whereClause += " AND `service_invoice`.`total` <= " + maxPrice + " ";
+            } else if (minPrice > 0 && maxPrice > 0) {
+                whereClause += " AND `service_invoice`.`total` BETWEEN " + minPrice + " AND " + maxPrice + " ";
+            }
+
+            String query = "SELECT service_invoice.*, employee.first_name, employee.last_name FROM `service_invoice` "
+                    + "INNER JOIN employee ON service_invoice.employee_id = employee.id "
+                    + "WHERE 1=1 " + whereClause
+                    + "ORDER BY service_invoice.date DESC";
+
+            ServiceInvoiceController controller = new ServiceInvoiceController();
+            ResultSet resultSet = MySqlConnection.executeSearch(query);
 
             DefaultTableModel dtm = (DefaultTableModel) jPaidInvoiceTable.getModel();
             dtm.setRowCount(0);
@@ -279,29 +370,30 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
                 vector.add(resultSet.getString("vehicle_number"));
                 vector.add(resultSet.getString("date"));
                 vector.add(resultSet.getString("total"));
-                vector.add(resultSet.getString("paid_amount"));
-                vector.add(resultSet.getString("balance"));
-                vector.add(resultSet.getString("method"));
                 vector.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
 
                 dtm.addRow(vector);
             }
 
+            jLabel6.setText(String.valueOf(row));
+
+        } catch (NumberFormatException e) {
+            logger.severe("Invalid price range input: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Please enter valid numbers for the price range.", "Input Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.severe("Error while loading invoices : " + e.getMessage());
+            logger.severe("Error while loading invoices: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "An error occurred while loading invoices. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     }
+
     public ResultSet search(String searchText, String sortOption) throws Exception {
-        // Base query
 
         String tableName = "service_invoice";
         String query = "SELECT * FROM `" + tableName + "` "
                 + "INNER JOIN payment_method ON service_invoice.payment_method_id = payment_method.id "
                 + "INNER JOIN employee ON service_invoice.employee_id = employee.id";
 
-        // Add search filters if `searchText` is not empty
         if (searchText != null && !searchText.trim().isEmpty()) {
             query += " WHERE `vehicle_number` LIKE '%" + searchText + "%' OR "
                     + "`service_invoice`.`id` LIKE '%" + searchText + "%' OR "
@@ -309,7 +401,6 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
                     + "`employee`.`last_name` LIKE '%" + searchText + "%'";
         }
 
-        // Add sorting conditions based on the selected option
         if (sortOption != null && !sortOption.trim().isEmpty()) {
             if (sortOption.equals("Vehicle No A-Z")) {
                 query += " ORDER BY `vehicle_number` ASC";
@@ -325,11 +416,9 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
                 query += " ORDER BY `service_invoice`.`date` DESC";
             }
         } else {
-            // Default sorting if no specific sort option is provided
             query += " ORDER BY `service_invoice`.`date` DESC";
         }
 
-        // Execute the query
         return MySqlConnection.executeSearch(query);
     }
 
@@ -340,7 +429,7 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
 
         String headerImg;
         try {
-            InputStream s = this.getClass().getResourceAsStream("/resources/reports/Service_Station_Income.jasper");
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/ServiceStationIncomeReport.jasper");
             String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
 
             headerImg = img.replace("\\", "/");
@@ -389,44 +478,31 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
 
     private void jSortComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jSortComboBoxItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
-            // Call the method to sort and display invoices
             try {
-                // Fetch search text and selected sort option
                 String searchText = "";
                 String sortOption = String.valueOf(jSortComboBox.getSelectedItem());
 
-                // Execute the search with sorting
                 ResultSet resultSet = search(searchText, sortOption);
 
-                // Get the table model
                 DefaultTableModel model = (DefaultTableModel) jPaidInvoiceTable.getModel();
-                model.setRowCount(0); // Clear the table
+                model.setRowCount(0);
 
-                // Populate the table with data from ResultSet
                 while (resultSet.next()) {
                     String invoiceId = resultSet.getString("id");
                     String vehicleNo = resultSet.getString("vehicle_number");
                     String date = resultSet.getString("date");
-                    double total = resultSet.getDouble("total"); // Total Amount
-                    double paidAmount = resultSet.getDouble("paid_amount");
-                    double balance = resultSet.getDouble("balance");
-                    String paymentMethod = resultSet.getString("method"); // Payment Method
+                    double total = resultSet.getDouble("total");
                     String issuedBy = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
 
-                    // Add the row to the table model
                     model.addRow(new Object[]{
-                        invoiceId, // Invoice ID
-                        vehicleNo, // Vehicle Number
-                        date, // Date
-                        total, // Total Amount
-                        paidAmount, // Paid Amount
-                        balance, // Balance
-                        paymentMethod, // Payment Method
-                        issuedBy // Issued By
+                        invoiceId,
+                        vehicleNo,
+                        date,
+                        total,
+                        issuedBy
                     });
                 }
 
-                // Revalidate and repaint the table to reflect updates
                 jPaidInvoiceTable.revalidate();
                 jPaidInvoiceTable.repaint();
 
@@ -443,11 +519,34 @@ public class ServiceStationIncomePanel extends javax.swing.JPanel {
         //
     }//GEN-LAST:event_jSortComboBoxActionPerformed
 
+    private void PriceFrom1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PriceFrom1KeyReleased
+
+        loadInvoices();
+    }//GEN-LAST:event_PriceFrom1KeyReleased
+
+    private void PriceTo1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PriceTo1KeyReleased
+        loadInvoices();
+    }//GEN-LAST:event_PriceTo1KeyReleased
+
+    private void PriceTo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PriceTo1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PriceTo1ActionPerformed
+
+    private void PriceFrom1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PriceFrom1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PriceFrom1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFormattedTextField PriceFrom1;
+    private javax.swing.JFormattedTextField PriceTo1;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JTable jPaidInvoiceTable;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
