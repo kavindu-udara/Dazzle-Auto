@@ -24,6 +24,7 @@ import views.components.help.PDFViewer;
 import views.settings.Settings;
 import views.customer.CustomerJPanel;
 import views.employee.StaffJPanel;
+import views.feedback.Feedback;
 import views.financeAndHr.FinanceAndHrJPanel;
 import views.ourServices.ourServicesJPanel;
 import views.payment.PaymentsPanel;
@@ -96,6 +97,10 @@ public class Dashboard extends javax.swing.JFrame {
             jCustomerButton.setEnabled(false);
             jOurServicesButton.setEnabled(false);
             jReportsButton.setEnabled(false);
+        }
+        
+        if (loginModel.getAccessRoleId() != 1) {
+            feedbackMenu.setEnabled(false);
         }
     }
 
@@ -198,11 +203,12 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel49 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
         settingsMenu = new javax.swing.JMenu();
         jsettings = new javax.swing.JMenuItem();
         jLoginAccessMenuItem = new javax.swing.JMenuItem();
         jDatabaseMenuItem = new javax.swing.JMenuItem();
+        feedbackMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         jUsermanual = new javax.swing.JMenuItem();
         jTutorialVideo = new javax.swing.JMenuItem();
@@ -490,9 +496,6 @@ public class Dashboard extends javax.swing.JFrame {
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
         settingsMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/settings-15.png"))); // NOI18N
         settingsMenu.setText("Settings");
         settingsMenu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -532,6 +535,23 @@ public class Dashboard extends javax.swing.JFrame {
         settingsMenu.add(jDatabaseMenuItem);
 
         jMenuBar1.add(settingsMenu);
+
+        feedbackMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/feedback-15.png"))); // NOI18N
+        feedbackMenu.setText(" Feedback");
+        feedbackMenu.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
+        jMenuItem1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/feedback-15.png"))); // NOI18N
+        jMenuItem1.setText("Feedback ");
+        jMenuItem1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        feedbackMenu.add(jMenuItem1);
+
+        jMenuBar1.add(feedbackMenu);
 
         helpMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/icons8-question-mark-15.png"))); // NOI18N
         helpMenu.setText("Help");
@@ -787,6 +807,10 @@ public class Dashboard extends javax.swing.JFrame {
         pdfViewer.setVisible(true);
     }//GEN-LAST:event_jUsermanualActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        new Feedback(this, true).setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     private void jTutorialVideoActionPerformed(java.awt.event.ActionEvent evt) {
 
         TutorialVideo Video = new TutorialVideo();
@@ -798,6 +822,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel HeaderPanel;
     private javax.swing.JPanel dashboardMainPanel;
     private javax.swing.JLabel empImageLabel;
+    private javax.swing.JMenu feedbackMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel jAppointmentPanel;
     private javax.swing.JButton jAppointmentsButton;
@@ -815,8 +840,8 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel49;
     private javax.swing.JMenuItem jLoginAccessMenuItem;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JButton jOurServicesButton;
     private javax.swing.JPanel jOurServicesPanel;
     private javax.swing.JPanel jPanel1;
