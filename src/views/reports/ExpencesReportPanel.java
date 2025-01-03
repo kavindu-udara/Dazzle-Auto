@@ -404,8 +404,17 @@ public class ExpencesReportPanel extends javax.swing.JPanel {
 
             HashMap<String, Object> params = new HashMap<>();
             params.put("img", headerImg);
-            params.put("month", String.valueOf(monthComboBox.getSelectedItem()));
+           
+            if (monthlyRadioButton.isSelected()) {
+             params.put("month", String.valueOf(monthComboBox.getSelectedItem()));
+            }else{
+                params.put("month", "----");
+            }
+            if (yearlyRadioButton.isSelected()){
             params.put("year", String.valueOf(jYearChooser1.getYear()));
+            }else{
+                 params.put("year","--/--/----");
+            }
             params.put("total", jLabel5.getText());
             params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
             params.put("reportDate", dateTime);
