@@ -6,8 +6,11 @@ package views.reports;
 
 import controllers.ShopInoviceController;
 import includes.LoggerConfig;
+import includes.MySqlConnection;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.sql.ResultSet;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -22,6 +25,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -61,11 +65,14 @@ public class ShopIncomePanel extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jPaidInvoiceTable = new javax.swing.JTable();
-        jLabel5 = new javax.swing.JLabel();
-        jInvoiceSerachField = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         viewReportb = new javax.swing.JButton();
         printReportb = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        PriceFrom1 = new javax.swing.JFormattedTextField();
+        jLabel8 = new javax.swing.JLabel();
+        PriceTo1 = new javax.swing.JFormattedTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1100, 610));
         setPreferredSize(new java.awt.Dimension(1100, 610));
@@ -96,11 +103,11 @@ public class ShopIncomePanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "INVOICE ID", "Date", "Total", "Paid Amount", "Balance", "Payment Method", "Issued By"
+                "INVOICE ID", "Date", "Total", "Issued By"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -117,24 +124,6 @@ public class ShopIncomePanel extends javax.swing.JPanel {
             }
         });
         jScrollPane2.setViewportView(jPaidInvoiceTable);
-
-        jLabel5.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jLabel5.setText("Paid Invoices");
-
-        jInvoiceSerachField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
-        jInvoiceSerachField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jInvoiceSerachFieldActionPerformed(evt);
-            }
-        });
-        jInvoiceSerachField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jInvoiceSerachFieldKeyReleased(evt);
-            }
-        });
-
-        jLabel6.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        jLabel6.setText("Search INVOICE :");
 
         viewReportb.setBackground(new java.awt.Color(51, 51, 51));
         viewReportb.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
@@ -160,39 +149,76 @@ public class ShopIncomePanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel7.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel7.setText("Price From");
+
+        PriceFrom1.setForeground(new java.awt.Color(0, 0, 204));
+        PriceFrom1.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
+        PriceFrom1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                PriceFrom1KeyReleased(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel8.setText("To");
+
+        PriceTo1.setForeground(new java.awt.Color(0, 0, 204));
+        PriceTo1.setFont(new java.awt.Font("Roboto", 2, 14)); // NOI18N
+        PriceTo1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                PriceTo1KeyReleased(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLabel9.setText("Number Of Suppliers  :");
+
+        jLabel6.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel6.setText("00");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1065, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jButton1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 983, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 18, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel9)
+                                .addGap(12, 12, 12)
                                 .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(viewReportb)
                                 .addGap(18, 18, 18)
-                                .addComponent(jInvoiceSerachField, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 1065, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jButton1)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 983, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 12, Short.MAX_VALUE))
+                                .addComponent(printReportb)))
+                        .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(viewReportb)
-                        .addGap(18, 18, 18)
-                        .addComponent(printReportb)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(PriceFrom1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PriceTo1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1086, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1086, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(177, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
@@ -204,21 +230,27 @@ public class ShopIncomePanel extends javax.swing.JPanel {
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(5, 5, 5)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jInvoiceSerachField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PriceFrom1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PriceTo1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(viewReportb)
-                    .addComponent(printReportb))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(viewReportb)
+                        .addComponent(printReportb))
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel6))
                 .addGap(18, 18, 18))
             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(84, 84, 84)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(3, 3, 3)
+                    .addGap(121, 121, 121)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(75, Short.MAX_VALUE)))
         );
@@ -270,49 +302,63 @@ public class ShopIncomePanel extends javax.swing.JPanel {
         dashboard.jReportPanel.add(dashboard.reportsJPanel, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(dashboard.jReportPanel);
     }//GEN-LAST:event_jButton1ActionPerformed
+
     public void loadInvoices() {
         try {
-            ResultSet resultSet = new ShopInoviceController().search(jInvoiceSerachField.getText());
+            double minPrice = PriceFrom1.getText().isEmpty() ? 0 : Double.parseDouble(PriceFrom1.getText());
+            double maxPrice = PriceTo1.getText().isEmpty() ? 0 : Double.parseDouble(PriceTo1.getText());
+
+            String whereClause = "";
+            if (minPrice > 0 && maxPrice == 0) {
+                whereClause += " AND `shop_invoice`.`total` >= " + minPrice + " ";
+            } else if (minPrice == 0 && maxPrice > 0) {
+                whereClause += " AND `shop_invoice`.`total` <= " + maxPrice + " ";
+            } else if (minPrice > 0 && maxPrice > 0) {
+                whereClause += " AND `shop_invoice`.`total` BETWEEN " + minPrice + " AND " + maxPrice + " ";
+            }
+
+            String query = "SELECT shop_invoice.*, employee.first_name, employee.last_name FROM `shop_invoice` "
+                    + "INNER JOIN employee ON shop_invoice.employee_id = employee.id "
+                    + "WHERE 1=1 " + whereClause
+                    + "ORDER BY shop_invoice.date DESC";
+            ResultSet resultSet = MySqlConnection.executeSearch(query);
 
             DefaultTableModel dtm = (DefaultTableModel) jPaidInvoiceTable.getModel();
             dtm.setRowCount(0);
-
             int row = 0;
+
             while (resultSet.next()) {
                 row++;
+
                 Vector<String> vector = new Vector<>();
                 vector.add(resultSet.getString("id"));
                 vector.add(resultSet.getString("date"));
                 vector.add(resultSet.getString("total"));
-                vector.add(resultSet.getString("paid_amount"));
-                vector.add(resultSet.getString("balance"));
-                vector.add(resultSet.getString("method"));
                 vector.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
 
                 dtm.addRow(vector);
             }
+            jLabel6.setText(String.valueOf(row));
 
+        } catch (NumberFormatException e) {
+            logger.severe("Invalid price range input: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Please enter valid numbers for the price range.", "Input Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.severe("Error while loading invoices : " + e.getMessage());
+            logger.severe("Error while loading invoices: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "An error occurred while loading invoices. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+
     private void jPaidInvoiceTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPaidInvoiceTableMouseClicked
 
     }//GEN-LAST:event_jPaidInvoiceTableMouseClicked
-
-    private void jInvoiceSerachFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInvoiceSerachFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jInvoiceSerachFieldActionPerformed
-
-    private void jInvoiceSerachFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jInvoiceSerachFieldKeyReleased
-        loadInvoices();
-    }//GEN-LAST:event_jInvoiceSerachFieldKeyReleased
     public JasperPrint makeReport() {
 
         String headerImg;
         try {
-            InputStream s = this.getClass().getResourceAsStream("/resources/reports/ShopPayment.jasper");
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/ShopInvoice.jasper");
             String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
 
             headerImg = img.replace("\\", "/");
@@ -359,13 +405,25 @@ public class ShopIncomePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_printReportbActionPerformed
 
+    private void PriceFrom1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PriceFrom1KeyReleased
+
+        loadInvoices();
+    }//GEN-LAST:event_PriceFrom1KeyReleased
+
+    private void PriceTo1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PriceTo1KeyReleased
+        loadInvoices();
+    }//GEN-LAST:event_PriceTo1KeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFormattedTextField PriceFrom1;
+    private javax.swing.JFormattedTextField PriceTo1;
     private javax.swing.JButton jButton1;
-    private javax.swing.JTextField jInvoiceSerachField;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JTable jPaidInvoiceTable;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
