@@ -36,15 +36,17 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
+import models.LoginModel;
 import models.SalaryModel;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
- * @author kavindu
+ * @author Samartha
  */
 public class EmployeeSalaryPanel extends javax.swing.JPanel {
     
@@ -129,6 +131,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         employeeTypeLabel = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         regDate = new javax.swing.JLabel();
+        viewReportb = new javax.swing.JButton();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -240,7 +243,7 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         salaryTable.setRowHeight(25);
         jScrollPane1.setViewportView(salaryTable);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 208, 1070, 360));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 208, 1070, 300));
 
         jLabel4.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel4.setText("Bonus :");
@@ -328,6 +331,19 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         jPanel1.add(regDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 16, 120, 30));
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1120, 60));
+
+        viewReportb.setBackground(new java.awt.Color(51, 51, 51));
+        viewReportb.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
+        viewReportb.setForeground(new java.awt.Color(255, 255, 255));
+        viewReportb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/analyze-30.png"))); // NOI18N
+        viewReportb.setText(" Save Report");
+        viewReportb.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        viewReportb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewReportbActionPerformed(evt);
+            }
+        });
+        add(viewReportb, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 510, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     public void salaryTableRender() {
@@ -590,6 +606,49 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
         leavesCountValueLabel.setText("0");
         loadPresentageSalary();
     }//GEN-LAST:event_ClearAllBtnActionPerformed
+
+    public JasperPrint makeReport() {
+
+        String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
+
+        String headerImg;
+        try {
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/EmpolyeeSalaryReport.jasper");
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+
+            headerImg = img.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("img", headerImg);
+            params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
+            params.put("reportDate", dateTime);
+            params.put("months", String.valueOf(monthsComboBox.getSelectedItem()));
+
+
+            JRTableModelDataSource dataSource = new JRTableModelDataSource(salaryTable.getModel());
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+
+            return report;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while makeReport() : " + e.getMessage());
+        }
+        return null;
+    }
+    private void viewReportbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReportbActionPerformed
+
+        try {
+            JasperPrint report = makeReport();
+            JasperViewer.viewReport(report, false);
+
+            logger.info("Employee Salary Report Viewed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while viewReportbActionPerformed : " + e.getMessage());
+        }
+    }//GEN-LAST:event_viewReportbActionPerformed
     
     private void loadPresentageSalary() {
         if (Integer.parseInt(leavesCountValueLabel.getText()) > Integer.parseInt(allowedLeavesCountLabel.getText())) {
@@ -711,5 +770,6 @@ public class EmployeeSalaryPanel extends javax.swing.JPanel {
     private javax.swing.JLabel regDate;
     private javax.swing.JTable salaryTable;
     private javax.swing.JTextField totalPriceField;
+    private javax.swing.JButton viewReportb;
     // End of variables declaration//GEN-END:variables
 }
