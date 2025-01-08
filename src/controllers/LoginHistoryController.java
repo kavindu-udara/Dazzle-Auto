@@ -17,6 +17,10 @@ public class LoginHistoryController {
 
     private final String tableName = "login_history";
 
+    public ResultSet show() throws Exception{
+        return MySqlConnection.executeSearch("SELECT * FROM `"+tableName+"`");
+    }
+    
     public ResultSet store(LoginHistoryModel loginHistoryModel) throws Exception {
         return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`created_at`, `username`) VALUES "
                 + "('" + loginHistoryModel.getCreatedAt() + "', "

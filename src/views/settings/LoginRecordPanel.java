@@ -4,19 +4,46 @@
  */
 package views.settings;
 
+import controllers.LoginHistoryController;
+import includes.LoggerConfig;
+import java.sql.ResultSet;
+import java.util.Vector;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author E
  */
 public class LoginRecordPanel extends javax.swing.JPanel {
 
+    private static Logger logger = LoggerConfig.getLogger();
+
     /**
      * Creates new form LoginRecordPanel
      */
     public LoginRecordPanel() {
         initComponents();
+        loadTableData();
     }
 
+    private void loadTableData(){
+        try(ResultSet loginHistoryResultSet = new LoginHistoryController().show()){
+            DefaultTableModel tableModel = (DefaultTableModel) loginHstoryTable.getModel();
+            tableModel.setRowCount(0);
+            while(loginHistoryResultSet.next()){
+            Vector vector = new Vector();
+                vector.add(loginHistoryResultSet.getString("id"));
+                vector.add(loginHistoryResultSet.getString("created_at"));
+                vector.add(loginHistoryResultSet.getString("username"));
+                
+                tableModel.addRow(vector);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.severe("Error while showing login history data : "+e.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,6 +54,9 @@ public class LoginRecordPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        loginHstoryTable = new javax.swing.JTable();
+        printButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(853, 575));
@@ -38,22 +68,57 @@ public class LoginRecordPanel extends javax.swing.JPanel {
         jLabel1.setText("Login Record");
         jLabel1.setOpaque(true);
 
+        loginHstoryTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "created at", "username"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(loginHstoryTable);
+
+        printButton.setText("print");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(printButton)
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 527, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(printButton)
+                .addGap(0, 44, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable loginHstoryTable;
+    private javax.swing.JButton printButton;
     // End of variables declaration//GEN-END:variables
 }
