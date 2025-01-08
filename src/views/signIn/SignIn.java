@@ -204,13 +204,13 @@ public class SignIn extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SignInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignInButtonActionPerformed
-//        String username = usernameField.getText().replaceAll("\\s+", "");
-//        String password = String.valueOf(passwordField.getPassword()).replaceAll("\\s+", "");
+        String username = usernameField.getText().replaceAll("\\s+", "");
+        String password = String.valueOf(passwordField.getPassword()).replaceAll("\\s+", "");
 
-        LoginHistoryModel loginHistoryModel = new LoginHistoryModel();
-        loginHistoryModel.setUsername(usernameField.getText().replaceAll("\\s+", ""));
-        loginHistoryModel.setCreatedAt(String.valueOf(TimestampsGenerator.getLocalDateTime()));
-
+//        LoginHistoryModel loginHistoryModel = new LoginHistoryModel();
+//        loginHistoryModel.setUsername(usernameField.getText().replaceAll("\\s+", ""));
+//        loginHistoryModel.setCreatedAt(String.valueOf(TimestampsGenerator.getLocalDateTime()));
+//
 //
 //        if (username.isEmpty()) {
 //            Notifications.getInstance().show(
@@ -248,12 +248,12 @@ public class SignIn extends javax.swing.JFrame {
 //                        this.dispose();
 //                        new ShopDashboard(loginModel).setVisible(true);
 //                        logger.info(username + " Logged Into Shop ");
-        try {
-            new LoginHistoryController().store(loginHistoryModel);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+//        try {
+//            new LoginHistoryController().store(loginHistoryModel);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
 //
 //                    } else if (choosedLogin.equals("ServiceStation")) {
 //
@@ -261,12 +261,12 @@ public class SignIn extends javax.swing.JFrame {
 //                        dashboard = new Dashboard(loginModel);
 //                        dashboard.setVisible(true);
 //                        logger.info(username + " Logged Into Service Station ");
-//
-        try {
-            new LoginHistoryController().store(loginHistoryModel);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+////
+//        try {
+//            new LoginHistoryController().store(loginHistoryModel);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 //                    } else {
 //                        JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
 //                    }
@@ -282,6 +282,8 @@ public class SignIn extends javax.swing.JFrame {
 //                logger.warning("Error while SignInButtonActionPerformed : " + ex.getMessage());
 //            }
 //        }
+        
+        //meka nikan yana eka
         LoginModel loginModel = new LoginModel();
         loginModel.setEmployeeId("EMP01");
         loginModel.setFirstName("Super");
@@ -304,6 +306,7 @@ public class SignIn extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
         }
 
+        //meka nikan yana eka
     }//GEN-LAST:event_SignInButtonActionPerformed
 
     private void jButton2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MousePressed

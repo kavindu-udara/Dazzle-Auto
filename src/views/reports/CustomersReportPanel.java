@@ -4,6 +4,7 @@
  */
 package views.reports;
 
+import controllers.AppointmentStatusController;
 import controllers.CustomerController;
 import includes.LoggerConfig;
 import includes.MySqlConnection;
@@ -16,10 +17,13 @@ import java.awt.Font;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -61,9 +65,9 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         loadCustomer();
         customerViewReportTableRender();
         this.dashboard = dashboard;
-        toDate.setEditor(toDateField);
-        fromDate.setEditor(fromDateField);
-       
+        toDate.setEditor(fromDateField);
+        fromDate.setEditor(toDateField);
+
     }
     //constructor for selector
 
@@ -115,14 +119,12 @@ public class CustomersReportPanel extends javax.swing.JPanel {
             HashMap<Integer, String> customerTypeMap = new HashMap<>();
             HashMap<Integer, String> statusMap = new HashMap<>();
 
-
             while (employeeResultSet.next()) {
                 String Id = employeeResultSet.getString("id");
                 String firstName = employeeResultSet.getString("first_name");
                 String lastName = employeeResultSet.getString("last_name");
                 String email = employeeResultSet.getString("email");
                 String registered_date = employeeResultSet.getString("registered_date");
-
 
                 model.addRow(new Object[]{Id, firstName, lastName, email, registered_date});
             }
@@ -218,6 +220,54 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         }
     }
 
+    public void serachByDate() {
+        try {
+
+            String query = "SELECT * FROM `customer` WHERE ";
+
+            query += "`id`LIKE'%%'";
+
+            String fromDate1 = "";
+            String toDate1 = "";
+
+            if (fromDate.isDateSelected()) {
+                fromDate1 = String.valueOf(fromDate.getSelectedDate());
+                query += " AND `customer`.`registered_date` > '" + fromDate1 + "'";
+            }
+            if (toDate.isDateSelected()) {
+                toDate1 = String.valueOf(toDate.getSelectedDate());
+                query += " AND `customer`.`registered_date` < '" + toDate1 + "'";
+            }
+
+            query += " ORDER BY `customer`.`registered_date` ASC ";
+
+            ResultSet resultSet = MySqlConnection.executeSearch(query);
+
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            dtm.setRowCount(0);
+
+            int row = 0;
+            while (resultSet.next()) {
+                row++;
+                Vector<String> vector = new Vector<>();
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("first_name"));
+                vector.add(resultSet.getString("last_name"));
+                vector.add(resultSet.getString("email"));
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                vector.add(dateFormat.format(dateFormat.parse(resultSet.getString("customer.registered_date"))));
+
+                dtm.addRow(vector);
+            }
+
+            jTable1.setModel(dtm);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warning("Error while loadAppointments() : " + e.getMessage());
+        }
+    }
+
     public JasperPrint makeReport() {
 
         String headerImg;
@@ -262,8 +312,8 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
-        toDateField = new javax.swing.JFormattedTextField();
         fromDateField = new javax.swing.JFormattedTextField();
+        toDateField = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
@@ -362,12 +412,32 @@ public class CustomersReportPanel extends javax.swing.JPanel {
             }
         });
 
-        toDateField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-
         fromDateField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        fromDateField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                fromDateFieldMouseExited(evt);
+            }
+        });
+        fromDateField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fromDateFieldActionPerformed(evt);
+            }
+        });
         fromDateField.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 fromDateFieldPropertyChange(evt);
+            }
+        });
+
+        toDateField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        toDateField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                toDateFieldMouseExited(evt);
+            }
+        });
+        toDateField.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                toDateFieldPropertyChange(evt);
             }
         });
 
@@ -393,11 +463,11 @@ public class CustomersReportPanel extends javax.swing.JPanel {
                         .addGap(48, 48, 48)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(toDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(fromDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(7, 7, 7)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fromDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(toDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -433,8 +503,8 @@ public class CustomersReportPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(toDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fromDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(toDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -513,9 +583,30 @@ public class CustomersReportPanel extends javax.swing.JPanel {
         sortby();
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
+    private void toDateFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_toDateFieldPropertyChange
+        if (toDate.isDateSelected()) {
+            serachByDate();
+        }
+     }//GEN-LAST:event_toDateFieldPropertyChange
+
+    private void fromDateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromDateFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fromDateFieldActionPerformed
+
+    private void fromDateFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromDateFieldMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fromDateFieldMouseExited
+
     private void fromDateFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_fromDateFieldPropertyChange
-        
+        // TODO add your handling code here:
+        if (fromDate.isDateSelected()) {
+            serachByDate();
+        }
     }//GEN-LAST:event_fromDateFieldPropertyChange
+
+    private void toDateFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toDateFieldMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_toDateFieldMouseExited
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
