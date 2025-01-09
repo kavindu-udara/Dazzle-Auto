@@ -138,6 +138,7 @@ public class Feedback extends javax.swing.JDialog {
         jLabel1.setText("  Feedback");
         jLabel1.setOpaque(true);
 
+        feedbackTable.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         feedbackTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -146,6 +147,7 @@ public class Feedback extends javax.swing.JDialog {
 
             }
         ));
+        feedbackTable.setRowHeight(30);
         jScrollPane1.setViewportView(feedbackTable);
 
         refreshButton.setText("Refresh");
