@@ -207,104 +207,104 @@ public class SignIn extends javax.swing.JFrame {
         String username = usernameField.getText().replaceAll("\\s+", "");
         String password = String.valueOf(passwordField.getPassword()).replaceAll("\\s+", "");
 
-//        LoginHistoryModel loginHistoryModel = new LoginHistoryModel();
-//        loginHistoryModel.setUsername(usernameField.getText().replaceAll("\\s+", ""));
-//        loginHistoryModel.setCreatedAt(String.valueOf(TimestampsGenerator.getLocalDateTime()));
+        LoginHistoryModel loginHistoryModel = new LoginHistoryModel();
+        loginHistoryModel.setUsername(usernameField.getText().replaceAll("\\s+", ""));
+        loginHistoryModel.setCreatedAt(String.valueOf(TimestampsGenerator.getLocalDateTime()));
+
+
+        if (username.isEmpty()) {
+            Notifications.getInstance().show(
+                    Notifications.Type.WARNING,
+                    Notifications.Location.TOP_RIGHT,
+                    "Please Enter Username");
+        } else if (password.isEmpty()) {
+            Notifications.getInstance().show(
+                    Notifications.Type.WARNING,
+                    Notifications.Location.TOP_RIGHT,
+                    "Please Enter Password");
+        } else {
+            try {
+                ResultSet resultSet = MySqlConnection.executeSearch("SELECT * FROM `login` "
+                        + "INNER JOIN `employee` ON login.employee_id=employee.id "
+                        + "INNER JOIN `employee_image` ON employee_image.employee_id=employee.id "
+                        + "WHERE `login`.`id`='" + username + "' AND `login`.`password`='" + password + "' ");
+
+                if (resultSet.next()) {
+                    String employeeID = resultSet.getString("employee.id");
+                    String firstName = resultSet.getString("employee.first_name");
+                    String lastName = resultSet.getString("employee.last_name");
+                    int accessRoleID = resultSet.getInt("login.access_role_id");
+                    String imagePath = resultSet.getString("employee_image.path");
+
+                    LoginModel loginModel = new LoginModel();
+                    loginModel.setEmployeeId(employeeID);
+                    loginModel.setFirstName(firstName);
+                    loginModel.setLastName(lastName);
+                    loginModel.setAccessRoleId(accessRoleID);
+                    loginModel.setImage("resources/employeeImages/" + imagePath + "");
+
+                    if (choosedLogin.equals("Shop")) {
+
+                        this.dispose();
+                        new ShopDashboard(loginModel).setVisible(true);
+                        logger.info(username + " Logged Into Shop ");
+        try {
+            new LoginHistoryController().store(loginHistoryModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+                    } else if (choosedLogin.equals("ServiceStation")) {
+
+                        this.dispose();
+                        dashboard = new Dashboard(loginModel);
+                        dashboard.setVisible(true);
+                        logger.info(username + " Logged Into Service Station ");
 //
-//
-//        if (username.isEmpty()) {
-//            Notifications.getInstance().show(
-//                    Notifications.Type.WARNING,
-//                    Notifications.Location.TOP_RIGHT,
-//                    "Please Enter Username");
-//        } else if (password.isEmpty()) {
-//            Notifications.getInstance().show(
-//                    Notifications.Type.WARNING,
-//                    Notifications.Location.TOP_RIGHT,
-//                    "Please Enter Password");
-//        } else {
-//            try {
-//                ResultSet resultSet = MySqlConnection.executeSearch("SELECT * FROM `login` "
-//                        + "INNER JOIN `employee` ON login.employee_id=employee.id "
-//                        + "INNER JOIN `employee_image` ON employee_image.employee_id=employee.id "
-//                        + "WHERE `login`.`id`='" + username + "' AND `login`.`password`='" + password + "' ");
-//
-//                if (resultSet.next()) {
-//                    String employeeID = resultSet.getString("employee.id");
-//                    String firstName = resultSet.getString("employee.first_name");
-//                    String lastName = resultSet.getString("employee.last_name");
-//                    int accessRoleID = resultSet.getInt("login.access_role_id");
-//                    String imagePath = resultSet.getString("employee_image.path");
-//
-//                    LoginModel loginModel = new LoginModel();
-//                    loginModel.setEmployeeId(employeeID);
-//                    loginModel.setFirstName(firstName);
-//                    loginModel.setLastName(lastName);
-//                    loginModel.setAccessRoleId(accessRoleID);
-//                    loginModel.setImage("resources/employeeImages/" + imagePath + "");
-//
-//                    if (choosedLogin.equals("Shop")) {
-//
-//                        this.dispose();
-//                        new ShopDashboard(loginModel).setVisible(true);
-//                        logger.info(username + " Logged Into Shop ");
-//        try {
-//            new LoginHistoryController().store(loginHistoryModel);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//                    } else if (choosedLogin.equals("ServiceStation")) {
-//
-//                        this.dispose();
-//                        dashboard = new Dashboard(loginModel);
-//                        dashboard.setVisible(true);
-//                        logger.info(username + " Logged Into Service Station ");
-////
-//        try {
-//            new LoginHistoryController().store(loginHistoryModel);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//                    } else {
-//                        JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
-//                    }
-//
-//                } else {
-//                    Notifications.getInstance().show(
-//                            Notifications.Type.ERROR,
-//                            Notifications.Location.TOP_RIGHT,
-//                            "Invalid Username or Password");
-//                }
-//
-//            } catch (Exception ex) {
-//                logger.warning("Error while SignInButtonActionPerformed : " + ex.getMessage());
-//            }
-//        }
+        try {
+            new LoginHistoryController().store(loginHistoryModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
+                    }
+
+                } else {
+                    Notifications.getInstance().show(
+                            Notifications.Type.ERROR,
+                            Notifications.Location.TOP_RIGHT,
+                            "Invalid Username or Password");
+                }
+
+            } catch (Exception ex) {
+                logger.warning("Error while SignInButtonActionPerformed : " + ex.getMessage());
+            }
+        }
         
         //meka nikan yana eka
-        LoginModel loginModel = new LoginModel();
-        loginModel.setEmployeeId("EMP01");
-        loginModel.setFirstName("Super");
-        loginModel.setLastName("User");
-        loginModel.setAccessRoleId(1);
-        loginModel.setImage("resources/employeeImages/EMP02200276353830NimsaraDayananda.jpg");
-
-        if (choosedLogin.equals("Shop")) {
-
-            this.dispose();
-            new ShopDashboard(loginModel).setVisible(true);
-
-        } else if (choosedLogin.equals("ServiceStation")) {
-
-            this.dispose();
-            dashboard = new Dashboard(loginModel);
-            dashboard.setVisible(true);
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
-        }
+//        LoginModel loginModel = new LoginModel();
+//        loginModel.setEmployeeId("EMP01");
+//        loginModel.setFirstName("Super");
+//        loginModel.setLastName("User");
+//        loginModel.setAccessRoleId(1);
+//        loginModel.setImage("resources/employeeImages/EMP02200276353830NimsaraDayananda.jpg");
+//
+//        if (choosedLogin.equals("Shop")) {
+//
+//            this.dispose();
+//            new ShopDashboard(loginModel).setVisible(true);
+//
+//        } else if (choosedLogin.equals("ServiceStation")) {
+//
+//            this.dispose();
+//            dashboard = new Dashboard(loginModel);
+//            dashboard.setVisible(true);
+//
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
+//        }
 
         //meka nikan yana eka
     }//GEN-LAST:event_SignInButtonActionPerformed
