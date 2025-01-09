@@ -30,7 +30,7 @@ public class MailTemplates {
      * @param additionalNote any additional notes for the appointment
      * @return a String containing the HTML content for the appointment email
      */
-    public String appointmentScheduledMail(String name, String appointmentNumber, String vehicleNumber, String vehicleModel, String vehicleType, String appointmentDate, String service, String additionalNote) {
+    public String appointmentScheduledMail(String name, String appointmentNumber, String vehicleNumber, String vehicleModel, String vehicleType, String appointmentDate,String timeSlot, String service, String additionalNote) {
         StringBuilder mailerBody = new StringBuilder();
         mailerBody.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
         mailerBody.append("<html lang='en'>");
@@ -74,6 +74,10 @@ public class MailTemplates {
         mailerBody.append("<tr><td width='50%' style='padding: 10px; border-bottom: 1px solid #dddddd;'>Appoinment Date</td>");
 //        Appointment Date
         mailerBody.append("<td width='50%' style='padding: 10px; font-weight: bold; border-bottom: 1px solid #dddddd;'>" + appointmentDate + "</td></tr>");
+        
+        mailerBody.append("<tr><td width='50%' style='padding: 10px; border-bottom: 1px solid #dddddd;'>Time Slot</td>");
+//        Appointment Date
+        mailerBody.append("<td width='50%' style='padding: 10px; font-weight: bold; border-bottom: 1px solid #dddddd;'>" + timeSlot + "</td></tr>");
 
         mailerBody.append("<tr><td width='50%' style='padding: 10px; border-bottom: 1px solid #dddddd;'>Service</td>");
 //        Service

@@ -32,11 +32,12 @@ public class AppointmentController {
     }
 
     public ResultSet store(AppointmentModel appointmentModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`, `vehicle_number`, `services_id`, `date`, `note`, `appointment_status_id`) VALUES "
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`, `vehicle_number`, `services_id`, `date`,`appointment_timeslots_id`, `note`, `appointment_status_id`) VALUES "
                 + "('" + appointmentModel.getId() + "', "
                 + "'" + appointmentModel.getVehicleNumber() + "', "
                 + "'" + appointmentModel.getServiceId() + "', "
                 + "'" + appointmentModel.getDate() + "', "
+                + "'" + appointmentModel.getTimeSlotID() + "', "
                 + "'" + appointmentModel.getNote() + "',"
                 + "'" + appointmentModel.getAppointmentStatusId() + "') ");
     }

@@ -14,6 +14,7 @@ import models.AppointmentModel;
 import views.ourServices.OurServicesSelecter;
 import includes.LoggerConfig;
 import includes.Mailer;
+import includes.MySqlConnection;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -22,14 +23,17 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Vector;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import raven.toast.Notifications;
 import resources.emailTemplates.MailTemplates;
 import views.loadingGuis.PleaseWaitDialog;
 import views.signIn.SignIn;
@@ -41,19 +45,21 @@ import views.signIn.SignIn;
 public class VehicleServiceAppointment extends javax.swing.JFrame {
 
     private static Logger logger = LoggerConfig.getLogger();
-
     AppointmnetPanel AppointmnetPanel = null;
+    private static HashMap<String, Integer> appointmentTimeSlotsHashMap = new HashMap<>();
+    LocalDate today = LocalDate.now();
 
     public VehicleServiceAppointment(AppointmnetPanel appointmnetPanel) {
         initComponents();
         this.AppointmnetPanel = appointmnetPanel;
+        Notifications.getInstance().setJFrame(this);
 
         datePicker1.setEditor(dateField);
 
         SignIn.dashboard.setEnabled(false);
         jServiceIdLabel.setVisible(false);
         waitLabel.setVisible(false);
-
+        loadAppointmentTimeSlots();
         // Add a Window Listener
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -62,6 +68,23 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                 SignIn.dashboard.setEnabled(true);
             }
         });
+    }
+
+    private void loadAppointmentTimeSlots() {
+        try {
+            ResultSet resultSet = MySqlConnection.executeSearch("SELECT * FROM appointment_timeslots");
+            Vector vector = new Vector();
+            vector.add("Select");
+            while (resultSet.next()) {
+                vector.add(resultSet.getString("timeslot"));
+                appointmentTimeSlotsHashMap.put(resultSet.getString("timeslot"), resultSet.getInt("id"));
+            }
+            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(vector);
+            timeSlotComboBox.setModel(comboBoxModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warning("Error while loadAppointmentTimeSlots() : " + e.getMessage());
+        }
     }
 
     public void setVehicleDetails(String vehicleNumber, String owner, String brand, String model, String type) {
@@ -100,9 +123,14 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jTypeLabel = new javax.swing.JLabel();
         waitLabel = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        timeSlotComboBox = new javax.swing.JComboBox<>();
+        remainingLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jServiceNameLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jServiceNameLabel.setForeground(new java.awt.Color(204, 0, 0));
@@ -148,6 +176,11 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         jScrollPane1.setViewportView(additional_issues);
 
         dateField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        dateField.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                dateFieldPropertyChange(evt);
+            }
+        });
 
         jLabel13.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -212,54 +245,72 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         waitLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         waitLabel.setOpaque(true);
 
+        jLabel12.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel12.setText("Time Slot");
+
+        timeSlotComboBox.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        timeSlotComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "8 AM - 10 AM", "Item 2", "Item 3", "Item 4" }));
+        timeSlotComboBox.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        timeSlotComboBox.setFocusable(false);
+        timeSlotComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                timeSlotComboBoxItemStateChanged(evt);
+            }
+        });
+
+        remainingLabel.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        remainingLabel.setForeground(new java.awt.Color(0, 136, 0));
+        remainingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(70, 70, 70)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(existing_vehicle_btn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(42, 42, 42)
+                        .addGap(70, 70, 70)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jVehicleNoLabel)
-                            .addComponent(jBrandModelLabel)
-                            .addComponent(jTypeLabel)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(waitLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel10)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(appointment_btn)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                                .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(existing_vehicle_btn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jServiceSelectorButton, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(waitLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jServiceNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(51, 51, 51)
-                                        .addComponent(dateField)))))
-                        .addGap(18, 18, 18)
-                        .addComponent(jServiceIdLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(appointment_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jServiceSelectorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(36, 36, 36)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(remainingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jServiceNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addGap(42, 42, 42)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jTypeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(jBrandModelLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(jVehicleNoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                            .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jServiceIdLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(257, 257, 257)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(timeSlotComboBox, 0, 197, Short.MAX_VALUE)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, 0))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -267,29 +318,40 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addComponent(jLabel1)
                 .addGap(33, 33, 33)
-                .addComponent(existing_vehicle_btn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(existing_vehicle_btn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jVehicleNoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(19, 19, 19)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                            .addComponent(jBrandModelLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                    .addComponent(jVehicleNoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(19, 19, 19)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-                    .addComponent(jBrandModelLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTypeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jServiceIdLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jServiceIdLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jServiceSelectorButton, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                     .addComponent(jServiceNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(39, 39, 39)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(timeSlotComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                        .addGap(1, 1, 1))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(remainingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -297,22 +359,20 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(appointment_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(waitLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(45, 45, 45)
+                .addComponent(waitLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -360,7 +420,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
     }
 
     private void appointment_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appointment_btnActionPerformed
-        LocalDate today = LocalDate.now();
+
         String appointmentID = IDGenarator.appointmentID();
         String vehicleNumber = jVehicleNoLabel.getText();
         String vehicleModel = jBrandModelLabel.getText();
@@ -380,9 +440,13 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Select Appointment Date ", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (datePicker1.getSelectedDate().isBefore(today)) {
             JOptionPane.showMessageDialog(this, "Please Select Today Or Future Date ", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (timeSlotComboBox.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Please Select Appointment Time Slot ", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (note.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Make a note of something !", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
+            String timeSlot = String.valueOf(timeSlotComboBox.getSelectedItem());
+            int timeslotID = appointmentTimeSlotsHashMap.get(timeSlotComboBox.getSelectedItem());
 
             try {
                 AppointmentModel appointmentModel = new AppointmentModel();
@@ -393,6 +457,8 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                 appointmentModel.setServiceName(serviceName);
                 appointmentModel.setServiceId(serviceID);
                 appointmentModel.setDate(date);
+                appointmentModel.setTimeSlotID(timeslotID);
+                appointmentModel.setTimeSlot(timeSlot);
                 appointmentModel.setNote(note);
                 appointmentModel.setAppointmentStatusId(1);
 
@@ -422,7 +488,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                         }
                     }
 
-                    new Mailer().sendMail(ownerEmail, "Service Appointment - Dazzle Auto", new MailTemplates().appointmentScheduledMail(ownerName, appointmentID, vehicleNumber, vehicleModel, vehicleType, date, serviceName, note), null, true);
+                    new Mailer().sendMail(ownerEmail, "Service Appointment - Dazzle Auto", new MailTemplates().appointmentScheduledMail(ownerName, appointmentID, vehicleNumber, vehicleModel, vehicleType, date, timeSlot, serviceName, note), null, true);
                     AppointmentSuccessDialog app = new AppointmentSuccessDialog(this, true, appointmentModel);
                     app.setVisible(true);
 
@@ -447,6 +513,57 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
             new OurServicesSelecter(this, true, "VehicleServiceAppointment", vehicleType).setVisible(true);
         }
     }//GEN-LAST:event_jServiceSelectorButtonActionPerformed
+
+    private void timeSlotComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_timeSlotComboBoxItemStateChanged
+
+        if (!datePicker1.isDateSelected()) {
+            Notifications.getInstance().show(
+                    Notifications.Type.WARNING,
+                    Notifications.Location.TOP_RIGHT,
+                    "Please Select Appointment Date");
+            loadAppointmentTimeSlots();
+        } else {
+            if (timeSlotComboBox.getSelectedIndex() != 0) {
+                int timeslotID = appointmentTimeSlotsHashMap.get(timeSlotComboBox.getSelectedItem());
+                try {
+                    ResultSet appointmentRS = MySqlConnection.executeSearch("SELECT * FROM appointment WHERE `appointment`.`date`LIKE'%" + String.valueOf(datePicker1.getSelectedDate()) + "%' AND appointment_timeslots_id='" + timeslotID + "'");
+
+                    int count = 0;
+                    while (appointmentRS.next()) {
+                        count++;
+                    }
+
+                    ResultSet timeslotRs = MySqlConnection.executeSearch("SELECT * FROM appointment_timeslots WHERE `id`='" + timeslotID + "' ");
+                    int remainingAppointments = 0;
+                    if (timeslotRs.next()) {
+                        remainingAppointments = timeslotRs.getInt("limit") - count;
+                    }
+                    remainingLabel.setText(remainingAppointments + " Appointments Remaining For TimeSlot");
+                    if (remainingAppointments == 0) {
+                        appointment_btn.setEnabled(false);
+                    } else {
+                        appointment_btn.setEnabled(true);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                remainingLabel.setText("");
+            }
+        }
+    }//GEN-LAST:event_timeSlotComboBoxItemStateChanged
+
+    private void dateFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateFieldPropertyChange
+        if (datePicker1.isDateSelected()) {
+            if (datePicker1.getSelectedDate().isBefore(today)) {
+                datePicker1.clearSelectedDate();
+                JOptionPane.showMessageDialog(this, "Please Select Today Or Future Date ", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+
+        timeSlotComboBox.setSelectedIndex(0);
+        remainingLabel.setText("");
+    }//GEN-LAST:event_dateFieldPropertyChange
 
     /**
      * @param args the command line arguments
@@ -482,6 +599,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -492,7 +610,9 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
     private javax.swing.JButton jServiceSelectorButton;
     private javax.swing.JLabel jTypeLabel;
     private javax.swing.JLabel jVehicleNoLabel;
+    private javax.swing.JLabel remainingLabel;
     private javax.swing.JButton reset;
+    private javax.swing.JComboBox<String> timeSlotComboBox;
     private javax.swing.JLabel waitLabel;
     // End of variables declaration//GEN-END:variables
 }

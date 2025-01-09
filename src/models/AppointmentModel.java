@@ -17,6 +17,8 @@ public class AppointmentModel {
     private String vehicleModel;
     private String vehicleType;
     private String date;
+    private int timeSlotID;
+    private String timeSlot;
     private String note;
     private int appointmentStatusId;
 
@@ -119,6 +121,34 @@ public class AppointmentModel {
     }
 
     /**
+     * @return the timeSlotID
+     */
+    public int getTimeSlotID() {
+        return timeSlotID;
+    }
+
+    /**
+     * @param timeSlotID the timeSlotID to set
+     */
+    public void setTimeSlotID(int timeSlotID) {
+        this.timeSlotID = timeSlotID;
+    }
+
+    /**
+     * @return the timeSlot
+     */
+    public String getTimeSlot() {
+        return timeSlot;
+    }
+
+    /**
+     * @param timeSlot the timeSlot to set
+     */
+    public void setTimeSlot(String timeSlot) {
+        this.timeSlot = timeSlot;
+    }
+
+    /**
      * @return the note
      */
     public String getNote() {
@@ -146,4 +176,5 @@ public class AppointmentModel {
         this.appointmentStatusId = appointmentStatusId;
     }
 
+   
 }
