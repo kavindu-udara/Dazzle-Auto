@@ -15,7 +15,6 @@ public class GrnModel {
     private Double paidAmount;
     private String supplierId;
     private String employeeId;
-    private double balance;
 
     private String GrnId;
     /**
@@ -100,19 +99,5 @@ public class GrnModel {
      */
     public void setGrnId(String GrnId) {
         this.GrnId = GrnId;
-    }
-
-    /**
-     * @return the balance
-     */
-    public double getBalance() {
-        return balance;
-    }
-
-    /**
-     * @param balance the balance to set
-     */
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
 }
