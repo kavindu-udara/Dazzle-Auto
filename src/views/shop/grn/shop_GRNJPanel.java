@@ -6,6 +6,7 @@ package views.shop.grn;
 
 import controllers.GrnController;
 import controllers.GrnItemsController;
+import controllers.PaymentMethodController;
 import controllers.StockController;
 import includes.IDGenarator;
 import includes.LoggerConfig;
@@ -44,6 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
@@ -64,15 +66,17 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     private SupplierModel supModel;
 
     HashMap<String, GrnItemsModel> GrnItemMap = new HashMap<>();
+    HashMap<String, String> paymentMethodmMap = new HashMap<>();
 
     public shop_GRNJPanel() {
         initComponents();
         GRNTableRender();
         setDocumentFilters();
+        loadPaymentMethods();
 
         GrnNumberField.setText(IDGenarator.GrnID());
-       SaveGRN.setEnabled(false);
-        
+        SaveGRN.setEnabled(false);
+
         EmployeeName.setText(LoginModel.getFirstName() + " " + LoginModel.getLastName());
         PaymenntField.setEditable(false);
         ProductIdField.setFocusable(false);
@@ -87,6 +91,26 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         ((AbstractDocument) SellingPriceField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
         ((AbstractDocument) QtyField.getDocument()).setDocumentFilter(new OnlyNumbersDocumentFilter());
 
+    }
+
+    private void loadPaymentMethods() {
+        try {
+            ResultSet reseltset = new PaymentMethodController().show();
+
+            Vector<String> vector = new Vector<>();
+
+            while (reseltset.next()) {
+                vector.add(reseltset.getString("method"));
+                paymentMethodmMap.put(reseltset.getString("method"), reseltset.getString("id"));
+            }
+
+            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel<>(vector);
+            PaymentMethods.setModel(comboBoxModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while loading payment methods : " + e.getMessage());
+        }
     }
 
     public void GRNTableRender() {
@@ -185,11 +209,13 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         QtyField = new javax.swing.JTextField();
         ProductNameField = new javax.swing.JTextField();
         SupplierNameField = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
+        pendingPayment = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         ProductIdField = new javax.swing.JLabel();
         SupplierIdField = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         GRNViewTable = new javax.swing.JTable();
@@ -203,6 +229,8 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
         SaveGRN = new javax.swing.JButton();
         ClearEverythigbtn = new javax.swing.JButton();
+        PaymentMethods = new javax.swing.JComboBox<>();
+        jLabel18 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1300, 609));
         setPreferredSize(new java.awt.Dimension(1300, 609));
@@ -242,17 +270,17 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         EmployeeName.setFont(new java.awt.Font("Roboto", 3, 16)); // NOI18N
         EmployeeName.setText("Emp_Name");
-        jPanel2.add(EmployeeName, new org.netbeans.lib.awtextra.AbsoluteConstraints(891, 140, 110, -1));
+        jPanel2.add(EmployeeName, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 140, 110, -1));
 
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel10.setText("Quantity :");
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 19, -1, 30));
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 20, -1, 30));
 
         GrnNumberField.setEditable(false);
         GrnNumberField.setBackground(new java.awt.Color(255, 204, 51));
         GrnNumberField.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         GrnNumberField.setFocusable(false);
-        jPanel2.add(GrnNumberField, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 90, 160, 31));
+        jPanel2.add(GrnNumberField, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 90, 160, 31));
 
         jLabel11.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel11.setText("Buying Price :");
@@ -301,10 +329,10 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                 SupplierSelectBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(SupplierSelectBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, -1, 31));
+        jPanel2.add(SupplierSelectBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 40, -1, 31));
 
         QtyField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jPanel2.add(QtyField, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 20, 80, 31));
+        jPanel2.add(QtyField, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 20, 80, 31));
 
         ProductNameField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ProductNameField.setBorder(null);
@@ -323,23 +351,31 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         });
         jPanel2.add(SupplierNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 40, 270, 31));
 
-        jLabel13.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jLabel13.setText("Supplier :");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, -1));
+        pendingPayment.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        pendingPayment.setText("Pending Payment:");
+        jPanel2.add(pendingPayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 80, -1, 30));
 
         jLabel8.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel8.setText("GRN Number :");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 70, -1, -1));
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 70, -1, -1));
 
         jLabel14.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel14.setText("Issued By :");
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 140, -1, -1));
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 140, -1, -1));
 
         ProductIdField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel2.add(ProductIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 110, 20));
 
         SupplierIdField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel2.add(SupplierIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 110, 20));
+
+        jLabel15.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        jLabel15.setText("Supplier :");
+        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, -1));
+
+        jLabel20.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
+        jLabel20.setText("Pending Payment:");
+        jPanel2.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, -1, 30));
 
         GRNViewTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         GRNViewTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -374,9 +410,9 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1000, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addContainerGap(7, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 938, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -438,39 +474,61 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
             }
         });
 
+        PaymentMethods.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        PaymentMethods.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PaymentMethodsActionPerformed(evt);
+            }
+        });
+
+        jLabel18.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        jLabel18.setText("Payment Method");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(0, 18, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel17)
-                            .addComponent(jLabel16))
-                        .addGap(28, 28, 28)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ClearEverythigbtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addComponent(jLabel19)
+                                .addGap(37, 37, 37)
+                                .addComponent(BalanceField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(SaveGRN, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TotalField, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(PaymenntField, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(ClearEverythigbtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(jLabel19)
-                            .addGap(31, 31, 31)
-                            .addComponent(BalanceField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(SaveGRN, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(14, 14, 14))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(jLabel18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(TotalField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(PaymenntField, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(PaymentMethods, javax.swing.GroupLayout.Alignment.TRAILING, 0, 158, Short.MAX_VALUE))))
+                .addGap(17, 17, 17))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(86, Short.MAX_VALUE)
+                .addGap(19, 19, 19)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(TotalField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PaymentMethods, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                    .addComponent(jLabel18))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PaymenntField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17))
@@ -492,11 +550,11 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1300, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -540,10 +598,12 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     private double total = 0;
     private double payment = 0;
     private double balance = 0;
+    private String paymentMethod = "Cash";
 
     private void calculate() {
-
+        SaveGRN.setEnabled(true);
         total = 0;
+        balance = 0;
         for (int i = 0; i < GRNViewTable.getRowCount(); i++) {
             String BuyingPrice = String.valueOf(GRNViewTable.getValueAt(i, 4));
             String qty = String.valueOf(GRNViewTable.getValueAt(i, 3));
@@ -562,26 +622,50 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         }
 
         total = Double.parseDouble(TotalField.getText());
+        paymentMethod = String.valueOf(PaymentMethods.getSelectedItem());
 
         if (total < 0) {
             JOptionPane.showMessageDialog(this, "Enter a Valid Payment!", "Error", JOptionPane.ERROR_MESSAGE);
             PaymenntField.setText("0");
             BalanceField.setText("0");
+            SaveGRN.setEnabled(false);
         }
 
         balance = payment - total;
         PaymenntField.setEnabled(true);
 
-        if (balance < 0) {
-            SaveGRN.setEnabled(false);
-        } else if (payment < total) {
-            SaveGRN.setEnabled(false);
+//        if (balance < 0) {
+//            SaveGRN.setEnabled(false);
+//        } else if (payment < total) {
+//            SaveGRN.setEnabled(false);
+//        } else {
+//            SaveGRN.setEnabled(true);
+//        }
+        if (paymentMethod.equals("Cash")) {
+            balance = payment - total;
+            PaymenntField.setEnabled(true);
+
+//            if (balance < 0) {
+//
+//                SaveGRN.setEnabled(false);
+//            } else {
+//                SaveGRN.setEnabled(true);
+//            }
         } else {
+            //card
+
+            payment = total;
+            balance = 0;
+            PaymenntField.setText(String.valueOf(payment));
+            PaymenntField.setEnabled(false);
             SaveGRN.setEnabled(true);
         }
 
         BalanceField.setText(String.valueOf(balance));
 
+        if (GRNViewTable.getRowCount() <= 0) {
+            SaveGRN.setEnabled(false);
+        }
     }
 
     private void ProductSelectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductSelectBtnActionPerformed
@@ -671,14 +755,11 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                     resetInputs();
                     SaveGRN.setEnabled(true);
                 }
-
             }
-
             loadGrnItem();
 
         }
 
-        
         PaymenntField.grabFocus();
         PaymenntField.setEditable(true);
 
@@ -693,13 +774,33 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     private HashMap<String, Integer> productStockIds = new HashMap<>();
 
     private void SaveGRNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveGRNActionPerformed
+        String payment = PaymenntField.getText();
+        String balance = BalanceField.getText();
 
-//loading to GRN Table
+        if ((Double.parseDouble(balance) < 0)) {
+            int response = JOptionPane.showConfirmDialog(null, "Your Payment is lower than the Total.Add the rest amount as a pending payment?", "Confirm",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+            if (response == JOptionPane.YES_OPTION) {
+                loadToTable();
+            } else {
+                JOptionPane.showMessageDialog(this, "Payment did not proceed", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+
+        } else {
+            loadToTable();
+        }
+
+    }//GEN-LAST:event_SaveGRNActionPerformed
+
+    private void loadToTable() {
+        //loading to GRN Table
         try {
 
             String GrnID = GrnNumberField.getText();
             String supplierId = SupplierIdField.getText();
             String paidAmount = PaymenntField.getText();
+            String balanceAmount = BalanceField.getText();
             String dateTimeForDB = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
             try {
@@ -710,6 +811,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                 grnModel.setDate(dateTimeForDB);
                 grnModel.setPaidAmount(Double.parseDouble(paidAmount));
                 grnModel.setSupplierId(supplierId);
+                grnModel.setBalance(Double.parseDouble(balanceAmount));
                 grnModel.setEmployeeId(LoginModel.getEmployeeId());
 
                 ResultSet resultSet = new GrnController().store(grnModel);
@@ -741,10 +843,10 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                     ResultSet existingStock = stockController.findByProductIdAndPrice(productId, price);
 
                     if (existingStock.next()) {
-                       int stockId = existingStock.getInt("id");
+                        int stockId = existingStock.getInt("id");
                         double currentQty = existingStock.getDouble("qty");
                         double newQty = currentQty + quantityToAdd;
-                        
+
                         stockController.updateQuantity(stockId, newQty);
 
                         productStockIds.put(productId, stockId);
@@ -760,7 +862,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
                         if (resultSet.next()) {
                             int stockId = resultSet.getInt(1);
-                            productStockIds.put(productId, stockId); 
+                            productStockIds.put(productId, stockId);
                         }
                     }
                 } catch (Exception e) {
@@ -838,10 +940,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         GrnNumberField.setText(IDGenarator.GrnID());
         GrnNumberField.setEditable(false);
-
-
-    }//GEN-LAST:event_SaveGRNActionPerformed
-
+    }
     private void ClearEverythigbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearEverythigbtnActionPerformed
         // TODO add your handling code here:
         int response = JOptionPane.showConfirmDialog(null, "Do you want to reset?", "Confirm",
@@ -870,6 +969,11 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     private void SupplierNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SupplierNameFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_SupplierNameFieldActionPerformed
+
+    private void PaymentMethodsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PaymentMethodsActionPerformed
+        // TODO add your handling code here:
+        calculate();
+    }//GEN-LAST:event_PaymentMethodsActionPerformed
 
     private void showContextMenu(MouseEvent evt, int row) {
         JPopupMenu popupMenu = new JPopupMenu();
@@ -968,6 +1072,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     private javax.swing.JTable GRNViewTable;
     private javax.swing.JTextField GrnNumberField;
     private javax.swing.JFormattedTextField PaymenntField;
+    private javax.swing.JComboBox<String> PaymentMethods;
     private javax.swing.JLabel ProductIdField;
     private javax.swing.JTextField ProductNameField;
     private javax.swing.JButton ProductSelectBtn;
@@ -982,11 +1087,13 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
@@ -996,5 +1103,6 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel pendingPayment;
     // End of variables declaration//GEN-END:variables
 }
