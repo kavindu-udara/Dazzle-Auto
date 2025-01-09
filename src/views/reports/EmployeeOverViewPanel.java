@@ -9,14 +9,24 @@ import controllers.EmployeeController;
 import controllers.MonthsController;
 import includes.LoggerConfig;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import javax.swing.SwingUtilities;
 import views.dashboard.Dashboard;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -34,6 +44,7 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
         this.dashboard = dashboard;
         loadMonthsComboBox();
         loadTableData();
+        EmployeeTableRender();
     }
 
     private void loadMonthsComboBox() {
@@ -83,6 +94,36 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
 
     }
 
+    
+    private void EmployeeTableRender() {
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        JTableHeader tableHeader = employeesReport.getTableHeader();
+
+        tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Font headerFont = new Font("Verdana", Font.BOLD, 14);
+                label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
+                label.setFont(headerFont);
+                label.setBackground(new Color(5, 15, 76)); // Optional: Set header background color
+                label.setForeground(Color.WHITE); // Optional: Set header text color
+                label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+                return label;
+            }
+        });
+
+        tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
+
+        for (int i = 0; i < 5; i++) {
+            employeesReport.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
