@@ -6,10 +6,30 @@ package views.settings;
 
 import controllers.LoginHistoryController;
 import includes.LoggerConfig;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.io.File;
+import java.io.InputStream;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import models.LoginModel;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -25,25 +45,53 @@ public class LoginRecordPanel extends javax.swing.JPanel {
     public LoginRecordPanel() {
         initComponents();
         loadTableData();
+        loginRecordTableRender();
     }
 
-    private void loadTableData(){
-        try(ResultSet loginHistoryResultSet = new LoginHistoryController().show()){
+    private void loadTableData() {
+        try (ResultSet loginHistoryResultSet = new LoginHistoryController().show()) {
             DefaultTableModel tableModel = (DefaultTableModel) loginHstoryTable.getModel();
             tableModel.setRowCount(0);
-            while(loginHistoryResultSet.next()){
-            Vector vector = new Vector();
+            while (loginHistoryResultSet.next()) {
+                Vector vector = new Vector();
                 vector.add(loginHistoryResultSet.getString("id"));
                 vector.add(loginHistoryResultSet.getString("created_at"));
                 vector.add(loginHistoryResultSet.getString("username"));
-                
+
                 tableModel.addRow(vector);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            logger.severe("Error while showing login history data : "+e.getMessage());
+            logger.severe("Error while showing login history data : " + e.getMessage());
         }
     }
+
+    public void loginRecordTableRender() {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        JTableHeader tableHeader = loginHstoryTable.getTableHeader();
+        tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Font headerFont = new Font("Verdana", Font.BOLD, 14);
+                label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
+                label.setFont(headerFont);
+                label.setBackground(new Color(214, 132, 13)); // Optional: Set header background color
+                label.setForeground(Color.WHITE); // Optional: Set header text color
+                label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+                return label;
+            }
+        });
+
+        tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
+
+        for (int i = 0; i < 3; i++) {
+            loginHstoryTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -56,7 +104,7 @@ public class LoginRecordPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         loginHstoryTable = new javax.swing.JTable();
-        printButton = new javax.swing.JButton();
+        viewReportb = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(853, 575));
@@ -73,7 +121,7 @@ public class LoginRecordPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "created at", "username"
+                "ID", "Date Created", "User Name"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -86,21 +134,31 @@ public class LoginRecordPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(loginHstoryTable);
 
-        printButton.setText("print");
+        viewReportb.setBackground(new java.awt.Color(51, 51, 51));
+        viewReportb.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
+        viewReportb.setForeground(new java.awt.Color(255, 255, 255));
+        viewReportb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/analyze-30.png"))); // NOI18N
+        viewReportb.setText(" Save Report");
+        viewReportb.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        viewReportb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewReportbActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 863, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 841, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(viewReportb)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(printButton)
-                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,17 +166,58 @@ public class LoginRecordPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(printButton)
-                .addGap(0, 44, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(viewReportb)
+                .addGap(0, 90, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+public JasperPrint makeReport() {
+
+        String dateTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa").format(new Date());
+
+        String headerImg;
+        try {
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/LoginRecordReport.jasper");
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+
+            headerImg = img.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("img", headerImg);
+            params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
+            params.put("reportDate", dateTime);
+           
+
+            JRTableModelDataSource dataSource = new JRTableModelDataSource(loginHstoryTable.getModel());
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+
+            return report;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while makeReport() : " + e.getMessage());
+        }
+        return null;
+    }
+    private void viewReportbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReportbActionPerformed
+
+        try {
+            JasperPrint report = makeReport();
+            JasperViewer.viewReport(report, false);
+
+            logger.info("Employee Salary Report Viewed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while viewReportbActionPerformed : " + e.getMessage());
+        }
+    }//GEN-LAST:event_viewReportbActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable loginHstoryTable;
-    private javax.swing.JButton printButton;
+    private javax.swing.JButton viewReportb;
     // End of variables declaration//GEN-END:variables
 }
