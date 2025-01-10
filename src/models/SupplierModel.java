@@ -19,6 +19,7 @@ public class SupplierModel {
     private String lastName;
     private String email;
     private String mobile;
+    private double pending_payments;
     
     
     private String statusName;
@@ -119,6 +120,20 @@ public class SupplierModel {
      */
     public void setStatusName(String statusName) {
         this.statusName = statusName;
+    }
+
+    /**
+     * @return the pending_payments
+     */
+    public double getPending_payments() {
+        return pending_payments;
+    }
+
+    /**
+     * @param pending_payments the pending_payments to set
+     */
+    public void setPending_payments(double pending_payments) {
+        this.pending_payments = pending_payments;
     }
 
 }
