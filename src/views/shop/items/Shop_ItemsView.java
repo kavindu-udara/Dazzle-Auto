@@ -249,6 +249,11 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         search_box.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         search_box.setFocusCycleRoot(true);
         search_box.setSelectionColor(new java.awt.Color(214, 132, 13));
+        search_box.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                search_boxActionPerformed(evt);
+            }
+        });
         search_box.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 search_boxKeyReleased(evt);
@@ -481,6 +486,10 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         // TODO add your handling code here:
         new RegisterBrand(null, true, shop_ItemsView).setVisible(true);
     }//GEN-LAST:event_ItemBrandRegisterBtnActionPerformed
+
+    private void search_boxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_boxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search_boxActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

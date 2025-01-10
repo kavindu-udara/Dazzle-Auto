@@ -6,10 +6,20 @@ package views.settings;
 
 import controllers.LoginHistoryController;
 import includes.LoggerConfig;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.sql.ResultSet;
 import java.util.Vector;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -25,6 +35,7 @@ public class LoginRecordPanel extends javax.swing.JPanel {
     public LoginRecordPanel() {
         initComponents();
         loadTableData();
+        LoginrecordTableRender();
     }
 
     private void loadTableData(){
@@ -42,6 +53,31 @@ public class LoginRecordPanel extends javax.swing.JPanel {
         }catch(Exception e){
             e.printStackTrace();
             logger.severe("Error while showing login history data : "+e.getMessage());
+        }
+    }
+    public void LoginrecordTableRender() {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        JTableHeader tableHeader = loginHstoryTable.getTableHeader();
+        tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Font headerFont = new Font("Verdana", Font.BOLD, 14);
+                label.setBorder(BorderFactory.createEmptyBorder()); // Remove header borders
+                label.setFont(headerFont);
+                label.setBackground(new Color(214, 132, 13)); // Optional: Set header background color
+                label.setForeground(Color.WHITE); // Optional: Set header text color
+                label.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+                return label;
+            }
+        });
+
+        tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
+
+        for (int i = 0; i < 3; i++) {
+            loginHstoryTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
     /**
@@ -73,7 +109,7 @@ public class LoginRecordPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "created at", "username"
+                "ID", "Date Created", "User Name"
             }
         ) {
             boolean[] canEdit = new boolean [] {

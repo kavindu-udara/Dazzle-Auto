@@ -244,6 +244,11 @@ public class ourServicesJPanel extends javax.swing.JPanel {
         }
 
         serviceFindField.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        serviceFindField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                serviceFindFieldActionPerformed(evt);
+            }
+        });
         serviceFindField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 serviceFindFieldKeyReleased(evt);
@@ -390,6 +395,10 @@ public class ourServicesJPanel extends javax.swing.JPanel {
     private void serviceFindFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_serviceFindFieldKeyReleased
         searchTable();
     }//GEN-LAST:event_serviceFindFieldKeyReleased
+
+    private void serviceFindFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serviceFindFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_serviceFindFieldActionPerformed
 
     private void searchTable() {
         // search process
