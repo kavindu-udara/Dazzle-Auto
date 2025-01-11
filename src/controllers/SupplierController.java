@@ -47,6 +47,12 @@ public class SupplierController {
                 + "WHERE `id`='" + supplierModel.getId() + "' ");
     }
 
+    public ResultSet updatePendingPay(SupplierModel supplierModel) throws Exception {
+        return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
+                + "`pending_payments`='" + supplierModel.getPending_payments() + "' "
+                + "WHERE `id`='" + supplierModel.getId() + "' ");
+    }
+
     public ResultSet search(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
                 + "`id` LIKE '%" + searchText + "%' OR "
@@ -65,11 +71,12 @@ public class SupplierController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `status_id` = " + statusId);
     }
 
-   public ResultSet getSuppliersBySupId(String supId) throws Exception {
-    return MySqlConnection.executeSearch(
-        "SELECT * FROM `" + tableName + "` WHERE `id` = '" + supId + "'"
-    );
-}
+    public ResultSet getSuppliersBySupId(String supId) throws Exception {
+        return MySqlConnection.executeSearch(
+                "SELECT * FROM `" + tableName + "` WHERE `id` = '" + supId + "'"
+        );
+    }
+
     public ResultSet searchAll() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
