@@ -16,12 +16,10 @@ public class ProductController {
 
     private final String tableName = "product";
     private final String tableName2 = "product_brand";
-   
 
     public ResultSet show() throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "`");
     }
-    
 
     public ResultSet show(String id) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
@@ -32,12 +30,13 @@ public class ProductController {
                 + "'" + productModel.getName() + "', "
                 + "'" + productModel.getBrandId() + "') ");
     }
+
     // To Register Products in RegisterItems.java
     public ResultSet store2(ProductModel productModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`,`name`, `brand_id`) VALUES ("
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`,`name`, `brand_id`,`description`) VALUES ("
                 + "'" + productModel.getItemId() + "',"
                 + "'" + productModel.getName() + "', "
-                + "'" + productModel.getBrandId() + "') ");
+                + "'" + productModel.getBrandId() + "','" + productModel.getDescription() + "') ");
     }
 
     public ResultSet update(ProductModel productModel) throws Exception {
@@ -46,12 +45,12 @@ public class ProductController {
                 + "`brand_id`='" + productModel.getBrandId() + "', "
                 + "WHERE `id`='" + productModel.getId() + "' ");
     }
-    
+
     //Update using ItemId 
     public ResultSet update2(ProductModel productModel) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
                 + "`name`='" + productModel.getName() + "', "
-                + "`brand_id`='" + productModel.getBrandId() + "' "
+                + "`brand_id`='" + productModel.getBrandId() + "',`description`='" + productModel.getDescription()+ "'  "
                 + "WHERE `id`='" + productModel.getItemId() + "' ");
     }
 
@@ -59,13 +58,13 @@ public class ProductController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
                 + "`name` LIKE '%" + searchText + "%' OR `brand_id` LIKE '%" + searchText + "%' ");
     }
-    
-    //search from product name or product id
+
+    //search from product name or product id or description
     public ResultSet searchProductId(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE "
-                + "`name` LIKE '%" + searchText + "%' OR `id` LIKE '%" + searchText + "%' ");
+                + "`name` LIKE '%" + searchText + "%' OR `id` LIKE '%" + searchText + "%' OR `description` LIKE '%" + searchText + "%' ");
     }
-    
+
     public ResultSet searchBrand(String searchText) throws Exception {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` INNER JOIN `" + tableName2 + "` "
                 + "ON `" + tableName + "`.`brand_id` = `" + tableName2 + "`.`id` WHERE `" + tableName2 + "`.`name` LIKE '%" + searchText + "%' ");
