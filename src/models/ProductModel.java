@@ -13,11 +13,10 @@ public class ProductModel {
     private int id;
     private int brandId;
     private String name;
-    
-    
+
     private String ItemId;
     private String brandName;
-    
+    private String description;
 
     /**
      * @return the id
@@ -60,8 +59,7 @@ public class ProductModel {
     public void setName(String name) {
         this.name = name;
     }
-    
-    
+
     public String getItemId() {
         return ItemId;
     }
@@ -72,9 +70,8 @@ public class ProductModel {
     public void setItemId(String ItemId) {
         this.ItemId = ItemId;
     }
-    
-    
-     public String getbrandName() {
+
+    public String getbrandName() {
         return brandName;
     }
 
@@ -83,5 +80,19 @@ public class ProductModel {
      */
     public void setbrandName(String brandName) {
         this.brandName = brandName;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

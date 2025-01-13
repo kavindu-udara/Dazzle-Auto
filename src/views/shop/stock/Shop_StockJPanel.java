@@ -47,7 +47,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
 
     public Shop_StockJPanel() {
         initComponents();
-        
+
         loadStock();
         StockTableRender();
         setDocumentFilters();
@@ -57,7 +57,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
 
     public Shop_StockJPanel(Frame parentFrame, JStockSelector stockSelector, String BaseFrame) {
         initComponents();
-        
+
         loadStock();
         StockTableRender();
 
@@ -107,7 +107,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
         String query = "SELECT * FROM `stock` "
                 + "INNER JOIN `product` ON `stock`.`product_id`=`product`.`id` "
                 + "INNER JOIN `product_brand` ON `product`.`brand_id`=`product_brand`.`id` "
-                + "WHERE `product`.`name` LIKE '%"+searchText+"%' ";
+                + "WHERE `product`.`name` LIKE '%" + searchText + "%' ";
 
         double min_price = 0;
         double max_price = 0;
@@ -141,12 +141,12 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
 
         try {
             ResultSet resultSet = MySqlConnection.executeSearch(query);
-            
+
             DefaultTableModel tableModel = (DefaultTableModel) StockViewTable.getModel();
             tableModel.setRowCount(0);
 
             while (resultSet.next()) {
-                
+
                 Vector vector = new Vector();
                 vector.add(resultSet.getString("stock.id"));
                 vector.add(resultSet.getString("stock.product_id"));
@@ -272,7 +272,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel1.setText("Search Products");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 20, -1, 30));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 20, -1, 30));
 
         jTextField1.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -280,7 +280,7 @@ public class Shop_StockJPanel extends javax.swing.JPanel {
                 jTextField1KeyReleased(evt);
             }
         });
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 20, 180, 40));
+        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 10, 250, 50));
 
         StockViewTable.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         StockViewTable.setModel(new javax.swing.table.DefaultTableModel(
