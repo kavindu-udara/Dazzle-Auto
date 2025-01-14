@@ -25,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import models.ProductModel;
 import includes.LoggerConfig;
+import includes.MySqlConnection;
 import java.util.logging.Logger;
 
 /**
@@ -45,7 +46,7 @@ public class Shop_ItemsView extends javax.swing.JPanel {
         loadItems();
         loadBrands();
 
-        search_box.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Item Name or Id ");
+        search_box.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Enter Item Name,Id Or Description");
 
         this.shop_ItemsView = this;
         ItemsTableRender();
@@ -436,24 +437,31 @@ public class Shop_ItemsView extends javax.swing.JPanel {
     }//GEN-LAST:event_search_boxKeyReleased
 
     private void Items_View_TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Items_View_TableMouseClicked
-        // TODO add your handling code here:
         int row = Items_View_Table.getSelectedRow();
 
         if (evt.getClickCount() == 2 && row != -1) {
-
             String ItemId = String.valueOf(Items_View_Table.getValueAt(row, 0));
             String ItemName = String.valueOf(Items_View_Table.getValueAt(row, 1));
             String BrandName = String.valueOf(Items_View_Table.getValueAt(row, 3));
 
+            String query = "SELECT `description` FROM product WHERE `id`= '" + ItemId + "'";
             ProductModel ItemModel = new ProductModel();
             ItemModel.setItemId(ItemId);
             ItemModel.setName(ItemName);
             ItemModel.setbrandName(BrandName);
 
             try {
+                ResultSet resultSet = MySqlConnection.executeSearch(query);
+                if (resultSet.next()) {
+                    String description = resultSet.getString("description");
+                    ItemModel.setDescription(description);
+                } else {
+                    ItemModel.setDescription("No description available");
+                }
+
                 Frame shop_ItemsView = null;
-                ItemsUpdate employeeUpdate = new ItemsUpdate(shop_ItemsView, true, ItemModel);
-                employeeUpdate.setVisible(true);
+                ItemsUpdate itemsUpdate = new ItemsUpdate(shop_ItemsView, true, ItemModel);
+                itemsUpdate.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
