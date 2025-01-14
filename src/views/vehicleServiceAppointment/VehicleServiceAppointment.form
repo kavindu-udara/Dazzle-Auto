@@ -156,7 +156,6 @@
                           <Component id="jLabel11" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="remainingLabel" min="-2" pref="26" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                   <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
@@ -208,7 +207,7 @@
               <Font name="Roboto" size="24" style="1"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value=" Set Up New Appointment"/>
+            <Property name="text" type="java.lang.String" value=" Add New Appointment"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="appointment_btn">

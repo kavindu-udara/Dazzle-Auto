@@ -304,16 +304,12 @@ public class SignIn extends javax.swing.JFrame {
 //        loginModel.setImage("resources/employeeImages/EMP02200400147913NimsaraDayananda.jpg");
 //
 //        if (choosedLogin.equals("Shop")) {
-//
 //            this.dispose();
 //            new ShopDashboard(loginModel).setVisible(true);
-//
 //        } else if (choosedLogin.equals("ServiceStation")) {
-//
 //            this.dispose();
 //            dashboard = new Dashboard(loginModel);
 //            dashboard.setVisible(true);
-//
 //        } else {
 //            JOptionPane.showMessageDialog(this, "Something Wrong !", "Error", JOptionPane.ERROR);
 //        }

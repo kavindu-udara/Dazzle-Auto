@@ -166,10 +166,13 @@ public class AccountInterface extends javax.swing.JPanel {
         jButton1.setBackground(new java.awt.Color(232, 122, 1));
         jButton1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Change Password");
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/icons8-arrow-30.png"))); // NOI18N
+        jButton1.setText("Change Password           ");
         jButton1.setBorderPainted(false);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.setFocusPainted(false);
+        jButton1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -255,7 +258,7 @@ public class AccountInterface extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2MouseReleased
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        MYACCOUNT.jPanel1.remove(this);
+         MYACCOUNT.jPanel1.remove(this);
         SwingUtilities.updateComponentTreeUI(MYACCOUNT.jPanel1);
 
         MYACCOUNT.passwordChange = new PasswordChange(MYACCOUNT);
