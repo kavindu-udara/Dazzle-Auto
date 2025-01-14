@@ -6,7 +6,7 @@ package views.myaccount;
 
 import java.awt.BorderLayout;
 import javax.swing.SwingUtilities;
-import views.settings.LoginAccessJPanel;
+import views.signIn.ForgotPassword;
 
 /**
  *
@@ -16,15 +16,24 @@ public class MyAccount extends javax.swing.JDialog {
 
     AccountInterface accountInterface = null;
     PasswordChange passwordChange = null;
+    ForgotPassword forgotPassword = null;
 
-    public MyAccount(java.awt.Frame parent, boolean modal) {
+    public MyAccount(java.awt.Frame parent, boolean modal, String From, String empID) {
         super(parent, modal);
         initComponents();
 
-        if (accountInterface == null) {
-            accountInterface = new AccountInterface(this);
-            jPanel1.add(accountInterface, BorderLayout.CENTER);
-            SwingUtilities.updateComponentTreeUI(jPanel1);
+        if (From.equals("Account")) {
+            if (accountInterface == null) {
+                accountInterface = new AccountInterface(this);
+                jPanel1.add(accountInterface, BorderLayout.CENTER);
+                SwingUtilities.updateComponentTreeUI(jPanel1);
+            }
+        } else if (From.equals("Signin")) {
+            if (forgotPassword == null) {
+                forgotPassword = new ForgotPassword(this, empID);
+                jPanel1.add(forgotPassword, BorderLayout.CENTER);
+                SwingUtilities.updateComponentTreeUI(jPanel1);
+            }
         }
     }
 

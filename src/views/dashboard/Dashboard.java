@@ -826,7 +826,7 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMyAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMyAccountActionPerformed
-        new MyAccount(this, true).setVisible(true);
+        new MyAccount(this, true, "Account", "").setVisible(true);
     }//GEN-LAST:event_jMyAccountActionPerformed
 
     private void jTutorialVideoActionPerformed(java.awt.event.ActionEvent evt) {

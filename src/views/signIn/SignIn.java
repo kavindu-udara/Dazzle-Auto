@@ -4,6 +4,8 @@
  */
 package views.signIn;
 
+import controllers.EmployeeController;
+import controllers.LoginController;
 import controllers.LoginHistoryController;
 import includes.MySqlConnection;
 import java.awt.Toolkit;
@@ -19,10 +21,14 @@ import views.LoginChooser;
 import views.dashboard.Dashboard;
 import views.shop.dashboard.ShopDashboard;
 import includes.LoggerConfig;
+import includes.Mailer;
 import includes.TimestampsGenerator;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.LoginHistoryModel;
+import resources.emailTemplates.MailTemplates;
+import views.myaccount.MyAccount;
 
 /**
  *
@@ -83,6 +89,7 @@ public class SignIn extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         SignInButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sign In");
@@ -161,7 +168,7 @@ public class SignIn extends javax.swing.JFrame {
             }
         });
         jPanel2.add(SignInButton);
-        SignInButton.setBounds(130, 320, 220, 50);
+        SignInButton.setBounds(130, 360, 220, 50);
 
         jButton2.setBackground(new java.awt.Color(5, 15, 76));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/eye.png"))); // NOI18N
@@ -178,6 +185,19 @@ public class SignIn extends javax.swing.JFrame {
         });
         jPanel2.add(jButton2);
         jButton2.setBounds(300, 250, 50, 40);
+
+        jLabel5.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel5.setText("Forgot Password ?");
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel5);
+        jLabel5.setBounds(130, 300, 210, 17);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -353,6 +373,30 @@ public class SignIn extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jLabel2MouseClicked
 
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        String username = usernameField.getText().replaceAll("\\s+", "");
+        if (username.isEmpty()) {
+            Notifications.getInstance().show(
+                    Notifications.Type.WARNING,
+                    Notifications.Location.TOP_RIGHT,
+                    "Please Enter Username");
+        } else {
+            try {
+                ResultSet loginRs = new LoginController().show(username);
+                if (loginRs.next()) {
+                    new MyAccount(this, true, "Signin", loginRs.getString("employee_id")).setVisible(true);
+                } else {
+                    Notifications.getInstance().show(
+                            Notifications.Type.ERROR,
+                            Notifications.Location.TOP_RIGHT,
+                            "You Don't Have Valid Account");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_jLabel5MouseClicked
+
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -377,6 +421,7 @@ public class SignIn extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField passwordField;
