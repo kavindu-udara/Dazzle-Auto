@@ -517,7 +517,7 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         });
         jPanel1.add(idPrintButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 500, 370, 40));
 
-        jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(551, 53, 558, 551));
+        jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(559, 53, 550, 551));
 
         viewReportb.setBackground(new java.awt.Color(51, 51, 51));
         viewReportb.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
@@ -575,13 +575,17 @@ public class EmployeeFullDetailsPanel extends javax.swing.JPanel {
         postalCode.setText("jLabel2");
         jPanel3.add(postalCode, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 560, -1, 0));
 
+        jButton2.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(16, 51, 124));
         jButton2.setText("View Sallaries");
+        jButton2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(16, 51, 124), 1, true));
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 70, 110, 30));
+        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 70, 140, 30));
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
