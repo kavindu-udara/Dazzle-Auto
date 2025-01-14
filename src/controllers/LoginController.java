@@ -7,6 +7,7 @@ package controllers;
 import java.sql.ResultSet;
 import models.LoginModel;
 import includes.MySqlConnection;
+import models.LoginRegisterModel;
 
 /**
  *
@@ -26,19 +27,23 @@ public class LoginController {
         return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `id`='" + id + "'");
     }
 
-    public ResultSet store(LoginModel loginModel) throws Exception {
-        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`,`password`, `access_role_id`, `employee_id`) VALUES "
+    public ResultSet showLoginDeatils(String id) throws Exception {
+        return MySqlConnection.executeSearch("SELECT * FROM `" + tableName + "` WHERE `employee_id`='" + id + "'");
+    }
+
+    public ResultSet store(LoginRegisterModel loginModel) throws Exception {
+        return MySqlConnection.executeIUD("INSERT INTO `" + tableName + "`(`id`,`password`, `access_role_id`, `employee_id`, `otp_code`) VALUES "
                 + "('" + loginModel.getId() + "', "
                 + "'" + loginModel.getPassword() + "', "
                 + "'" + loginModel.getAccessRoleId() + "', "
-                + "'" + loginModel.getEmployeeId() + "') ");
+                + "'" + loginModel.getEmployeeId() + "',"
+                + "'" + generateOTP() + "') ");
     }
 
-    public ResultSet update(LoginModel loginModel) throws Exception {
+    public ResultSet update(String loginID, int AccessRoleId) throws Exception {
         return MySqlConnection.executeIUD("UPDATE `" + tableName + "` SET "
-                + "`password`='" + loginModel.getPassword() + "', "
-                + "`access_role_id`='" + loginModel.getAccessRoleId() + "' "
-                + "WHERE `id`='" + loginModel.getId() + "' ");
+                + "`access_role_id`='" + AccessRoleId + "' "
+                + "WHERE `id`='" + loginID + "' ");
     }
 
     public ResultSet search(String searchText) throws Exception {
@@ -50,6 +55,17 @@ public class LoginController {
 
     public ResultSet delete(String id) throws Exception {
         return MySqlConnection.executeIUD("DELETE FROM `" + tableName + "` WHERE `id`='" + id + "' ");
+    }
+
+    public String generateOTP() {
+        // Get the current time in milliseconds
+        long currentTimeMillis = System.currentTimeMillis();
+        // Convert to a string and take the last 6 digits
+        String code = Long.toString(currentTimeMillis);
+        if (code.length() > 6) {
+            code = code.substring(code.length() - 6); // Take the last 6 digits
+        }
+        return code;
     }
 
 }

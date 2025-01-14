@@ -87,7 +87,7 @@ public class Mailer {
 
                 // Send the message
                 Transport.send(message);               
-                logger.info("Email Sended : " + recipientEmail + ", Subject : " + subject + ", Body : " + body);
+                logger.info("Email Sended : " + recipientEmail + ", Subject : " + subject);
                 JOptionPane.showMessageDialog(null, "Email sent successfully!");
             } catch (Exception e) {
                 e.printStackTrace();

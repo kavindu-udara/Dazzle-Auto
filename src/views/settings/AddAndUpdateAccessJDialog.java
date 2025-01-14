@@ -5,6 +5,7 @@
 package views.settings;
 
 import controllers.AccessRoleController;
+import controllers.EmployeeController;
 import controllers.LoginController;
 import includes.IDGenarator;
 import java.sql.ResultSet;
@@ -13,6 +14,8 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import views.employee.EmployeeSelector;
 import includes.LoggerConfig;
+import includes.Mailer;
+import includes.MySqlConnection;
 import includes.RegexValidator;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -20,6 +23,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import models.EmployeeModel;
 import models.LoginModel;
+import models.LoginRegisterModel;
+import resources.emailTemplates.MailTemplates;
 
 /**
  *
@@ -52,7 +57,7 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
     }
 
     //constructor for update access
-    public AddAndUpdateAccessJDialog(java.awt.Frame parent, boolean modal, String process, EmployeeModel employeeModel, LoginModel loginModel) {
+    public AddAndUpdateAccessJDialog(java.awt.Frame parent, boolean modal, String process, EmployeeModel employeeModel, LoginRegisterModel loginModel) {
         super(parent, modal);
         initComponents();
 
@@ -60,6 +65,7 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
         jLabel1.setText(process);
         jEmployeeSelectButton.setEnabled(false);
         jSaveButton.setEnabled(false);
+        
 
         jPasswordTextField.addKeyListener(new KeyAdapter() {
             @Override
@@ -82,6 +88,8 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
         jAccesRoleComboBox.setSelectedIndex(accessRoleMap.get(loginModel.getEmployeeId()));
         jLoginIDTextField.setText(loginModel.getId());
         jPasswordTextField.setText(loginModel.getPassword());
+        jPasswordTextField.setEditable(false);
+        jPasswordTextField.setFocusable(false);
     }
 
     public void setEmployeeDetails(String empID, String nic, String fname, String lname, String type) {
@@ -148,7 +156,7 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
         setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(102, 102, 102)));
 
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -169,15 +177,23 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
 
         jFnameTextField.setEditable(false);
         jFnameTextField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jFnameTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 153), 1, true));
+        jFnameTextField.setFocusable(false);
 
         jNICTextField.setEditable(false);
         jNICTextField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jNICTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 153), 1, true));
+        jNICTextField.setFocusable(false);
 
         jLnameTextField.setEditable(false);
         jLnameTextField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLnameTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 153), 1, true));
+        jLnameTextField.setFocusable(false);
 
         jEMPTypeTextField.setEditable(false);
         jEMPTypeTextField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jEMPTypeTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 153), 1, true));
+        jEMPTypeTextField.setFocusable(false);
 
         jLabel2.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel2.setText("First Name");
@@ -186,7 +202,7 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
         jLabel3.setText("Employee NIC");
 
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jLabel4.setText("First Name");
+        jLabel4.setText("Last Name");
 
         jLabel5.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel5.setText("Employee Type");
@@ -207,11 +223,14 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
 
         jLoginIDTextField.setEditable(false);
         jLoginIDTextField.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        jLoginIDTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 153), 1, true));
+        jLoginIDTextField.setFocusable(false);
 
+        jUpdateButton.setBackground(new java.awt.Color(33, 43, 108));
         jUpdateButton.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jUpdateButton.setForeground(new java.awt.Color(33, 43, 108));
+        jUpdateButton.setForeground(new java.awt.Color(255, 255, 255));
         jUpdateButton.setText("Update Access");
-        jUpdateButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(33, 43, 108), 1, true));
+        jUpdateButton.setBorderPainted(false);
         jUpdateButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jUpdateButton.setFocusPainted(false);
         jUpdateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -351,7 +370,7 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
                 .addComponent(jSaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jUpdateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -383,6 +402,8 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
         String empID = jempIDLabel.getText();
         String loginID = jLoginIDTextField.getText();
         String password = jPasswordTextField.getText().replaceAll("\\s+", "");
+        String empName = jFnameTextField.getText()+" "+jLnameTextField.getText();
+        String empEmail = "";
 
         if (loginID.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Select Employee", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -402,20 +423,26 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
                 if (rs.next()) {
                     JOptionPane.showMessageDialog(this, "Already Have Access For This Employee", "Warning", JOptionPane.WARNING_MESSAGE);
                 } else {
+                    
+                    ResultSet empRs = new EmployeeController().show(jempIDLabel.getText().trim());
+                    if (empRs.next()) {
+                        empEmail = empRs.getString("email");
+                    }
 
-                    LoginModel loginModel = new LoginModel();
+                    LoginRegisterModel loginModel = new LoginRegisterModel();
                     loginModel.setId(loginID);
                     loginModel.setPassword(password);
                     loginModel.setEmployeeId(empID);
                     loginModel.setAccessRoleId(accessRoleId);
-
+                    
                     new LoginController().store(loginModel);
 
-                    reset();
-
+                    new Mailer().sendMail(empEmail, "Dazzle Auto Software Access", new MailTemplates().accessConfirmMailTemplate(empName, loginID, password, String.valueOf(jAccesRoleComboBox.getSelectedItem())), null, true);
+                    
                     JOptionPane.showMessageDialog(this, "New Login Access Added For : " + empID, "Information", JOptionPane.INFORMATION_MESSAGE);
                     logger.info("New Login Access Added For : " + empID + " | LoginID " + loginID);
-
+                    
+                    reset();
                 }
 
             } catch (Exception e) {
@@ -432,27 +459,16 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
     private void jUpdateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUpdateButtonActionPerformed
 
         String loginID = jLoginIDTextField.getText();
-        String password = jPasswordTextField.getText().replaceAll("\\s+", "");
 
         if (loginID.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please Select Employee", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (jAccesRoleComboBox.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(this, "Please Select Access Role", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else if (password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter Password", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else if (!RegexValidator.isValidPassword(password)) {
-            JOptionPane.showMessageDialog(this, "The password must contain at least 8 characters, at least one lowercase letter, at least one uppercase letter, at least one digit, at least one special character", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else {
+        }  else {
             int accessRoleId = accessRoleMap.get(String.valueOf(jAccesRoleComboBox.getSelectedItem()));
 
             try {
-
-                LoginModel loginModel = new LoginModel();
-                loginModel.setId(loginID);
-                loginModel.setPassword(password);
-                loginModel.setAccessRoleId(accessRoleId);
-
-                new LoginController().update(loginModel);
+                new LoginController().update(loginID, accessRoleId);
 
                 JOptionPane.showMessageDialog(this, "Login Access Updated For : " + loginID, "Information", JOptionPane.INFORMATION_MESSAGE);
                 logger.info("Login Access Updated For LoginID : " + loginID);
@@ -461,7 +477,6 @@ public class AddAndUpdateAccessJDialog extends javax.swing.JDialog {
                 new Settings(null, true, "jLoginAccessMenu").setVisible(true);
 
                 reset();
-
             } catch (Exception e) {
                 logger.warning("Error while jUpdateButtonActionPerformed : " + e.getMessage());
             }
