@@ -26,6 +26,7 @@ import views.customer.CustomerJPanel;
 import views.employee.StaffJPanel;
 import views.feedback.Feedback;
 import views.financeAndHr.FinanceAndHrJPanel;
+import views.myaccount.MyAccount;
 import views.ourServices.ourServicesJPanel;
 import views.payment.PaymentsPanel;
 import views.reports.ReportsJPanel;
@@ -37,6 +38,7 @@ import views.vehicleServiceAppointment.AppointmnetPanel;
  * @author Dinuka
  */
 public class Dashboard extends javax.swing.JFrame {
+
     private static final Logger logger = LoggerConfig.getLogger();
 
     private Color btnDefaultColor = new Color(255, 255, 255);
@@ -91,14 +93,14 @@ public class Dashboard extends javax.swing.JFrame {
             jReportsButton.setEnabled(false);
             jStaffButton.setEnabled(false);
         }
-        
+
         if (loginModel.getAccessRoleId() != 1 && loginModel.getAccessRoleId() != 2) {
             jVehiclesButton.setEnabled(false);
             jCustomerButton.setEnabled(false);
             jOurServicesButton.setEnabled(false);
             jReportsButton.setEnabled(false);
         }
-        
+
         if (loginModel.getAccessRoleId() != 1) {
             feedbackMenu.setEnabled(false);
         }
@@ -137,7 +139,7 @@ public class Dashboard extends javax.swing.JFrame {
             logger.severe("Error while setting logged user details : " + ex.getMessage());
         }
     }
-    
+
     public void dateTime() {
         java.lang.Runnable runnable = new java.lang.Runnable() {
             @Override
@@ -207,6 +209,7 @@ public class Dashboard extends javax.swing.JFrame {
         jsettings = new javax.swing.JMenuItem();
         jLoginAccessMenuItem = new javax.swing.JMenuItem();
         jDatabaseMenuItem = new javax.swing.JMenuItem();
+        jMyAccount = new javax.swing.JMenuItem();
         feedbackMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
@@ -534,6 +537,17 @@ public class Dashboard extends javax.swing.JFrame {
         });
         settingsMenu.add(jDatabaseMenuItem);
 
+        jMyAccount.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jMyAccount.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/user-15.png"))); // NOI18N
+        jMyAccount.setText("My Account");
+        jMyAccount.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMyAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMyAccountActionPerformed(evt);
+            }
+        });
+        settingsMenu.add(jMyAccount);
+
         jMenuBar1.add(settingsMenu);
 
         feedbackMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/feedback-15.png"))); // NOI18N
@@ -811,6 +825,10 @@ public class Dashboard extends javax.swing.JFrame {
         new Feedback(this, true).setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void jMyAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMyAccountActionPerformed
+        new MyAccount(this, true).setVisible(true);
+    }//GEN-LAST:event_jMyAccountActionPerformed
+
     private void jTutorialVideoActionPerformed(java.awt.event.ActionEvent evt) {
 
         TutorialVideo Video = new TutorialVideo();
@@ -842,6 +860,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMyAccount;
     private javax.swing.JButton jOurServicesButton;
     private javax.swing.JPanel jOurServicesPanel;
     private javax.swing.JPanel jPanel1;

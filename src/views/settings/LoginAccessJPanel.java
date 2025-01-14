@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.EmployeeModel;
 import models.LoginModel;
+import models.LoginRegisterModel;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -59,16 +60,11 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
     }
 
     private void loginAccessTableTableRender() {
-
         DeleteActionEvent event = new DeleteActionEvent() {
-
             @Override
             public void onView(int row) {
-
                 String loginID = String.valueOf(jLoginAccessTable.getValueAt(row, 3));
-
                 try {
-
                     int showConfirm = JOptionPane.showConfirmDialog(settings, "Do You Want To Delete This Login Access ?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                     if (showConfirm == JOptionPane.YES_OPTION) {
                         new LoginController().delete(loginID);
@@ -109,23 +105,19 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
         });
 
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
-        jLoginAccessTable.getColumnModel().getColumn(5).setCellRenderer(new DeleteCellRender());
-        jLoginAccessTable.getColumnModel().getColumn(5).setCellEditor(new DeleteActionCellEditor(event));
+        jLoginAccessTable.getColumnModel().getColumn(4).setCellRenderer(new DeleteCellRender());
+        jLoginAccessTable.getColumnModel().getColumn(4).setCellEditor(new DeleteActionCellEditor(event));
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             jLoginAccessTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
 
     public void loadLoginUsers() {
-
         try {
-
             ResultSet resultSet = new LoginController().show();
-
             DefaultTableModel dtm = (DefaultTableModel) jLoginAccessTable.getModel();
             dtm.setRowCount(0);
-
             int row = 0;
             while (resultSet.next()) {
                 row++;
@@ -134,7 +126,6 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
                 vector.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
                 vector.add(resultSet.getString("role"));
                 vector.add(resultSet.getString("login.id"));
-                vector.add(resultSet.getString("password"));
 
                 dtm.addRow(vector);
             }
@@ -169,11 +160,11 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Employee ID", "Employee Name", "Access Role", "Login ID", "Password", ""
+                "Employee ID", "Employee Name", "Access Role", "Login ID", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -191,8 +182,8 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jLoginAccessTable);
         if (jLoginAccessTable.getColumnModel().getColumnCount() > 0) {
-            jLoginAccessTable.getColumnModel().getColumn(5).setPreferredWidth(150);
-            jLoginAccessTable.getColumnModel().getColumn(5).setMaxWidth(70);
+            jLoginAccessTable.getColumnModel().getColumn(4).setPreferredWidth(150);
+            jLoginAccessTable.getColumnModel().getColumn(4).setMaxWidth(70);
         }
 
         jNewAccessButton.setBackground(new java.awt.Color(204, 0, 0));
@@ -266,7 +257,6 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
         String empID = String.valueOf(jLoginAccessTable.getValueAt(row, 0));
         String accessRole = String.valueOf(jLoginAccessTable.getValueAt(row, 2));
         String loginID = String.valueOf(jLoginAccessTable.getValueAt(row, 3));
-        String password = String.valueOf(jLoginAccessTable.getValueAt(row, 4));
 
         String nic = "";
         String first_name = "";
@@ -296,10 +286,10 @@ public class LoginAccessJPanel extends javax.swing.JPanel {
                 employeeModel.setLastName(last_name);
                 employeeModel.setEmployeeTypeName(employeeType);
 
-                LoginModel loginModel = new LoginModel();
+                LoginRegisterModel loginModel = new LoginRegisterModel();
                 loginModel.setEmployeeId(accessRole); //accessRole
                 loginModel.setId(loginID);
-                loginModel.setPassword(password);
+                loginModel.setPassword("*******");
 
                 settings.dispose();
                 new AddAndUpdateAccessJDialog(null, true, "UPDATE USER ACCESS", employeeModel, loginModel).setVisible(true);
