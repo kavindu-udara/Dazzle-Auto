@@ -275,11 +275,11 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         EmployeeName.setFont(new java.awt.Font("Roboto", 3, 16)); // NOI18N
         EmployeeName.setText("Emp_Name");
-        jPanel2.add(EmployeeName, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 140, 110, -1));
+        jPanel2.add(EmployeeName, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 140, 180, -1));
 
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel10.setText("Quantity :");
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 20, -1, 30));
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 0, -1, 30));
 
         GrnNumberField.setEditable(false);
         GrnNumberField.setBackground(new java.awt.Color(255, 204, 51));
@@ -311,7 +311,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                 AddGRNBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(AddGRNBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 20, 190, 50));
+        jPanel2.add(AddGRNBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 20, 160, 50));
 
         ClearAllBtn.setFont(new java.awt.Font("Roboto", 1, 16)); // NOI18N
         ClearAllBtn.setForeground(new java.awt.Color(255, 0, 0));
@@ -323,7 +323,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
                 ClearAllBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(ClearAllBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 80, 190, 50));
+        jPanel2.add(ClearAllBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 80, 160, 50));
 
         SupplierSelectBtn.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         SupplierSelectBtn.setForeground(new java.awt.Color(33, 43, 108));
@@ -337,7 +337,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         jPanel2.add(SupplierSelectBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 40, -1, 31));
 
         QtyField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
-        jPanel2.add(QtyField, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 20, 80, 31));
+        jPanel2.add(QtyField, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 30, 80, 31));
 
         ProductNameField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         ProductNameField.setBorder(null);
@@ -366,7 +366,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
 
         jLabel14.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jLabel14.setText("Issued By :");
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 140, -1, -1));
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 140, -1, -1));
 
         ProductIdField.setFont(new java.awt.Font("Roboto", 0, 16)); // NOI18N
         jPanel2.add(ProductIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 110, 20));
@@ -421,7 +421,9 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 255));

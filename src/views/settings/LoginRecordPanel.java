@@ -48,23 +48,24 @@ public class LoginRecordPanel extends javax.swing.JPanel {
         LoginrecordTableRender();
     }
 
-    private void loadTableData(){
-        try(ResultSet loginHistoryResultSet = new LoginHistoryController().show()){
+    private void loadTableData() {
+        try (ResultSet loginHistoryResultSet = new LoginHistoryController().show()) {
             DefaultTableModel tableModel = (DefaultTableModel) loginHstoryTable.getModel();
             tableModel.setRowCount(0);
-            while(loginHistoryResultSet.next()){
-            Vector vector = new Vector();
+            while (loginHistoryResultSet.next()) {
+                Vector vector = new Vector();
                 vector.add(loginHistoryResultSet.getString("id"));
                 vector.add(loginHistoryResultSet.getString("created_at"));
                 vector.add(loginHistoryResultSet.getString("username"));
-                
+
                 tableModel.addRow(vector);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            logger.severe("Error while showing login history data : "+e.getMessage());
+            logger.severe("Error while showing login history data : " + e.getMessage());
         }
     }
+
     public void LoginrecordTableRender() {
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -90,6 +91,7 @@ public class LoginRecordPanel extends javax.swing.JPanel {
             loginHstoryTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -114,6 +116,7 @@ public class LoginRecordPanel extends javax.swing.JPanel {
         jLabel1.setText("Login Record");
         jLabel1.setOpaque(true);
 
+        loginHstoryTable.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         loginHstoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -130,6 +133,7 @@ public class LoginRecordPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        loginHstoryTable.setRowHeight(25);
         jScrollPane1.setViewportView(loginHstoryTable);
 
         viewReportb.setBackground(new java.awt.Color(51, 51, 51));
@@ -182,8 +186,6 @@ public JasperPrint makeReport() {
             params.put("img", headerImg);
             params.put("employee", LoginModel.getFirstName() + " " + LoginModel.getLastName());
             params.put("reportDate", dateTime);
- 
-
 
             JRTableModelDataSource dataSource = new JRTableModelDataSource(loginHstoryTable.getModel());
 
