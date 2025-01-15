@@ -143,7 +143,7 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText(" Set Up New Appointment");
+        jLabel1.setText(" Add New Appointment");
 
         appointment_btn.setBackground(new java.awt.Color(33, 43, 108));
         appointment_btn.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
@@ -349,7 +349,6 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(remainingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(8, 8, 8)
                 .addComponent(jLabel10)
@@ -438,8 +437,8 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please Select Service", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (!datePicker1.isDateSelected()) {
             JOptionPane.showMessageDialog(this, "Please Select Appointment Date ", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else if (datePicker1.getSelectedDate().isBefore(today)) {
-            JOptionPane.showMessageDialog(this, "Please Select Today Or Future Date ", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (datePicker1.getSelectedDate().isEqual(today)) {
+            JOptionPane.showMessageDialog(this, "Please Select Future Date ", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (timeSlotComboBox.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(this, "Please Select Appointment Time Slot ", "Warning", JOptionPane.WARNING_MESSAGE);
         } else if (note.isEmpty()) {
