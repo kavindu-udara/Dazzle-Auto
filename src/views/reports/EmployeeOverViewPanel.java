@@ -8,11 +8,14 @@ import controllers.EmployeeAttendanceController;
 import controllers.EmployeeController;
 import controllers.MonthsController;
 import includes.LoggerConfig;
+import includes.TimestampsGenerator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.File;
+import java.io.InputStream;
 import javax.swing.SwingUtilities;
 import views.dashboard.Dashboard;
 import java.sql.ResultSet;
@@ -27,6 +30,12 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import models.LoginModel;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.data.JRTableModelDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -68,7 +77,7 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
         String monthId = monthsHashMap.get(String.valueOf(monthSelectorComboBox.getSelectedItem()));
 
         try {
-            DefaultTableModel tableModel = (DefaultTableModel) employeesReport.getModel();
+            DefaultTableModel tableModel = (DefaultTableModel) employeesTable.getModel();
             tableModel.setRowCount(0);
 
             ResultSet employeeResultSet = new EmployeeController().show();
@@ -94,13 +103,12 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
 
     }
 
-    
     private void EmployeeTableRender() {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
-        JTableHeader tableHeader = employeesReport.getTableHeader();
+        JTableHeader tableHeader = employeesTable.getTableHeader();
 
         tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
@@ -120,10 +128,10 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
         tableHeader.setPreferredSize(new Dimension(tableHeader.getPreferredSize().width, 30));
 
         for (int i = 0; i < 5; i++) {
-            employeesReport.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            employeesTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -132,11 +140,11 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
-        employeesReport = new javax.swing.JTable();
+        employeesTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         monthSelectorComboBox = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
-        viewReportb = new javax.swing.JButton();
+        printReportButton = new javax.swing.JButton();
+        saveReportButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1100, 610));
@@ -160,8 +168,8 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        employeesReport.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        employeesReport.setModel(new javax.swing.table.DefaultTableModel(
+        employeesTable.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        employeesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -177,8 +185,8 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        employeesReport.setRowHeight(27);
-        jScrollPane1.setViewportView(employeesReport);
+        employeesTable.setRowHeight(27);
+        jScrollPane1.setViewportView(employeesTable);
 
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel2.setText("Select a month");
@@ -191,26 +199,26 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(0, 102, 0));
-        jButton2.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/print-30.png"))); // NOI18N
-        jButton2.setText("Print Report");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        printReportButton.setBackground(new java.awt.Color(0, 102, 0));
+        printReportButton.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
+        printReportButton.setForeground(new java.awt.Color(255, 255, 255));
+        printReportButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/print-30.png"))); // NOI18N
+        printReportButton.setText("Print Report");
+        printReportButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                printReportButtonActionPerformed(evt);
             }
         });
 
-        viewReportb.setBackground(new java.awt.Color(51, 51, 51));
-        viewReportb.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
-        viewReportb.setForeground(new java.awt.Color(255, 255, 255));
-        viewReportb.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/analyze-30.png"))); // NOI18N
-        viewReportb.setText(" Save Report");
-        viewReportb.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        viewReportb.addActionListener(new java.awt.event.ActionListener() {
+        saveReportButton.setBackground(new java.awt.Color(51, 51, 51));
+        saveReportButton.setFont(new java.awt.Font("Courier New", 1, 20)); // NOI18N
+        saveReportButton.setForeground(new java.awt.Color(255, 255, 255));
+        saveReportButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/btn_icons/analyze-30.png"))); // NOI18N
+        saveReportButton.setText(" Save Report");
+        saveReportButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        saveReportButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewReportbActionPerformed(evt);
+                saveReportButtonActionPerformed(evt);
             }
         });
 
@@ -239,9 +247,9 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
                                 .addGap(24, 24, 24))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(viewReportb)
+                        .addComponent(saveReportButton)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
+                        .addComponent(printReportButton)
                         .addGap(17, 17, 17))))
         );
         layout.setVerticalGroup(
@@ -261,8 +269,8 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(viewReportb))
+                    .addComponent(printReportButton)
+                    .addComponent(saveReportButton))
                 .addGap(31, 31, 31))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -281,25 +289,67 @@ public class EmployeeOverViewPanel extends javax.swing.JPanel {
         loadTableData();
     }//GEN-LAST:event_monthSelectorComboBoxActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    public JasperPrint makeReport() {
+
+        String headerImg;
+        try {
+            InputStream s = this.getClass().getResourceAsStream("/resources/reports/dazzleauto-emp-overview.jasper");
+            String img = new File(this.getClass().getResource("/resources/reports/dazzle_auto_tp.png").getFile()).getAbsolutePath();
+
+            headerImg = img.replace("\\", "/");
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("imageParam", headerImg);
+            params.put("timestampParam", String.valueOf(TimestampsGenerator.getFormattedDateTime()));
+
+            JRTableModelDataSource dataSource = new JRTableModelDataSource(employeesTable.getModel());
+
+            JasperPrint report = JasperFillManager.fillReport(s, params, dataSource);
+
+            return report;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while makeReport() : " + e.getMessage());
+        }
+        return null;
+    }
+
+    private void printReportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printReportButtonActionPerformed
         // TODO add your handling code here:
+        try {
+            JasperPrint report = makeReport();
+            JasperPrintManager.printReport(report, false);
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+            logger.info("Vehicle Report Printed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while jButton3ActionPerformed : " + e.getMessage());
+        }
+    }//GEN-LAST:event_printReportButtonActionPerformed
 
-    private void viewReportbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReportbActionPerformed
+    private void saveReportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveReportButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_viewReportbActionPerformed
+        try {
+            JasperPrint report = makeReport();
+            JasperViewer.viewReport(report, false);
 
+            logger.info("Employee Overview Report Viewed By : " + LoginModel.getEmployeeId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.severe("Error while viewReportbActionPerformed : " + e.getMessage());
+        }
+    }//GEN-LAST:event_saveReportButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable employeesReport;
+    private javax.swing.JTable employeesTable;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JComboBox<String> monthSelectorComboBox;
-    private javax.swing.JButton viewReportb;
+    private javax.swing.JButton printReportButton;
+    private javax.swing.JButton saveReportButton;
     // End of variables declaration//GEN-END:variables
 }
