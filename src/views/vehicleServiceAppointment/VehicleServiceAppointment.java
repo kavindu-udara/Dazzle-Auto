@@ -584,8 +584,8 @@ public class VehicleServiceAppointment extends javax.swing.JFrame {
         jTypeLabel.setText("...............................................");
         jServiceNameLabel.setText("Selected Service");
         jServiceIdLabel.setText("0");
+        timeSlotComboBox.setSelectedIndex(0);
         datePicker1.clearSelectedDate();
-
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
