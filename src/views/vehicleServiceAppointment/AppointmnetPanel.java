@@ -86,7 +86,7 @@ public class AppointmnetPanel extends javax.swing.JPanel {
             public void onView(int row) {
 
                 String appointmentNumber = String.valueOf(jAppointmentTable.getValueAt(row, 0));
-                String status = String.valueOf(jAppointmentTable.getValueAt(row, 5));
+                String status = String.valueOf(jAppointmentTable.getValueAt(row, 6));
 
                 try {
                     if (status.equals("Pending")) {
