@@ -690,14 +690,32 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         if (paymentMethod.equals("Cash")) {
             balance = payment - grandTotal;
             PaymenntField.setEnabled(true);
-
+            if (payment >= grandTotal) {
+                String SupId = SupplierIdField.getText().trim();
+                try {
+                    String query = "UPDATE `supplier` SET `pending_payments` = 0.00 WHERE `id` = '" + SupId + "'";
+                    MySqlConnection.executeIUD(query);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Failed to update supplier payment status", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         } else {
-            //card
+            // Card payment logic
             payment = grandTotal;
             balance = 0;
             PaymenntField.setText(String.valueOf(payment));
             PaymenntField.setEnabled(false);
             SaveGRN.setEnabled(true);
+
+            String SupId = SupplierIdField.getText().trim();
+            try {
+                String query = "UPDATE `supplier` SET `pending_payments` = 0.00 WHERE `id` = '" + SupId + "'";
+                ResultSet resultSet = MySqlConnection.executeIUD(query);
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Failed to update supplier payment status", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
         BalanceField.setText(String.valueOf(balance));
@@ -1104,7 +1122,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
             GrnItemMap.remove(compositeKey);
             dtm.removeRow(row);
         }
-
+        calculate();
         JOptionPane.showMessageDialog(null, "Row deleted successfully.");
 
     }
@@ -1160,6 +1178,7 @@ public class shop_GRNJPanel extends javax.swing.JPanel {
         GrnItemMap.clear();
         GrnNumberField.setText(IDGenarator.GrnID());
         GrnNumberField.setEditable(false);
+        pendingPayment.setText("0.00");
 
     }
 
